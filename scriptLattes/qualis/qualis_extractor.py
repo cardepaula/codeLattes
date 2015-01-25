@@ -116,7 +116,7 @@ class qualis_extractor(object):
 
         select = tree.xpath("//select[@id='consultaDocumentosAreaForm:somAreaAvaliacao']/option")
         for option in select:
-            self.areas.append(option.get("value"), option.text.strip())
+            self.areas.append(str2int(option.get("value")), option.text.strip())
         
     def init_session(self):
         """

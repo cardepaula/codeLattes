@@ -73,11 +73,12 @@ class Qualis:
 		if(len(listaDeArtigos) > 0):
 			for publicacao in listaDeArtigos:
 				ano = publicacao.ano
-				tiposQualis = publicacao.qualis.values()
-				for tipo in tiposQualis:
-					valorAtual = self.getTiposPeloAno(ano, tabelaDosAnos)[tipo]
-					self.setValorPeloAnoTipo(ano, tipo, valorAtual+1, tabelaDosAnos)
-					tabelaDosTipos[tipo] += 1
+				if publicacao.qualis != None:
+					tiposQualis = publicacao.qualis.values()
+					for tipo in tiposQualis:
+						valorAtual = self.getTiposPeloAno(ano, tabelaDosAnos)[tipo]
+						self.setValorPeloAnoTipo(ano, tipo, valorAtual+1, tabelaDosAnos)
+						tabelaDosTipos[tipo] += 1
 
 		return [tabelaDosAnos, tabelaDosTipos]
 

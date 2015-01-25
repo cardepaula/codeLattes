@@ -95,10 +95,13 @@ class ProgramaComputador:
 
 
 	def html(self, listaDeMembros):
-		s = self.autores + '. <b>' + self.titulo + '</b>. '
-		s+= str(self.ano) + '. ' + str(self.pais) + '. '
-		s+= str(self.numeroRegistro) + '. ' + str(self.dataDeposito) + '.'
- 		s+= menuHTMLdeBuscaPT(self.titulo)
+		try:
+			s = self.autores + '. <b>' + self.titulo + '</b>. '
+			s+= str(self.ano) + '. ' + str(self.pais) + '. '
+			s+= str(self.numeroRegistro) + '. ' + str(self.dataDeposito) + '.'
+	 		s+= menuHTMLdeBuscaPT(self.titulo)
+		except:
+			return ""
 		return s
 
 
