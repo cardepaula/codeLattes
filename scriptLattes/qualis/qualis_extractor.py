@@ -16,7 +16,12 @@ limitations under the License.
 """
 
 import urllib2, requests
+
 from BeautifulSoup import BeautifulSoup
+
+from lxml import etree
+
+import sys
 import codecs
 import pickle
 from HTMLParser import HTMLParser
@@ -50,87 +55,68 @@ class qualis_extractor(object):
         self.init_session()
         
                 
-    def parseContent(self, html):
+    def parseContent(self, document):
         """
         Process a html page containing qualis data
         Args:
-            html: the document to be parsed.
+            document: the document to be parsed.
             data: a list of lists containing the data parsed from the tables
         Return:
             1 if more pages exist
             0 if not
         """
-        parsedhtml = BeautifulSoup(html)
-        if parsedhtml == None:
-            return
-        
-        tmp = parsedhtml.body
-        table = None
-        for tb in tmp.findAll('table'): #get the table with content
-            for attr,val in tb.attrs:
-                if attr == 'class' and val.find('rich-table') >= 0:
-                    table = tb
 
-        tmp = table
+        tree = etree.HTML(document.read())
+
+        tableLines = tree.xpath("//table[@id='consultaPublicaClassificacaoForm:listaVeiculosIssn']/tbody/tr")
         
-        if tmp != None: tmp = tmp.find('tbody') #get the body of the table
-        if tmp != None: #get all rows
-            tmp = tmp.findAll('tr')
-        else:   return None
-        #extract each line from all rows and add to a matrix with the values of the table
-        for i in tmp:
+        for tr in tableLines:
+
             line = []
-            for j in i.findAll('td'):
-                stringtoadd = j.string
-                if stringtoadd == None:
-                    line.append('')
-                else:
-                    line.append(HTMLParser().unescape(stringtoadd))
+            for td in tr:
+                line.append(HTMLParser().unescape(td.text.strip()))
+
+            issn_q, titulo_q, extrato_q, area_q, classif_q = line
             
-            issn_qualis = line[0].strip()
-            titulo_qualis = line[1].strip()
-            extrato_qualis = line[2].strip()
-            area_qualis = line[3].strip()
-            
-            if titulo_qualis == '':
+            if titulo_q == "":
                 continue
-            
-            
+
             qualis = None
+            if issn_q != "":
+                qualis = self.issn.get(issn_q)
             
-            if issn_qualis != '':
-                qualis = self.issn.get(issn_qualis)
-                
             if qualis == None:
                 qualis = {}
             
-            qualis[area_qualis] = extrato_qualis
+            qualis[area_q] = extrato_q
             
-            if issn_qualis != None:
-                self.issn[issn_qualis] = qualis
+            if issn_q != "":
+                self.issn[issn_q] = qualis
             
-            self.publicacao[titulo_qualis] = qualis            
-            
-            #print issn_qualis,':',qualis
-            
-            
-        if html.find('{\'page\': \'last\'}') != -1:
-            return 1
-            
+            self.publicacao[titulo_q] = qualis
+
+
+        #/html/body/div[3]/div[4]/form/table/tbody/tr[2]/td/table/tbody/tr/td/div[2]/div/div/table/tbody/tr/td[11]
+        last_bts = tree.xpath("//table[@id='consultaPublicaClassificacaoForm:datascroller1_table']/tbody/tr/td")
+        #print etree.tostring(last_bts)
+        
+        
+        # se encontrar um botao com onclick='page:last', entao ainda tem paginas
+        if len(last_bts) > 0:
+            onclick = last_bts[-1].get("onclick")
+            if onclick != None and onclick.find('{\'page\': \'last\'}') != -1:
+                 return 1
+
         return 0
     
-    def getAreas(self,html):
+    def getAreas(self, document):
+        tree = etree.HTML(document.read())
+
         self.areas = []
-        parsedhtml = BeautifulSoup(html)
-        select = parsedhtml.find('select')
-        if select == None:
-            return None
-        options = select.findAll('option')
-        for opt in options:
-            name = opt.string
-            index = str2int(getvalue(opt.attrs))
-            if name != None and index != None:
-                self.areas.append((index,name))
+
+        select = tree.xpath("//select[@id='consultaDocumentosAreaForm:somAreaAvaliacao']/option")
+        for option in select:
+            self.areas.append(option.get("value"), option.text.strip())
         
     def init_session(self):
         """
@@ -152,7 +138,7 @@ class qualis_extractor(object):
             req2 = urllib2.Request(self.url2, 'AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Aissn=&javax.faces.ViewState=j_id2&consultaPublicaClassificacaoForm%3Aj_id192=consultaPublicaClassificacaoForm%3Aj_id192')
             arq2 = urllib2.urlopen(req2)
             #get all the areas of qualis
-            self.getAreas(arq2.read())
+            self.getAreas(arq2)
             req3 = urllib2.Request(self.url2, 'consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3AsomAreaAvaliacao=0&consultaPublicaClassificacaoForm%3AsomEstrato=org.jboss.seam.ui.NoSelectionConverter.noSelectionValue&consultaPublicaClassificacaoForm%3AbtnPesquisarTituloPorArea=Pesquisar&javax.faces.ViewState=j_id2')
             arq3 = urllib2.urlopen (req3)
         
@@ -213,8 +199,7 @@ class qualis_extractor(object):
                         print "ja tentou 10 vezes!"
                         break
             
-                htmln = arqn.read()
-                more = self.parseContent(htmln)
+                more = self.parseContent(arqn)
                 scroller += 1
             
            
@@ -267,9 +252,8 @@ class qualis_extractor(object):
                         print "ja tentou 10 vezes!"
                         break
             
-            html = arqn.read()
             
-            self.parseContent(html)
+            self.parseContent(arqn)
                 
         print 'Extraindo qualis offline a partir do issn',issn,'...'
         return self.issn.get(issn)
