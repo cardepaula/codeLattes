@@ -16,12 +16,7 @@ limitations under the License.
 """
 
 import urllib2, requests
-
-from BeautifulSoup import BeautifulSoup
-
 from lxml import etree
-
-import sys
 import codecs
 import pickle
 from HTMLParser import HTMLParser
@@ -100,7 +95,6 @@ class qualis_extractor(object):
         last_bts = tree.xpath("//table[@id='consultaPublicaClassificacaoForm:datascroller1_table']/tbody/tr/td")
         #print etree.tostring(last_bts)
         
-        
         # se encontrar um botao com onclick='page:last', entao ainda tem paginas
         if len(last_bts) > 0:
             onclick = last_bts[-1].get("onclick")
@@ -111,9 +105,7 @@ class qualis_extractor(object):
     
     def getAreas(self, document):
         tree = etree.HTML(document.read())
-
         self.areas = []
-
         select = tree.xpath("//select[@id='consultaDocumentosAreaForm:somAreaAvaliacao']/option")
         for option in select:
             self.areas.append(str2int(option.get("value")), option.text.strip())
