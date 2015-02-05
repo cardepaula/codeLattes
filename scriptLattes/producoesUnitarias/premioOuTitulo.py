@@ -23,9 +23,6 @@
 #
 
 
-from scriptLattes import *  
-from geradorDePaginasWeb import *
-
 class PremioOuTitulo:
 	idMembro = None
 

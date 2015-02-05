@@ -1,9 +1,10 @@
 #!/usr/bin/python
 # caso 2 http://www.scielo.br/ procura entre o 7mo y 10mo <p>
-import re
-import urllib, urllib2
 import  unicodedata
+
 from HTMLParserNew import HTMLParser
+
+
 class parser101590(HTMLParser):
     	def __init__(self):
 	    HTMLParser.__init__(self)

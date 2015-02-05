@@ -1,6 +1,5 @@
 #!/usr/bin/python
 # caso 4 http://www.springerlink.com/ procura tag a e o title Permissions & Reprints
-import urllib, urllib2
 from HTMLParserNew import HTMLParser
 class parser101007(HTMLParser):
     	def __init__(self):

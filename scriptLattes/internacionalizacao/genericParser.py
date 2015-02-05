@@ -1,8 +1,9 @@
 #!/usr/bin/python
-import re
-import urllib, urllib2
 import  unicodedata
+
 from HTMLParserNew import HTMLParser
+
+
 class genericParser(HTMLParser):
     	def __init__(self,parserField):
 	    HTMLParser.__init__(self)

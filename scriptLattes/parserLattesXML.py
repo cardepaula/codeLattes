@@ -29,43 +29,21 @@
 # Por enquanto esta característica fica sem documentação.
 # ---------------------------------------------------------------------------- #
 
-import HTMLParser
-import re
-import string
-from tidylib import tidy_document
 from htmlentitydefs import name2codepoint
-
 from HTMLParser import HTMLParser
-from formacaoAcademica import *
-from areaDeAtuacao import *
-from idioma import *
-from premioOuTitulo import *
-from projetoDePesquisa import *
 
-from artigoEmPeriodico import *
-from livroPublicado import *
-from capituloDeLivroPublicado import *
-from textoEmJornalDeNoticia import *
-from trabalhoCompletoEmCongresso import *
-from resumoExpandidoEmCongresso import *
-from resumoEmCongresso import *
-from artigoAceito import *
-from apresentacaoDeTrabalho import *
-from outroTipoDeProducaoBibliografica import *
+from producoesBibliograficas.artigoEmPeriodico import *
+from producoesBibliograficas.livroPublicado import *
+from producoesBibliograficas.capituloDeLivroPublicado import *
+from producoesBibliograficas.textoEmJornalDeNoticia import *
+from producoesBibliograficas.trabalhoCompletoEmCongresso import *
+from producoesBibliograficas.resumoExpandidoEmCongresso import *
+from producoesBibliograficas.resumoEmCongresso import *
+from producoesBibliograficas.artigoAceito import *
+from producoesBibliograficas.apresentacaoDeTrabalho import *
+from producoesBibliograficas.outroTipoDeProducaoBibliografica import *
+from orientacoes.orientacaoConcluida import *
 
-from softwareComPatente import *
-from softwareSemPatente import *
-from produtoTecnologico import *
-from processoOuTecnica import *
-from trabalhoTecnico import *
-from outroTipoDeProducaoTecnica import *
-from producaoArtistica import *
-from orientacaoEmAndamento import *
-from orientacaoConcluida import *
-
-from patente import *
-from programaComputador import *
-from desenhoIndustrial import *
 
 class ParserLattesXML(HTMLParser):
 	item = None

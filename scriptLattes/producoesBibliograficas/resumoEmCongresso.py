@@ -23,9 +23,9 @@
 #
 
 
-from scriptLattes import *
-from geradorDePaginasWeb import *
-import re
+from scriptLattes.geradorDePaginasWeb import *
+from scriptLattes.util import compararCadeias
+
 
 class ResumoEmCongresso:
 	item = None # dado bruto

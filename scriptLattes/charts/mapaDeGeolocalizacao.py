@@ -23,7 +23,7 @@
 #
 
 
-from membro import *
+from scriptLattes.membro import *
 
 class MapaDeGeolocalizacao:
 	mapa = None

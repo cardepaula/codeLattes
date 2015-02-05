@@ -15,12 +15,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-import urllib2, requests
+import urllib2
+import requests
 from lxml import etree
-import codecs
 import pickle
 from HTMLParser import HTMLParser
 import datetime
+
 
 #converts a string to a integer if the string is a integer, else returns None
 def str2int(string):

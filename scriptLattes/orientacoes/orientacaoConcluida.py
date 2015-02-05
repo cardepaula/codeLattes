@@ -23,9 +23,10 @@
 #
 
 
-from scriptLattes import *  
-from geradorDePaginasWeb import *
 import re
+
+from scriptLattes.util import compararCadeias
+
 
 class OrientacaoConcluida:
 	item = None # dado bruto

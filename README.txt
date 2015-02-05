@@ -4,20 +4,30 @@ scriptLattes V8.09
 SINOPSIS
 	scriptLattes.py <nome_arquivo_de_configuracao>
 
+
 REQUISITOS
-	Para a compilação precisam-se de alguns módulos Python. Para instalar esses módulos execute como root:
+	Para a compilação precisam-se de alguns módulos Python. Para instalar esses
+    módulos execute como root (admin):
 	# apt-get install python-all python-setuptools python-utidylib python-matplotlib python-levenshtein python-pygraphviz python-numpy tidy python-scipy python-imaging
 	# easy_install pytidylib
+	# pip install beautifulsoup
+	
+
+	Em Ubuntu pode executar as seguintes instruções no terminal (linha de comandos):
+	sudo apt-get install python-all python-setuptools python-utidylib python-matplotlib python-levenshtein python-pygraphviz python-numpy tidy python-scipy python-imaging
+	sudo easy_install pytidylib
+	sudo pip install beautifulsoup
+
 
 EXECUÇÃO
-	Teste o scriptLattes com os seguintes exemplos de compilação na linha de comando:
+	Teste o scriptLattes com os seguintes dois exemplos (linha de comandos):
 
 	(*) EXEMPLO 01:
 	cd <nome_diretorio_scriptLattes>
 	python scriptLattes.py ./exemplo/teste-01.config
 
 	Nesse exemplo consideram-se todas as produções cujos anos de publicações
-	estão entre 2006 e 2012. Nenhum rótulo foi considerado para os membros. 
+	estão entre 2006 e 2014. Nenhum rótulo foi considerado para os membros. 
 	
 	Os IDs Lattes dos 3 membros está listada em:
 	./exemplo/teste-01.list
@@ -33,10 +43,9 @@ EXECUÇÃO
 	Nesse exemplo consideram-se todas as produções cadastradas nos CVs Lattes.
 	São considerados rótulos para os membros do grupo (professor, colaborador, aluno)
 	Adicionalmente também são apresentadas as informações de Qualis para os
-	artigos publicados (congressos e periodicos), e uma medida de
-	internacionalização.
+	artigos publicados (congressos e journals).
 
-	Os IDs Lattes dos 10 membros está listada em:
+	Os IDs Lattes dos membros está listada em:
 	./exemplo/teste-02.list
 
 	O resultado da execução estará disponível em:
@@ -52,6 +61,30 @@ URL DO PROJETO
 
 =========================================================================================
 LOG
+
+Dom Nov 21 17:30:00 BRT 2014
+-- Integração do ScriptLattesGUI -> interface gráfica e mudanças para permitir
+  que o ScriptLattes funcione no Windows
+
+Dom Set 21 13:42:30 BRT 2014
+-- Melhora nos procedimento de identificação de anos para os projetos de pesquisa.
+-- Melhora da função de geração das informações em formato XML.
+
+Sáb Ago  9 12:29:06 BRT 2014
+-- Melhora do procedimento para tratar publicações com DOI.
+
+Dom Jun 29 16:35:20 BRT 2014
+-- Melhora da identificação da editora na seção: Livros publicados.
+
+
+Seg Abr 21 22:05:40 BRT 2014
+-- Foram melhorados/corrigidos alguns procedimentos com a identificação dos nomes das
+   revistas.
+
+Seg Mar  3 08:42:28 BRT 2014
+-- A identificação de Qualis foi melhorada. Os ISSN para os artigos completos
+  em periódicos agora estão sendo identificados. Também foi modificado o parser
+  para identificar melhor o título da publicação e nome da revista.
 
 Dom Mar  2 18:31:39 BRT 2014
 -- A rede de coautoria armazenada em formato GDF (gephi). 
@@ -84,6 +117,7 @@ Sáb Fev 16 17:08:53 BRST 2013
 -- A identificação das partes constituintes de uma publicação foi melhorada
    para as publicações com grande número de coautores (mais do que 10).
 -- Os períodos para as orientações em andamento foram corrigidas.
+
 
 
 Sáb Jan 19 10:18:29 BRST 2013

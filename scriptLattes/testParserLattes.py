@@ -24,12 +24,14 @@
 
 
 # from HTMLParser import HTMLParser
-import re, sys, os, warnings
-import string
-from tidylib import tidy_document
+import re
+import sys
+import os
+import warnings
 from htmlentitydefs import name2codepoint
 from lxml import etree
 import time
+
 
 warnings.filterwarnings('ignore')
 

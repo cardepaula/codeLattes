@@ -23,9 +23,6 @@
 #
 
 
-from scriptLattes import *
-from geradorDePaginasWeb import *
-
 class PublicacaoEinternacionalizacao:
 	publicacao = None
 	ano = None
