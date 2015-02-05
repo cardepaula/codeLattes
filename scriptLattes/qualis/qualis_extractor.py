@@ -23,7 +23,7 @@ from HTMLParser import HTMLParser
 import datetime
 
 
-#converts a string to a integer if the string is a integer, else returns None
+# converts a string to a integer if the string is a integer, else returns None
 def str2int(string):
     if string == None:  return None
     try:
@@ -31,26 +31,28 @@ def str2int(string):
     except ValueError:
         return None
 
+
 def getvalue(attrs):
     for attr in attrs:
         if attr[0] == 'value':
             return attr[1]
     return None
 
+
 class qualis_extractor(object):
     #Constructor
-    def __init__(self,online):
-        self.online = online #extrair online ou offline ?
-        self.publicacao = {} #{'nome pub',[ ('Nome area','A1') ]}
-        self.issn = {} #{'issn','nome pub'}
+    def __init__(self, online):
+        self.online = online  #extrair online ou offline ?
+        self.publicacao = {}  #{'nome pub',[ ('Nome area','A1') ]}
+        self.issn = {}  #{'issn','nome pub'}
         self.areas = []
         self.areas_to_extract = []
         self.areas_last_update = {}
         self.dtnow = datetime.datetime.now()
         self.update_time = 15
         self.init_session()
-        
-                
+
+
     def parseContent(self, document):
         """
         Process a html page containing qualis data
@@ -65,78 +67,79 @@ class qualis_extractor(object):
         tree = etree.HTML(document.read())
 
         tableLines = tree.xpath("//table[@id='consultaPublicaClassificacaoForm:listaVeiculosIssn']/tbody/tr")
-        
+
         for tr in tableLines:
 
             line = []
             for td in tr:
                 line.append(HTMLParser().unescape(td.text.strip()))
 
-            issn_q, titulo_q, extrato_q, area_q, classif_q = line
-            
+            issn_q, titulo_q, estrato_q, area_q, classif_q = line
+
             if titulo_q == "":
                 continue
 
             qualis = None
             if issn_q != "":
                 qualis = self.issn.get(issn_q)
-            
+
             if qualis == None:
                 qualis = {}
-            
-            qualis[area_q] = extrato_q
-            
+
+            qualis[area_q] = estrato_q
+
             if issn_q != "":
                 self.issn[issn_q] = qualis
-            
+
             self.publicacao[titulo_q] = qualis
 
 
         #/html/body/div[3]/div[4]/form/table/tbody/tr[2]/td/table/tbody/tr/td/div[2]/div/div/table/tbody/tr/td[11]
         last_bts = tree.xpath("//table[@id='consultaPublicaClassificacaoForm:datascroller1_table']/tbody/tr/td")
         #print etree.tostring(last_bts)
-        
+
         # se encontrar um botao com onclick='page:last', entao ainda tem paginas
         if len(last_bts) > 0:
             onclick = last_bts[-1].get("onclick")
             if onclick != None and onclick.find('{\'page\': \'last\'}') != -1:
-                 return 1
+                return 1
 
         return 0
-    
+
     def getAreas(self, document):
         tree = etree.HTML(document.read())
         self.areas = []
         select = tree.xpath("//select[@id='consultaDocumentosAreaForm:somAreaAvaliacao']/option")
         for option in select:
             self.areas.append(str2int(option.get("value")), option.text.strip())
-        
+
     def init_session(self):
         """
         Sao necessarias tres requisicoes iniciais para que se chegue a pagina
         que exibe a avaliacao dos artigos.
         """
         urlBase = "http://qualis.capes.gov.br/webqualis/"
-        acessoInicial = requests.get(urlBase+'principal.seam')
+        acessoInicial = requests.get(urlBase + 'principal.seam')
         jid = acessoInicial.cookies['JSESSIONID']
-        print 'Iniciando sessão qualis...\n ID da Sessão: ',jid
+        print 'Iniciando sessão qualis...\n ID da Sessão: ', jid
         url1 = urlBase + "publico/pesquisaPublicaClassificacao.seam;jsessionid=" + jid + "?conversationPropagation=begin"
         req1 = urllib2.Request(url1)
         arq1 = urllib2.urlopen(req1)
-        
-        
+
         self.url2 = urlBase + "publico/pesquisaPublicaClassificacao.seam;jsessionid=" + jid
-        
+
         if not self.online:
-            req2 = urllib2.Request(self.url2, 'AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Aissn=&javax.faces.ViewState=j_id2&consultaPublicaClassificacaoForm%3Aj_id192=consultaPublicaClassificacaoForm%3Aj_id192')
+            req2 = urllib2.Request(self.url2,
+                                   'AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Aissn=&javax.faces.ViewState=j_id2&consultaPublicaClassificacaoForm%3Aj_id192=consultaPublicaClassificacaoForm%3Aj_id192')
             arq2 = urllib2.urlopen(req2)
             #get all the areas of qualis
             self.getAreas(arq2)
-            req3 = urllib2.Request(self.url2, 'consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3AsomAreaAvaliacao=0&consultaPublicaClassificacaoForm%3AsomEstrato=org.jboss.seam.ui.NoSelectionConverter.noSelectionValue&consultaPublicaClassificacaoForm%3AbtnPesquisarTituloPorArea=Pesquisar&javax.faces.ViewState=j_id2')
-            arq3 = urllib2.urlopen (req3)
-        
-    def parse_areas_file(self,afile):
-        f = open(afile,'r')
+            req3 = urllib2.Request(self.url2,
+                                   'consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3AsomAreaAvaliacao=0&consultaPublicaClassificacaoForm%3AsomEstrato=org.jboss.seam.ui.NoSelectionConverter.noSelectionValue&consultaPublicaClassificacaoForm%3AbtnPesquisarTituloPorArea=Pesquisar&javax.faces.ViewState=j_id2')
+            arq3 = urllib2.urlopen(req3)
+
+    def parse_areas_file(self, afile):
+        f = open(afile, 'r')
         lines = f.read()
         f.close()
         lines = lines.split('\n')
@@ -145,42 +148,45 @@ class qualis_extractor(object):
             val = line.split('#')[0]
             val = val.strip()
             if val != '' and val.isdigit():
-                self.areas_to_extract.append( int(val) )
-    
-    
-    def should_update_area(self,area):
+                self.areas_to_extract.append(int(val))
+
+    def should_update_area(self, area):
         lupdt = self.areas_last_update.get(area)
         if lupdt == None: return True
         dtbtween = self.dtnow - lupdt
         if dtbtween.days > self.update_time: return True
         return False
-        
-            
-    def extract_qualis(self): 
+
+    def extract_qualis(self):
         #extract all the areas
         for area in self.areas_to_extract:
             if not self.should_update_area(area):
                 print 'Qualis da area %s atualizado!' % (self.areas[area][1])
                 continue
-                
+
             self.areas_last_update[area] = self.dtnow
             scroller = 1
             more = 1
-            reqn = urllib2.Request(self.url2, 'consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3AsomAreaAvaliacao=' + str(area) + '&consultaPublicaClassificacaoForm%3AsomEstrato=org.jboss.seam.ui.NoSelectionConverter.noSelectionValue&consultaPublicaClassificacaoForm%3AbtnPesquisarTituloPorArea=Pesquisar&javax.faces.ViewState=j_id2')
-            
+            reqn = urllib2.Request(self.url2,
+                                   'consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3AsomAreaAvaliacao=' + str(
+                                       area) + '&consultaPublicaClassificacaoForm%3AsomEstrato=org.jboss.seam.ui.NoSelectionConverter.noSelectionValue&consultaPublicaClassificacaoForm%3AbtnPesquisarTituloPorArea=Pesquisar&javax.faces.ViewState=j_id2')
+
             arqn = urllib2.urlopen(reqn)
             data = []
             print 'Qualis da area %s desatualizado!' % (self.areas[area][1])
             print 'Extraindo qualis da area: %d - %s' % self.areas[area]
             while more == 1:
-                reqn = urllib2.Request(self.url2, 'AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3AsomAreaAvaliacao=' + str(area) + '&consultaPublicaClassificacaoForm%3AsomEstrato=org.jboss.seam.ui.NoSelectionConverter.noSelectionValue&javax.faces.ViewState=j_id3&ajaxSingle=consultaPublicaClassificacaoForm%3AscrollerArea&consultaPublicaClassificacaoForm%3AscrollerArea=' + str(scroller) + '&AJAX%3AEVENTS_COUNT=1&')
-                
+                reqn = urllib2.Request(self.url2,
+                                       'AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3AsomAreaAvaliacao=' + str(
+                                           area) + '&consultaPublicaClassificacaoForm%3AsomEstrato=org.jboss.seam.ui.NoSelectionConverter.noSelectionValue&javax.faces.ViewState=j_id3&ajaxSingle=consultaPublicaClassificacaoForm%3AscrollerArea&consultaPublicaClassificacaoForm%3AscrollerArea=' + str(
+                                           scroller) + '&AJAX%3AEVENTS_COUNT=1&')
+
                 #arqn = urllib2.urlopen (reqn)
                 ntries = 10
-                for i in range(0,ntries):
+                for i in range(0, ntries):
                     try:
                         arqn = urllib2.urlopen(reqn)
-                        break # success
+                        break  # success
                     except urllib2.URLError as err:
                         print "Error occurried. Trying again."
                         continue
@@ -191,14 +197,13 @@ class qualis_extractor(object):
                     if i == 10:
                         print "ja tentou 10 vezes!"
                         break
-            
+
                 more = self.parseContent(arqn)
                 scroller += 1
-            
-           
+
     def load_data(self):
         try:
-            f = open('data','r')
+            f = open('data', 'r')
             data = pickle.load(f)
             self.issn = data[0]
             self.publicacao = data[1]
@@ -208,52 +213,57 @@ class qualis_extractor(object):
             return True
         except:
             return False
-    
-    def save_data(self): 
-        f = open('data','w')
-        data = (self.issn,self.publicacao,self.areas,self.areas_last_update)
-        pickle.dump(data,f)
+
+    def save_data(self):
+        f = open('data', 'w')
+        data = (self.issn, self.publicacao, self.areas, self.areas_last_update)
+        pickle.dump(data, f)
         f.close()
-    
-    def get_area_by_name(self,name):
+
+    def get_area_by_name(self, name):
         for i in self.areas:
             if i[1].upper() == name.upper():
                 return i
         return None
-    
-    def get_area_by_cod(self,cod):
+
+    def get_area_by_cod(self, cod):
         for i in self.areas:
             if i[0] == cod:
                 return i
-    
-    
-    #get a qualis by issn        
-    def get_qualis_by_issn(self,issn):
+
+    def get_qualis_by_issn(self, issn):
+        # ISSN must be formatted like: XXXX-YYYY
+        if '-' not in issn:
+            issn = issn[:4] + '-' + issn[4:]
+
         if self.online:
             print 'Extraindo qualis online a partir do issn %s...' % (issn)
-            if self.issn.get(issn) != None:
+            if self.issn.get(issn) is not None:
                 return self.issn.get(issn)
-            req = urllib2.Request(self.url2,'consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Aissn='+issn+'&consultaPublicaClassificacaoForm%3AbtnPesquisarISSN=Pesquisar&javax.faces.ViewState=j_id2') 
-            for i in range(0,10):
+            req = urllib2.Request(self.url2,
+                                  'consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Aissn=' + issn + '&consultaPublicaClassificacaoForm%3AbtnPesquisarISSN=Pesquisar&javax.faces.ViewState=j_id2')
+            arqn = ""
+            for i in range(0, 10):
                 try:
                     arqn = urllib2.urlopen(req)
-                    break # success
+                    break  # success
                 except urllib2.URLError as err:
                     print "Error occurried. Trying again."
                     continue
-                    if i == 10:
-                        print "ja tentou 10 vezes!"
-                        break
-            
-            
+                # if i == 10:
+                #     print "ja tentou 10 vezes!"
+                #     break
+
             self.parseContent(arqn)
-                
-        print 'Extraindo qualis offline a partir do issn',issn,'...'
-        return self.issn.get(issn)
+            return self.issn.get(issn)
+        else:
+            print 'Extraindo qualis offline a partir do issn', issn, '...'
+            return self.issn.get(issn)
+
     #get a qualis by the name
-    def get_qualis_by_name(self,name):
+    def get_qualis_by_name(self, name):
         qualis = self.publicacoes.get(name)
-        
+
         '''if qualis != None: return qualis,1
         else:
             iqualis = -1
@@ -268,7 +278,7 @@ class qualis_extractor(object):
                 return self.publicacoes.get(pkeys[iqualis]),0        
         '''
         return None
-    
+
 
 """extractor = qualis_extractor(0)
 extractor.init_session()

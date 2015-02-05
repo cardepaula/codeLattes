@@ -133,9 +133,14 @@ class ArtigoEmPeriodico:
             if len(partes) == 2:
                 parametroNome = partes[0].strip()
                 parametroValor = partes[1].strip()
-                if parametroNome == "issn": self.issn = parametroValor
-                if parametroNome == "volume": self.volume = parametroValor
-                if parametroNome == "titulo": self.titulo = parametroValor
+                if parametroNome == "issn":
+                    self.issn = str(parametroValor)
+                    if len(self.issn) == 8:  # '-' not in self.issn
+                        self.issn = self.issn[:4] + '-' + self.issn[4:]
+                if parametroNome == "volume":
+                    self.volume = parametroValor
+                if parametroNome == "titulo":
+                    self.titulo = parametroValor
                 # if parametroNome=="nomePeriodico": self.revista = parametroValor
 
 
@@ -236,9 +241,9 @@ class ArtigoEmPeriodico:
             self.qualissimilar = ''
         s = "artigoEmPeriodico\t"
         if nomeCompleto=="": # tratamento grupal
-            s +=  str(self.ano) +"\t"+ self.doi +"\t"+ self.titulo +"\t"+ self.revista +"\t"+ self.autores +"\t"+ self.qualis +"\t"+ self.qualissimilar
+            s +=  str(self.ano) +"\t"+ self.doi +"\t"+ self.titulo +"\t"+ self.revista +"\t"+ self.autores +"\t"+ str(self.qualis) +"\t"+ str(self.qualissimilar)
         else: # tratamento individual
-            s += nomeCompleto +"\t"+ str(self.ano) +"\t" + self.doi +"\t"+ self.titulo +"\t"+ self.revista +"\t"+ self.autores +"\t"+ self.qualis +"\t"+ self.qualissimilar
+            s += nomeCompleto +"\t"+ str(self.ano) +"\t" + self.doi +"\t"+ self.titulo +"\t"+ self.revista +"\t"+ self.autores +"\t"+ str(self.qualis) +"\t"+ (self.qualissimilar)
         return s
 
 
