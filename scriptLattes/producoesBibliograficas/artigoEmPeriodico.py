@@ -207,7 +207,7 @@ class ArtigoEmPeriodico:
             s+= ' <a href="'+self.doi+'" target="_blank" style="PADDING-RIGHT:4px;"><img border=0 src="doi.png"></a>'
 
         s += menuHTMLdeBuscaPB(self.titulo)
-        s+= formataQualis(self.qualis, self.qualissimilar)
+        s += formata_qualis(self.qualis, self.qualissimilar)
         return s
 
 
@@ -240,6 +240,8 @@ class ArtigoEmPeriodico:
         if self.qualissimilar == None:
             self.qualissimilar = ''
         s = "artigoEmPeriodico\t"
+
+        # FIXME: self.qualis estava dando erro de conversão; remediado temporariamente usando str(); verificar se comportamento está correto
         if nomeCompleto=="": # tratamento grupal
             s +=  str(self.ano) +"\t"+ self.doi +"\t"+ self.titulo +"\t"+ self.revista +"\t"+ self.autores +"\t"+ str(self.qualis) +"\t"+ str(self.qualissimilar)
         else: # tratamento individual

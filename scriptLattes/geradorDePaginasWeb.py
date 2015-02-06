@@ -1014,7 +1014,7 @@ def menuHTMLdeBuscaPA(titulo):
          </font><br>'
     return s
 
-"""def formataQualis(qualis, qualissimilar):
+"""def formata_qualis(qualis, qualissimilar):
     s = ''
     if not qualis==None:
         if qualis=='':
@@ -1032,7 +1032,9 @@ def menuHTMLdeBuscaPA(titulo):
                 s += '<font color="#FF9933"><b>Qualis: ' + qualis + '</b></font> ('+qualissimilar+')'
     return s
     """
-def formataQualis(qualis, qualissimilar):
+
+
+def formata_qualis(qualis, qualissimilar):
     s = ''
 
     if qualis == None:
@@ -1040,9 +1042,9 @@ def formataQualis(qualis, qualissimilar):
     else:
         s += '<font color="#336600"><b>Qualis: </b></font> '
         if type(qualis) is str:
-            s+= '<font color="#ADD8E6"><b>SEM_AREA</b></font> - <b>'+qualis+'</b>&nbsp'
+            s += '<font class="area"><b>SEM_AREA</b></font> - <b>'+qualis+'</b>&nbsp'
         else:
-            for area,q in sorted(qualis.items(), key = lambda x: x[1]):
-                s+= '<font color="#ADD8E6"><b>'+area+'</b></font> - <b>'+q+'</b>&nbsp'
+            l = ['<font class="area"><b>'+area+'</b></font> - <b>'+q+'</b>' for area, q in sorted(qualis.items(), key = lambda x: x[1])]
+            s += '&nbsp|&nbsp'.join(l)
     return s
 

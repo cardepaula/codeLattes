@@ -117,16 +117,23 @@ class Qualis:
             # self.periodicos = self.carregarQualis(grupo.obterParametro('global-arquivo_qualis_de_periodicos'))
             # qualis extractor -> extrai qualis diretamente da busca online do qualis
             self.extrair_qualis_online = grupo.obterParametro('global-extrair_qualis_online')
+            # self.extrair_qualis_online = grupo.diretorioCache is not ''
             self.qextractor = qualis_extractor(self.extrair_qualis_online)
 
-            if self.extrair_qualis_online == 0:
+            arqareas = grupo.obterParametro('global-arquivo_areas_qualis')
+            self.qextractor.parse_areas_file(arqareas)
+
+            filename = 'qualis.dump'
+            if grupo.diretorioCache:
+                filename = grupo.diretorioCache + '/' + filename
+
+            if not self.extrair_qualis_online:
                 print "\n**************************************************\n"
-                self.qextractor.load_data()
-                arqareas = grupo.obterParametro('global-arquivo_areas_qualis')
-                self.qextractor.parse_areas_file(arqareas)
-                self.qextractor.extract_qualis()
+                self.qextractor.load_data(filename)
+                # self.qextractor.extract_qualis()
                 self.periodicos = self.qextractor.publicacao
-                self.qextractor.save_data()
+
+                self.qextractor.save_data(filename)
 
             self.congressos = carregarQualis(grupo.obterParametro('global-arquivo_qualis_de_congressos'))
 
@@ -135,19 +142,19 @@ class Qualis:
         tabelaDosAnos = [{}]
         tabelaDosTipos = {}
 
-        listaDeArtigos = membro.listaArtigoEmPeriodico
         self.inicializaTabelaDosAnos(tabelaDosAnos)
         inicializaTabelaDosTipos(tabelaDosTipos)
 
-        if len(listaDeArtigos) > 0:
-            for publicacao in listaDeArtigos:
-                ano = publicacao.ano
-                if publicacao.qualis is not None:
-                    tiposQualis = publicacao.qualis.values()
-                    for tipo in tiposQualis:
-                        valorAtual = self.getTiposPeloAno(ano, tabelaDosAnos)[tipo]
-                        self.setValorPeloAnoTipo(ano, tipo, valorAtual + 1, tabelaDosAnos)
+        if membro.listaArtigoEmPeriodico > 0:
+            for publicacao in membro.listaArtigoEmPeriodico:
+                if publicacao.qualis:
+                    for tipo in publicacao.qualis.values():
+                        valorAtual = self.getTiposPeloAno(publicacao.ano, tabelaDosAnos)[tipo]
+                        self.setValorPeloAnoTipo(publicacao.ano, tipo, valorAtual + 1, tabelaDosAnos)
                         tabelaDosTipos[tipo] += 1
+
+        membro.tabelaQualisDosAnos = tabelaDosAnos
+        membro.tabelaQualisDosTipos = tabelaDosTipos
 
         return [tabelaDosAnos, tabelaDosTipos]
 
@@ -235,12 +242,14 @@ class Qualis:
         for pub in membro.listaArtigoEmPeriodico:
             # qualis, similar = self.buscaQualis('P', pub.revista)
             # pub.qualis = qualis
-            if pub.issn != '' and self.qextractor.get_qualis_by_issn(pub.issn):
-                pub.qualis = self.qextractor.get_qualis_by_issn(pub.issn)
-            elif not self.extrair_qualis_online:
-                qualis, similar = self.buscaQualis('P', pub.revista)
+            qualis = self.qextractor.get_qualis_by_issn(pub.issn)
+            if pub.issn and qualis:
                 pub.qualis = qualis
-                pub.qualissimilar = similar
+            # FIXME: utilizaria o comportamento antigo (ler qualis de um CSV), mas nao funciona se nao a configuracao global-arquivo_qualis_de_periodicos nao for definida
+            # elif not self.extrair_qualis_online:
+            #     qualis, similar = self.buscaQualis('P', pub.revista)
+            #     pub.qualis = qualis
+            #     pub.qualissimilar = similar
             else:
                 pub.qualis = None
                 pub.qualissimilar = None

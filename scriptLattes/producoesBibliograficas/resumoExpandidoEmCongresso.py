@@ -152,7 +152,7 @@ class ResumoExpandidoEmCongresso:
             s+= '<a href="'+self.doi+'" target="_blank" style="PADDING-RIGHT:4px;"><img border=0 src="doi.png"></a>'
 
         s+= menuHTMLdeBuscaPB(self.titulo)
-        s+= formataQualis(self.qualis, self.qualissimilar)
+        # s+= formata_qualis(self.qualis, self.qualissimilar)
         return s
 
 
