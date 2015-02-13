@@ -486,7 +486,7 @@ class GeradorDePaginasWeb:
         sQualis = ""
 
         if self.grupo.obterParametro('global-identificar_publicacoes_com_qualis'):
-            if (not self.grupo.obterParametro('global-arquivo_qualis_de_periodicos')==''):
+            if (not self.grupo.obterParametro('global-arquivo_qualis_de_periodicos')==''):  # FIXME: nao está mais sendo usado agora que há qualis online
                 if prefixo == 'PB0':
                     sQualis = self.formatarTotaisQualis(self.grupo.qualis.qtdPB0)
             if (not self.grupo.obterParametro('global-arquivo_qualis_de_congressos')==''):
@@ -539,8 +539,8 @@ class GeradorDePaginasWeb:
                         }
 
                         chart = highchart()
-                        chart.settitle(u'Número total de produções/publicações')
-                        chart.setYtitle(u'Número de produções/publicações')
+                        chart.settitle(u'Publicações por ano')
+                        chart.setYtitle(u'Número de publicações')
                         chart.setXtitle(u'Ano')
                         chart.setcharttype(charttype.column)
                         chart['plotOptions'] = jshidediv
@@ -784,51 +784,48 @@ class GeradorDePaginasWeb:
 
             anoInicio = int(self.grupo.obterParametro('global-itens_desde_o_ano'))
             anoFim = int(self.grupo.obterParametro('global-itens_ate_o_ano'))
-            tabelaDosAnos = membro.tabelaQualisDosAnos
-            tabelaDosTipos = membro.tabelaQualisDosTipos
 
             tabAno = '<br><span style="font-size:14px;"><b>Qualis por ano:</b></span><br><br>'
             tabTipo = '<br><span style="font-size:14px;"><b>Qualis por tipo:</b></span><br><br>'
-            i = 0
 
-            for conteudo in tabelaDosAnos:
+            first = True
+            # FIXME: considerar as áreas
+            for ano in sorted(membro.tabelaQualisDosAnos.keys()):
+                # if(anoInicio+i > anoFim):
+                #     break
 
-                if(anoInicio+i > anoFim):
-                    break
-
-                display = "block"
-                if(i > 0):
+                if first:
+                    first = False
+                    display = "block"
+                else:
                     display = "none"
 
-                anoAtual = str(anoInicio+i)
+                anoAtual = str(ano)
                 esquerda = '<a class="ano_esquerda" rel="'+anoAtual+'" rev="'+str(elemento)+'" style="cursor:pointer; padding:2px; border:1px solid #C3FDB8;">«</a>'.decode("utf8")
                 direita = '<a class="ano_direita" rel="'+anoAtual+'" rev="'+str(elemento)+'" style="cursor:pointer; padding:2px; border:1px solid #C3FDB8;">»</a>'.decode("utf8")
                 tabAno += '<div id="ano_'+anoAtual+'_'+str(elemento)+'" style="display:'+display+'">'+esquerda+' <b> '+anoAtual+' </b> '+direita+'<br><br>'
                 chaves = ''
                 valores = ''
 
-                for chave, valor in conteudo.items():
+                for tipo, frequencia in membro.tabelaQualisDosAnos[ano].items():
+                    # FIXME: terminar de refatorar
+                    if tipo == "Qualis nao identificado":
+                        tipo = '<span title="Qualis nao identificado">QNI</span>'
 
-                    if(chave == "Qualis nao identificado"):
-                        chave = '<span title="Qualis nao identificado">QNI</span>'
-
-                    chaves += '<div style="float:left; width:70px; border:1px solid #000; margin-left:-1px; margin-top:-1px; background:#CCC; padding:4px 6px;"><b>'+chave+'</b></div>'
-                    valores += '<div style="float:left; width:70px; border:1px solid #000; margin-left:-1px; margin-top:-1px; background:#EAEAEA; padding:4px 6px;">'+str(valor)+'</div>'
-
+                    chaves += '<div style="float:left; width:70px; border:1px solid #000; margin-left:-1px; margin-top:-1px; background:#CCC; padding:4px 6px;"><b>'+tipo+'</b></div>'
+                    valores += '<div style="float:left; width:70px; border:1px solid #000; margin-left:-1px; margin-top:-1px; background:#EAEAEA; padding:4px 6px;">'+str(frequencia)+'</div>'
 
                 tabAno += '<div>'+chaves+'</div>'
                 tabAno += '<div style="clear:both"></div>'
                 tabAno += '<div>'+valores+'</div>'
                 tabAno += '<div style="clear:both"></div>'
                 tabAno += "<br><br></div>"
-                i+=1
-
 
             tabTipo += '<div>'
             chaves = ''
             valores = ''
 
-            for chave, valor in tabelaDosTipos.items():
+            for chave, valor in membro.tabelaQualisDosTipos.items():
 
                     if(chave == "Qualis nao identificado"):
                         chave = "QNI"
@@ -1037,7 +1034,7 @@ def menuHTMLdeBuscaPA(titulo):
 def formata_qualis(qualis, qualissimilar):
     s = ''
 
-    if qualis == None:
+    if not qualis:
         s += '<font color="#8B0000"><b>Qualis: N&atilde;o identificado</b></font>'
     else:
         s += '<font color="#336600"><b>Qualis: </b></font> '

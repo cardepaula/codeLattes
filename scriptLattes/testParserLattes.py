@@ -1241,7 +1241,7 @@ if __name__ == "__main__":
 					'Cookie': 'style=standard; __utma=140185953.294397416.1313390179.1313390179.1317145115.2; __utmz=140185953.1317145115.2.2.utmccn=(referral)|utmcsr=emailinstitucional.cnpq.br|utmcct=/ei/emailInstitucional.do|utmcmd=referral; JSESSIONID=1B98ABF9642E01597AABA0F7A8807FD1.node2',
 					}
 	
-					print "Baixando CV :"+urlLattes
+					print "Baixando CV: "+urlLattes
 
 					req = urllib2.Request(urlLattes, txdata, txheaders) # Young folks by P,B&J!
 					arquivoH = urllib2.urlopen(req) 

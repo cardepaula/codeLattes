@@ -134,12 +134,16 @@ class Grupo:
 
             linhaPart = linha.partition("#")  # eliminamos os comentários
             linhaDiv = linhaPart[0].split(",")
+            if ';' in linhaPart[0] and len(linhaDiv) < 2:
+                linhaDiv = linhaPart[0].split(";")
+            if '\t' in linhaPart[0] and len(linhaDiv) < 2:
+                linhaDiv = linhaPart[0].split("\t")
 
-            if not linhaDiv[0].strip() == '':
-                identificador = linhaDiv[0].strip() if len(linhaDiv) > 0  else ''
-                nome = linhaDiv[1].strip() if len(linhaDiv) > 1  else ''
-                periodo = linhaDiv[2].strip() if len(linhaDiv) > 2  else ''
-                rotulo = linhaDiv[3].strip() if len(linhaDiv) > 3 and not linhaDiv[3].strip() == '' else '[Sem rotulo]'
+            if linhaDiv[0].strip():
+                identificador = linhaDiv[0].strip() if len(linhaDiv) > 0 else ''
+                nome = linhaDiv[1].strip() if len(linhaDiv) > 1 else ''
+                periodo = linhaDiv[2].strip() if len(linhaDiv) > 2 else ''
+                rotulo = linhaDiv[3].strip() if len(linhaDiv) > 3 and linhaDiv[3].strip() else '[Sem rotulo]'
                 # rotulo        = rotulo.capitalize()
 
                 # atribuicao dos valores iniciais para cada membro
@@ -158,8 +162,10 @@ class Grupo:
         self.listaDeRotulos.sort()
         self.listaDeRotulosCores = [''] * len(self.listaDeRotulos)
 
-        self.qualis = qualis.Qualis(self)  # carregamos Qualis a partir de arquivos definidos no arquivo de configuração
-
+        if self.obterParametro('global-identificar_publicacoes_com_qualis'):
+            qualis_de_congressos = self.obterParametro('global-arquivo_qualis_de_congressos')
+            areas_qualis = self.obterParametro('global-arquivo_areas_qualis')
+            self.qualis = qualis.Qualis(data_file_path = 'qualis.data', arquivo_qualis_de_congressos = qualis_de_congressos, arquivo_areas_qualis = areas_qualis)  # carregamos Qualis a partir de arquivos definidos no arquivo de configuração
 
     def gerarXMLdeGrupo(self):
         if self.obterParametro('global-salvar_informacoes_em_formato_xml'):
@@ -388,17 +394,15 @@ class Grupo:
         if self.obterParametro('global-identificar_publicacoes_com_qualis'):
             print "\n[IDENTIFICANDO QUALIS EM PUBLICAÇÕES]"
             for membro in self.listaDeMembros:
-                self.qualis.analisarPublicacoes(membro, self)  # Qualis - Adiciona Qualis as publicacoes dos membros
-            if self.diretorioCache:
-                filename = 'qualis.dump'
-                self.qualis.qextractor.save_data(self.diretorioCache + '/' + filename)
-            self.qualis.calcularTotaisDosQualis(self)
+                self.qualis.analisar_publicacoes(membro)  # Qualis - Adiciona Qualis as publicacoes dos membros
 
-            self.separarQualisPorAno()
+            # if self.diretorioCache:
+            filename = 'qualis.data'
+            # self.qualis.qextractor.save_data(self.diretorioCache + '/' + filename)
+            self.qualis.qextractor.save_data(filename)
 
-    def separarQualisPorAno(self):
-        for membro in self.listaDeMembros:
-            self.qualis.qualisPorAno(membro)
+            self.qualis.calcular_totais_dos_qualis(self.compilador.listaCompletaArtigoEmPeriodico, self.compilador.listaCompletaTrabalhoCompletoEmCongresso,
+                        self.compilador.listaCompletaResumoExpandidoEmCongresso)
 
     def salvarListaTXT(self, lista, nomeArquivo):
         dir = self.obterParametro('global-diretorio_de_saida')

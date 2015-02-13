@@ -161,25 +161,23 @@ class Membro:
         self.listaPeriodo = []
         periodoDoMembro = re.sub('\s+', '', periodoDoMembro)
 
-        if periodoDoMembro=='': # se nao especificado o periodo, entao aceitamos todos os items do CV Lattes
-            self.listaPeriodo = [[0,10000]]
+        if not periodoDoMembro:  # se nao especificado o periodo, entao aceitamos todos os items do CV Lattes
+            self.listaPeriodo = [[0, 10000]]
         else:
             lista = periodoDoMembro.split("&")
-            for i in range(0,len(lista)):
-                ano = lista[i].partition("-")
-                ano1 = ano[0]
-                ano2 = ano[2]
+            for periodo in lista:
+                ano1, _, ano2 = periodo.partition("-")
 
-                if ano1.lower()=='hoje':
-                    ano1=str(datetime.datetime.now().year)
-                if ano2.lower()=='hoje' or ano2=='':
-                    ano2=str(datetime.datetime.now().year)
+                if ano1.lower() == 'hoje':
+                    ano1 = str(datetime.datetime.now().year)
+                if ano2.lower() == 'hoje' or ano2 == '':
+                    ano2 = str(datetime.datetime.now().year)
 
                 if ano1.isdigit() and ano2.isdigit():
                     self.listaPeriodo.append([int(ano1), int(ano2)])
                 else:
-                    print "\n[AVISO IMPORTANTE] Periodo nao válido: "+lista[i]+". (periodo desconsiderado na lista)"
-                    print "[AVISO IMPORTANTE] CV Lattes: "+self.idLattes+". Membro: "+self.nomeInicial.encode('utf8')+"\n"
+                    print("\n[AVISO IMPORTANTE] Periodo nao válido: {}. (periodo desconsiderado na lista)".format(periodo))
+                    print("[AVISO IMPORTANTE] CV Lattes: {}. Membro: {}\n".format(self.idLattes, self.nomeInicial.encode('utf8')))
 
 
     def carregarDadosCVLattes(self):
@@ -228,7 +226,7 @@ class Membro:
                         'Cookie': 'style=standard; __utma=140185953.294397416.1313390179.1313390179.1317145115.2; __utmz=140185953.1317145115.2.2.utmccn=(referral)|utmcsr=emailinstitucional.cnpq.br|utmcct=/ei/emailInstitucional.do|utmcmd=referral; JSESSIONID=1B98ABF9642E01597AABA0F7A8807FD1.node2',
                         }
 
-                        print "Baixando CV :"+self.url
+                        print("Baixando CV: {}".format(self.url))
 
                         req = urllib2.Request(self.url, txdata, txheaders) # Young folks by P,B&J!
                         arquivoH = urllib2.urlopen(req)
@@ -391,13 +389,16 @@ class Membro:
 
 
     def filtrarItems(self, lista):
-        for i  in range(0, len(lista)):
-            if not self.estaDentroDoPeriodo( lista[i] ):
-                lista[i] = None
-        lista = [l for l in lista if l is not None] # Eliminamos os elementos' None'
+        return filter(self.estaDentroDoPeriodo, lista)
 
-        # ORDENAR A LISTA POR ANO? QUE TAL? rpta. Nao necessário!
-        return lista
+        # Not pythonic
+        # for i in range(0, len(lista)):
+        #     if not self.estaDentroDoPeriodo(lista[i]):
+        #         lista[i] = None
+        # lista = [l for l in lista if l is not None] # Eliminamos os elementos' None'
+        #
+        # # ORDENAR A LISTA POR ANO? QUE TAL? rpta. Nao necessário!
+        # return lista
 
 
     def estaDentroDoPeriodo(self, objeto):

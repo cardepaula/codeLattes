@@ -14,6 +14,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+import codecs
 
 import urllib2
 import requests
@@ -149,15 +150,14 @@ class qualis_extractor(object):
     def parse_areas_file(self, afile):
         if not afile:
             return False
-        f = open(afile, 'r')
+        f = codecs.open(afile, 'r', 'utf-8')
         lines = f.read()
         f.close()
         lines = lines.split('\n')
         areas = []
         for line in lines:
-            val = line.split('#')[0]
+            val = line.partition('#')[0]
             val = val.strip()
-            # if val != '' and val.isdigit():
             if val:
                 self.areas_to_extract.append(val.upper())
         return True
@@ -217,7 +217,7 @@ class qualis_extractor(object):
 
     def load_data(self, filename='data'):
         try:
-            f = open('%s' % filename, 'r')
+            f = open(filename, 'r')
             data = pickle.load(f)
             self.issn = data[0]
             self.publicacao = data[1]
@@ -300,9 +300,13 @@ class qualis_extractor(object):
 
         qualis = {}
 
-        for area in self.areas_to_extract:
-            if self.issn[issn].has_key(area):
-                qualis[area] = self.issn[issn][area]
+        if self.areas_to_extract:
+            for area in self.areas_to_extract:
+                if self.issn[issn].has_key(area):
+                    qualis[area] = self.issn[issn][area]
+        else:  # get all areas
+            for area, estrato in self.issn[issn].items():
+                qualis[area] = estrato
 
         return qualis
 

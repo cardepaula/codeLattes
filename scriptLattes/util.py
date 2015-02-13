@@ -59,13 +59,18 @@ def buscarArquivo(filepath, arquivoConfiguracao=None):
 
 def copiarArquivos(dir):
     base = ABSBASE
-    shutil.copy2(base + 'css' + SEP + 'scriptLattes.css', dir)
-    shutil.copy2(base + 'imagens' + SEP + 'lattesPoint0.png', dir)
-    shutil.copy2(base + 'imagens' + SEP + 'lattesPoint1.png', dir)
-    shutil.copy2(base + 'imagens' + SEP + 'lattesPoint2.png', dir)
-    shutil.copy2(base + 'imagens' + SEP + 'lattesPoint3.png', dir)
-    shutil.copy2(base + 'imagens' + SEP + 'lattesPoint_shadow.png', dir)
-    shutil.copy2(base + 'imagens' + SEP + 'doi.png', dir)
+    shutil.copy2(os.path.join(base, 'css', 'scriptLattes.css'), dir)
+    shutil.copy2(os.path.join(base, 'imagens', 'lattesPoint0.png'), dir)
+    shutil.copy2(os.path.join(base, 'imagens', 'lattesPoint1.png'), dir)
+    shutil.copy2(os.path.join(base, 'imagens', 'lattesPoint2.png'), dir)
+    shutil.copy2(os.path.join(base, 'imagens', 'lattesPoint3.png'), dir)
+    shutil.copy2(os.path.join(base, 'imagens', 'lattesPoint_shadow.png'), dir)
+    shutil.copy2(os.path.join(base, 'imagens', 'doi.png'), dir)
+
+    shutil.copy2(os.path.join(base, 'js', 'jquery.min.js'), dir)
+    shutil.copy2(os.path.join(base, 'js', 'highcharts.js'), dir)
+    shutil.copy2(os.path.join(base, 'js', 'exporting.js'), dir)
+
     print "Arquivos salvos em: >>'%s'<<" % os.path.abspath(dir)
 
 
