@@ -21,6 +21,7 @@
 #  junto com este programa, se não, escreva para a Fundação do Software
 #  Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
+import logging
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -35,6 +36,11 @@ sys.stdout = OutputStream(sys.stdout, sys.stdout.encoding)
 sys.stderr = OutputStream(sys.stderr, sys.stdout.encoding)
 
 if __name__ == "__main__":
+    logger = logging.getLogger('scriptLattes')
+    logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s')
+    logging.root.setLevel(level=logging.INFO)
+    logger.info("Executando '{}'".format(' '.join(sys.argv)))
+
     arquivoConfiguracao = sys.argv[1]
     # os.chdir( os.path.abspath(os.path.join(arquivoConfiguracao, os.pardir)))
     novoGrupo = Grupo(arquivoConfiguracao)

@@ -29,10 +29,6 @@ from scriptLattes.util import compararCadeias, buscarArquivo
 from qualis_extractor import *
 
 
-# def parar():
-#     sys.stdin.read(1)
-
-
 def padronizar_nome(nome):
     nome = nome.replace(u"\u00A0", " ")
     nome = nome.replace(u"\u2010", " ")
@@ -187,7 +183,8 @@ class Qualis:
             #     return self.congressos.get(chaves[indice]), chaves[indice]  # Retorna Qualis de nome similar
             # return 'Qualis nao identificado', ''
 
-    def totais_dos_qualis_por_tipo(self, lista_completa):
+    @staticmethod
+    def totais_dos_qualis_por_tipo(lista_completa):
         qtd = defaultdict(int)
         for ano, publicacoes in lista_completa.items():
             for publicacao in publicacoes:
@@ -195,7 +192,8 @@ class Qualis:
         return qtd
 
     # FIXME: não jogar a área fora; precisa para o gerador de páginas
-    def qualis_por_ano(self, publicacoes):
+    @staticmethod
+    def qualis_por_ano(publicacoes):
         tabela_ano_tipo = defaultdict(lambda: defaultdict(int))  # dict[ano][tipo] = 0
         tabela_tipo = defaultdict(int)  # dict[tipo] = 0
 

@@ -21,15 +21,19 @@
 #  junto com este programa, se não, escreva para a Fundação do Software
 #  Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
-
+from collections import defaultdict
 
 import datetime
 import re
 import unicodedata
+from IPython.core import logger
 
 from charts.graficoDeInternacionalizacao import *
-from highcharts import * # highcharts
+from highcharts import *  # highcharts
 
+import logging
+
+logger = logging.getLogger('scriptLattes')
 
 class GeradorDePaginasWeb:
     grupo = None
@@ -494,24 +498,6 @@ class GeradorDePaginasWeb:
         for i in range(0, len(lista), tamanho):
             yield lista[i:i+tamanho]
 
-    def gerar_grafico_de_producoes(self, listaCompleta):
-        cmdhs = """function(event){
-                    dv = document.getElementById("dv-year-"+this.name);
-                    dv.style.display = '%s';
-                }"""
-        jshidediv = {'series': {
-            'events': {
-                'show': jscmd(cmdhs % ('block')),
-                'hide': jscmd(cmdhs % ('none'))
-            }}}
-        chart = highchart(type=chart_type.column)
-        chart.settitle(u'Publicações por ano')
-        chart.setYtitle(u'Número de publicações')
-        chart.setXtitle(u'Ano')
-        chart['plotOptions'] = jshidediv
-        chart.listaCompleta(listaCompleta)
-        return chart.html()
-
     def template_pagina_de_producoes(self):
         st = u'''
                 {top}
@@ -533,6 +519,82 @@ class GeradorDePaginasWeb:
             '''
         return s
 
+    def gerar_grafico_de_producoes(self, listaCompleta, titulo):
+
+        chart = highchart(type=chart_type.column)
+        chart.set_y_title(u'Frequência')
+        chart.set_x_title(u'Ano')
+        # chart.set_x_categories(sorted(listaCompleta.keys()))
+        # chart['xAxis']['type'] = 'categories'
+
+        categories = []
+        areas_map = {None: 0}
+        estrato_area_ano_freq = defaultdict(lambda: defaultdict(lambda: defaultdict(int)))
+        for ano, publicacoes in sorted(listaCompleta.items()):
+            categories.append(ano)
+            for pub in publicacoes:
+                try:
+                    if not pub.qualis:
+                        logger.debug("qualis is None")
+                        estrato_area_ano_freq[None][None][ano] += 1  # sem qualis
+                    else:
+                        if type(pub.qualis) is str:  # sem area
+                            logger.debug(u"publicação com qualis string (sem área): '{}'".format(pub.qualis))
+                        else:
+                            for area, estrato in sorted(pub.qualis.items()):  # FIXME: jogando area fora por enquanto
+                                estrato_area_ano_freq[estrato][area][ano] += 1
+                                if area not in areas_map:
+                                    areas_map[area] = len(areas_map)
+                except AttributeError:
+                    logger.debug(u"publicação sem atributo qualis")
+                    estrato_area_ano_freq[None][None][ano] += 1  # producao que nao tem qualis
+
+        series = []
+        if not estrato_area_ano_freq.keys():  # produções vazias
+            logger.debug("produções vazias")
+        elif len(estrato_area_ano_freq.keys()) == 1 and None in estrato_area_ano_freq.keys():  # gráfico normal sem qualis
+            chart.settitle(titulo.decode('utf8'))
+            chart['plotOptions']['column']['stacking'] = None
+            # chart['legend']['title'] = {'text': 'Ano'}
+            chart['legend']['enabled'] = jscmd('false')
+
+            freq = [estrato_area_ano_freq[None][None][ano] for ano in categories]
+            series.append({'name': u'Total', 'data': freq})
+            # for ano, pub in sorted(listaCompleta.items()):
+            #     series.append({'name': ano, 'data': [len(pub)]}) #, 'y': [len(pub)]})
+        else:  # temos informações sobre qualis
+            chart.settitle(u'Publicações por ano agrupadas por área e estrato Qualis')
+            chart['plotOptions']['column']['stacking'] = 'normal'
+            chart['legend']['title'] = {'text': 'Estrato Qualis'}
+            chart['legend']['enabled'] = jscmd('true')
+            chart['yAxis']['stackLabels']['rotation'] = 90
+            chart['yAxis']['stackLabels']['textAlign'] = 'right'
+
+            added_stacks = []
+            for estrato, area_ano_freq in sorted(estrato_area_ano_freq.items()):
+                if not estrato:
+                    estrato = 'Sem Qualis'
+                for area, ano_freq in area_ano_freq.items():
+                    freq = [ano_freq[ano] for ano in categories]
+                    if not area:
+                        area = u'Sem área'
+                    # area_id = areas_map[area]
+                    # area = area.encode('latin1')  # XXX: highcharts não aceita nome da stack em unicode
+                    one_serie = {'name': estrato, 'data': freq, 'stack': area}
+                    if estrato not in added_stacks:
+                        one_serie['color'] = jscmd('Highcharts.getOptions().colors[{}]'.format(len(added_stacks)))
+                        added_stacks.append(estrato)
+                        one_serie['id'] = estrato
+                    else:
+                        one_serie['color'] = jscmd('Highcharts.getOptions().colors[{}]'.format(added_stacks.index(estrato)))
+                        one_serie['linkedTo'] = estrato
+                    series.append(one_serie)
+
+        chart.set_x_categories(categories)
+        chart.set_series(series)
+
+        return chart.html()
+
     def gerar_pagina_de_producoes(self, lista_completa, titulo_pagina, prefixo, ris=False):
         totais_qualis = ""
         if self.grupo.obterParametro('global-identificar_publicacoes_com_qualis'):
@@ -552,7 +614,7 @@ class GeradorDePaginasWeb:
             max_elementos = int(self.grupo.obterParametro('global-itens_por_pagina'))
             total_paginas = int(math.ceil(total_producoes/(max_elementos*1.0))) # dividimos os relatórios em grupos (e.g 1000 items)
 
-            grafico = self.gerar_grafico_de_producoes(lista_completa)  # FIXME: é o mesmo gráfico em todas as páginas
+            grafico = self.gerar_grafico_de_producoes(lista_completa, titulo_pagina)  # FIXME: é o mesmo gráfico em todas as páginas
 
             anos_indices_publicacoes = self.arranjar_publicacoes(lista_completa)
             itens_por_pagina = self.chunks(anos_indices_publicacoes, max_elementos)
