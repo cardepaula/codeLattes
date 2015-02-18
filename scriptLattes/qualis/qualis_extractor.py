@@ -41,7 +41,7 @@ def getvalue(attrs):
 
 
 class qualis_extractor(object):
-    #Constructor
+    # Constructor
     def __init__(self, online):
         self.online = online  #extrair online ou offline ?
         self.publicacao = {}  #{'nome pub',[ ('Nome area','A1') ]}
@@ -54,7 +54,7 @@ class qualis_extractor(object):
         self.init_session()
 
 
-    def parseContent(self, document, issn = {}, titulos = {}):
+    def parseContent(self, document, issn={}, titulos={}):
         """
         Process a html page containing qualis data
         Input parameters:
@@ -129,15 +129,15 @@ class qualis_extractor(object):
             req2 = urllib2.Request(self.url2,
                                    # 'AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Aissn=&javax.faces.ViewState=j_id2&consultaPublicaClassificacaoForm%3Aj_id192=consultaPublicaClassificacaoForm%3Aj_id192')
                                    'AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Aissn=&javax.faces.ViewState=j_id2')
-                                     # 'AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Aissn=&javax.faces.ViewState=j_id4&consultaPublicaClassificacaoForm%3Aj_id195=consultaPublicaClassificacaoForm%3Aj_id195')
-                                   # "AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm"%"3Aissn=&javax.faces.ViewState=j_id6&consultaPublicaClassificacaoForm"%"3Aj_id195=consultaPublicaClassificacaoForm"%"3Aj_id195&"
+            # 'AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Aissn=&javax.faces.ViewState=j_id4&consultaPublicaClassificacaoForm%3Aj_id195=consultaPublicaClassificacaoForm%3Aj_id195')
+            # "AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm"%"3Aissn=&javax.faces.ViewState=j_id6&consultaPublicaClassificacaoForm"%"3Aj_id195=consultaPublicaClassificacaoForm"%"3Aj_id195&"
             arq2 = urllib2.urlopen(req2)
             # get all qualis areas
             document = arq2.read()
             self.get_areas(document)
             req3 = urllib2.Request(self.url2,
                                    'consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3AsomAreaAvaliacao=0&consultaPublicaClassificacaoForm%3AsomEstrato=org.jboss.seam.ui.NoSelectionConverter.noSelectionValue&consultaPublicaClassificacaoForm%3AbtnPesquisarTituloPorArea=Pesquisar&javax.faces.ViewState=j_id2')
-                                   # 'consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3AsomAreaAvaliacao=23&consultaPublicaClassificacaoForm%3AsomEstrato=org.jboss.seam.ui.NoSelectionConverter.noSelectionValue&consultaPublicaClassificacaoForm%3AbtnPesquisarTituloPorArea=Pesquisar&javax.faces.ViewState=j_id4')
+            # 'consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3AsomAreaAvaliacao=23&consultaPublicaClassificacaoForm%3AsomEstrato=org.jboss.seam.ui.NoSelectionConverter.noSelectionValue&consultaPublicaClassificacaoForm%3AbtnPesquisarTituloPorArea=Pesquisar&javax.faces.ViewState=j_id4')
             arq3 = urllib2.urlopen(req3)
             a3 = arq3.read()
 
@@ -147,6 +147,7 @@ class qualis_extractor(object):
     Nome da area 2
     ...
     '''
+
     def parse_areas_file(self, afile):
         if not afile:
             return False
@@ -248,6 +249,7 @@ class qualis_extractor(object):
     '''
     Retorna Qualis do respectivo ISSN. Restringe as areas se elas tiverem sido especificadas (ver parse_areas_file).
     '''
+
     def get_qualis_by_issn(self, issn):
         # ISSN must be formatted like: XXXX-YYYY
         # if '-' not in issn:
@@ -273,9 +275,9 @@ class qualis_extractor(object):
             scroller = 1
             while more == 1:
                 req = urllib2.Request(self.url2,
-                                       'AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Aissn=' + str(
-                                           issn) + '&javax.faces.ViewState=j_id3&ajaxSingle=consultaPublicaClassificacaoForm%3Adatascroller1&consultaPublicaClassificacaoForm%3Adatascroller1=' + str(
-                                           scroller) + '&AJAX%3AEVENTS_COUNT=1&')
+                                      'AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Aissn=' + str(
+                                          issn) + '&javax.faces.ViewState=j_id3&ajaxSingle=consultaPublicaClassificacaoForm%3Adatascroller1&consultaPublicaClassificacaoForm%3Adatascroller1=' + str(
+                                          scroller) + '&AJAX%3AEVENTS_COUNT=1&')
                 ntries = 10
                 for i in range(0, ntries):
                     try:
@@ -302,7 +304,7 @@ class qualis_extractor(object):
 
         if self.areas_to_extract:
             for area in self.areas_to_extract:
-                if self.issn[issn].has_key(area):
+                if area in self.issn[issn].keys():
                     qualis[area] = self.issn[issn][area]
         else:  # get all areas
             for area, estrato in self.issn[issn].items():

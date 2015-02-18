@@ -116,4 +116,5 @@ def copiarArquivos(dir):
     shutil.copy2(sys.path[0]+'/imagens/doi.png', dir)
     shutil.copy2(sys.path[0]+'/js/highcharts.js', dir)
     shutil.copy2(sys.path[0]+'/js/exporting.js', dir)
+    shutil.copy2(sys.path[0]+'/js/drilldown.js', dir)
     shutil.copy2(sys.path[0]+'/js/jquery.min.js', dir)

@@ -503,7 +503,7 @@ class GeradorDePaginasWeb:
                 {top}
                 {grafico}
                 <h3>{titulo}</h3> <br>
-                    <div id="container" style="min-width: 310px; max-width: 800px; height: 400px; margin: 0"></div>
+                    <div id="container" style="min-width: 310px; max-width: 1920px; height: {height}; margin: 0"></div>
                     Número total de itens: {numero_itens}<br>
                     {totais_qualis}
                     {indice_paginas}
@@ -541,7 +541,7 @@ class GeradorDePaginasWeb:
                         if type(pub.qualis) is str:  # sem area
                             logger.debug(u"publicação com qualis string (sem área): '{}'".format(pub.qualis))
                         else:
-                            for area, estrato in sorted(pub.qualis.items()):  # FIXME: jogando area fora por enquanto
+                            for area, estrato in sorted(pub.qualis.items()):
                                 estrato_area_ano_freq[estrato][area][ano] += 1
                                 if area not in areas_map:
                                     areas_map[area] = len(areas_map)
@@ -555,45 +555,55 @@ class GeradorDePaginasWeb:
         elif len(estrato_area_ano_freq.keys()) == 1 and None in estrato_area_ano_freq.keys():  # gráfico normal sem qualis
             chart.settitle(titulo.decode('utf8'))
             chart['plotOptions']['column']['stacking'] = None
+            chart['chart']['height'] = 400
             # chart['legend']['title'] = {'text': 'Ano'}
             chart['legend']['enabled'] = jscmd('false')
+            chart['xAxis']['type'] = 'category'
 
-            freq = [estrato_area_ano_freq[None][None][ano] for ano in categories]
-            series.append({'name': u'Total', 'data': freq})
+            # freq = [estrato_area_ano_freq[None][None][ano] for ano in categories]
+            # series.append({'name': u'Total', 'data': freq})
+            # chart.set_x_categories(categories)
+
+            data = []
+            for ano in categories:
+                freq = estrato_area_ano_freq[None][None][ano]
+                data.append([ano, freq])
+            series.append({'name': u'Total', 'data': data})
+
             # for ano, pub in sorted(listaCompleta.items()):
             #     series.append({'name': ano, 'data': [len(pub)]}) #, 'y': [len(pub)]})
         else:  # temos informações sobre qualis
             chart.settitle(u'Publicações por ano agrupadas por área e estrato Qualis')
-            chart['plotOptions']['column']['stacking'] = 'normal'
+            chart['chart']['type'] = 'bar'
+            chart['chart']['height'] = 1080
+            # chart['plotOptions']['column']['stacking'] = 'normal'
+            chart['plotOptions']['bar']['stacking'] = 'normal'
             chart['legend']['title'] = {'text': 'Estrato Qualis'}
             chart['legend']['enabled'] = jscmd('true')
-            chart['yAxis']['stackLabels']['rotation'] = 90
-            chart['yAxis']['stackLabels']['textAlign'] = 'right'
+            chart['xAxis']['type'] = 'category'
+            # chart['yAxis']['stackLabels']['rotation'] = 90
+            # chart['yAxis']['stackLabels']['textAlign'] = 'right'
 
-            added_stacks = []
+            drilldown_series = []
             for estrato, area_ano_freq in sorted(estrato_area_ano_freq.items()):
                 if not estrato:
                     estrato = 'Sem Qualis'
-                for area, ano_freq in area_ano_freq.items():
+                data = []
+                # for area, ano_freq in area_ano_freq.items():
+                for area in sorted(areas_map.keys()):
+                    ano_freq = area_ano_freq[area]
                     freq = [ano_freq[ano] for ano in categories]
                     if not area:
                         area = u'Sem área'
-                    # area_id = areas_map[area]
-                    # area = area.encode('latin1')  # XXX: highcharts não aceita nome da stack em unicode
-                    one_serie = {'name': estrato, 'data': freq, 'stack': area}
-                    if estrato not in added_stacks:
-                        one_serie['color'] = jscmd('Highcharts.getOptions().colors[{}]'.format(len(added_stacks)))
-                        added_stacks.append(estrato)
-                        one_serie['id'] = estrato
-                    else:
-                        one_serie['color'] = jscmd('Highcharts.getOptions().colors[{}]'.format(added_stacks.index(estrato)))
-                        one_serie['linkedTo'] = estrato
-                    series.append(one_serie)
+                    data.append({'name': area, 'y': sum(freq), 'drilldown': area+estrato})
 
-        chart.set_x_categories(categories)
+                    drilldown_series.append({'id': area+estrato, 'name': estrato, 'data': [[ano, ano_freq[ano]] for ano in categories]})
+                one_serie = {'name': estrato, 'data': data}#, 'stack': area}
+                series.append(one_serie)
+            chart['drilldown'] = {'series': drilldown_series}
         chart.set_series(series)
 
-        return chart.html()
+        return chart
 
     def gerar_pagina_de_producoes(self, lista_completa, titulo_pagina, prefixo, ris=False):
         totais_qualis = ""
@@ -636,7 +646,7 @@ class GeradorDePaginasWeb:
                 producoes_html += '</table></div>'
 
                 pagina_html = self.template_pagina_de_producoes()
-                pagina_html = pagina_html.format(top=self.paginaTop(), bottom=self.paginaBottom(), grafico=grafico,
+                pagina_html = pagina_html.format(top=self.paginaTop(), bottom=self.paginaBottom(), grafico=grafico.html(), height=grafico['chart']['height'],
                                    titulo=titulo_pagina.decode("utf8"), numero_itens=str(total_producoes),
                                    totais_qualis=totais_qualis, indice_paginas=self.gerarIndiceDePaginas(total_paginas, numero_pagina, prefixo),
                                    producoes=producoes_html)

@@ -204,7 +204,8 @@ cmd_event = Template('''function(event){
 
 jsondata = {
     'chart': {
-        'type': chart_type.bar
+        'type': chart_type.bar,
+        'height': 400
     },
     'title': {
         'text': ''
@@ -213,7 +214,6 @@ jsondata = {
         'text': ''
     },
     'xAxis': {
-        'categories': [''],
         'title': {
             'text': ''
         }
@@ -256,11 +256,11 @@ jsondata = {
     'plotOptions': {
         'bar': {
             'dataLabels': {
-                'enabled': true
+                'enabled': false
             }
         },
         'column': {
-            'stacking': 'normal',
+            'stacking': None,
             # 'dataLabels': {
                 # 'enabled': 'false',
                 # 'color': "(Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'",
@@ -302,8 +302,16 @@ jsondata = {
 class highchart(dict):
     htmldata = u'''
         <script type="text/javascript" src="./jquery.min.js"></script>
+        <!--
         <script type="text/javascript" src="./highcharts.js"></script>
         <script type="text/javascript" src="./exporting.js"></script>
+        <script type="text/javascript" src="./drilldown.js"></script>
+        -->
+
+        <script src="http://code.highcharts.com/highcharts.js"></script>
+        <script src="http://code.highcharts.com/modules/drilldown.js"></script>
+        <script src="http://code.highcharts.com/modules/exporting.js"></script>
+
         <script type="text/javascript">
         // Load the fonts
         Highcharts.createElement('link', {
