@@ -27,6 +27,7 @@ import sets
 import time
 import os
 # from htmlentitydefs import name2codepoint
+import pandas
 
 from parserLattes import *
 from parserLattesXML import *
@@ -118,9 +119,9 @@ class Membro:
     listaOCOutroTipoDeOrientacao = []
 
     # Qualis
-    tabelaQualisDosAnos = [{}]
-    tabelaQualisDosTipos = {}
-    tabelaQualisDasCategorias = [{}]
+    # tabelaQualisDosAnos = [{}]
+    # tabelaQualisDosTipos = {}
+    # tabelaQualisDasCategorias = [{}]
 
     # Eventos
     listaParticipacaoEmEvento = []
@@ -128,6 +129,8 @@ class Membro:
 
     rotuloCorFG = ''
     rotuloCorBG = ''
+
+    tabela_qualis = pandas.DataFrame(columns=['ano', 'area', 'estrato', 'freq'])
 
     ###def __init__(self, idMembro, identificador, nome, periodo, rotulo, itemsDesdeOAno, itemsAteOAno, xml=''):
 
@@ -152,10 +155,6 @@ class Membro:
         self.itemsAteOAno = itemsAteOAno
         self.criarListaDePeriodos(self.periodo)
         self.diretorioCache = diretorioCache
-
-
-
-
 
     def criarListaDePeriodos(self, periodoDoMembro):
         self.listaPeriodo = []

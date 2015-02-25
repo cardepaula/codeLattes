@@ -25,7 +25,7 @@
 
 import re
 
-from scriptLattes.util import compararCadeias
+from scriptLattes.util import similaridade_entre_cadeias
 
 
 class OrientacaoConcluida:
@@ -107,7 +107,7 @@ class OrientacaoConcluida:
 
 
 	def compararCom(self, objeto):
-		if self.idMembro.isdisjoint(objeto.idMembro) and compararCadeias(self.nome, objeto.nome):
+		if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(self.nome, objeto.nome):
 			# Os IDs dos membros são agrupados. 
 			# Essa parte é importante para a criação do GRAFO de colaborações
 			self.idMembro.update(objeto.idMembro)

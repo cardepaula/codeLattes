@@ -25,7 +25,7 @@
 
 import datetime
 
-from scriptLattes.util import compararCadeias
+from scriptLattes.util import similaridade_entre_cadeias
 
 
 class ProjetoDePesquisa:
@@ -81,7 +81,7 @@ class ProjetoDePesquisa:
 
 
     def compararCom(self, objeto):
-        if set(self.idMembro).isdisjoint(set(objeto.idMembro)) and compararCadeias(self.nome, objeto.nome):
+        if set(self.idMembro).isdisjoint(set(objeto.idMembro)) and similaridade_entre_cadeias(self.nome, objeto.nome):
             # Os IDs dos membros são agrupados.
             # Essa parte é importante para a geracao do relorio de projetos
             self.idMembro.extend(objeto.idMembro)

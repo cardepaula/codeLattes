@@ -2,6 +2,7 @@
 # encoding: utf-8
 #
 #
+import logging
 
 import os
 import shutil
@@ -59,7 +60,19 @@ def buscarArquivo(filepath, arquivoConfiguracao=None):
 
 def copiarArquivos(dir):
     base = ABSBASE
-    shutil.copy2(os.path.join(base, 'css', 'scriptLattes.css'), dir)
+
+    try:
+        dst = os.path.join(dir, 'css')
+        if os.path.exists(dst):
+            shutil.rmtree(dst)
+        shutil.copytree(os.path.join(base, 'css'), dst)
+    except OSError, e:
+        pass  # provavelmente diretório já existe
+        logging.warning(e)
+
+    # shutil.copy2(os.path.join(base, 'css', 'scriptLattes.css'), dir)
+    # shutil.copy2(os.path.join(base, 'css', 'jquery.dataTables.css'), dir)
+
     shutil.copy2(os.path.join(base, 'imagens', 'lattesPoint0.png'), dir)
     shutil.copy2(os.path.join(base, 'imagens', 'lattesPoint1.png'), dir)
     shutil.copy2(os.path.join(base, 'imagens', 'lattesPoint2.png'), dir)
@@ -67,15 +80,43 @@ def copiarArquivos(dir):
     shutil.copy2(os.path.join(base, 'imagens', 'lattesPoint_shadow.png'), dir)
     shutil.copy2(os.path.join(base, 'imagens', 'doi.png'), dir)
 
-    shutil.copy2(os.path.join(base, 'js', 'jquery.min.js'), dir)
-    shutil.copy2(os.path.join(base, 'js', 'highcharts.js'), dir)
-    shutil.copy2(os.path.join(base, 'js', 'exporting.js'), dir)
+    try:
+        dst = os.path.join(dir, 'images')
+        if os.path.exists(dst):
+            shutil.rmtree(dst)
+        shutil.copytree(os.path.join(base, 'images'), dst)
+    except OSError, e:
+        pass  # provavelmente diretório já existe
+        logging.warning(e)
+
+    try:
+        dst = os.path.join(dir, 'js')
+        if os.path.exists(dst):
+            shutil.rmtree(dst)
+        shutil.copytree(os.path.join(base, 'js'), dst)
+    except OSError, e:
+        pass  # provavelmente diretório já existe
+        logging.warning(e)
+
+    # shutil.copy2(os.path.join(base, 'js', 'jquery.min.js'), dir)
+    # shutil.copy2(os.path.join(base, 'js', 'highcharts.js'), dir)
+    # shutil.copy2(os.path.join(base, 'js', 'exporting.js'), dir)
+    # shutil.copy2(os.path.join(base, 'js', 'drilldown.js'), dir)
+    # shutil.copy2(os.path.join(base, 'js', 'jquery.dataTables.min.js'), dir)
+    # shutil.copy2(os.path.join(base, 'js', 'jquery.dataTables.rowGrouping.js'), dir)
 
     print "Arquivos salvos em: >>'%s'<<" % os.path.abspath(dir)
 
 
 # ---------------------------------------------------------------------------- #
-def compararCadeias(str1, str2, qualis=False):
+def similaridade_entre_cadeias(str1, str2, qualis=False):
+    '''
+    Compara duas cadeias de caracteres e retorna a medida de similaridade entre elas, entre 0 e 1, onde 1 significa que as cadeias são idênticas ou uma é contida na outra.
+    :param str1:
+    :param str2:
+    :param qualis:
+    :return: A medida de similaridade entre as cadeias, de 0 a 1.
+    '''
     str1 = str1.strip().lower()
     str2 = str2.strip().lower()
 

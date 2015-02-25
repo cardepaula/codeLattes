@@ -15,14 +15,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import codecs
-
+import logging
 import urllib2
-import requests
-from lxml import etree
 import pickle
 from HTMLParser import HTMLParser
 import datetime
 
+import requests
+from lxml import etree
+import pandas as pd
+
+
+logger = logging.getLogger(__name__)
 
 # converts a string to a integer if the string is a integer, else returns None
 def str2int(string):
@@ -42,65 +46,27 @@ def getvalue(attrs):
 
 class qualis_extractor(object):
     # Constructor
-    def __init__(self, online):
-        self.online = online  #extrair online ou offline ?
-        self.publicacao = {}  #{'nome pub',[ ('Nome area','A1') ]}
-        self.issn = {}  #{'issn','nome pub'}
+    def __init__(self, online, arquivo_areas_qualis=None, data_file_path=None):
+        self.online = online  # extrair online ou offline ?
+
+        # self.publicacao = {}  #{'titulo': {'area': 'estrato'}}
+        # self.issn = {}  #{'issn': {'area': 'estrato'}}
+        self.qualis_data_frame = pd.DataFrame(columns=['issn', 'periodico', 'area', 'estrato'])
+
         self.areas = []
         self.areas_to_extract = []
         self.areas_last_update = {}
         self.dtnow = datetime.datetime.now()
         self.update_time = 15
-        self.init_session()
 
+        if arquivo_areas_qualis:
+            self.parse_areas_file(arquivo_areas_qualis)
 
-    def parseContent(self, document, issn={}, titulos={}):
-        """
-        Process a html page containing qualis data
-        Input parameters:
-            document: the document to be parsed
-        Output parameters:
-            issn: a dictionary containing the parsed ISSNs and Qualis
-            titulos: a dictionary containing the parsed journal names and Qualis
-        Return:
-            1 if more pages exist
-            0 otherwise
-        """
+        if data_file_path:
+            self.load_data(data_file_path)
 
-        tree = etree.HTML(document.read())
-
-        tableLines = tree.xpath("//table[@id='consultaPublicaClassificacaoForm:listaVeiculosIssn']/tbody/tr")
-
-        for tr in tableLines:
-
-            line = []
-            for td in tr:
-                line.append(HTMLParser().unescape(td.text.strip()))
-
-            issn_q, titulo_q, estrato_q, area_q, classif_q = line
-
-            if not issn_q or not titulo_q:
-                continue
-
-            if issn_q not in issn:
-                issn[issn_q] = {}
-            issn[issn_q][area_q] = estrato_q
-
-            if titulo_q not in titulos:
-                titulos[titulo_q] = {}
-            titulos[titulo_q][area_q] = estrato_q
-
-        #/html/body/div[3]/div[4]/form/table/tbody/tr[2]/td/table/tbody/tr/td/div[2]/div/div/table/tbody/tr/td[11]
-        last_bts = tree.xpath("//table[@id='consultaPublicaClassificacaoForm:datascroller1_table']/tbody/tr/td")
-        #print etree.tostring(last_bts)
-
-        # se encontrar um botao com onclick='page:last', entao ainda tem paginas
-        if len(last_bts) > 0:
-            onclick = last_bts[-1].get("onclick")
-            if onclick != None and onclick.find('{\'page\': \'last\'}') != -1:
-                return 1
-
-        return 0
+        # self.init_session()
+        self.initialized = False
 
     def get_areas(self, document):
         tree = etree.HTML(document)
@@ -117,38 +83,40 @@ class qualis_extractor(object):
         urlBase = "http://qualis.capes.gov.br/webqualis/"
         acessoInicial = requests.get(urlBase + 'principal.seam')
         jid = acessoInicial.cookies['JSESSIONID']
-        print 'Iniciando sessão qualis...\n ID da Sessão: ', jid
+        logger.info('Iniciando sessão qualis. ID da Sessão: {}'.format(jid))
         url1 = urlBase + "publico/pesquisaPublicaClassificacao.seam;jsessionid=" + jid + "?conversationPropagation=begin"
         req1 = urllib2.Request(url1)
         arq1 = urllib2.urlopen(req1)
 
         self.url2 = urlBase + "publico/pesquisaPublicaClassificacao.seam;jsessionid=" + jid
 
-        # "http://qualis.capes.gov.br/webqualis/publico/pesquisaPublicaClassificacao.seam"
-        if not self.online:
-            req2 = urllib2.Request(self.url2,
-                                   # 'AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Aissn=&javax.faces.ViewState=j_id2&consultaPublicaClassificacaoForm%3Aj_id192=consultaPublicaClassificacaoForm%3Aj_id192')
-                                   'AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Aissn=&javax.faces.ViewState=j_id2')
-            # 'AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Aissn=&javax.faces.ViewState=j_id4&consultaPublicaClassificacaoForm%3Aj_id195=consultaPublicaClassificacaoForm%3Aj_id195')
-            # "AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm"%"3Aissn=&javax.faces.ViewState=j_id6&consultaPublicaClassificacaoForm"%"3Aj_id195=consultaPublicaClassificacaoForm"%"3Aj_id195&"
-            arq2 = urllib2.urlopen(req2)
-            # get all qualis areas
-            document = arq2.read()
-            self.get_areas(document)
-            req3 = urllib2.Request(self.url2,
-                                   'consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3AsomAreaAvaliacao=0&consultaPublicaClassificacaoForm%3AsomEstrato=org.jboss.seam.ui.NoSelectionConverter.noSelectionValue&consultaPublicaClassificacaoForm%3AbtnPesquisarTituloPorArea=Pesquisar&javax.faces.ViewState=j_id2')
-            # 'consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3AsomAreaAvaliacao=23&consultaPublicaClassificacaoForm%3AsomEstrato=org.jboss.seam.ui.NoSelectionConverter.noSelectionValue&consultaPublicaClassificacaoForm%3AbtnPesquisarTituloPorArea=Pesquisar&javax.faces.ViewState=j_id4')
-            arq3 = urllib2.urlopen(req3)
-            a3 = arq3.read()
+        self.initialized = True
 
-    '''
-    Formato do arquivo:
-    Nome da area
-    Nome da area 2
-    ...
-    '''
+        # "http://qualis.capes.gov.br/webqualis/publico/pesquisaPublicaClassificacao.seam"
+        # FIXME: verificar se este código ainda é útil
+        # if not self.online:
+        # req2 = urllib2.Request(self.url2,
+        # # 'AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Aissn=&javax.faces.ViewState=j_id2&consultaPublicaClassificacaoForm%3Aj_id192=consultaPublicaClassificacaoForm%3Aj_id192')
+        # 'AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Aissn=&javax.faces.ViewState=j_id2')
+        #     # 'AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Aissn=&javax.faces.ViewState=j_id4&consultaPublicaClassificacaoForm%3Aj_id195=consultaPublicaClassificacaoForm%3Aj_id195')
+        #     # "AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm"%"3Aissn=&javax.faces.ViewState=j_id6&consultaPublicaClassificacaoForm"%"3Aj_id195=consultaPublicaClassificacaoForm"%"3Aj_id195&"
+        #     arq2 = urllib2.urlopen(req2)
+        #     # get all qualis areas
+        #     document = arq2.read()
+        #     self.get_areas(document)
+        #     req3 = urllib2.Request(self.url2,
+        #                            'consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3AsomAreaAvaliacao=0&consultaPublicaClassificacaoForm%3AsomEstrato=org.jboss.seam.ui.NoSelectionConverter.noSelectionValue&consultaPublicaClassificacaoForm%3AbtnPesquisarTituloPorArea=Pesquisar&javax.faces.ViewState=j_id2')
+        #     # 'consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3AsomAreaAvaliacao=23&consultaPublicaClassificacaoForm%3AsomEstrato=org.jboss.seam.ui.NoSelectionConverter.noSelectionValue&consultaPublicaClassificacaoForm%3AbtnPesquisarTituloPorArea=Pesquisar&javax.faces.ViewState=j_id4')
+        #     arq3 = urllib2.urlopen(req3)
+        #     a3 = arq3.read()
 
     def parse_areas_file(self, afile):
+        '''
+        Formato do arquivo:
+        Nome da area
+        Nome da area 2
+        ...
+        '''
         if not afile:
             return False
         f = codecs.open(afile, 'r', 'utf-8')
@@ -172,10 +140,9 @@ class qualis_extractor(object):
 
     def extract_qualis(self):
         # FIXME: método só é chamado para extração offline, mas então não deveria ficar acessando a internet. Rever.
-        #extract all the areas
         for area in self.areas_to_extract:
             if not self.should_update_area(area):
-                print 'Qualis da area %s atualizado!' % (self.areas[area][1])
+                logger.info('Qualis da area {} atualizado!'.format(self.areas[area][1]))
                 continue
 
             self.areas_last_update[area] = self.dtnow
@@ -188,50 +155,57 @@ class qualis_extractor(object):
 
             arqn = urllib2.urlopen(reqn)
             data = []
-            print 'Qualis da area %s desatualizado!' % (area)
-            print 'Extraindo qualis da area: %d - %s' % area
+            logger.info('Qualis da area {} desatualizado!'.format(area))
+            logger.info('Extraindo qualis da area: {}'.format(area))
             while more == 1:
                 reqn = urllib2.Request(self.url2,
                                        'AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3AsomAreaAvaliacao=' + str(
                                            area) + '&consultaPublicaClassificacaoForm%3AsomEstrato=org.jboss.seam.ui.NoSelectionConverter.noSelectionValue&javax.faces.ViewState=j_id3&ajaxSingle=consultaPublicaClassificacaoForm%3AscrollerArea&consultaPublicaClassificacaoForm%3AscrollerArea=' + str(
                                            scroller) + '&AJAX%3AEVENTS_COUNT=1&')
 
-                #arqn = urllib2.urlopen (reqn)
-                ntries = 10
-                for i in range(0, ntries):
+                # arqn = urllib2.urlopen (reqn)
+                tries = 10
+                for i in range(tries):
                     try:
                         arqn = urllib2.urlopen(reqn)
                         break  # success
                     except urllib2.URLError as err:
-                        print "Error occurried. Trying again."
-                        continue
-                        #if not isinstance(err.reason, socket.timeout):
-                        #    raise "Non timeout error occurried while loading page." # propagate non-timeout errors
+                        logger.warning('Erro extraindo qualis. Tentando novamente.')
+                        # continue
+                        # if not isinstance(err.reason, socket.timeout):
+                        # raise "Non timeout error occurried while loading page." # propagate non-timeout errors
                         #else: # all ntries failed 
                         #    raise err # re-raise the last timeout error
-                    if i == 10:
-                        print "ja tentou 10 vezes!"
+                    if i == tries:
+                        logger.warning(
+                            'Não foi possível extrair qualis mesmo após {} tentativas. Desistindo.'.format(tries))
                         break
 
-                more = self.parseContent(arqn)  # FIXME: funcionamento de parseContent mudou
+                more = self.parse_content(arqn)  # FIXME: funcionamento de parse_content mudou
                 scroller += 1
 
     def load_data(self, filename='data'):
         try:
+            logger.debug('Carregando dados Qualis do arquivo \'{}\''.format(filename))
             f = open(filename, 'r')
             data = pickle.load(f)
-            self.issn = data[0]
-            self.publicacao = data[1]
-            self.areas = data[2]
-            self.areas_last_update = data[3]
+            # self.issn = data[0]
+            # self.publicacao = data[1]
+            # self.areas = data[2]
+            # self.areas_last_update = data[3]
+            self.qualis_data_frame = data[0]
+            self.areas = data[1]
+            self.areas_last_update = data[2]
             f.close()
             return True
         except:
             return False
 
     def save_data(self, filename='data'):
+        logger.debug('Salvando dados Qualis no arquivo \'{}\''.format(filename))
         f = open(filename, 'w')
-        data = (self.issn, self.publicacao, self.areas, self.areas_last_update)
+        # data = (self.issn, self.publicacao, self.areas, self.areas_last_update)
+        data = (self.qualis_data_frame, self.areas, self.areas_last_update)
         pickle.dump(data, f)
         f.close()
 
@@ -246,74 +220,74 @@ class qualis_extractor(object):
             if i[0] == cod:
                 return i
 
-    '''
-    Retorna Qualis do respectivo ISSN. Restringe as areas se elas tiverem sido especificadas (ver parse_areas_file).
-    '''
+    def extract_online_qualis_by_issn(self, issn):
+        qualis_data_frame = pd.DataFrame(columns=['issn', 'periodico', 'area', 'estrato'])
 
-    def get_qualis_by_issn(self, issn):
-        # ISSN must be formatted like: XXXX-YYYY
-        # if '-' not in issn:
-        #     issn = issn[:4] + '-' + issn[4:]
+        if not self.initialized:
+            self.init_session()
 
-        print('Extraindo qualis a partir do issn {}...'.format(issn))
-
-        if not self.issn.has_key(issn):
-            req = urllib2.Request(self.url2,
-                                  'consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Aissn=' + issn + '&consultaPublicaClassificacaoForm%3AbtnPesquisarISSN=Pesquisar&javax.faces.ViewState=j_id2')
-            arqn = None
-            for i in range(0, 10):
-                try:
-                    arqn = urllib2.urlopen(req)
-                    break  # success
-                except urllib2.URLError as err:
-                    print "Error occurried. Trying again."
-                    continue
-
-            issn_qualis = {}
-            titulo_qualis = {}
-            more = self.parseContent(arqn, issn_qualis, titulo_qualis)
-            scroller = 1
-            while more == 1:
+        more = True
+        scroller = 0
+        while more:
+            if scroller == 0:
+                req = urllib2.Request(self.url2,
+                                      'consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Aissn=' + issn + '&consultaPublicaClassificacaoForm%3AbtnPesquisarISSN=Pesquisar&javax.faces.ViewState=j_id2')
+            else:
                 req = urllib2.Request(self.url2,
                                       'AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Aissn=' + str(
                                           issn) + '&javax.faces.ViewState=j_id3&ajaxSingle=consultaPublicaClassificacaoForm%3Adatascroller1&consultaPublicaClassificacaoForm%3Adatascroller1=' + str(
                                           scroller) + '&AJAX%3AEVENTS_COUNT=1&')
-                ntries = 10
-                for i in range(0, ntries):
-                    try:
-                        arqn = urllib2.urlopen(req)
-                        break  # success
-                    except urllib2.URLError as err:
-                        print "Error occurried. Trying again."
-                        continue
-                        #if not isinstance(err.reason, socket.timeout):
-                        #    raise "Non timeout error occurried while loading page." # propagate non-timeout errors
-                        #else: # all ntries failed
-                        #    raise err # re-raise the last timeout error
-                more = self.parseContent(arqn, issn_qualis, titulo_qualis)
-                scroller += 1
+            arqn = None
+            tries = 10
+            for i in range(tries):
+                try:
+                    arqn = urllib2.urlopen(req)
+                    break  # success
+                except urllib2.URLError as err:
+                    logger.warning('Erro extraindo qualis do ISSN {}. Tentando novamente.'.format(issn))
+                    # continue
+                if i == tries:
+                    logger.warning(
+                        'Não foi possível extrair qualis para o ISSN {} mesmo após {} tentativas. Desistindo.'.format(
+                            issn, tries))
+                    break
+            html_document = arqn.read()
+            partial_data_frame = self.parse_content(html_document)
+            qualis_data_frame = qualis_data_frame.append(partial_data_frame, ignore_index=True)
 
-            if issn_qualis:
-                self.issn.update(issn_qualis)
-                self.publicacao.update(titulo_qualis)
-            else:
-                # adiciona o issn informando que não há Qualis associado; poupará requisições futuras
-                self.issn[issn] = {}
+            more = self.has_more_content(html_document)
+            scroller += 1
 
-        qualis = {}
+        return qualis_data_frame
+
+    def get_qualis_by_issn(self, issn):
+        """
+        Retorna Qualis do respectivo ISSN. Restringe as areas se elas tiverem sido especificadas (ver parse_areas_file).
+
+        NOTA: ISSN tem que estar no formato XXXX-YYYY
+        """
+        logger.info('Extraindo qualis a partir do issn {}...'.format(issn))
+
+        issn_data = self.qualis_data_frame[self.qualis_data_frame['issn'] == issn]
+        if issn_data.empty:
+            issn_data = self.extract_online_qualis_by_issn(issn)
+            if issn_data.empty:
+                issn_data.loc[0] = [issn, None, None,
+                                None]  # adiciona o issn informando que não há Qualis associado; poupará requisições futuras
+            self.qualis_data_frame = self.qualis_data_frame.append(issn_data, ignore_index=True)
+
+        issn_data = issn_data.dropna()  # descarta ISSN's sem Qualis
 
         if self.areas_to_extract:
-            for area in self.areas_to_extract:
-                if area in self.issn[issn].keys():
-                    qualis[area] = self.issn[issn][area]
-        else:  # get all areas
-            for area, estrato in self.issn[issn].items():
-                qualis[area] = estrato
+            issn_data = issn_data[issn_data['area'].isin(self.areas_to_extract)]
+
+        # XXX: note que se houver chaves repetidas, só o último valor é salvo. Neste caso aqui não há problema, já que cada área só tem uma avaliação.
+        qualis = dict(zip(issn_data['area'], issn_data['estrato']))
 
         return qualis
 
-    #get a qualis by the name
     def get_qualis_by_name(self, name):
+        # FIXME: métodos não implementado
         qualis = self.publicacoes.get(name)
 
         '''if qualis != None: return qualis,1
@@ -322,7 +296,7 @@ class qualis_extractor(object):
             r = 0
             pkeys = self.publicacoes.keys()
             for i in xrange(0,pkeys):
-                nr = compararCadeias( name, pkeys[i], qualis=True)
+                nr = similaridade_entre_cadeias( name, pkeys[i], qualis=True)
                 if nr > r:
                     r = nr
                     iqualis = i
@@ -331,12 +305,51 @@ class qualis_extractor(object):
         '''
         return None
 
+    @staticmethod
+    def has_more_content(html_document):
+        tree = etree.HTML(html_document)
 
-"""extractor = qualis_extractor(0)
-extractor.init_session()
-extractor.load_data()
-extractor.parse_areas_file()
-extractor.extract_qualis()
-#for i,j in extractor.get_qualis_by_issn('1993-8233'):
-#    print i,'=',j
-extractor.save_data()"""
+        # /html/body/div[3]/div[4]/form/table/tbody/tr[2]/td/table/tbody/tr/td/div[2]/div/div/table/tbody/tr/td[11]
+        last_bts = tree.xpath("//table[@id='consultaPublicaClassificacaoForm:datascroller1_table']/tbody/tr/td")
+        # print etree.tostring(last_bts)
+        # se encontrar um botao com onclick='page:last', entao ainda tem paginas
+        if len(last_bts) > 0:
+            onclick = last_bts[-1].get("onclick")
+            if onclick is not None and onclick.find('{\'page\': \'last\'}') != -1:
+                return True
+        return False
+
+    @staticmethod
+    def parse_content(document):
+        """
+        Process a html page containing qualis data
+        Input parameters:
+            document: the document to be parsed
+        Output parameters:
+            issn: a dictionary containing the parsed ISSNs and Qualis
+            journal: a dictionary containing the parsed journal names and Qualis
+        Return:
+            1 if more pages exist
+            0 otherwise
+        """
+
+        data_frame = pd.DataFrame(columns=['issn', 'periodico', 'area', 'estrato'])
+
+        tree = etree.HTML(document)
+
+        table_lines = tree.xpath("//table[@id='consultaPublicaClassificacaoForm:listaVeiculosIssn']/tbody/tr")
+
+        for tr in table_lines:
+
+            line = []
+            for td in tr:
+                line.append(HTMLParser().unescape(td.text.strip()))
+
+            issn_q, journal_q, estrato_q, area_q, classif_q = line
+
+            if not issn_q or not journal_q:
+                continue
+
+            data_frame.loc[len(data_frame)] = [issn_q, journal_q, area_q, estrato_q]
+
+        return data_frame

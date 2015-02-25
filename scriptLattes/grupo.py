@@ -165,7 +165,7 @@ class Grupo:
         if self.obterParametro('global-identificar_publicacoes_com_qualis'):
             qualis_de_congressos = self.obterParametro('global-arquivo_qualis_de_congressos')
             areas_qualis = self.obterParametro('global-arquivo_areas_qualis')
-            self.qualis = qualis.Qualis(data_file_path = 'qualis.data', arquivo_qualis_de_congressos = qualis_de_congressos, arquivo_areas_qualis = areas_qualis)  # carregamos Qualis a partir de arquivos definidos no arquivo de configuração
+            self.qualis = qualis.Qualis(data_file_path = self.diretorioCache + '/qualis.data', arquivo_qualis_de_congressos = qualis_de_congressos, arquivo_areas_qualis = areas_qualis)  # carregamos Qualis a partir de arquivos definidos no arquivo de configuração
 
     def gerarXMLdeGrupo(self):
         if self.obterParametro('global-salvar_informacoes_em_formato_xml'):
@@ -397,7 +397,7 @@ class Grupo:
                 self.qualis.analisar_publicacoes(membro)  # Qualis - Adiciona Qualis as publicacoes dos membros
 
             # if self.diretorioCache:
-            filename = 'qualis.data'
+            filename = self.diretorioCache + '/qualis.data'
             # self.qualis.qextractor.save_data(self.diretorioCache + '/' + filename)
             self.qualis.qextractor.save_data(filename)
 

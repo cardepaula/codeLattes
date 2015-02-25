@@ -25,7 +25,7 @@
 
 import re
 
-from scriptLattes.util import compararCadeias
+from scriptLattes.util import similaridade_entre_cadeias
 
 
 class OrganizacaoDeEvento:
@@ -79,7 +79,7 @@ class OrganizacaoDeEvento:
 
 
 	def compararCom(self, objeto):
-		if self.idMembro.isdisjoint(objeto.idMembro) and compararCadeias(self.nomeDoEvento, objeto.nomeDoEvento):
+		if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(self.nomeDoEvento, objeto.nomeDoEvento):
 			# Os IDs dos membros são agrupados. 
 			# Essa parte é importante para a criação do GRAFO de colaborações
 			self.idMembro.update(objeto.idMembro)

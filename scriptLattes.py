@@ -36,9 +36,11 @@ sys.stdout = OutputStream(sys.stdout, sys.stdout.encoding)
 sys.stderr = OutputStream(sys.stderr, sys.stdout.encoding)
 
 if __name__ == "__main__":
-    logger = logging.getLogger('scriptLattes')
-    logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s')
-    logging.root.setLevel(level=logging.INFO)
+    logger = logging.getLogger(__name__)
+    logging.basicConfig(format='%(asctime)s - %(levelname)s (%(name)s) - %(message)s')
+    # logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s')
+    # logging.root.setLevel(level=logging.INFO)
+    logging.root.setLevel(level=logging.DEBUG)
     logger.info("Executando '{}'".format(' '.join(sys.argv)))
 
     arquivoConfiguracao = sys.argv[1]
@@ -106,15 +108,3 @@ def criarDiretorio(dir):
             return 0
     return 1
 
-def copiarArquivos(dir):
-    shutil.copy2(sys.path[0]+'/css/scriptLattes.css', dir)
-    shutil.copy2(sys.path[0]+'/imagens/lattesPoint0.png', dir)
-    shutil.copy2(sys.path[0]+'/imagens/lattesPoint1.png', dir)
-    shutil.copy2(sys.path[0]+'/imagens/lattesPoint2.png', dir)
-    shutil.copy2(sys.path[0]+'/imagens/lattesPoint3.png', dir)
-    shutil.copy2(sys.path[0]+'/imagens/lattesPoint_shadow.png', dir)
-    shutil.copy2(sys.path[0]+'/imagens/doi.png', dir)
-    shutil.copy2(sys.path[0]+'/js/highcharts.js', dir)
-    shutil.copy2(sys.path[0]+'/js/exporting.js', dir)
-    shutil.copy2(sys.path[0]+'/js/drilldown.js', dir)
-    shutil.copy2(sys.path[0]+'/js/jquery.min.js', dir)

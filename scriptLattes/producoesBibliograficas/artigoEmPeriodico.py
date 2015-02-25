@@ -24,26 +24,26 @@
 
 
 from scriptLattes.geradorDePaginasWeb import *
-from scriptLattes.util import compararCadeias
+from scriptLattes.util import similaridade_entre_cadeias
 
 class ArtigoEmPeriodico:
-    item = None # dado bruto
+    item = None  # dado bruto
     idMembro = None
-    qualis = None
-    qualissimilar = None
+    # qualis = None
+    # qualissimilar = None
 
-    doi = None
-    relevante = None
-    autores = None
-    titulo = None
-    revista = None
-    volume = None
-    paginas = None
-    numero = None
-    ano = None
+    # doi = None
+    # relevante = None
+    # autores = None
+    # titulo = None
+    # revista = None
+    # volume = None
+    # paginas = None
+    # numero = None
+    # ano = None
     resto = None
     chave = None
-    issn = None
+    # issn = None
 
     def __init__(self, idMembro, partesDoItem='', doi='', relevante='', complemento=''):
         self.idMembro = set([])
@@ -59,6 +59,8 @@ class ArtigoEmPeriodico:
         self.numero = ''
         self.ano = ''
         self.issn = ''
+        self.qualis = None
+        self.qualissimilar = None
 
         if not partesDoItem=='':
             # partesDoItem[0]: Numero (NAO USADO)
@@ -145,7 +147,7 @@ class ArtigoEmPeriodico:
 
 
     def compararCom(self, objeto):
-        if self.idMembro.isdisjoint(objeto.idMembro) and compararCadeias(self.titulo, objeto.titulo):
+        if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(self.titulo, objeto.titulo):
             # Os IDs dos membros são agrupados.
             # Essa parte é importante para a criação do GRAFO de colaborações
             self.idMembro.update(objeto.idMembro)
