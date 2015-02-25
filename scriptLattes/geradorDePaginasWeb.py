@@ -108,7 +108,7 @@ class GeradorDePaginasWeb:
         <head> \
            <title>' + nomeGrupo + '</title> \
            <meta name="Generator" content="scriptLattes"> \
-           <link rel="stylesheet" href="scriptLattes.css" type="text/css">  \
+           <link rel="stylesheet" href="css/scriptLattes.css" type="text/css">  \
            <meta http-equiv="Content-Type" content="text/html; charset=utf-8">'
         if self.grupo.obterParametro('mapa-mostrar_mapa_de_geolocalizacao'):
             s += self.grupo.mapaDeGeolocalizacao.mapa  #.encode("utf8")
