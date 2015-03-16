@@ -128,7 +128,7 @@ class Grupo:
         entrada = buscarArquivo(self.obterParametro('global-arquivo_de_entrada'))
 
         idSequencial = 0
-        for linha in fileinput.input(entrada):
+        for linha in fileinput.input(entrada.decode('utf8')):
             linha = linha.replace("\r", "")
             linha = linha.replace("\n", "")
 
@@ -163,9 +163,14 @@ class Grupo:
         self.listaDeRotulosCores = [''] * len(self.listaDeRotulos)
 
         if self.obterParametro('global-identificar_publicacoes_com_qualis'):
+            read_from_cache = self.obterParametro('global-usar_cache_qualis')
             qualis_de_congressos = self.obterParametro('global-arquivo_qualis_de_congressos')
             areas_qualis = self.obterParametro('global-arquivo_areas_qualis')
-            self.qualis = qualis.Qualis(data_file_path = self.diretorioCache + '/qualis.data', arquivo_qualis_de_congressos = qualis_de_congressos, arquivo_areas_qualis = areas_qualis)  # carregamos Qualis a partir de arquivos definidos no arquivo de configuração
+
+            self.qualis = qualis.Qualis(read_from_cache=read_from_cache,
+                                        data_file_path=self.diretorioCache + '/qualis.data',
+                                        arquivo_qualis_de_congressos=qualis_de_congressos,
+                                        arquivo_areas_qualis=areas_qualis)
 
     def gerarXMLdeGrupo(self):
         if self.obterParametro('global-salvar_informacoes_em_formato_xml'):
@@ -649,7 +654,7 @@ class Grupo:
         self.listaDeParametros.append(['global-salvar_informacoes_em_formato_xml', 'nao'])
 
         self.listaDeParametros.append(['global-identificar_publicacoes_com_qualis', 'nao'])
-        self.listaDeParametros.append(['global-extrair_qualis_online', 'sim'])
+        self.listaDeParametros.append(['global-usar_cache_qualis', 'sim'])
         self.listaDeParametros.append(['global-arquivo_areas_qualis', ''])
         self.listaDeParametros.append(['global-arquivo_qualis_de_congressos', ''])
         self.listaDeParametros.append(['global-arquivo_qualis_de_periodicos', ''])

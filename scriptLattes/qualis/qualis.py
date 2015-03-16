@@ -29,7 +29,7 @@ import fileinput
 import pandas
 
 from scriptLattes.util import similaridade_entre_cadeias, buscarArquivo
-from qualis_extractor import qualis_extractor
+from qualisextractor import QualisExtractor
 
 
 logger = logging.getLogger(__name__)
@@ -79,7 +79,7 @@ class Qualis:
     qtdPB4 = {}  # Total de trabalhos completos em congressos por Qualis
     qtdPB5 = {}  # Total de resumos expandidos em congressos por Qualis
 
-    def __init__(self, search_online=True, data_file_path=None, arquivo_qualis_de_congressos=None,
+    def __init__(self, read_from_cache=True, data_file_path=None, arquivo_qualis_de_congressos=None,
                  arquivo_areas_qualis=None):
         """
         arquivo_qualis_de_congressos: arquivo CSV de qualis de congressos # FIXME: só funciona para uma área
@@ -88,10 +88,7 @@ class Qualis:
 
         # self.periodicos = self.carregar_qualis_de_arquivo(grupo.obterParametro('global-arquivo_qualis_de_periodicos'))
         # qualis extractor -> extrai qualis diretamente da busca online do qualis
-        # self.extrair_qualis_online = grupo.obterParametro('global-extrair_qualis_online')
-        # self.extrair_qualis_online = grupo.diretorioCache is not ''
-
-        self.qextractor = qualis_extractor(search_online, arquivo_areas_qualis, data_file_path)
+        self.qextractor = QualisExtractor(read_from_cache, arquivo_areas_qualis, data_file_path)
 
         # self.qextractor.extract_qualis()
         # self.qextractor.save_data(data_file_path)
@@ -112,11 +109,18 @@ class Qualis:
             # pub.qualis = qualis
             # pub.qualissimilar = similar
             else:
+                # tentar extrair online pelo titulo
+                publicacao.qualis = self.qextractor.get_qualis_by_title(publicacao.revista)
                 publicacao.qualis = None
                 publicacao.qualissimilar = None
 
-        membro.tabela_qualis = pandas.DataFrame(self.agregar_qualis(membro.listaArtigoEmPeriodico),
-                                                columns=['ano', 'area', 'estrato', 'freq'])
+        agregacao = self.agregar_qualis(membro.listaArtigoEmPeriodico)
+        if agregacao:
+            membro.tabela_qualis = pandas.DataFrame(data=agregacao,
+                                                    columns=['ano', 'area', 'estrato', 'freq'])
+        else:
+            membro.tabela_qualis = pandas.DataFrame(columns=['ano', 'area', 'estrato', 'freq'])
+
         # XXX: pensar em usar pivot_table
         # pd.pivot_table(h, values='freq', index=['area', 'estrato'], columns=['ano'])
         # p = pd.pivot_table(data=df, index='area', columns=['ano', 'estrato'], values='freq')

@@ -964,7 +964,8 @@ class GeradorDePaginasWeb:
             for estrato in sorted(membro.tabela_qualis['estrato'].unique()):
                 header_estrato += header_template.format(header=estrato, width=cell_size)
 
-        pt = membro.tabela_qualis.pivot_table(columns=['area', 'ano', 'estrato'], values='freq')
+        if membro.tabela_qualis and not membro.tabela_qualis.empty():
+            pt = membro.tabela_qualis.pivot_table(columns=['area', 'ano', 'estrato'], values='freq')
         lines = ''
         for area in sorted(membro.tabela_qualis['area'].unique()):
             lines += first_column_template.format(header=area, extra_style='')
@@ -1080,7 +1081,7 @@ class GeradorDePaginasWeb:
             #print membro.periodo
             #print membro.atualizacaoCV
 
-            html_qualis = self.producao_qualis(elemento, membro)
+            # html_qualis = self.producao_qualis(elemento, membro)
 
             s += '\n<tr class="testetabela"> \
                      <td valign="center" height="40px">' + str(elemento) + '.</td> \
@@ -1275,7 +1276,7 @@ class GeradorDePaginasWeb:
                 # '        });' \
 
         # Salvar em planilha
-        xls_filename = os.path.join(self.dir, "producao_membros.xls")
+        xls_filename = os.path.join(self.dir, 'producao_membros.xls')
         producao_por_membro.to_excel(os.path.abspath(xls_filename))
         html += '<a href="{}">{}</a>'.format(os.path.abspath(xls_filename), 'Baixar planilha com os dados')
 
@@ -1441,7 +1442,7 @@ def formata_qualis(qualis, qualissimilar):
             s += '<font class="area"><b>SEM_AREA</b></font> - <b>' + qualis + '</b>&nbsp'
         else:
             l = ['<font class="area"><b>' + area + '</b></font> - <b>' + q + '</b>' for area, q in
-                 sorted(qualis.items(), key=lambda x: x[1])]
+                 sorted(qualis.items(), key=lambda x: x[0])]
             s += '&nbsp|&nbsp'.join(l)
     return s
 
