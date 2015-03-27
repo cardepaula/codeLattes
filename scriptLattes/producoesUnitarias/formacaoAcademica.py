@@ -31,20 +31,39 @@ class FormacaoAcademica:
 	nomeInstituicao = ''
 	descricao = ''
 
-	def __init__(self, partesDoItem):
+	def __init__(self, partesDoItem=None):
 		# partesDoItem[0]: Periodo da formacao Profissional
 		# partesDoItem[1]: Descricao da formacao Profissional
 
-		anos =  partesDoItem[0].partition(" - ")
-		self.anoInicio = anos[0];
-		self.anoConclusao = anos[2];
+		if partesDoItem != None: # Caso deseja-se usar setters
 
-		detalhe = partesDoItem[1].partition(".")
-		self.tipo = detalhe[0].strip()
+			anos =  partesDoItem[0].partition(" - ")
+			self.anoInicio = anos[0];
+			self.anoConclusao = anos[2];
 
-		detalhe = detalhe[2].strip().partition(".")
-		self.nomeInstituicao = detalhe[0].strip()
-		self.descricao = detalhe[2].strip()
+			detalhe = partesDoItem[1].partition(".")
+			self.tipo = detalhe[0].strip()
+
+			detalhe = detalhe[2].strip().partition(".")
+			self.nomeInstituicao = detalhe[0].strip()
+
+			self.descricao = detalhe[2].strip()
+
+
+	def set_ano_inicio(self, ano):
+		self.anoInicio = ano
+
+	def set_ano_conclusao(self, ano):
+		self.anoConclusao = ano
+
+	def set_tipo(self, tipo):
+		self.tipo = tipo
+
+	def set_nome_instituicao(self, nome):
+		self.nomeInstituicao = nome
+
+	def set_descricao(self, desc):
+		self.descricao = desc
 
 
 	# ------------------------------------------------------------------------ #

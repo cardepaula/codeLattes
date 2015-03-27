@@ -23,7 +23,10 @@
 #
 
 
-# from HTMLParser import HTMLParser
+from HTMLParser import HTMLParser
+from tidylib import tidy_document
+
+import urllib2
 import re
 import sys
 import os
@@ -323,13 +326,18 @@ class ParserLattes:
 		self.idOrientando = ''
 
 		# o parser do lxml ja arruma erros de html
-		self.tree = etree.HTML(cvLattesHTML)
+		utf8_parser = etree.HTMLParser(encoding="utf-8")
+		self.tree = etree.HTML(cvLattesHTML, parser=utf8_parser)
 		#print etree.tostring(self.tree)
 		
-		self.setNome()
-		self.setBolsaProdutividade()
-		self.setResumo()
-		self.setIdentificador16()
+		self.set_nome()
+		self.set_bolsa_produtividade()
+		self.set_resumo()
+		self.set_identificador16()
+		self.set_nome_em_citacoes_bibliograficas()
+		self.set_endereco_profissional()
+		self.set_formacao_academica()
+
 
 		# contornamos alguns erros do HTML da Plataforma Lattes
 		# cvLattesHTML = cvLattesHTML.replace("<![CDATA[","")
@@ -337,14 +345,14 @@ class ParserLattes:
 		# cvLattesHTML = cvLattesHTML.replace("<x<","&lt;x&lt;")
 		# cvLattesHTML = cvLattesHTML.replace("<X<","&lt;X&lt;")
 
-		# feed it!
+		# # feed it!
 		# cvLattesHTML, errors = tidy_document(cvLattesHTML, options={'numeric-entities':1})
-		#print errors
-		#print cvLattesHTML.encode("utf8")
+		# # print errors
+		# # print cvLattesHTML.encode("utf8")
 
-		## tentativa errada (não previsível)
-		# options = dict(output_xhtml=1, add_xml_decl=1, indent=1, tidy_mark=0)
-		# cvLattesHTML = str(tidy.parseString(cvLattesHTML, **options)).decode("utf8")
+		# # tentativa errada (não previsível)
+		# # options = dict(output_xhtml=1, add_xml_decl=1, indent=1, tidy_mark=0)
+		# # cvLattesHTML = str(tidy.parseString(cvLattesHTML, **options)).decode("utf8")
 
 		# self.feed(cvLattesHTML)
 
@@ -369,14 +377,15 @@ class ParserLattes:
 		sys.stdin.read(1)
 
 
-	def setNome(self):
+
+	def set_nome(self):
 		x = self.tree.xpath("//h2[@class='nome']")
 		if x: # se tem algo na lista
 			self.nomeCompleto = stripBlanks(x[0].text)
 		print self.nomeCompleto
 
 
-	def setBolsaProdutividade(self):
+	def set_bolsa_produtividade(self):
 		x = self.tree.xpath("//h2[@class='nome']/span")
 		if x:
 			# i = len("Bolsista de Produtividade em Pesquisa do CNPq - ")
@@ -385,17 +394,58 @@ class ParserLattes:
 		print self.bolsaProdutividade
 
 
-	def setResumo(self):
+	def set_resumo(self):
 		x = self.tree.xpath("//p[@class='resumo']")
 		if x:
 			self.textoResumo = stripBlanks(x[0].text)
 		print self.textoResumo
 
 
-	def setIdentificador16(self):
+	def set_identificador16(self):
 		x = self.tree.xpath("//ul[@class='informacoes-autor']/li[1]/text()")[1]
 		self.identificador16 = re.findall(u'http://lattes.cnpq.br/(\d{16})', x)[0]
 		print self.identificador16
+
+
+	# @return: dict
+	# busca os elementos de uma secao e os retorna em um dict.
+	# dict[(str) nome_sub_secao] = [(str) valor]
+	def get_table_of(self, a_name):
+		a = self.tree.xpath("//a[@name='"+a_name+"']")[0]
+		divs = a.getparent().xpath(".//div[contains(@class, 'layout-cell-pad-5')]")
+
+		txts, index = {}, ""
+		for i, ele in enumerate(divs):
+			if i % 2 == 0:
+				y = ele.xpath(".//b/text()")[0].encode("utf-8")
+			else:
+				txts[y] = ele.xpath(".//text()")
+
+		return txts
+
+
+	def set_nome_em_citacoes_bibliograficas(self):
+		txts = self.get_table_of("Identificacao")
+		self.nomeEmCitacoesBibliograficas = txts["Nome em citações bibliográficas"]
+		print self.nomeEmCitacoesBibliograficas
+
+
+	def set_endereco_profissional(self):
+		txts = self.get_table_of("Endereco")
+		self.enderecoProfissional = txts["Endereço Profissional"]
+		print self.enderecoProfissional
+	
+
+	def set_formacao_academica(self):
+		txts = self.get_table_of("FormacaoAcademicaTitulacao")
+		for anos, texto in txts.items():
+			ano_ini, ano_fim = anos.split(" - ")
+			print anos
+			for x in texto:
+				print x.encode("utf-8")
+			print "\n"
+
+
 
 
 	def handle_starttag(self, tag, attributes):
