@@ -50,8 +50,15 @@ class FormacaoAcademica:
 			self.descricao = detalhe[2].strip()
 
 
-	def set_ano_inicio(self, ano):
-		self.anoInicio = ano
+	def format_anos(self, anos):
+		if(anos.count("-")):
+			return anos.split(" - ")
+		return (anos, anos)
+
+	def set_anos(self, anos):
+		a, b = self.format_anos(anos)
+		self.anoInicio = a
+		self.anoConclusao = b
 
 	def set_ano_conclusao(self, ano):
 		self.anoConclusao = ano
@@ -62,8 +69,14 @@ class FormacaoAcademica:
 	def set_nome_instituicao(self, nome):
 		self.nomeInstituicao = nome
 
+	# private
+	def format_descricao(self, desc):
+		linesbreaks = ["\n"]*len(desc)
+		return "".join([a+b for a, b in zip(desc, linesbreaks)])
+
 	def set_descricao(self, desc):
-		self.descricao = desc
+		self.descricao = self.format_descricao(desc)
+
 
 
 	# ------------------------------------------------------------------------ #

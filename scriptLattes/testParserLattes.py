@@ -373,53 +373,50 @@ class ParserLattes:
 		self.issn = issn[0:4]+'-'+issn[4:8]
 	
 
+
 	def parar(self):
 		sys.stdin.read(1)
 
-
-
 	def set_nome(self):
 		x = self.tree.xpath("//h2[@class='nome']")
-		if x: # se tem algo na lista
+		if x:
 			self.nomeCompleto = stripBlanks(x[0].text)
-		print self.nomeCompleto
 
 
 	def set_bolsa_produtividade(self):
 		x = self.tree.xpath("//h2[@class='nome']/span")
 		if x:
-			# i = len("Bolsista de Produtividade em Pesquisa do CNPq - ")
-			# x = x[i:]
 			self.bolsaProdutividade = stripBlanks(x[0].text).split(" - ")[1]
-		print self.bolsaProdutividade
 
 
 	def set_resumo(self):
 		x = self.tree.xpath("//p[@class='resumo']")
 		if x:
 			self.textoResumo = stripBlanks(x[0].text)
-		print self.textoResumo
 
 
 	def set_identificador16(self):
 		x = self.tree.xpath("//ul[@class='informacoes-autor']/li[1]/text()")[1]
 		self.identificador16 = re.findall(u'http://lattes.cnpq.br/(\d{16})', x)[0]
-		print self.identificador16
+
+
 
 
 	# @return: dict
 	# busca os elementos de uma secao e os retorna em um dict.
 	# dict[(str) nome_sub_secao] = [(str) valor]
 	def get_table_of(self, a_name):
-		a = self.tree.xpath("//a[@name='"+a_name+"']")[0]
-		divs = a.getparent().xpath(".//div[contains(@class, 'layout-cell-pad-5')]")
 
-		txts, index = {}, ""
-		for i, ele in enumerate(divs):
-			if i % 2 == 0:
-				y = ele.xpath(".//b/text()")[0].encode("utf-8")
-			else:
-				txts[y] = ele.xpath(".//text()")
+		elements = self.tree.xpath("//a[contains(@name, '"+a_name+"')]")
+		txts = {}
+
+		for a in elements:
+			divs = a.getparent().xpath(".//div[contains(@class, 'layout-cell-pad-5')]")
+			for i, ele in enumerate(divs):
+				if i % 2 == 0:
+					y = ele.xpath(".//b/text()")[0].encode("utf-8")
+				else:
+					txts[y] = ele.xpath(".//text()")
 
 		return txts
 
@@ -427,25 +424,31 @@ class ParserLattes:
 	def set_nome_em_citacoes_bibliograficas(self):
 		txts = self.get_table_of("Identificacao")
 		self.nomeEmCitacoesBibliograficas = txts["Nome em citações bibliográficas"]
-		print self.nomeEmCitacoesBibliograficas
+		# print self.nomeEmCitacoesBibliograficas
 
 
 	def set_endereco_profissional(self):
 		txts = self.get_table_of("Endereco")
 		self.enderecoProfissional = txts["Endereço Profissional"]
-		print self.enderecoProfissional
+		# print self.enderecoProfissional
 	
 
 	def set_formacao_academica(self):
-		txts = self.get_table_of("FormacaoAcademicaTitulacao")
+		txts = self.get_table_of("FormacaoAcademica")
+
 		for anos, texto in txts.items():
-			ano_ini, ano_fim = anos.split(" - ")
-			print anos
-			for x in texto:
-				print x.encode("utf-8")
-			print "\n"
+
+			fa = FormacaoAcademica()
+			fa.set_anos(anos)
+			fa.set_tipo(texto[0])
+			fa.set_nome_instituicao(texto[2])
+			fa.set_descricao(texto[3:])
+
+			self.listaFormacaoAcademica.append(fa)
 
 
+	def set_projetos_de_pesquisa(self):
+		txts = self.get_table_of("ProjetosPesquisa")
 
 
 	def handle_starttag(self, tag, attributes):
