@@ -1,4 +1,4 @@
-scriptLattes V8.09
+scriptLattes V8.10
 ------------------
 
 SINOPSIS
@@ -61,6 +61,9 @@ URL DO PROJETO
 
 =========================================================================================
 LOG
+
+Sex Mai 15 18:08:00 BRT 2015
+-- Conserto do link para grupos de pesquisa (BitBucket issue #7).
 
 Qui Mai  7 11:10:00 BRT 2015
 -- Criação de novo extrator do lattes, baixaLattes, e exigência de nova dependência
