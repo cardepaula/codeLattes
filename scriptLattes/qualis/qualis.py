@@ -134,14 +134,14 @@ class Qualis:
                         qualis = self.congressos.get(pub.sigla)  # Retorna Qualis da sigla com nome do evento
                         similar = pub.sigla
                     else:
-                        qualis = 'Qualis não identificado'  # FIXME: conferir se não deve ser None (ver na geração de gráfico)
+                        qualis = u"Qualis não identificado"  # FIXME: conferir se não deve ser None (ver na geração de gráfico)
                         similar = pub.nomeDoEvento
                 pub.qualis = qualis
                 pub.qualissimilar = similar
 
             for pub in membro.listaResumoExpandidoEmCongresso:
                 qualis, similar = self.busca_qualis_congressos(pub.nomeDoEvento)
-                pub.qualis = qualis if qualis else 'Qualis não identificado'
+                pub.qualis = qualis if qualis else u"Qualis não identificado"
                 pub.qualissimilar = similar
 
     def calcular_totais_dos_qualis(self, artigo_em_periodico, trabalho_completo_em_congresso,

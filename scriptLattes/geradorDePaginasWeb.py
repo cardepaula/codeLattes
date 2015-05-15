@@ -7,8 +7,8 @@
 # http://scriptlattes.sourceforge.net/
 #
 #
-#  Este programa é um software livre; você pode redistribui-lo e/ou 
-#  modifica-lo dentro dos termos da Licença Pública Geral GNU como 
+# Este programa é um software livre; você pode redistribui-lo e/ou
+# modifica-lo dentro dos termos da Licença Pública Geral GNU como
 #  publicada pela Fundação do Software Livre (FSF); na versão 2 da 
 #  Licença, ou (na sua opinião) qualquer versão.
 #
@@ -28,7 +28,6 @@ import re
 import unicodedata
 import logging
 
-from IPython.core import logger
 import pandas
 from pandas.core.indexing import IndexingError
 
@@ -630,7 +629,7 @@ class GeradorDePaginasWeb:
                         estrato_area_ano_freq[None][None][ano] += 1  # sem qualis
                     else:
                         if type(pub.qualis) is str:  # sem area
-                            logger.debug(u"publicação com qualis string (sem área): '{}'".format(pub.qualis))
+                            logger.debug("publicação com qualis string (sem área): '{}'".format(pub.qualis))
                         else:
                             for area, estrato in sorted(pub.qualis.items()):
                                 estrato_area_ano_freq[estrato][area][ano] += 1
@@ -1094,7 +1093,7 @@ class GeradorDePaginasWeb:
                      <td class="centered"><a href="http://scholar.google.com.br/citations?view_op=search_authors&mauthors=' + nomeCompleto + '"><font size=-1>[ Cita&ccedil;&otilde;es em Google Acad&ecirc;mico | </font></a></td> \
                      <td class="centered"><a href="http://academic.research.microsoft.com/Search?query=author:(' + nomeCompleto + ')"><font size=-1>Cita&ccedil;&otilde;es em Microsoft Acad&ecirc;mico ]</font></a></td> \
                  </tr>'
-                     # <td class="centered"><font size=-1>' + u'Produção com Qualis' + '</font></td> \
+            # <td class="centered"><font size=-1>' + u'Produção com Qualis' + '</font></td> \
 
             # s += '<tr><td colspan="9"> \
             #      ' + html_qualis + ' \
@@ -1146,13 +1145,17 @@ class GeradorDePaginasWeb:
 
         for m in lista_de_membros:
             nome_membro = unicodedata.normalize('NFKD', m.nomeCompleto).encode('ASCII', 'ignore')
-            df = pandas.DataFrame({'membro': [nome_membro]*len(m.tabela_qualis)}, index=m.tabela_qualis.index)
+            df = pandas.DataFrame({'membro': [nome_membro] * len(m.tabela_qualis)}, index=m.tabela_qualis.index)
             producao_por_membro = producao_por_membro.append(m.tabela_qualis.join(df), ignore_index=True)
 
-        producao_por_membro_pivo = producao_por_membro.pivot_table(values='freq',
-                                                              columns=['ano', 'estrato'],
-                                                              index=['area', 'membro'],
-                                                              dropna=True, fill_value=0, margins=False, aggfunc=sum)
+        if producao_por_membro.empty:
+            producao_por_membro_pivo = pandas.DataFrame()
+        else:
+            producao_por_membro_pivo = producao_por_membro.pivot_table(values='freq',
+                                                                       columns=['ano', 'estrato'],
+                                                                       index=['area', 'membro'],
+                                                                       dropna=True, fill_value=0, margins=False,
+                                                                       aggfunc=sum)
         return producao_por_membro_pivo
 
     def gerar_pagina_de_producao_qualificado_por_membro(self):
@@ -1185,6 +1188,11 @@ class GeradorDePaginasWeb:
         footer = u'<th>Área</th><th>Membro</th>'
 
         producao_por_membro = self.producao_qualis_por_membro(self.grupo.listaDeMembros)
+
+        if producao_por_membro.empty:
+            html += self.paginaBottom()
+            self.salvarPagina("producao_membros" + self.extensaoPagina, html)
+            return
 
         anos = sorted(producao_por_membro.columns.get_level_values('ano').unique())
         estratos = sorted(producao_por_membro.columns.get_level_values('estrato').unique())
@@ -1268,12 +1276,12 @@ class GeradorDePaginasWeb:
                               } );
                   });
                 </script>'''
-                # '      .rowGrouping({' \
-                # '        iGroupingColumnIndex: 1,' \
-                # '        sGroupingColumnSortDirection: "asc",' \
-                # '        bExpandableGrouping: true,' \
-                # '        bExpandSingleGroup: true,' \
-                # '        });' \
+        # '      .rowGrouping({' \
+        # '        iGroupingColumnIndex: 1,' \
+        # '        sGroupingColumnSortDirection: "asc",' \
+        # '        bExpandableGrouping: true,' \
+        # '        bExpandSingleGroup: true,' \
+        # '        });' \
 
         # Salvar em planilha
         xls_filename = os.path.join(self.dir, 'producao_membros.xls')
@@ -1301,7 +1309,7 @@ class GeradorDePaginasWeb:
                    '</head>' \
                    '<body><div id="header2"> <button onClick="history.go(-1)">Voltar</button>' \
                    '<h2>{nome_grupo}</h2></div>'
-                   # '<script type="text/javascript" charset="utf8" src="jquery.dataTables.rowGrouping.js"></script>' \
+        # '<script type="text/javascript" charset="utf8" src="jquery.dataTables.rowGrouping.js"></script>' \
         s += template.format(nome_grupo=nome_grupo, cabecalho=cabecalho)
         return s
 

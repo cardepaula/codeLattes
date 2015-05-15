@@ -353,7 +353,7 @@ class Grupo:
     def carregarDadosCVLattes(self):
         indice = 1
         for membro in self.listaDeMembros:
-            print "\n[LENDO REGISTRO LATTES: " + str(indice) + "o. DA LISTA]"
+            print('\n[LENDO REGISTRO LATTES: {0}o. DA LISTA]'.format(indice))
             indice += 1
             membro.carregarDadosCVLattes()
             membro.filtrarItemsPorPeriodo()
@@ -402,7 +402,7 @@ class Grupo:
                 self.qualis.analisar_publicacoes(membro)  # Qualis - Adiciona Qualis as publicacoes dos membros
 
             # if self.diretorioCache:
-            filename = self.diretorioCache + '/qualis.data'
+            filename = (self.diretorioCache or '/tmp') + '/qualis.data'
             # self.qualis.qextractor.save_data(self.diretorioCache + '/' + filename)
             self.qualis.qextractor.save_data(filename)
 

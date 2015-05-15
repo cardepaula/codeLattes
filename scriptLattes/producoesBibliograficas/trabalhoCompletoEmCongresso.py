@@ -3,12 +3,12 @@
 # filename: trabalhoCompletoEmCongresso.py
 #
 # scriptLattes V8
-#  Copyright 2005-2013: Jesús P. Mena-Chalco e Roberto M. Cesar-Jr.
-#  http://scriptlattes.sourceforge.net/
+# Copyright 2005-2013: Jesús P. Mena-Chalco e Roberto M. Cesar-Jr.
+# http://scriptlattes.sourceforge.net/
 #
 #
-#  Este programa é um software livre; você pode redistribui-lo e/ou 
-#  modifica-lo dentro dos termos da Licença Pública Geral GNU como 
+# Este programa é um software livre; você pode redistribui-lo e/ou
+# modifica-lo dentro dos termos da Licença Pública Geral GNU como
 #  publicada pela Fundação do Software Livre (FSF); na versão 2 da 
 #  Licença, ou (na sua opinião) qualquer versão.
 #
@@ -207,13 +207,25 @@ class TrabalhoCompletoEmCongresso:
             self.qualis = ''
         if self.qualissimilar == None:
             self.qualissimilar = ''
-        s = "trabalhoCompletoEmCongresso\t"
+        s = u"trabalhoCompletoEmCongresso\t"
         if nomeCompleto == "":  # tratamento grupal
             s += str(
                 self.ano) + "\t" + self.doi + "\t" + self.titulo + "\t" + self.nomeDoEvento + "\t" + self.autores + "\t" + self.qualis + "\t" + self.qualissimilar
         else:  # tratamento individual
-            s += nomeCompleto + "\t" + str(
-                self.ano) + "\t" + self.doi + "\t" + self.titulo + "\t" + self.nomeDoEvento + "\t" + self.autores + "\t" + self.qualis + "\t" + self.qualissimilar
+            try:
+                s += u"{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}".format(nomeCompleto, self.ano, self.doi,
+                                                                      self.titulo, self.nomeDoEvento, self.autores,
+                                                                      self.qualis, self.qualissimilar)
+            except UnicodeDecodeError, err:
+                print(nomeCompleto)
+                print(str(self.ano))
+                print(self.doi)
+                print(self.titulo)
+                print(self.nomeDoEvento)
+                print(self.autores)
+                print(self.qualis)
+                print(self.qualissimilar)
+                logger.warning(err)
         return s
 
     # ------------------------------------------------------------------------ #
