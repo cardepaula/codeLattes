@@ -212,7 +212,7 @@ class Membro:
                 html = arquivoH.read()
                 tree = etree.HTML(html)
                 tem_captcha = tree.xpath('//*[@id="formulario"]/div/div/div/div/div/div/div[@class="divCaptcha"]')
-                if self.idMembro:
+                if self.idMembro is not None:
                     print "(*) Utilizando CV armazenado no cache: " + cvPath
                     if not tem_captcha:
                         cvLattesHTML = html
