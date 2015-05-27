@@ -139,9 +139,9 @@ jsondata = {
 class highchart(dict):
     
     htmldata = u"""
-		<script type="text/javascript" src="./jquery.min.js"></script>
-		<script type="text/javascript" src="./highcharts.js"></script>
-		<script type="text/javascript" src="./modules/exporting.js"></script>
+		<script type="text/javascript" src="./js/jquery.min.js"></script>
+		<script type="text/javascript" src="./js/highcharts.js"></script>
+		<script type="text/javascript" src="./js/modules/exporting.js"></script>
 		<script type="text/javascript">
 		$(function () {
 		    $('#container').highcharts(@jsondata@);

@@ -1,4 +1,4 @@
-scriptLattes V8.10
+scriptLattes V8.12
 ------------------
 
 SINOPSIS
@@ -61,6 +61,10 @@ URL DO PROJETO
 
 =========================================================================================
 LOG
+
+Sex Mai 27 18:21:00 BRT 2015
+-- Conserta exibição de gráficos (BitBucket issue #9).
+-- Conserta acesso ao currículos.
 
 Sex Mai 15 18:08:00 BRT 2015
 -- Conserto do link para grupos de pesquisa (BitBucket issue #7).
