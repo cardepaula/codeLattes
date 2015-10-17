@@ -23,10 +23,6 @@
 #
 
 
-from scriptLattes import *  
-from scriptLattes.geradorDePaginasWeb import *
-from scriptLattes.util import compararCadeias
-
 class PremioOuTitulo:
 	idMembro = None
 
@@ -48,7 +44,7 @@ class PremioOuTitulo:
 	def compararCom(self, objeto):
 		return None
 		# Prêmios considerados de forma individual
-		#if self.idMembro.isdisjoint(objeto.idMembro) and compararCadeias(self.descricao, objeto.descricao):
+		#if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(self.descricao, objeto.descricao):
 		#	# Os IDs dos membros são agrupados. 
 		#	# Essa parte é importante para a criação do GRAFO de colaborações
 		#	self.idMembro.update(objeto.idMembro)

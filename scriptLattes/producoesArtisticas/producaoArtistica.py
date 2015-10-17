@@ -22,10 +22,9 @@
 #  Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-from scriptLattes import *  
 from scriptLattes.geradorDePaginasWeb import *
-import re
-from scriptLattes.util import compararCadeias
+from scriptLattes.util import similaridade_entre_cadeias
+
 
 class ProducaoArtistica:
 	item = None # dado bruto
@@ -68,7 +67,7 @@ class ProducaoArtistica:
 
 
 	def compararCom(self, objeto):
-		if self.idMembro.isdisjoint(objeto.idMembro) and compararCadeias(self.titulo, objeto.titulo):
+		if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(self.titulo, objeto.titulo):
 			# Os IDs dos membros são agrupados. 
 			# Essa parte é importante para a criação do GRAFO de colaborações
 			self.idMembro.update(objeto.idMembro)

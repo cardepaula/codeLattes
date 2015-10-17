@@ -3,7 +3,7 @@
 #
 #
 #  scriptLattes V8
-#  Copyright 2005-2014: Jesús P. Mena-Chalco e Roberto M. Cesar-Jr.
+# Copyright 2005-2014: Jesús P. Mena-Chalco e Roberto M. Cesar-Jr.
 #  http://scriptlattes.sourceforge.net/
 #
 #
@@ -21,26 +21,11 @@
 #  junto com este programa, se não, escreva para a Fundação do Software
 #  Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
+import logging
 
-import sys
-import shutil
-import Levenshtein
-import os, errno
 import warnings
 import requests, BeautifulSoup # required by QualisExtractor
 warnings.filterwarnings('ignore')
-
-
-from scriptLattes.producoesBibliograficas import *
-from scriptLattes.producoesTecnicas import *
-from scriptLattes.producoesArtisticas import *
-from scriptLattes.producoesUnitarias import *
-from scriptLattes.orientacoes import *
-from scriptLattes.eventos import *
-from scriptLattes.charts import *
-from scriptLattes.internacionalizacao import *
-from scriptLattes.qualis import *
-from scriptLattes.patentesRegistros import *
 
 from scriptLattes.grupo import *
 
@@ -52,35 +37,41 @@ sys.stdout = OutputStream(sys.stdout, sys.stdout.encoding)
 sys.stderr = OutputStream(sys.stderr, sys.stdout.encoding)
 
 if __name__ == "__main__":
-	arquivoConfiguracao = sys.argv[1]
-	#os.chdir( os.path.abspath(os.path.join(arquivoConfiguracao, os.pardir)))
-	novoGrupo = Grupo(arquivoConfiguracao)
-	#novoGrupo.imprimirListaDeParametros()
-	novoGrupo.imprimirListaDeRotulos()
+    logger = logging.getLogger(__name__)
+    logging.basicConfig(format='%(asctime)s - %(levelname)s (%(name)s) - %(message)s')
+    # logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s')
+    # logging.root.setLevel(level=logging.INFO)
+    logging.root.setLevel(level=logging.DEBUG)
+    logger.info("Executando '{}'".format(' '.join(sys.argv)))
 
-	if criarDiretorio(novoGrupo.obterParametro('global-diretorio_de_saida')):
-		novoGrupo.carregarDadosCVLattes() #obrigatorio
-		novoGrupo.compilarListasDeItems() # obrigatorio
-		novoGrupo.identificarQualisEmPublicacoes() # obrigatorio
-		novoGrupo.calcularInternacionalizacao() # obrigatorio
-		#novoGrupo.imprimirMatrizesDeFrequencia() 
+    arquivoConfiguracao = sys.argv[1]
+    # os.chdir( os.path.abspath(os.path.join(arquivoConfiguracao, os.pardir)))
+    novoGrupo = Grupo(arquivoConfiguracao)
+    # novoGrupo.imprimirListaDeParametros()
+    novoGrupo.imprimirListaDeRotulos()
 
-		novoGrupo.gerarGrafosDeColaboracoes() # obrigatorio
-		#novoGrupo.gerarGraficosDeBarras() # java charts
-		novoGrupo.gerarMapaDeGeolocalizacao() # obrigatorio
-		novoGrupo.gerarPaginasWeb() # obrigatorio
-		novoGrupo.gerarArquivosTemporarios() # obrigatorio
+    if criarDiretorio(novoGrupo.obterParametro('global-diretorio_de_saida')):
+        novoGrupo.carregarDadosCVLattes() #obrigatorio
+        novoGrupo.compilarListasDeItems() # obrigatorio
+        novoGrupo.identificarQualisEmPublicacoes() # obrigatorio
+        novoGrupo.calcularInternacionalizacao() # obrigatorio
+        #novoGrupo.imprimirMatrizesDeFrequencia()
 
-		# copiar imagens e css
-		copiarArquivos(novoGrupo.obterParametro('global-diretorio_de_saida'))
+        novoGrupo.gerarGrafosDeColaboracoes() # obrigatorio
+        #novoGrupo.gerarGraficosDeBarras() # java charts
+        novoGrupo.gerarMapaDeGeolocalizacao() # obrigatorio
+        novoGrupo.gerarPaginasWeb() # obrigatorio
+        novoGrupo.gerarArquivosTemporarios() # obrigatorio
 
-		# finalizando o processo
-		#print '[AVISO] Quem vê \'Lattes\', não vê coração! B-)'
-		#print '[AVISO] Por favor, cadastre-se na página: http://scriptlattes.sourceforge.net\n'
-		print '\n\n\n[PARA REFERENCIAR/CITAR ESTE SOFTWARE USE]'
-		print '    Jesus P. Mena-Chalco & Roberto M. Cesar-Jr.'
-		print '    scriptLattes: An open-source knowledge extraction system from the Lattes Platform.'
-		print '    Journal of the Brazilian Computer Society, vol.15, n.4, páginas 31-39, 2009.'
-		print '    http://dx.doi.org/10.1007/BF03194511'
-		print '\n\nscriptLattes executado!'
+        # copiar imagens e css
+        copiarArquivos(novoGrupo.obterParametro('global-diretorio_de_saida'))
 
+        # finalizando o processo
+        #print '[AVISO] Quem vê \'Lattes\', não vê coração! B-)'
+        #print '[AVISO] Por favor, cadastre-se na página: http://scriptlattes.sourceforge.net\n'
+        print '\n\n\n[PARA REFERENCIAR/CITAR ESTE SOFTWARE USE]'
+        print '    Jesus P. Mena-Chalco & Roberto M. Cesar-Jr.'
+        print '    scriptLattes: An open-source knowledge extraction system from the Lattes Platform.'
+        print '    Journal of the Brazilian Computer Society, vol.15, n.4, páginas 31-39, 2009.'
+        print '    http://dx.doi.org/10.1007/BF03194511'
+        print '\n\nscriptLattes executado!'

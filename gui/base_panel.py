@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # encoding: utf-8
 #
-#  GUI/Windows version
+# GUI/Windows version
 #  Copyright 2014: Roberto Faga Jr
 #
 #  http://github.com/rfaga/scriptlattesgui
@@ -23,11 +23,9 @@
 #
 
 import sys
-from PySide import QtCore, QtGui
 
-import os
-import re
-import string
+from PySide import QtCore
+
 
 class BasePanel(object):
     def __init__(self, parent):
@@ -35,7 +33,7 @@ class BasePanel(object):
         self.ui = parent.ui
         self.parent = parent
         self.running = False
-        
+
     def get_output_folder(self, output_folder=None):
         if not output_folder:
             output_folder = self.output_folder

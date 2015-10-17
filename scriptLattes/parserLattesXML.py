@@ -29,18 +29,8 @@
 # Por enquanto esta característica fica sem documentação.
 # ---------------------------------------------------------------------------- #
 
-import HTMLParser
-import re
-import string
-from tidylib import tidy_document
 from htmlentitydefs import name2codepoint
-
 from HTMLParser import HTMLParser
-from producoesUnitarias.formacaoAcademica import *
-from producoesUnitarias.areaDeAtuacao import *
-from producoesUnitarias.idioma import *
-from producoesUnitarias.premioOuTitulo import *
-from producoesUnitarias.projetoDePesquisa import *
 
 from producoesBibliograficas.artigoEmPeriodico import *
 from producoesBibliograficas.livroPublicado import *
@@ -52,22 +42,8 @@ from producoesBibliograficas.resumoEmCongresso import *
 from producoesBibliograficas.artigoAceito import *
 from producoesBibliograficas.apresentacaoDeTrabalho import *
 from producoesBibliograficas.outroTipoDeProducaoBibliografica import *
-
-from producoesTecnicas.softwareComPatente import *
-from producoesTecnicas.softwareSemPatente import *
-from producoesTecnicas.produtoTecnologico import *
-from producoesTecnicas.processoOuTecnica import *
-from producoesTecnicas.trabalhoTecnico import *
-from producoesTecnicas.outroTipoDeProducaoTecnica import *
-
-from patentesRegistros.patente import *
-from patentesRegistros.programaComputador import *
-from patentesRegistros.desenhoIndustrial import *
-
-from producoesArtisticas.producaoArtistica import *
-
-from orientacoes.orientacaoEmAndamento import *
 from orientacoes.orientacaoConcluida import *
+
 
 class ParserLattesXML(HTMLParser):
 	item = None

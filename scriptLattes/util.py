@@ -107,8 +107,16 @@ def copiarArquivos(dir):
 
     print "Arquivos salvos em: >>'%s'<<" % os.path.abspath(dir)
 
+
 # ---------------------------------------------------------------------------- #
-def compararCadeias(str1, str2, qualis=False):
+def similaridade_entre_cadeias(str1, str2, qualis=False):
+    '''
+    Compara duas cadeias de caracteres e retorna a medida de similaridade entre elas, entre 0 e 1, onde 1 significa que as cadeias são idênticas ou uma é contida na outra.
+    :param str1:
+    :param str2:
+    :param qualis:
+    :return: A medida de similaridade entre as cadeias, de 0 a 1.
+    '''
     str1 = str1.strip().lower()
     str2 = str2.strip().lower()
 

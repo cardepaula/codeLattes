@@ -4,19 +4,19 @@ body {
     color: #000000;
     margin-left: 2%; 
     margin-right: 2%;
-	font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+    font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
 	font-size: 0.9em;
     text-align: justify; 
 }
 
 td {
-	font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+    font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
 	font-size: 0.9em;
     text-align: justify; 
 }
 
 td.centered {
-	font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+    font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
 	font-size: 0.9em;
     text-align: center; 
 }
@@ -95,4 +95,8 @@ a:hover {
 .projects {
     color: #003300;
     font-weight: bold;
+}
+
+.area {
+    color: #ADD8E6;
 }

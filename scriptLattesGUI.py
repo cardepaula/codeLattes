@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # encoding: utf-8
 #
-#  GUI/Windows version
+# GUI/Windows version
 #  Copyright 2014: Roberto Faga Jr e Dorival Piedade Neto
 #
 #  http://github.com/rfaga/scriptlattesgui
@@ -23,13 +23,9 @@
 #
 
 import sys
-from PySide import QtCore, QtGui
+
+from PySide import QtGui
 from gui.main_window import Ui_MainWindow
-
-import os
-import re
-import string
-
 from gui.single_panel import SingleProcessingTabPanel
 from gui.multiple_panel import MultipleProcessingTabPanel
 
@@ -43,7 +39,7 @@ class ControlMainWindow(QtGui.QMainWindow):
             self.CMD = 'scriptLattes.exe'
         else:
             self.CMD = './scriptLattes.py'
-        self.ui =  Ui_MainWindow()
+        self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.single = SingleProcessingTabPanel(self)
         self.multiple = MultipleProcessingTabPanel(self)

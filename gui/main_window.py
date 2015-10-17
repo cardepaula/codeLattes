@@ -3,11 +3,12 @@
 # Form implementation generated from reading ui file 'gui/main_window.ui'
 #
 # Created: Thu May  8 15:57:16 2014
-#      by: pyside-uic 0.2.13 running on PySide 1.1.0
+# by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
 
 from PySide import QtCore, QtGui
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -177,17 +178,33 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "ScriptLattes", None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setText(QtGui.QApplication.translate("MainWindow", "Escolha um arquivo de configuração", None, QtGui.QApplication.UnicodeUTF8))
-        self.filechooser.setText(QtGui.QApplication.translate("MainWindow", "Escolher", None, QtGui.QApplication.UnicodeUTF8))
-        self.runner.setText(QtGui.QApplication.translate("MainWindow", "Executar", None, QtGui.QApplication.UnicodeUTF8))
-        self.tabs.setTabText(self.tabs.indexOf(self.output_tab), QtGui.QApplication.translate("MainWindow", "Saída", None, QtGui.QApplication.UnicodeUTF8))
-        self.tabs.setTabText(self.tabs.indexOf(self.error_tab), QtGui.QApplication.translate("MainWindow", "Erros", None, QtGui.QApplication.UnicodeUTF8))
-        self.openLink.setText(QtGui.QApplication.translate("MainWindow", "Abrir resultados no navegador", None, QtGui.QApplication.UnicodeUTF8))
-        self.openFolder.setText(QtGui.QApplication.translate("MainWindow", "Abrir pasta de saída", None, QtGui.QApplication.UnicodeUTF8))
-        self.mainTabs.setTabText(self.mainTabs.indexOf(self.singleTab), QtGui.QApplication.translate("MainWindow", "Arquivo único", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_2.setText(QtGui.QApplication.translate("MainWindow", "Escolha uma pasta com arquivos de configuração (*.config). Os arquivos podem estar em sub-pastas.", None, QtGui.QApplication.UnicodeUTF8))
-        self.folderchooser.setText(QtGui.QApplication.translate("MainWindow", "Escolher", None, QtGui.QApplication.UnicodeUTF8))
-        self.multipleExecute.setText(QtGui.QApplication.translate("MainWindow", "Executar lote", None, QtGui.QApplication.UnicodeUTF8))
-        self.mainTabs.setTabText(self.mainTabs.indexOf(self.multipleTab), QtGui.QApplication.translate("MainWindow", "Múltiplos arquivos", None, QtGui.QApplication.UnicodeUTF8))
+        MainWindow.setWindowTitle(
+            QtGui.QApplication.translate("MainWindow", "ScriptLattes", None, QtGui.QApplication.UnicodeUTF8))
+        self.label.setText(QtGui.QApplication.translate("MainWindow", "Escolha um arquivo de configuração", None,
+                                                        QtGui.QApplication.UnicodeUTF8))
+        self.filechooser.setText(
+            QtGui.QApplication.translate("MainWindow", "Escolher", None, QtGui.QApplication.UnicodeUTF8))
+        self.runner.setText(
+            QtGui.QApplication.translate("MainWindow", "Executar", None, QtGui.QApplication.UnicodeUTF8))
+        self.tabs.setTabText(self.tabs.indexOf(self.output_tab),
+                             QtGui.QApplication.translate("MainWindow", "Saída", None, QtGui.QApplication.UnicodeUTF8))
+        self.tabs.setTabText(self.tabs.indexOf(self.error_tab),
+                             QtGui.QApplication.translate("MainWindow", "Erros", None, QtGui.QApplication.UnicodeUTF8))
+        self.openLink.setText(QtGui.QApplication.translate("MainWindow", "Abrir resultados no navegador", None,
+                                                           QtGui.QApplication.UnicodeUTF8))
+        self.openFolder.setText(
+            QtGui.QApplication.translate("MainWindow", "Abrir pasta de saída", None, QtGui.QApplication.UnicodeUTF8))
+        self.mainTabs.setTabText(self.mainTabs.indexOf(self.singleTab),
+                                 QtGui.QApplication.translate("MainWindow", "Arquivo único", None,
+                                                              QtGui.QApplication.UnicodeUTF8))
+        self.label_2.setText(QtGui.QApplication.translate("MainWindow",
+                                                          "Escolha uma pasta com arquivos de configuração (*.config). Os arquivos podem estar em sub-pastas.",
+                                                          None, QtGui.QApplication.UnicodeUTF8))
+        self.folderchooser.setText(
+            QtGui.QApplication.translate("MainWindow", "Escolher", None, QtGui.QApplication.UnicodeUTF8))
+        self.multipleExecute.setText(
+            QtGui.QApplication.translate("MainWindow", "Executar lote", None, QtGui.QApplication.UnicodeUTF8))
+        self.mainTabs.setTabText(self.mainTabs.indexOf(self.multipleTab),
+                                 QtGui.QApplication.translate("MainWindow", "Múltiplos arquivos", None,
+                                                              QtGui.QApplication.UnicodeUTF8))
 

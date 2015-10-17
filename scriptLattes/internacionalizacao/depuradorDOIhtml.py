@@ -23,7 +23,6 @@
 #
 
 
-import HTMLParser
 import re
 
 from HTMLParser import HTMLParser
