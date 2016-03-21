@@ -25,8 +25,7 @@
 from string import Template
 
 theme = '''{
-   colors: ["#f45b5b", "#8085e9", "#8d4654", "#7798BF", "#aaeeee", "#ff0066", "#eeaaee", "#2b908f", "#90ee7e",
-      "#55BF3B", "#DF5353", "#7798BF", "#aaeeee"],
+   colors: ["#91a0a4", "#8085e9", "#8d4654", "#7798BF", "#aaeeee", "#ff0066", "#eeaaee", "#2b908f", "#90ee7e", "#55BF3B", "#DF5353", "#7798BF", "#aaeeee"],
    chart: {
       backgroundColor: null,
       style: {

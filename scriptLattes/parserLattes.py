@@ -22,9 +22,8 @@
 #  Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-
+import sys
 from htmlentitydefs import name2codepoint
-
 from tidylib import tidy_document
 
 
@@ -62,6 +61,7 @@ from orientacoes.orientacaoConcluida import *
 from eventos.organizacaoDeEvento import *
 from eventos.participacaoEmEvento import *
 
+sys.tracebacklimit = 0
 
 class ParserLattes(HTMLParser):
 

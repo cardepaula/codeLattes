@@ -27,7 +27,7 @@ EXECUÇÃO
 	python scriptLattes.py ./exemplo/teste-01.config
 
 	Nesse exemplo consideram-se todas as produções cujos anos de publicações
-	estão entre 2006 e 2014. Nenhum rótulo foi considerado para os membros. 
+	estão entre 2006 e 2016. Nenhum rótulo foi considerado para os membros. 
 	
 	Os IDs Lattes dos 3 membros está listada em:
 	./exemplo/teste-01.list
@@ -61,6 +61,9 @@ URL DO PROJETO
 
 =========================================================================================
 LOG
+
+Sun Mar 20 21:21:52 BRT 2016
+-- Conserta o problema de 'itens sem ano'.
 
 Sex Mai 27 18:21:00 BRT 2015
 -- Conserta exibição de gráficos (BitBucket issue #9).

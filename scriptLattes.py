@@ -27,6 +27,7 @@ import warnings
 import requests, BeautifulSoup # required by QualisExtractor
 warnings.filterwarnings('ignore')
 
+
 from scriptLattes.grupo import *
 
 from scriptLattes.util import *

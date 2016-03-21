@@ -34,6 +34,9 @@ from membro import Membro
 from compiladorDeListas import CompiladorDeListas
 from authorRank import AuthorRank
 from geradorDePaginasWeb import GeradorDePaginasWeb
+from charts.grafoDeColaboracoes import *
+from charts.mapaDeGeolocalizacao import *
+
 
 
 class Grupo:

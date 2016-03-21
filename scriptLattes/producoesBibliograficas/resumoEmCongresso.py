@@ -54,7 +54,11 @@ class ResumoEmCongresso:
 			self.relevante = relevante
 
 			# Dividir o item na suas partes constituintes
-			partes = self.item.partition(" . ")
+			if " . " in self.item:
+				partes = self.item.partition(" . ")
+			else:
+				partes = self.item.partition(".. ")
+
 			self.autores = partes[0].strip()
 			partes = partes[2]
 
