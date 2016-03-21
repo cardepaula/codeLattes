@@ -70,7 +70,10 @@ class ArtigoEmPeriodico:
             self.relevante = relevante
 
             # Dividir o item na suas partes constituintes (autores e o resto)
-            partes = self.item.partition(" . ")
+            if " . " in self.item:
+                partes = self.item.partition(" . ")
+            else:
+                partes = self.item.partition(".. ")
 
             # Verificar quando há um numero de autores > que 25
             if partes[1]=='': # muitos autores (mais de 25) e o lattes insere etal. termina lista com ;
@@ -232,7 +235,7 @@ class ArtigoEmPeriodico:
         s+= '\nEP  - '+p2
         s+= '\nPY  - '+str(self.ano)
         s+= '\nL2  - '+self.doi
-        s += '\nL3  - ' + self.issn
+        s+= '\nL3  - ' + self.issn
         s+= '\nER  - '
         return s
 

@@ -54,7 +54,7 @@ a:hover {
 
 #footer {
     clear: both;
-    background: #D4E5F5;
+    background: #D3D7DB;
     color: #000000;
     font-size: 0.9em;
     text-align: justify;
@@ -64,7 +64,7 @@ a:hover {
 
 #header {
     clear: both;
-    background: #D4E5F5;
+    background: #D3D7DB;
     color: #000000;
     margin:0 auto;
 	text-align: center;
@@ -73,7 +73,7 @@ a:hover {
 
 #header2 {
     clear: both;
-    background: #D4E5F5;
+    background: #D3D7DB;
     color: #000000;
     margin:0 auto;
 	text-align: left;

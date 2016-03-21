@@ -47,7 +47,7 @@ class GeradorDePaginasWeb:
 
     def __init__(self, grupo):
         self.grupo = grupo
-        self.version = 'V8.10'
+        self.version = 'V8.12'
         self.dir = self.grupo.obterParametro('global-diretorio_de_saida')
 
         if self.grupo.obterParametro('global-criar_paginas_jsp'):
@@ -61,8 +61,7 @@ class GeradorDePaginasWeb:
 
         # geracao de arquivo RIS com as publicacoes
         if self.grupo.obterParametro('relatorio-salvar_publicacoes_em_formato_ris'):
-            prefix = self.grupo.obterParametro('global-prefixo') + '-' if not self.grupo.obterParametro(
-                'global-prefixo') == '' else ''
+            prefix = self.grupo.obterParametro('global-prefixo') + '-' if not self.grupo.obterParametro('global-prefixo') == '' else ''
             self.arquivoRis = open(self.dir + "/" + prefix + "publicacoes.ris", 'w')
 
         self.gerar_pagina_de_membros()
@@ -621,23 +620,24 @@ class GeradorDePaginasWeb:
         areas_map = {None: 0}
         estrato_area_ano_freq = defaultdict(lambda: defaultdict(lambda: defaultdict(int)))
         for ano, publicacoes in sorted(listaCompleta.items()):
-            categories.append(ano)
-            for pub in publicacoes:
-                try:
-                    if not pub.qualis:
-                        logger.debug("qualis is None")
-                        estrato_area_ano_freq[None][None][ano] += 1  # sem qualis
-                    else:
-                        if type(pub.qualis) is str:  # sem area
-                            logger.debug("publicação com qualis string (sem área): '{}'".format(pub.qualis))
+            if ano!=0:
+                categories.append(ano)
+                for pub in publicacoes:
+                    try:
+                        if not pub.qualis:
+                            logger.debug("qualis is None")
+                            estrato_area_ano_freq[None][None][ano] += 1  # sem qualis
                         else:
-                            for area, estrato in sorted(pub.qualis.items()):
-                                estrato_area_ano_freq[estrato][area][ano] += 1
-                                if area not in areas_map:
-                                    areas_map[area] = len(areas_map)
-                except AttributeError:
-                    logger.debug(u"publicação sem atributo qualis")
-                    estrato_area_ano_freq[None][None][ano] += 1  # producao que nao tem qualis
+                            if type(pub.qualis) is str:  # sem area
+                                logger.debug("publicação com qualis string (sem área): '{}'".format(pub.qualis))
+                            else:
+                                for area, estrato in sorted(pub.qualis.items()):
+                                    estrato_area_ano_freq[estrato][area][ano] += 1
+                                    if area not in areas_map:
+                                        areas_map[area] = len(areas_map)
+                    except AttributeError:
+                        logger.debug(u"publicação sem atributo qualis")
+                        estrato_area_ano_freq[None][None][ano] += 1  # producao que nao tem qualis
 
         series = []
         if not estrato_area_ano_freq.keys():  # produções vazias
@@ -1338,10 +1338,7 @@ class GeradorDePaginasWeb:
         s += '\n<br>Data de processamento: ' + data + '<br> \
         <div id="footer"> \
         Este arquivo foi gerado automaticamente por <a href="http://scriptlattes.sourceforge.net/">scriptLattes ' + self.version + '</a>. \
-        (desenvolvido no <a href="http://nuvem.ufabc.edu.br/">NUVEM/UFABC</a> e \
-        no <a href="http://ccsl.ime.usp.br/">CCSL-IME/USP</a> por <a href="http://professor.ufabc.edu.br/~jesus.mena/">Jesús P. Mena-Chalco</a> e <a href="http://www.ime.usp.br/~cesar">Roberto M. Cesar-Jr</a>). \
-        Os resultados estão sujeitos a falhas devido a inconsistências no preenchimento dos currículos Lattes. Caso note alguma falha, por favor, contacte o responsável por esta página: <a href="mailto:' + self.grupo.obterParametro(
-            'global-email_do_admin') + '">' + self.grupo.obterParametro('global-email_do_admin') + '</a> \
+        Os resultados estão sujeitos a falhas devido a inconsistências no preenchimento dos currículos Lattes. Caso note alguma falha, por favor, contacte o responsável por esta página: <a href="mailto:' + self.grupo.obterParametro('global-email_do_admin') + '">' + self.grupo.obterParametro('global-email_do_admin') + '</a> \
         </div> '
 
         if self.grupo.obterParametro('global-google_analytics_key'):
@@ -1443,7 +1440,8 @@ def formata_qualis(qualis, qualissimilar):
     s = ''
 
     if not qualis:
-        s += '<font color="#8B0000"><b>Qualis: N&atilde;o identificado</b></font>'
+        #s += '<font color="#8B0000"><b>Qualis: N&atilde;o identificado</b></font>'
+        s += ''
     else:
         s += '<font color="#336600"><b>Qualis: </b></font> '
         if type(qualis) is str:
