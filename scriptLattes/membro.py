@@ -1,11 +1,9 @@
 #!/usr/bin/python
-# encoding: utf-8
-# filename: membro.py
+#  encoding: utf-8
 #
-# scriptLattes V8
-#  Copyright 2005-2013: Jesús P. Mena-Chalco e Roberto M. Cesar-Jr.
-#  http://scriptlattes.sourceforge.net/
 #
+#  scriptLattes
+#  Copyright http://scriptlattes.sourceforge.net/
 #
 #  Este programa é um software livre; você pode redistribui-lo e/ou 
 #  modifica-lo dentro dos termos da Licença Pública Geral GNU como 
@@ -21,7 +19,7 @@
 #  junto com este programa, se não, escreva para a Fundação do Software
 #  Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
-
+#
 
 import sets
 import time
@@ -53,7 +51,6 @@ class Membro:
     enderecoProfissionalLon = ''
 
     identificador10 = ''
-
     url = ''
     atualizacaoCV = ''
     foto = ''
@@ -133,6 +130,12 @@ class Membro:
     rotuloCorBG = ''
 
     tabela_qualis = pandas.DataFrame(columns=['ano', 'area', 'estrato', 'freq'])
+
+    nomePrimeiraGrandeArea = ''
+    nomePrimeiraArea       = ''
+    instituicao            = ''
+
+
 
     ###def __init__(self, idMembro, identificador, nome, periodo, rotulo, itemsDesdeOAno, itemsAteOAno, xml=''):
 
@@ -302,6 +305,32 @@ class Membro:
         self.listaOrganizacaoDeEvento = parser.listaOrganizacaoDeEvento
 
         # -----------------------------------------------------------------------------------------
+        nomePrimeiraGrandeArea = ""
+        nomePrimeiraArea = ""
+
+        if len(self.listaAreaDeAtuacao)>0:
+            descricao = self.listaAreaDeAtuacao[0].descricao
+            partes = descricao.split('/')
+            nomePrimeiraGrandeArea = partes[0]
+            nomePrimeiraGrandeArea = nomePrimeiraGrandeArea.replace("Grande área:".decode('utf-8'), '').strip()
+
+            if len(partes)>1:
+                partes = partes[1].split(":")
+                partes = partes[1].strip()
+                nomePrimeiraArea = partes
+                nomePrimeiraArea = nomePrimeiraArea.strip(".")
+                nomePrimeiraArea = nomePrimeiraArea.replace("Especialidade", "")
+        else:
+            nomePrimeiraGrandeArea = "[sem-grandeArea]"
+            nomePrimeiraArea = "[sem-area]"
+
+
+        self.nomePrimeiraGrandeArea = nomePrimeiraGrandeArea
+        self.nomePrimeiraArea = nomePrimeiraArea
+
+        if len(self.enderecoProfissional)>0:
+            instituicao = self.enderecoProfissional.split(".")[0]
+            self.instituicao = instituicao.replace("'","")
 
 
     def filtrarItemsPorPeriodo(self):
@@ -474,106 +503,6 @@ class Membro:
             for idColaborador in self.listaIDLattesColaboradoresUnica:
                 s += "\n+ " + idColaborador.encode('utf8', 'replace')
 
-            s += "\n"
-            for formacao in self.listaFormacaoAcademica:
-                s += formacao.__str__()
-
-            s += "\n"
-            for projeto in self.listaProjetoDePesquisa:
-                s += projeto.__str__()
-
-            s += "\n"
-            for area in self.listaAreaDeAtuacao:
-                s += area.__str__()
-
-            s += "\n"
-            for idioma in self.listaIdioma:
-                s += idioma.__str__()
-
-            s += "\n"
-            for premio in self.listaPremioOuTitulo:
-                s += premio.__str__()
-
-            s += "\n"
-            for pub in self.listaArtigoEmPeriodico:
-                s += pub.__str__()
-
-            s += "\n"
-            for pub in self.listaLivroPublicado:
-                s += pub.__str__()
-
-            s += "\n"
-            for pub in self.listaCapituloDeLivroPublicado:
-                s += pub.__str__()
-
-            s += "\n"
-            for pub in self.listaTextoEmJornalDeNoticia:
-                s += pub.__str__()
-
-            s += "\n"
-            for pub in self.listaTrabalhoCompletoEmCongresso:
-                s += pub.__str__()
-
-            s += "\n"
-            for pub in self.listaResumoExpandidoEmCongresso:
-                s += pub.__str__()
-
-            s += "\n"
-            for pub in self.listaResumoEmCongresso:
-                s += pub.__str__()
-
-            s += "\n"
-            for pub in self.listaArtigoAceito:
-                s += pub.__str__()
-
-            s += "\n"
-            for pub in self.listaApresentacaoDeTrabalho:
-                s += pub.__str__()
-
-            s += "\n"
-            for pub in self.listaOutroTipoDeProducaoBibliografica:
-                s += pub.__str__()
-
-            s += "\n"
-            for pub in self.listaSoftwareComPatente:
-                s += pub.__str__()
-
-            s += "\n"
-            for pub in self.listaSoftwareSemPatente:
-                s += pub.__str__()
-
-            s += "\n"
-            for pub in self.listaProdutoTecnologico:
-                s += pub.__str__()
-
-            s += "\n"
-            for pub in self.listaProcessoOuTecnica:
-                s += pub.__str__()
-
-            s += "\n"
-            for pub in self.listaTrabalhoTecnico:
-                s += pub.__str__()
-
-            s += "\n"
-            for pub in self.listaOutroTipoDeProducaoTecnica:
-                s += pub.__str__()
-
-            s += "\n"
-            for pub in self.listaPatente:
-                s += pub.__str__()
-
-            s += "\n"
-            for pub in self.listaProgramaComputador:
-                s += pub.__str__()
-
-            s += "\n"
-            for pub in self.listaDesenhoIndustrial:
-                s += pub.__str__()
-
-            s += "\n"
-            for pub in self.listaProducaoArtistica:
-                s += pub.__str__()
-
         else:
             s += "\n- Numero de colaboradores (identificado)      : " + str(len(self.listaIDLattesColaboradoresUnica))
             s += "\n- Artigos completos publicados em periódicos  : " + str(len(self.listaArtigoEmPeriodico))
@@ -585,8 +514,7 @@ class Membro:
             s += "\n- Resumos publicados em anais de congressos   : " + str(len(self.listaResumoEmCongresso))
             s += "\n- Artigos aceitos para publicação             : " + str(len(self.listaArtigoAceito))
             s += "\n- Apresentações de Trabalho                   : " + str(len(self.listaApresentacaoDeTrabalho))
-            s += "\n- Demais tipos de produção bibliográfica      : " + str(
-                len(self.listaOutroTipoDeProducaoBibliografica))
+            s += "\n- Demais tipos de produção bibliográfica      : " + str(len(self.listaOutroTipoDeProducaoBibliografica))
             s += "\n- Softwares com registro de patente           : " + str(len(self.listaSoftwareComPatente))
             s += "\n- Softwares sem registro de patente           : " + str(len(self.listaSoftwareSemPatente))
             s += "\n- Produtos tecnológicos                       : " + str(len(self.listaProdutoTecnologico))
@@ -618,9 +546,9 @@ class Membro:
             s += "\n- Participação em eventos                     : " + str(len(self.listaParticipacaoEmEvento))
             s += "\n- Organização de eventos                      : " + str(len(self.listaOrganizacaoDeEvento))
             s += "\n\n"
-
         return s
 
+		
 
 # ---------------------------------------------------------------------------- #
 # http://wiki.python.org/moin/EscapingHtml

@@ -2,17 +2,32 @@
 # encoding: utf-8
 #
 #
+#  scriptLattes
+#  Copyright http://scriptlattes.sourceforge.net/
+#
+#  Este programa é um software livre; você pode redistribui-lo e/ou 
+#  modifica-lo dentro dos termos da Licença Pública Geral GNU como 
+#  publicada pela Fundação do Software Livre (FSF); na versão 2 da 
+#  Licença, ou (na sua opinião) qualquer versão.
+#
+#  Este programa é distribuído na esperança que possa ser util, 
+#  mas SEM NENHUMA GARANTIA; sem uma garantia implicita de ADEQUAÇÂO a qualquer
+#  MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a
+#  Licença Pública Geral GNU para maiores detalhes.
+#
+#  Você deve ter recebido uma cópia da Licença Pública Geral GNU
+#  junto com este programa, se não, escreva para a Fundação do Software
+#  Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+#
 import logging
-
 import os
 import shutil
 import sys
-
 import Levenshtein
 
-
-SEP = os.path.sep
-BASE = 'scriptLattes' + SEP
+SEP     = os.path.sep
+BASE    = 'scriptLattes' + SEP
 ABSBASE = os.path.abspath('.') + SEP
 
 
@@ -46,7 +61,7 @@ def buscarArquivo(filepath, arquivoConfiguracao=None):
         arquivoConfiguracao = sys.argv[1]
     curdir = os.path.abspath(os.path.curdir)
     if not os.path.isfile(filepath) and arquivoConfiguracao:
-        # vamos tentar mudar o diretorio pro atual do arquivo
+        # vamos tentar mudar o diretorio para o atual do arquivo
         os.chdir(os.path.abspath(os.path.join(arquivoConfiguracao, os.pardir)))
     if not os.path.isfile(filepath):
         # se ainda nao existe, tentemos ver se o arquivo não está junto com o config
@@ -60,7 +75,6 @@ def buscarArquivo(filepath, arquivoConfiguracao=None):
 
 def copiarArquivos(dir):
     base = ABSBASE
-
     try:
         dst = os.path.join(dir, 'css')
         if os.path.exists(dst):
@@ -120,6 +134,10 @@ def similaridade_entre_cadeias(str1, str2, qualis=False):
     str1 = str1.strip().lower()
     str2 = str2.strip().lower()
 
+    # caso especial
+    if (u'apresentação'==str1 or u'apresentação'==str2 or u'apresentacao'==str1 or u'apresentacao'==str2 ):
+        return 0
+
     if len(str1) == 0 or len(str2) == 0:
         return 0
 
@@ -128,7 +146,7 @@ def similaridade_entre_cadeias(str1, str2, qualis=False):
 
     if qualis:
         dist = Levenshtein.ratio(str1, str2)
-        if len(str1) >= 10 and len(str2) >= 10 and dist >= 0.80:
+        if len(str1) >= 10 and len(str2) >= 10 and dist >= 0.90:
             # return 1
             return dist
 
@@ -148,3 +166,11 @@ def criarDiretorio(dir):
             print "[ERRO] Você conta com as permissões de escrita? \n"
             return 0
     return 1
+
+# Combining Dictionaries Of Lists
+def merge_dols(dol1, dol2):
+      result = dict(dol1, **dol2)
+      result.update((k, dol1[k] + dol2[k])
+          for k in set(dol1).intersection(dol2))
+      return result
+

@@ -2,8 +2,8 @@
 # encoding: utf-8
 # filename: qualis.py
 #
-# scriptLattes V8
-# Copyright 2005-2013: Jesús P. Mena-Chalco e Roberto M. Cesar-Jr.
+#
+# scriptLattes
 # http://scriptlattes.sourceforge.net/
 # Pacote desenvolvido por Helena Caseli
 #
@@ -21,16 +21,14 @@
 # junto com este programa, se não, escreva para a Fundação do Software
 # Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
+#
 from collections import defaultdict
 import logging
 import re
 import fileinput
-
 import pandas
-
 from scriptLattes.util import similaridade_entre_cadeias, buscarArquivo
 from qualisextractor import QualisExtractor
-
 
 logger = logging.getLogger(__name__)
 
@@ -116,8 +114,7 @@ class Qualis:
 
         agregacao = self.agregar_qualis(membro.listaArtigoEmPeriodico)
         if agregacao:
-            membro.tabela_qualis = pandas.DataFrame(data=agregacao,
-                                                    columns=['ano', 'area', 'estrato', 'freq'])
+            membro.tabela_qualis = pandas.DataFrame(data=agregacao, columns=['ano', 'area', 'estrato', 'freq'])
         else:
             membro.tabela_qualis = pandas.DataFrame(columns=['ano', 'area', 'estrato', 'freq'])
 
@@ -144,8 +141,7 @@ class Qualis:
                 pub.qualis = qualis if qualis else u"Qualis não identificado"
                 pub.qualissimilar = similar
 
-    def calcular_totais_dos_qualis(self, artigo_em_periodico, trabalho_completo_em_congresso,
-                                   resumo_expandido_em_congresso):
+    def calcular_totais_dos_qualis(self, artigo_em_periodico, trabalho_completo_em_congresso, resumo_expandido_em_congresso):
         # FIXME: publicacao.qualis tem tipo diferente (dict) do que antes (lista)
         # self.qtdPB0 = self.totais_dos_qualis_por_tipo(artigo_em_periodico)
         self.qtdPB4 = self.totais_dos_qualis_por_tipo(trabalho_completo_em_congresso)

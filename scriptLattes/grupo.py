@@ -1,9 +1,8 @@
 #!/usr/bin/python
 # encoding: utf-8
-# filename: grupo.py
 #
-# scriptLattes V8
-#  Copyright 2005-2013: Jesús P. Mena-Chalco e Roberto M. Cesar-Jr.
+#
+#  scriptLattes
 #  http://scriptlattes.sourceforge.net/
 #
 #
@@ -21,7 +20,7 @@
 #  junto com este programa, se não, escreva para a Fundação do Software
 #  Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
-
+#
 import fileinput
 import unicodedata
 
@@ -89,6 +88,10 @@ class Grupo:
     geolocalizacoes = None
 
     qualis = None
+    colaboradores_endogenos = None
+    listaDeColaboracoes = None
+
+
 
     def __init__(self, arquivo):
         self.arquivoConfiguracao = arquivo
@@ -166,11 +169,11 @@ class Grupo:
         self.listaDeRotulosCores = [''] * len(self.listaDeRotulos)
 
         if self.obterParametro('global-identificar_publicacoes_com_qualis'):
-            read_from_cache = self.obterParametro('global-usar_cache_qualis')
+            read_from_cache      = self.obterParametro('global-usar_cache_qualis')
             qualis_de_congressos = self.obterParametro('global-arquivo_qualis_de_congressos')
-            areas_qualis = self.obterParametro('global-arquivo_areas_qualis')
+            areas_qualis         = self.obterParametro('global-arquivo_areas_qualis')
 
-            self.qualis = qualis.Qualis(read_from_cache=read_from_cache,
+            self.qualis          = qualis.Qualis(read_from_cache=read_from_cache,
                                         data_file_path=self.diretorioCache + '/qualis.data',
                                         arquivo_qualis_de_congressos=qualis_de_congressos,
                                         arquivo_areas_qualis=areas_qualis)
@@ -376,9 +379,8 @@ class Grupo:
         # Grafos de coautoria
         self.compilador.criarMatrizesDeColaboracao()
 
-        [self.matrizDeAdjacencia, self.matrizDeFrequencia] = self.compilador.uniaoDeMatrizesDeColaboracao()
-        self.vetorDeCoAutoria = self.matrizDeFrequencia.sum(
-            axis=1)  # suma das linhas = num. de items feitos em co-autoria (parceria) com outro membro do grupo
+        [self.matrizDeAdjacencia, self.matrizDeFrequencia, self.listaDeColaboracoes] = self.compilador.uniaoDeMatrizesDeColaboracao()
+        self.vetorDeCoAutoria = self.matrizDeFrequencia.sum(axis=1)  # suma das linhas = num. de items feitos em co-autoria (parceria) com outro membro do grupo
         self.matrizDeFrequenciaNormalizada = self.matrizDeFrequencia.copy()
 
         for i in range(0, self.numeroDeMembros()):
@@ -386,7 +388,7 @@ class Grupo:
                 self.matrizDeFrequenciaNormalizada[i, :] /= float(self.vetorDeCoAutoria[i])
 
         # AuthorRank
-        authorRank = AuthorRank(self.matrizDeFrequenciaNormalizada, 100)
+        authorRank = AuthorRank(self.matrizDeFrequenciaNormalizada, 20) #100
         self.vectorRank = authorRank.vectorRank
 
         # listas de nomes, rotulos e IDs
@@ -567,7 +569,9 @@ class Grupo:
 
     def gerarGrafosDeColaboracoes(self):
         if self.obterParametro('grafo-mostrar_grafo_de_colaboracoes'):
-            self.grafosDeColaboracoes = GrafoDeColaboracoes(self, self.obterParametro('global-diretorio_de_saida'))
+            self.grafosDeColaboracoes = GrafoDeColaboracoes(self, self.obterParametro('global-diretorio_de_saida') )
+            self.identificar_lista_de_colaboradores_endogenos()
+
         print "\n[ROTULOS]"
         print "- " + str(self.listaDeRotulos)
         print "- " + str(self.listaDeRotulosCores)
@@ -639,7 +643,7 @@ class Grupo:
 
     def atribuirCoNoRotulo(self, indice, cor):
         self.listaDeRotulosCores[indice] = cor
-
+    
     def carregarParametrosPadrao(self):
         self.listaDeParametros.append(['global-nome_do_grupo', ''])
         self.listaDeParametros.append(['global-arquivo_de_entrada', ''])
@@ -745,4 +749,17 @@ class Grupo:
         self.listaDeParametros.append(['mapa-incluir_alunos_de_pos_doutorado', 'sim'])
         self.listaDeParametros.append(['mapa-incluir_alunos_de_doutorado', 'sim'])
         self.listaDeParametros.append(['mapa-incluir_alunos_de_mestrado', 'nao'])
+
+
+    def identificar_lista_de_colaboradores_endogenos(self):
+        self.colaboradores_endogenos = (list([]))
+        for i in range(0, self.numeroDeMembros()):
+            self.colaboradores_endogenos.append(list([]))
+        for i in range(0, self.numeroDeMembros()):
+            for j in range(0, self.numeroDeMembros()):
+                if i!=j and self.matrizDeAdjacencia[i,j]>0:
+                    self.colaboradores_endogenos[i].append( (j, self.matrizDeAdjacencia[i,j]) )
+        
+        for i in range(0, self.numeroDeMembros()):
+            print ( self.colaboradores_endogenos[i] )
 

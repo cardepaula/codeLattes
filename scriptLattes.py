@@ -2,10 +2,8 @@
 # encoding: utf-8
 #
 #
-#  scriptLattes V8
-# Copyright 2005-2014: Jesús P. Mena-Chalco e Roberto M. Cesar-Jr.
-#  http://scriptlattes.sourceforge.net/
-#
+#  scriptLattes
+#  Copyright http://scriptlattes.sourceforge.net/
 #
 #  Este programa é um software livre; você pode redistribui-lo e/ou 
 #  modifica-lo dentro dos termos da Licença Pública Geral GNU como 
@@ -21,15 +19,13 @@
 #  junto com este programa, se não, escreva para a Fundação do Software
 #  Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
+#
 import logging
-
 import warnings
-import requests, BeautifulSoup # required by QualisExtractor
-warnings.filterwarnings('ignore')
-
+import requests, BeautifulSoup  # required by QualisExtractor
+#warnings.filterwarnings('ignore')
 
 from scriptLattes.grupo import *
-
 from scriptLattes.util import *
 
 if 'win' in sys.platform.lower():
@@ -56,10 +52,8 @@ if __name__ == "__main__":
         novoGrupo.compilarListasDeItems() # obrigatorio
         novoGrupo.identificarQualisEmPublicacoes() # obrigatorio
         novoGrupo.calcularInternacionalizacao() # obrigatorio
-        #novoGrupo.imprimirMatrizesDeFrequencia()
 
         novoGrupo.gerarGrafosDeColaboracoes() # obrigatorio
-        #novoGrupo.gerarGraficosDeBarras() # java charts
         novoGrupo.gerarMapaDeGeolocalizacao() # obrigatorio
         novoGrupo.gerarPaginasWeb() # obrigatorio
         novoGrupo.gerarArquivosTemporarios() # obrigatorio
@@ -70,7 +64,7 @@ if __name__ == "__main__":
         # finalizando o processo
         #print '[AVISO] Quem vê \'Lattes\', não vê coração! B-)'
         #print '[AVISO] Por favor, cadastre-se na página: http://scriptlattes.sourceforge.net\n'
-        print '\n\n\n[PARA REFERENCIAR/CITAR ESTE SOFTWARE USE]'
+        print '\n\n[PARA REFERENCIAR/CITAR ESTE SOFTWARE USE]'
         print '    Jesus P. Mena-Chalco & Roberto M. Cesar-Jr.'
         print '    scriptLattes: An open-source knowledge extraction system from the Lattes Platform.'
         print '    Journal of the Brazilian Computer Society, vol.15, n.4, páginas 31-39, 2009.'

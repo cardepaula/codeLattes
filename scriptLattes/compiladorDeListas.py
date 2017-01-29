@@ -1,9 +1,8 @@
 #!/usr/bin/python
 # encoding: utf-8
-# filename: compiladorDeListas.py
 #
-# scriptLattes V8
-#  Copyright 2005-2013: Jesús P. Mena-Chalco e Roberto M. Cesar-Jr.
+#
+#  scriptLattes
 #  http://scriptlattes.sourceforge.net/
 #
 #
@@ -21,12 +20,12 @@
 #  junto com este programa, se não, escreva para a Fundação do Software
 #  Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
-
+#
 
 import operator
 import re
-
 from scipy import sparse
+from scriptLattes.util import merge_dols
 
 class CompiladorDeListas:
     grupo = None
@@ -420,8 +419,7 @@ class CompiladorDeListas:
         if self.grupo.obterParametro('grafo-incluir_apresentacao_de_trabalho'):
             self.matrizesApresentacaoDeTrabalho = self.criarMatrizes(self.listaCompletaApresentacaoDeTrabalho)
         if self.grupo.obterParametro('grafo-incluir_outro_tipo_de_producao_bibliografica'):
-            self.matrizesOutroTipoDeProducaoBibliografica = self.criarMatrizes(
-                self.listaCompletaOutroTipoDeProducaoBibliografica)
+            self.matrizesOutroTipoDeProducaoBibliografica = self.criarMatrizes(self.listaCompletaOutroTipoDeProducaoBibliografica)
 
         if self.grupo.obterParametro('grafo-incluir_software_com_patente'):
             self.matrizesSoftwareComPatente = self.criarMatrizes(self.listaCompletaSoftwareComPatente)
@@ -457,6 +455,11 @@ class CompiladorDeListas:
         matriz1 = sparse.lil_matrix((self.grupo.numeroDeMembros(), self.grupo.numeroDeMembros()))
         matriz2 = sparse.lil_matrix((self.grupo.numeroDeMembros(), self.grupo.numeroDeMembros()))
 
+        # armazenamos a lista de itens associadas a cada colaboracao endogena
+        listaDeColaboracoes = list([])
+        for i in range(0, self.grupo.numeroDeMembros()):
+            listaDeColaboracoes.append( dict([]) )
+
         keys = listaCompleta.keys()
         keys.sort(reverse=True)
         for k in keys:
@@ -471,11 +474,18 @@ class CompiladorDeListas:
                     for c in combinacoes:
                         matriz1[c[0], c[1]] += 1
                         matriz1[c[1], c[0]] += 1
-
                         matriz2[c[0], c[1]] += 1.0 / (numeroDeCoAutores - 1)
                         matriz2[c[1], c[0]] += 1.0 / (numeroDeCoAutores - 1)
+                        
+                        if not c[0] in listaDeColaboracoes[c[1]]:
+                            listaDeColaboracoes[c[1]][ c[0] ] = list([])
+                        if not c[1] in listaDeColaboracoes[c[0]]:
+                            listaDeColaboracoes[c[0]][ c[1] ] = list([])
 
-        return [matriz1, matriz2]
+                        listaDeColaboracoes[c[0]][ c[1] ].append(pub)
+                        listaDeColaboracoes[c[1]][ c[0] ].append(pub)
+
+        return [matriz1, matriz2, listaDeColaboracoes]
 
 
     # combinacoes 2 a 2 de todos os co-autores da publicação
@@ -491,79 +501,108 @@ class CompiladorDeListas:
         return combinacoes
 
 
+    def intercalar_colaboracoes(self, lista1, lista2):
+        for i in range(0, self.grupo.numeroDeMembros()):
+            lista1[i] = merge_dols( lista1[i], lista2[i] )
+        return lista1
+
+
     def uniaoDeMatrizesDeColaboracao(self):
         ##matriz1 = numpy.zeros((self.grupo.numeroDeMembros(), self.grupo.numeroDeMembros()), dtype=numpy.int32)
         ##matriz2 = numpy.zeros((self.grupo.numeroDeMembros(), self.grupo.numeroDeMembros()), dtype=numpy.float32)
         matriz1 = sparse.lil_matrix((self.grupo.numeroDeMembros(), self.grupo.numeroDeMembros()))
         matriz2 = sparse.lil_matrix((self.grupo.numeroDeMembros(), self.grupo.numeroDeMembros()))
+        colaboracoes = []
+        for i in range(0, self.grupo.numeroDeMembros()):
+            colaboracoes.append([])
 
         if self.grupo.obterParametro('grafo-incluir_artigo_em_periodico'):
             matriz1 += self.matrizesArtigoEmPeriodico[0]
             matriz2 += self.matrizesArtigoEmPeriodico[1]
+            colaboracoes = self.intercalar_colaboracoes( colaboracoes, self.matrizesArtigoEmPeriodico[2] )
         if self.grupo.obterParametro('grafo-incluir_livro_publicado'):
             matriz1 += self.matrizesLivroPublicado[0]
             matriz2 += self.matrizesLivroPublicado[1]
+            colaboracoes = self.intercalar_colaboracoes( colaboracoes, self.matrizesLivroPublicado[2] )
         if self.grupo.obterParametro('grafo-incluir_capitulo_de_livro_publicado'):
             matriz1 += self.matrizesCapituloDeLivroPublicado[0]
             matriz2 += self.matrizesCapituloDeLivroPublicado[1]
+            colaboracoes = self.intercalar_colaboracoes( colaboracoes, self.matrizesCapituloDeLivroPublicado[2] )
         if self.grupo.obterParametro('grafo-incluir_texto_em_jornal_de_noticia'):
             matriz1 += self.matrizesTextoEmJornalDeNoticia[0]
             matriz2 += self.matrizesTextoEmJornalDeNoticia[1]
+            colaboracoes = self.intercalar_colaboracoes( colaboracoes, self.matrizesTextoEmJornalDeNoticia[2] )
         if self.grupo.obterParametro('grafo-incluir_trabalho_completo_em_congresso'):
             matriz1 += self.matrizesTrabalhoCompletoEmCongresso[0]
             matriz2 += self.matrizesTrabalhoCompletoEmCongresso[1]
+            colaboracoes = self.intercalar_colaboracoes( colaboracoes, self.matrizesTrabalhoCompletoEmCongresso[2] )
         if self.grupo.obterParametro('grafo-incluir_resumo_expandido_em_congresso'):
             matriz1 += self.matrizesResumoExpandidoEmCongresso[0]
             matriz2 += self.matrizesResumoExpandidoEmCongresso[1]
+            colaboracoes = self.intercalar_colaboracoes( colaboracoes, self.matrizesResumoExpandidoEmCongresso[2] )
         if self.grupo.obterParametro('grafo-incluir_resumo_em_congresso'):
             matriz1 += self.matrizesResumoEmCongresso[0]
             matriz2 += self.matrizesResumoEmCongresso[1]
+            colaboracoes = self.intercalar_colaboracoes( colaboracoes, self.matrizesResumoEmCongresso[2] )
         if self.grupo.obterParametro('grafo-incluir_artigo_aceito_para_publicacao'):
             matriz1 += self.matrizesArtigoAceito[0]
             matriz2 += self.matrizesArtigoAceito[1]
+            colaboracoes = self.intercalar_colaboracoes( colaboracoes, self.matrizesArtigoAceito[2] )
         if self.grupo.obterParametro('grafo-incluir_apresentacao_de_trabalho'):
             matriz1 += self.matrizesApresentacaoDeTrabalho[0]
             matriz2 += self.matrizesApresentacaoDeTrabalho[1]
+            colaboracoes = self.intercalar_colaboracoes( colaboracoes, self.matrizesApresentacaoDeTrabalho[2] )
         if self.grupo.obterParametro('grafo-incluir_outro_tipo_de_producao_bibliografica'):
             matriz1 += self.matrizesOutroTipoDeProducaoBibliografica[0]
             matriz2 += self.matrizesOutroTipoDeProducaoBibliografica[1]
+            colaboracoes = self.intercalar_colaboracoes( colaboracoes, self.matrizesOutroTipoDeProducaoBibliografica[2] )
 
         if self.grupo.obterParametro('grafo-incluir_software_com_patente'):
             matriz1 += self.matrizesSoftwareComPatente[0]
             matriz2 += self.matrizesSoftwareComPatente[1]
+            colaboracoes = self.intercalar_colaboracoes( colaboracoes, self.matrizesSoftwareComPatente[2] )
         if self.grupo.obterParametro('grafo-incluir_software_sem_patente'):
             matriz1 += self.matrizesSoftwareSemPatente[0]
             matriz2 += self.matrizesSoftwareSemPatente[1]
+            colaboracoes = self.intercalar_colaboracoes( colaboracoes, self.matrizesSoftwareSemPatente[2] )
         if self.grupo.obterParametro('grafo-incluir_produto_tecnologico'):
             matriz1 += self.matrizesProdutoTecnologico[0]
             matriz2 += self.matrizesProdutoTecnologico[1]
+            colaboracoes = self.intercalar_colaboracoes( colaboracoes, self.matrizesProdutoTecnologico[2] )
         if self.grupo.obterParametro('grafo-incluir_processo_ou_tecnica'):
             matriz1 += self.matrizesProcessoOuTecnica[0]
             matriz2 += self.matrizesProcessoOuTecnica[1]
+            colaboracoes = self.intercalar_colaboracoes( colaboracoes, self.matrizesProcessoOuTecnica[2] )
         if self.grupo.obterParametro('grafo-incluir_trabalho_tecnico'):
             matriz1 += self.matrizesTrabalhoTecnico[0]
             matriz2 += self.matrizesTrabalhoTecnico[1]
+            colaboracoes = self.intercalar_colaboracoes( colaboracoes, self.matrizesTrabalhoTecnico[2] )
         if self.grupo.obterParametro('grafo-incluir_outro_tipo_de_producao_tecnica'):
             matriz1 += self.matrizesOutroTipoDeProducaoTecnica[0]
             matriz2 += self.matrizesOutroTipoDeProducaoTecnica[1]
+            colaboracoes = self.intercalar_colaboracoes( colaboracoes, self.matrizesOutroTipoDeProducaoTecnica[2] )
 
         if self.grupo.obterParametro('grafo-incluir_patente'):
             matriz1 += self.matrizesPatente[0]
             matriz2 += self.matrizesPatente[1]
+            colaboracoes = self.intercalar_colaboracoes( colaboracoes, self.matrizesPatente[2] )
 
         if self.grupo.obterParametro('grafo-incluir_programa_computador'):
             matriz1 += self.matrizesProgramaComputador[0]
             matriz2 += self.matrizesProgramaComputador[1]
+            colaboracoes = self.intercalar_colaboracoes( colaboracoes, self.matrizesProgramaComputador[2] )
 
         if self.grupo.obterParametro('grafo-incluir_desenho_industrial'):
             matriz1 += self.matrizesDesenhoIndustrial[0]
             matriz2 += self.matrizesDesenhoIndustrial[1]
+            colaboracoes = self.intercalar_colaboracoes( colaboracoes, self.matrizesDesenhoIndustrial[2] )
 
         if self.grupo.obterParametro('grafo-incluir_producao_artistica'):
             matriz1 += self.matrizesProducaoArtistica[0]
             matriz2 += self.matrizesProducaoArtistica[1]
+            colaboracoes = self.intercalar_colaboracoes( colaboracoes, self.matrizesProducaoArtistica[2] )
 
-        return [matriz1, matriz2]
+        return [matriz1, matriz2, colaboracoes]
 
 
     def imprimirMatrizesDeFrequencia(self):

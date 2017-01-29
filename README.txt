@@ -1,4 +1,4 @@
-scriptLattes V8.12
+scriptLattes V8.13
 ------------------
 
 SINOPSIS
@@ -27,7 +27,7 @@ EXECUÇÃO
 	python scriptLattes.py ./exemplo/teste-01.config
 
 	Nesse exemplo consideram-se todas as produções cujos anos de publicações
-	estão entre 2006 e 2016. Nenhum rótulo foi considerado para os membros. 
+	estão entre 2006 e 2017.
 	
 	Os IDs Lattes dos 3 membros está listada em:
 	./exemplo/teste-01.list
@@ -61,6 +61,9 @@ URL DO PROJETO
 
 =========================================================================================
 LOG
+
+Sat Jan 28 10:23:09 BRST 2017
+-- Novos relatórios individuais para os membros (ver aba membros)
 
 Sun Mar 20 21:21:52 BRT 2016
 -- Conserta o problema de 'itens sem ano'.
