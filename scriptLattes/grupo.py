@@ -21,12 +21,14 @@
 #  Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 #
+
 import fileinput
 import unicodedata
 
 from geradorDeXML import *
-from qualis import qualis
+from qualis import *
 from scriptLattes.util import *
+from scriptLattes.qualis import *
 
 import util
 from membro import Membro
@@ -35,6 +37,7 @@ from authorRank import AuthorRank
 from geradorDePaginasWeb import GeradorDePaginasWeb
 from charts.grafoDeColaboracoes import *
 from charts.mapaDeGeolocalizacao import *
+from qualis.qualis import *
 
 
 
@@ -169,14 +172,7 @@ class Grupo:
         self.listaDeRotulosCores = [''] * len(self.listaDeRotulos)
 
         if self.obterParametro('global-identificar_publicacoes_com_qualis'):
-            read_from_cache      = self.obterParametro('global-usar_cache_qualis')
-            qualis_de_congressos = self.obterParametro('global-arquivo_qualis_de_congressos')
-            areas_qualis         = self.obterParametro('global-arquivo_areas_qualis')
-
-            self.qualis          = qualis.Qualis(read_from_cache=read_from_cache,
-                                        data_file_path=self.diretorioCache + '/qualis.data',
-                                        arquivo_qualis_de_congressos=qualis_de_congressos,
-                                        arquivo_areas_qualis=areas_qualis)
+            self.qualis = Qualis(self) # carregamos Qualis a partir de arquivos definidos no arquivo de configuração
 
     def gerarXMLdeGrupo(self):
         if self.obterParametro('global-salvar_informacoes_em_formato_xml'):
@@ -192,43 +188,21 @@ class Grupo:
         prefix = self.obterParametro('global-prefixo') + '-' if not self.obterParametro('global-prefixo') == '' else ''
 
         # Salvamos a lista individual
-        s = ""
+        s = u''
         for membro in self.listaDeMembros:
-            s += self.imprimeCSVListaIndividual(membro.nomeCompleto, membro.listaArtigoEmPeriodico)
-            s += self.imprimeCSVListaIndividual(membro.nomeCompleto, membro.listaTrabalhoCompletoEmCongresso)
-            s += self.imprimeCSVListaIndividual(membro.nomeCompleto, membro.listaResumoExpandidoEmCongresso)
-        self.salvarArquivoGenerico(s, prefix + 'publicacoesPorMembro.csv')
+            nomeCompleto = unicodedata.normalize('NFKD', membro.nomeCompleto).encode('ASCII', 'ignore')
+            s += self.imprimeCSVListaIndividual(nomeCompleto, membro.listaArtigoEmPeriodico)
+            s += self.imprimeCSVListaIndividual(nomeCompleto, membro.listaTrabalhoCompletoEmCongresso)
+            s += self.imprimeCSVListaIndividual(nomeCompleto, membro.listaResumoExpandidoEmCongresso)
+        self.salvarArquivoGenerico(s.encode('utf8'), prefix + 'publicacoesPorMembro.csv')
 
         # Salvamos a lista total (publicações do grupo)
-        s = ""
+        s = u''
         s += self.imprimeCSVListaGrupal(self.compilador.listaCompletaArtigoEmPeriodico)
         s += self.imprimeCSVListaGrupal(self.compilador.listaCompletaTrabalhoCompletoEmCongresso)
         s += self.imprimeCSVListaGrupal(self.compilador.listaCompletaResumoExpandidoEmCongresso)
-        self.salvarArquivoGenerico(s, prefix + 'publicacoesDoGrupo.csv')
+        self.salvarArquivoGenerico(s.encode('utf8'), prefix + 'publicacoesDoGrupo.csv')
 
-    def gerarCSVdeQualisdeGrupoOld(self):
-        if self.obterParametro('global-identificar_publicacoes_com_qualis'):
-            prefix = self.obterParametro('global-prefixo') + '-' if not self.obterParametro(
-                'global-prefixo') == '' else ''
-
-            # Salvamos a lista individual
-            s = ""
-            for membro in self.listaDeMembros:
-                if (not self.obterParametro('global-arquivo_qualis_de_periodicos') == ''):
-                    s += self.imprimeCSVListaIndividual(membro.nomeCompleto, membro.listaArtigoEmPeriodico)
-                if (not self.obterParametro('global-arquivo_qualis_de_congressos') == ''):
-                    s += self.imprimeCSVListaIndividual(membro.nomeCompleto, membro.listaTrabalhoCompletoEmCongresso)
-                    s += self.imprimeCSVListaIndividual(membro.nomeCompleto, membro.listaResumoExpandidoEmCongresso)
-            self.salvarArquivoGenerico(s, prefix + 'qualisPorMembro.csv')
-
-            # Salvamos a lista total (publicações do grupo)
-            s = ""
-            if (not self.obterParametro('global-arquivo_qualis_de_periodicos') == ''):
-                s += self.imprimeCSVListaGrupal(self.compilador.listaCompletaArtigoEmPeriodico)
-            if (not self.obterParametro('global-arquivo_qualis_de_congressos') == ''):
-                s += self.imprimeCSVListaGrupal(self.compilador.listaCompletaTrabalhoCompletoEmCongresso)
-                s += self.imprimeCSVListaGrupal(self.compilador.listaCompletaResumoExpandidoEmCongresso)
-            self.salvarArquivoGenerico(s, prefix + 'qualisGrupal.csv')
 
     def gerarArquivosTemporarios(self):
         print "\n[CRIANDO ARQUIVOS TEMPORARIOS: CSV, RIS, TXT, GDF]"
@@ -321,13 +295,14 @@ class Grupo:
 
 
     def imprimeCSVListaIndividual(self, nomeCompleto, lista):
-        s = ""
+        s = u""
         for pub in lista:
-            s += pub.csv(nomeCompleto).encode('utf8') + "\n"
+            s += pub.csv(nomeCompleto) + "\n"
         return s
 
+
     def imprimeCSVListaGrupal(self, listaCompleta):
-        s = ""
+        s = u""
         keys = listaCompleta.keys()
         keys.sort(reverse=True)
 
@@ -337,7 +312,7 @@ class Grupo:
                 elementos.sort(key=lambda x: x.chave.lower())
                 for index in range(0, len(elementos)):
                     pub = elementos[index]
-                    s += pub.csv().encode('utf8') + "\n"
+                    s += pub.csv(u' ') + "\n"
         return s
 
 
@@ -404,15 +379,17 @@ class Grupo:
         if self.obterParametro('global-identificar_publicacoes_com_qualis'):
             print "\n[IDENTIFICANDO QUALIS EM PUBLICAÇÕES]"
             for membro in self.listaDeMembros:
-                self.qualis.analisar_publicacoes(membro)  # Qualis - Adiciona Qualis as publicacoes dos membros
+                self.qualis.analisarPublicacoes(membro, self)  # Qualis - Adiciona Qualis as publicacoes dos membros
+            self.qualis.calcularTotaisDosQualis(self)
 
-            # if self.diretorioCache:
-            filename = (self.diretorioCache or '/tmp') + '/qualis.data'
-            # self.qualis.qextractor.save_data(self.diretorioCache + '/' + filename)
-            self.qualis.qextractor.save_data(filename)
+            ### if self.diretorioCache:
+            ###filename = (self.diretorioCache or '/tmp') + '/qualis.data'
+            #### self.qualis.qextractor.save_data(self.diretorioCache + '/' + filename)
+            ###self.qualis.qextractor.save_data(filename)
 
-            self.qualis.calcular_totais_dos_qualis(self.compilador.listaCompletaArtigoEmPeriodico, self.compilador.listaCompletaTrabalhoCompletoEmCongresso,
-                        self.compilador.listaCompletaResumoExpandidoEmCongresso)
+            ###self.qualis.calcular_totais_dos_qualis(self.compilador.listaCompletaArtigoEmPeriodico, self.compilador.listaCompletaTrabalhoCompletoEmCongresso,
+            ###            self.compilador.listaCompletaResumoExpandidoEmCongresso)
+
 
     def salvarListaTXT(self, lista, nomeArquivo):
         dir = self.obterParametro('global-diretorio_de_saida')
@@ -661,8 +638,8 @@ class Grupo:
         self.listaDeParametros.append(['global-salvar_informacoes_em_formato_xml', 'nao'])
 
         self.listaDeParametros.append(['global-identificar_publicacoes_com_qualis', 'nao'])
-        self.listaDeParametros.append(['global-usar_cache_qualis', 'sim'])
-        self.listaDeParametros.append(['global-arquivo_areas_qualis', ''])
+        ###self.listaDeParametros.append(['global-usar_cache_qualis', 'sim'])
+        ###self.listaDeParametros.append(['global-arquivo_areas_qualis', ''])
         self.listaDeParametros.append(['global-arquivo_qualis_de_congressos', ''])
         self.listaDeParametros.append(['global-arquivo_qualis_de_periodicos', ''])
 

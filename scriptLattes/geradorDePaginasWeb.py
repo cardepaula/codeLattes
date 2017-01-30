@@ -607,9 +607,8 @@ class GeradorDePaginasWeb:
 
     @staticmethod
     def gerar_grafico_de_producoes(listaCompleta, titulo):
-
         chart = highchart(type=chart_type.column)
-        chart.set_y_title(u'Frequência')
+        chart.set_y_title(u'Quantidade')
         # chart.set_x_title(u'Ano')
         # chart.set_x_categories(sorted(listaCompleta.keys()))
         # chart['xAxis']['type'] = 'categories'
@@ -622,17 +621,17 @@ class GeradorDePaginasWeb:
                 categories.append(ano)
                 for pub in publicacoes:
                     try:
-                        if not pub.qualis:
-                            logger.debug("qualis is None")
-                            estrato_area_ano_freq[None][None][ano] += 1  # sem qualis
-                        else:
-                            if type(pub.qualis) is str:  # sem area
-                                logger.debug("publicação com qualis string (sem área): '{}'".format(pub.qualis))
-                            else:
-                                for area, estrato in sorted(pub.qualis.items()):
-                                    estrato_area_ano_freq[estrato][area][ano] += 1
-                                    if area not in areas_map:
-                                        areas_map[area] = len(areas_map)
+                        #if not pub.qualis:
+                        #    logger.debug("qualis is None")
+                        estrato_area_ano_freq[None][None][ano] += 1  # sem qualis
+                        #else:
+                        #    if type(pub.qualis) is str:  # sem area
+                        #        logger.debug("publicação com qualis string (sem área): '{}'".format(pub.qualis))
+                        #    else:
+                        #        for area, estrato in sorted(pub.qualis.items()):
+                        #            estrato_area_ano_freq[estrato][area][ano] += 1
+                        #            if area not in areas_map:
+                        #                areas_map[area] = len(areas_map)
                     except AttributeError:
                         logger.debug(u"publicação sem atributo qualis")
                         estrato_area_ano_freq[None][None][ano] += 1  # producao que nao tem qualis
@@ -640,11 +639,11 @@ class GeradorDePaginasWeb:
         series = []
         if not estrato_area_ano_freq.keys():  # produções vazias
             logger.debug("produções vazias")
-        elif len(
-                estrato_area_ano_freq.keys()) == 1 and None in estrato_area_ano_freq.keys():  # gráfico normal sem qualis
+        ###elif len(estrato_area_ano_freq.keys()) == 1 and None in estrato_area_ano_freq.keys():  # gráfico normal sem qualis
+        else:  # gráfico normal sem qualis
             chart.settitle(titulo.decode('utf8'))
             chart['plotOptions']['column']['stacking'] = None
-            chart['chart']['height'] = 400
+            chart['chart']['height'] = 300
             # chart['legend']['title'] = {'text': 'Ano'}
             chart['legend']['enabled'] = jscmd('false')
             chart['xAxis']['type'] = 'category'
@@ -661,6 +660,7 @@ class GeradorDePaginasWeb:
 
             # for ano, pub in sorted(listaCompleta.items()):
             #     series.append({'name': ano, 'data': [len(pub)]}) #, 'y': [len(pub)]})
+        '''
         else:  # temos informações sobre qualis
             chart.settitle(u'Publicações por ano agrupadas por área e estrato Qualis')
             chart['chart']['type'] = 'bar'
@@ -691,6 +691,7 @@ class GeradorDePaginasWeb:
                 one_serie = {'name': estrato, 'data': data}  #, 'stack': area}
                 series.append(one_serie)
             chart['drilldown'] = {'series': drilldown_series}
+        '''
         chart.set_series(series)
 
         return chart
@@ -701,6 +702,8 @@ class GeradorDePaginasWeb:
             if self.grupo.obterParametro('global-arquivo_qualis_de_periodicos'):  # FIXME: nao está mais sendo usado agora que há qualis online
                 if prefixo == 'PB0':
                     totais_qualis = self.formatarTotaisQualis(self.grupo.qualis.qtdPB0)
+                elif prefixo == 'PB7':
+                    totais_qualis = self.formatarTotaisQualis(self.grupo.qualis.qtdPB7)
             if self.grupo.obterParametro('global-arquivo_qualis_de_congressos'):
                 if prefixo == 'PB4':
                     totais_qualis = self.formatarTotaisQualis(self.grupo.qualis.qtdPB4)
@@ -712,11 +715,9 @@ class GeradorDePaginasWeb:
         keys = sorted(lista_completa.keys(), reverse=True)
         if keys:  # apenas geramos páginas web para lista com pelo menos 1 elemento
             max_elementos = int(self.grupo.obterParametro('global-itens_por_pagina'))
-            total_paginas = int(math.ceil(
-                total_producoes / (max_elementos * 1.0)))  # dividimos os relatórios em grupos (e.g 1000 items)
+            total_paginas = int(math.ceil( total_producoes / (max_elementos * 1.0)))  # dividimos os relatórios em grupos (e.g 1000 items)
 
-            grafico = self.gerar_grafico_de_producoes(lista_completa,
-                                                      titulo_pagina)  # FIXME: é o mesmo gráfico em todas as páginas
+            grafico = self.gerar_grafico_de_producoes(lista_completa, titulo_pagina)  # FIXME: é o mesmo gráfico em todas as páginas
 
             anos_indices_publicacoes = self.arranjar_publicacoes(lista_completa)
             itens_por_pagina = self.chunks(anos_indices_publicacoes, max_elementos)
@@ -1035,8 +1036,8 @@ class GeradorDePaginasWeb:
 
     def gerar_pagina_de_membros(self):
         s = self.pagina_top()
-        #s += u'\n<h3>Lista de membros</h3> <table id="membros" class="collapse-box" ><tr>\
-        s += u'\n<h3>Lista de membros</h3> <table id="membros" class="sortable" ><tr>\
+        #s += u'\n<h3>Lista de membros</h3> <table id="membros" class="sortable" ><tr>\
+        s += u'\n<h3>Lista de membros</h3> <table id="membros" class="collapse-box" ><tr>\
                 <th></th>\
                 <th></th>\
                 <th><b><font size=-1>Rótulo/Grupo</font></b></th>\
@@ -1597,18 +1598,17 @@ class GeradorDePaginasWeb:
 
 
     def formatarTotaisQualis(self, qtd):
-        """
         st = '(<b>A1</b>: '+str(qtd['A1'])+', <b>A2</b>: '+str(qtd['A2'])+', <b>B1</b>: '+str(qtd['B1'])+', <b>B2</b>: '+str(qtd['B2'])
         st+= ', <b>B3</b>: '+str(qtd['B3'])+', <b>B4</b>: '+str(qtd['B4'])+', <b>B5</b>: '+str(qtd['B5'])+', <b>C</b>: '+str(qtd['C'])
         st+= ', <b>Qualis n&atilde;o identificado</b>: '+str(qtd['Qualis nao identificado'])+')'
         st+= '<br><p><b>Legenda Qualis:</b><ul>'
-        st+= '<li> Publica&ccedil;&atilde;o para a qual o nome exato do Qualis foi identificado: <font color="#336600"><b>Qualis &lt;estrato&gt;</b></font>'
-        st+= '<li> Publica&ccedil;&atilde;o para a qual um nome similar (n&atilde;o exato) do Qualis foi identificado: <font color="#FF9933"><b>Qualis &lt;estrato&gt;</b></font> (nome similar)'
-        st+= '<li> Publica&ccedil;&atilde;o para a qual nenhum nome do Qualis foi identificado: <font color="#8B0000"><b>Qualis n&atilde;o identificado</b></font> (nome usado na busca)'
+        st+= '<li> Publica&ccedil;&atilde;o para a qual o nome exato do Qualis foi identificado: <font color="#254117"><b>Qualis &lt;estrato&gt;</b></font>'
+        st+= '<li> Publica&ccedil;&atilde;o para a qual um nome similar (n&atilde;o exato) do Qualis foi identificado: <font color="#F88017"><b>Qualis &lt;estrato&gt;</b></font> (nome similar)'
+        st+= '<li> Publica&ccedil;&atilde;o para a qual nenhum nome do Qualis foi identificado: <font color="#FDD7E4"><b>Qualis n&atilde;o identificado</b></font> (nome usado na busca)'
         st+= '</ul>'
         return st
-        """
-        return 'Sem totais qualis ainda...'
+
+        #return 'Sem totais qualis ainda...'
 
 
 def menuHTMLdeBuscaPB(titulo):
@@ -1645,7 +1645,7 @@ def menuHTMLdeBuscaPA(titulo):
     return s
 
 
-"""def formata_qualis(qualis, qualissimilar):
+def formata_qualis(qualis, qualissimilar):
     s = ''
     if not qualis==None:
         if qualis=='':
@@ -1653,26 +1653,26 @@ def menuHTMLdeBuscaPA(titulo):
 
         if qualis=='Qualis nao identificado':
             # Qualis nao identificado - imprime em vermelho
-            s += '<font color="#8B0000"><b>Qualis: N&atilde;o identificado</b></font> ('+qualissimilar+')'
+            s += '<font color="#FDD7E4"><b>Qualis: N&atilde;o identificado</b></font> ('+qualissimilar+')'
         else:
             if qualissimilar=='':
                 # Casamento perfeito - imprime em verde
-                s += '<font color="#336600"><b>Qualis: ' + qualis + '</b></font>'
+                s += '<font color="#254117"><b>Qualis: ' + qualis + '</b></font>'
             else:
                 # Similar - imprime em laranja
-                s += '<font color="#FF9933"><b>Qualis: ' + qualis + '</b></font> ('+qualissimilar+')'
+                s += '<font color="#F88017"><b>Qualis: ' + qualis + '</b></font> ('+qualissimilar+')'
     return s
-    """
 
 
+'''
 def formata_qualis(qualis, qualissimilar):
     s = ''
 
     if not qualis:
-        #s += '<font color="#8B0000"><b>Qualis: N&atilde;o identificado</b></font>'
+        #s += '<font color="#FDD7E4"><b>Qualis: N&atilde;o identificado</b></font>'
         s += ''
     else:
-        s += '<font color="#336600"><b>Qualis: </b></font> '
+        s += '<font color="#254117"><b>Qualis: </b></font> '
         if type(qualis) is str:
             s += '<font class="area"><b>SEM_AREA</b></font> - <b>' + qualis + '</b>&nbsp'
         else:
@@ -1680,4 +1680,4 @@ def formata_qualis(qualis, qualissimilar):
                  sorted(qualis.items(), key=lambda x: x[0])]
             s += '&nbsp|&nbsp'.join(l)
     return s
-
+'''

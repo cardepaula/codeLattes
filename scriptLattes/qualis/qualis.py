@@ -1,18 +1,17 @@
 #!/usr/bin/python
 # encoding: utf-8
-# filename: qualis.py
 #
 #
-# scriptLattes
+# scriptLattes V8
 # http://scriptlattes.sourceforge.net/
 # Pacote desenvolvido por Helena Caseli
 #
-# Este programa é um software livre; você pode redistribui-lo e/ou
-# modifica-lo dentro dos termos da Licença Pública Geral GNU como
-# publicada pela Fundação do Software Livre (FSF); na versão 2 da
+# Este programa é um software livre; você pode redistribui-lo e/ou 
+# modifica-lo dentro dos termos da Licença Pública Geral GNU como 
+# publicada pela Fundação do Software Livre (FSF); na versão 2 da 
 # Licença, ou (na sua opinião) qualquer versão.
 #
-# Este programa é distribuído na esperança que possa ser util,
+# Este programa é distribuído na esperança que possa ser util, 
 # mas SEM NENHUMA GARANTIA; sem uma garantia implicita de ADEQUAÇÂO a qualquer
 # MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a
 # Licença Pública Geral GNU para maiores detalhes.
@@ -22,181 +21,176 @@
 # Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 #
-from collections import defaultdict
+
 import logging
 import re
 import fileinput
-import pandas
+from scriptLattes import *
 from scriptLattes.util import similaridade_entre_cadeias, buscarArquivo
-from qualisextractor import QualisExtractor
 
 logger = logging.getLogger(__name__)
-
-
-def padronizar_nome(nome):
-    nome = nome.replace(u"\u00A0", " ")
-    nome = nome.replace(u"\u2010", " ")
-    nome = nome.replace(u"-", " ")
-
-    # nome = re.sub(r"\(.*\)", " ", nome)
-    # nome = re.sub(r"\(", " ", nome)
-    # nome = re.sub(r"\)", " ", nome)
-    nome = re.sub("\s+", ' ', nome)
-    nome = nome.strip()
-    return nome
-
-
-def carregar_qualis_de_arquivo(arquivo):
-    lista = {}
-    if arquivo:
-        arquivo = buscarArquivo(arquivo)
-
-        for linha in fileinput.input(arquivo):
-            linha = linha.replace("\r", "")
-            linha = linha.replace("\n", "")
-
-            campos = linha.split('\t')
-            sigla = campos[0].rstrip().decode("utf8")  # ISSN de periodicos ou SIGLA de congressos
-            nome = campos[1].rstrip().decode("utf8")  # Nome do periodico ou evento
-            qualis = campos[2].rstrip()  # Estrato Qualis
-
-            nome = padronizar_nome(nome)
-            sigla = padronizar_nome(sigla)
-
-            lista[nome] = qualis
-            lista[sigla] = qualis  # Armazena a sigla/issn do evento/periodico
-
-        logger.info('[QUALIS]: {} itens adicionados do arquivo {}'.format(len(lista), arquivo))
-    return lista
-
 
 class Qualis:
     periodicos = {}
     congressos = {}
-    qtdPB0 = {}  # Total de artigos em periodicos por Qualis
-    qtdPB4 = {}  # Total de trabalhos completos em congressos por Qualis
-    qtdPB5 = {}  # Total de resumos expandidos em congressos por Qualis
+    qtdPB0     = {}    # Total de artigos em periodicos por Qualis
+    qtdPB4     = {}    # Total de trabalhos completos em congressos por Qualis
+    qtdPB5     = {}    # Total de resumos expandidos em congressos por Qualis
+    qtdPB7     = {}    # Total de artigos aceitos para publicacao por Qualis
+    
 
-    def __init__(self, read_from_cache=True, data_file_path=None, arquivo_qualis_de_congressos=None,
-                 arquivo_areas_qualis=None):
-        """
-        arquivo_qualis_de_congressos: arquivo CSV de qualis de congressos # FIXME: só funciona para uma área
-        data_file_path: arquivo cache de qualis extraídos anteriormente; é atualizado ao final da execução
-        """
+    def __init__(self, grupo):
+        if grupo.obterParametro('global-identificar_publicacoes_com_qualis'):
+            self.periodicos = self.carregarQualis(grupo.obterParametro('global-arquivo_qualis_de_periodicos'))
+            self.congressos = self.carregarQualis(grupo.obterParametro('global-arquivo_qualis_de_congressos'))
+    
+    def calcularTotaisDosQualis(self, grupo):
+        print ("**************************")
+        if (not grupo.obterParametro('global-arquivo_qualis_de_periodicos')==''):
+            self.qtdPB0 = self.calcularTotaisDosQualisPorTipo(self.qtdPB0, grupo.compilador.listaCompletaArtigoEmPeriodico)
+            self.qtdPB7 = self.calcularTotaisDosQualisPorTipo(self.qtdPB7, grupo.compilador.listaCompletaArtigoAceito)
+        print ("**************************")
+        if (not grupo.obterParametro('global-arquivo_qualis_de_congressos')==''):
+            print ("**************************a333")
+            self.qtdPB4 = self.calcularTotaisDosQualisPorTipo(self.qtdPB4, grupo.compilador.listaCompletaTrabalhoCompletoEmCongresso)
+            self.qtdPB5 = self.calcularTotaisDosQualisPorTipo(self.qtdPB5, grupo.compilador.listaCompletaResumoExpandidoEmCongresso)
 
-        # self.periodicos = self.carregar_qualis_de_arquivo(grupo.obterParametro('global-arquivo_qualis_de_periodicos'))
-        # qualis extractor -> extrai qualis diretamente da busca online do qualis
-        self.qextractor = QualisExtractor(read_from_cache, arquivo_areas_qualis, data_file_path)
+    def calcularTotaisDosQualisPorTipo(self, qtd, listaCompleta):
+        self.inicializaListaQualis(qtd)
+        print "/////////////////////////////////////////"
+        print qtd
 
-        # self.qextractor.extract_qualis()
-        # self.qextractor.save_data(data_file_path)
+        keys = listaCompleta.keys()
+        print keys
+        print listaCompleta
 
-        self.congressos = carregar_qualis_de_arquivo(arquivo_qualis_de_congressos)
+        if len(keys)>0: 
+            for ano in keys:
+                elementos = listaCompleta[ano]
+                for index in range(0, len(elementos)):
 
-    def analisar_publicacoes(self, membro):
-        # Percorrer lista de publicacoes buscando e contabilizando os qualis
-        for publicacao in membro.listaArtigoEmPeriodico:
-            # qualis, similar = self.buscaQualis('P', pub.revista)
-            # pub.qualis = qualis
-            if publicacao.issn:
-                publicacao.qualis = self.qextractor.get_qualis_by_issn(publicacao.issn)
+                    pub = elementos[index]
+                    print pub
+                    qtd[pub.qualis] += 1
 
-            # FIXME: utilizaria o comportamento antigo (ler qualis de um CSV), mas nao funciona se a configuracao global-arquivo_qualis_de_periodicos nao for definida
-            # elif not self.extrair_qualis_online:
-            # qualis, similar = self.buscaQualis('P', pub.revista)
-            # pub.qualis = qualis
-            # pub.qualissimilar = similar
+        print qtd
+        return qtd
+
+
+    def buscaQualis(self, tipo, nome, sigla=''):
+        dist  = 0
+        indice = 0
+        # Percorrer lista de periodicos tentando casar com nome usando funcao similaridade_entre_cadeias(str1, str2) de scriptLattes.py
+        if tipo=='P':
+            if self.periodicos.get(sigla)!=None:
+                # print "CASOU ISSN: ", nome, sigla
+                return self.periodicos.get(sigla) , ''    # Retorna Qualis do issn/sigla exato encontrado - Casamento perfeito
+            elif self.periodicos.get(nome)!=None:
+                #print "CASOU NOME: ", nome, sigla
+                return self.periodicos.get(nome) , ''    # Retorna Qualis do nome exato encontrado - Casamento perfeito
             else:
-                # tentar extrair online pelo titulo
-                publicacao.qualis = self.qextractor.get_qualis_by_title(publicacao.revista)
-                publicacao.qualis = None
-                publicacao.qualissimilar = None
-
-        agregacao = self.agregar_qualis(membro.listaArtigoEmPeriodico)
-        if agregacao:
-            membro.tabela_qualis = pandas.DataFrame(data=agregacao, columns=['ano', 'area', 'estrato', 'freq'])
+                chaves = self.periodicos.keys()
+                for i in range(0,len(chaves)):
+                    distI = similaridade_entre_cadeias( nome, chaves[i], qualis=True)
+                    if distI>dist: # comparamos: nome com cada nome de periodico
+                        indice = i
+                        dist = distI
+                if indice>0:
+                        return self.periodicos.get(chaves[indice]) , chaves[indice]    # Retorna Qualis de nome similar
         else:
-            membro.tabela_qualis = pandas.DataFrame(columns=['ano', 'area', 'estrato', 'freq'])
+            if self.congressos.get(nome)!=None:
+                return self.congressos.get(nome) , '' # Retorna Qualis do nome exato encontrado - Casamento perfeito
+            else:
+                chaves = self.congressos.keys()
+                for i in range(0,len(chaves)):
+                    distI = similaridade_entre_cadeias( nome, chaves[i], qualis=True)
+                    if distI>dist: # comparamos: nome com cada nome de evento
+                        indice = i
+                        dist = distI
+                if indice>0:
+                    return self.congressos.get(chaves[indice]) , chaves[indice]    # Retorna Qualis de nome similar
+        #return 'Qualis nao identificado', ''
+        return 'Qualis nao identificado', nome
 
-        # XXX: pensar em usar pivot_table
-        # pd.pivot_table(h, values='freq', index=['area', 'estrato'], columns=['ano'])
-        # p = pd.pivot_table(data=df, index='area', columns=['ano', 'estrato'], values='freq')
-        # p.fillna(0)
 
-        if self.congressos:
+
+    def analisarPublicacoes(self, membro, grupo):
+        # Percorrer lista de publicacoes buscando e contabilizando os qualis
+        if (not grupo.obterParametro('global-arquivo_qualis_de_periodicos')==''):
+            for pub in membro.listaArtigoEmPeriodico:
+                qualis, similar = self.buscaQualis('P', pub.revista, pub.issn)
+                pub.qualis = qualis
+                pub.qualissimilar = similar
+            for pub in membro.listaArtigoAceito:
+                qualis, similar = self.buscaQualis('P', pub.revista, pub.issn)
+                pub.qualis = qualis
+                pub.qualissimilar = similar
+
+        if (not grupo.obterParametro('global-arquivo_qualis_de_congressos')==''):
             for pub in membro.listaTrabalhoCompletoEmCongresso:
-                qualis, similar = self.busca_qualis_congressos(pub.nomeDoEvento)
-                if not qualis:
-                    if self.congressos.get(pub.sigla):
-                        qualis = self.congressos.get(pub.sigla)  # Retorna Qualis da sigla com nome do evento
+                qualis, similar = self.buscaQualis('C', pub.nomeDoEvento)
+                if qualis=='Qualis nao identificado':
+                    if self.congressos.get(pub.sigla)!=None:
+                        qualis = self.congressos.get(pub.sigla) # Retorna Qualis da sigla com nome do evento
                         similar = pub.sigla
-                    else:
-                        qualis = u"Qualis não identificado"  # FIXME: conferir se não deve ser None (ver na geração de gráfico)
+                    else:                
+                        qualis = 'Qualis nao identificado'
                         similar = pub.nomeDoEvento
                 pub.qualis = qualis
                 pub.qualissimilar = similar
 
             for pub in membro.listaResumoExpandidoEmCongresso:
-                qualis, similar = self.busca_qualis_congressos(pub.nomeDoEvento)
-                pub.qualis = qualis if qualis else u"Qualis não identificado"
+                qualis, similar = self.buscaQualis('C', pub.nomeDoEvento)
+                pub.qualis = qualis
                 pub.qualissimilar = similar
 
-    def calcular_totais_dos_qualis(self, artigo_em_periodico, trabalho_completo_em_congresso, resumo_expandido_em_congresso):
-        # FIXME: publicacao.qualis tem tipo diferente (dict) do que antes (lista)
-        # self.qtdPB0 = self.totais_dos_qualis_por_tipo(artigo_em_periodico)
-        self.qtdPB4 = self.totais_dos_qualis_por_tipo(trabalho_completo_em_congresso)
-        self.qtdPB5 = self.totais_dos_qualis_por_tipo(resumo_expandido_em_congresso)
 
-    def busca_qualis_periodicos(self, nome):
-        # FIXME: não usado; antigo método buscaQualis(tipo, nome)
-        dist = 0
-        indice = 0
-        # Percorrer lista de periodicos tentando casar com nome usando funcao similaridade_entre_cadeias(str1, str2) de scriptLattes.py
-        if self.periodicos.get(nome):
-            return self.periodicos.get(nome), ''  # Retorna Qualis do nome exato encontrado - Casamento perfeito
-        else:
-            chaves = self.periodicos.keys()
-            for i in range(0, len(chaves)):
-                distI = similaridade_entre_cadeias(nome, chaves[i], qualis=True)
-                if distI > dist:  # comparamos: nome com cada nome de periodico
-                    indice = i
-                    dist = distI
-            if indice > 0:
-                return self.periodicos.get(chaves[indice]), chaves[indice]  # Retorna Qualis de nome similar
-        return None, None
+    def inicializaListaQualis(self, lista):
+        lista['A1'] = 0
+        lista['A2'] = 0
+        lista['B1'] = 0
+        lista['B2'] = 0
+        lista['B3'] = 0
+        lista['B4'] = 0
+        lista['B5'] = 0
+        lista['C']  = 0
+        lista['Qualis nao identificado'] = 0
 
-    def busca_qualis_congressos(self, nome):
-        # Percorrer lista de periodicos tentando casar com nome usando funcao similaridade_entre_cadeias(str1, str2) de scriptLattes.py
-        if self.congressos.get(nome):
-            return self.congressos.get(nome), ''  # Retorna Qualis do nome exato encontrado - Casamento perfeito
-        else:
-            similaridade, nome_congresso, qualis = max(
-                (similaridade_entre_cadeias(nome, key, qualis=True), key, value) for key, value in
-                self.congressos.items())
-            if similaridade > 0:
-                return qualis, nome_congresso
-            return None, nome
 
-    @staticmethod
-    def totais_dos_qualis_por_tipo(lista_completa):  # FIXME: remover
-        qtd = defaultdict(int)
-        for ano, publicacoes in lista_completa.items():
-            for publicacao in publicacoes:
-                qtd[publicacao.qualis] += 1
-        return qtd
+    def carregarQualis(self, arquivo):
+        lista = {}
+        if (not arquivo==''):
+            for linha in fileinput.input(arquivo):
+                linha = linha.replace("\r","")
+                linha = linha.replace("\n","")
 
-    @staticmethod
-    def agregar_qualis(publicacoes):
-        ano_area_estrato_freq = defaultdict(lambda: defaultdict(lambda: defaultdict(int)))
-        for publicacao in publicacoes:
-            if publicacao.qualis:
-                for area, estrato in publicacao.qualis.items():
-                    ano_area_estrato_freq[publicacao.ano][area][estrato] += 1
-        agregacao = []
-        for ano, aef in ano_area_estrato_freq.items():
-            for area, ef in aef.items():
-                for estrato, freq in ef.items():
-                    agregacao.append((ano, area, estrato, freq))
-        return agregacao
+                campos = linha.split('\t')
+                sigla  = campos[0].rstrip().decode("utf8")    # ISSN de periodicos ou SIGLA de congressos
+                nome   = campos[1].rstrip().decode("utf8")    # Nome do periodico ou evento
+                qualis = campos[2].rstrip()    # Estrato Qualis
 
+                #nome   = self.padronizarNome(nome)
+                #sigla  = self.padronizarNome(sigla)
+                sigla = sigla.replace("-","")
+
+                lista[nome]  = qualis
+                lista[sigla] = qualis    # Armazena a sigla/issn do evento/periodico
+            print "[QUALIS]: "+str(len(lista))+" itens adicionados de "+arquivo
+        return lista
+
+
+    def padronizarNome(self, nome):
+        #nome = nome.replace(u"\u00A0", " ")
+        #nome = nome.replace(u"\u2010", " ")
+        #nome = nome.replace(u"-"," ")
+        nome = nome.replace(u"\u00A0", "")
+        nome = nome.replace(u"\u2010", "")
+        nome = nome.replace(u"-","")
+
+        #nome = re.sub(r"\(.*\)", " ", nome)
+        #nome = re.sub(r"\(", " ", nome)
+        #nome = re.sub(r"\)", " ", nome)
+        nome = re.sub("\s+", ' ', nome)
+        nome = nome.strip()
+        return nome
 

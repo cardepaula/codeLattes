@@ -14,6 +14,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+
 import codecs
 import logging
 import urllib2
@@ -30,7 +31,8 @@ logger = logging.getLogger(__name__)
 
 # converts a string to a integer if the string is a integer, else returns None
 def str2int(string):
-    if string == None:  return None
+    if string == None:
+        return None
     try:
         return int(string)
     except ValueError:
@@ -52,12 +54,11 @@ class QualisExtractor(object):
         # self.publicacao = {}  #{'titulo': {'area': 'estrato'}}
         # self.issn = {}  #{'issn': {'area': 'estrato'}}
         self.qualis_data_frame = pd.DataFrame(columns=['issn', 'periodico', 'area', 'estrato'])
-
-        self.areas = []
-        self.areas_to_extract = []
+        self.areas             = []
+        self.areas_to_extract  = []
         self.areas_last_update = {}
-        self.dtnow = datetime.datetime.now()
-        self.update_time = 15
+        self.dtnow             = datetime.datetime.now()
+        self.update_time       = 15
 
         if arquivo_areas_qualis:
             self.parse_areas_file(arquivo_areas_qualis)
@@ -66,8 +67,8 @@ class QualisExtractor(object):
             self.load_data(data_file_path)
 
         # self.init_session()
-        self.initialized = False
-        self.url2 = None
+        self.initialized = True #False
+        self.url2        = None
 
     def get_areas(self, document):
         tree = etree.HTML(document)
@@ -116,7 +117,7 @@ class QualisExtractor(object):
     def parse_areas_file(self, afile):
         '''
         Formato do arquivo:
-        Nome da area
+        Nome da area 1
         Nome da area 2
         ...
         '''
@@ -307,6 +308,10 @@ class QualisExtractor(object):
         # XXX: note que se houver chaves repetidas, só o último valor é salvo. Neste caso aqui não há problema, já que cada área só tem uma avaliação.
         qualis = dict(zip(issn_data['area'], issn_data['estrato']))
 
+        print("----------------")
+        print qualis
+        print("----------------")
+
         return qualis
 
     def extract_online_qualis_by_title(self, journal_title):
@@ -381,6 +386,8 @@ class QualisExtractor(object):
         # XXX: note que se houver chaves repetidas, só o último valor é salvo. Neste caso aqui não há problema, já que cada área só tem uma avaliação.
         qualis = dict(zip(data['area'], data['estrato']))
 
+        print ('###################', qualis)
+
         return qualis
 
         # qualis = self.publicacoes.get(name)
@@ -433,18 +440,16 @@ class QualisExtractor(object):
             0 otherwise
         """
 
-        data_frame = pd.DataFrame(columns=['issn', 'periodico', 'area', 'estrato'])
-
-        tree = etree.HTML(document)
-
+        data_frame  = pd.DataFrame(columns=['issn', 'periodico', 'area', 'estrato'])
+        tree        = etree.HTML(document)
         table_lines = tree.xpath("//table[@id='consultaPublicaClassificacaoForm:listaVeiculosIssn']/tbody/tr")
 
         for tr in table_lines:
+            print tr
 
             line = []
             for td in tr:
                 line.append(HTMLParser().unescape(td.text.strip()))
-
             issn_q, journal_q, estrato_q, area_q, classif_q = line
 
             if not issn_q or not journal_q:

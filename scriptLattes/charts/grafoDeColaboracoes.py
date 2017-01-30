@@ -91,9 +91,9 @@ class GrafoDeColaboracoes:
             nome = self.abreviarNome(membro.nomeCompleto)+" ["+str(int(self.grupo.vetorDeCoAutoria[m]))+"]"
             if self.grupo.vetorDeCoAutoria[m]>0 or self.grupo.obterParametro('grafo-mostrar_todos_os_nos_do_grafo'):
                 try:
-                    grafo.add_node(membro.idMembro, label=nome, fontcolor=membro.rotuloCorFG, color=membro.rotuloCorBG, height="0.2", URL=membro.url)
+                    grafo.add_node(membro.idMembro, label=nome, fontcolor=membro.rotuloCorFG, color=membro.rotuloCorBG, height="0.2", URL="membro-" + membro.idLattes +".html")
                 except:
-                    grafo.add_node(membro.idMembro, label=nome.encode('utf8'), fontcolor=membro.rotuloCorFG, color=membro.rotuloCorBG, height="0.2", URL=membro.url)
+                    grafo.add_node(membro.idMembro, label=nome.encode('utf8'), fontcolor=membro.rotuloCorFG, color=membro.rotuloCorBG, height="0.2", URL="membro-" + membro.idLattes +".html")
 
         # Inserimos as arestas
         for i in range(0, self.grupo.numeroDeMembros()-1):
@@ -119,9 +119,9 @@ class GrafoDeColaboracoes:
             nome = self.abreviarNome(membro.nomeCompleto)+" ["+str(int(self.grupo.vetorDeCoAutoria[m]))+"]"
             if self.grupo.vetorDeCoAutoria[m]>0 or self.grupo.obterParametro('grafo-mostrar_todos_os_nos_do_grafo'):
                 try:
-                    grafo.add_node(membro.idMembro, label=nome, fontcolor=membro.rotuloCorFG, color=membro.rotuloCorBG, height="0.2", URL=membro.url)
+                    grafo.add_node(membro.idMembro, label=nome, fontcolor=membro.rotuloCorFG, color=membro.rotuloCorBG, height="0.2", URL="membro-" + membro.idLattes +".html")
                 except:
-                    grafo.add_node(membro.idMembro, label=nome.encode('utf8'), fontcolor=membro.rotuloCorFG, color=membro.rotuloCorBG, height="0.2", URL=membro.url)
+                    grafo.add_node(membro.idMembro, label=nome.encode('utf8'), fontcolor=membro.rotuloCorFG, color=membro.rotuloCorBG, height="0.2", URL="membro-" + membro.idLattes +".html")
 
         # Inserimos as arestas
         for i in range(0, self.grupo.numeroDeMembros()-1):
@@ -147,9 +147,9 @@ class GrafoDeColaboracoes:
             nome = self.abreviarNome(membro.nomeCompleto)+" ["+str(int(self.grupo.vetorDeCoAutoria[m]))+"]"
             if self.grupo.vetorDeCoAutoria[m]>0 or self.grupo.obterParametro('grafo-mostrar_todos_os_nos_do_grafo'):
                 try:
-                    grafo.add_node(membro.idMembro, label=nome, fontcolor=membro.rotuloCorFG, color=membro.rotuloCorBG, height="0.2", URL=membro.url)
+                    grafo.add_node(membro.idMembro, label=nome, fontcolor=membro.rotuloCorFG, color=membro.rotuloCorBG, height="0.2", URL="membro-" + membro.idLattes +".html")
                 except:
-                    grafo.add_node(membro.idMembro, label=nome.encode('utf8'), fontcolor=membro.rotuloCorFG, color=membro.rotuloCorBG, height="0.2", URL=membro.url)
+                    grafo.add_node(membro.idMembro, label=nome.encode('utf8'), fontcolor=membro.rotuloCorFG, color=membro.rotuloCorBG, height="0.2", URL="membro-" + membro.idLattes +".html")
 
         # Inserimos as arestas
         for i in range(0, self.grupo.numeroDeMembros()):
@@ -191,7 +191,7 @@ class GrafoDeColaboracoes:
                 corDoNoBG = '#003399'
 
             if self.grupo.vetorDeCoAutoria[m]>0 or self.grupo.obterParametro('grafo-mostrar_todos_os_nos_do_grafo'):
-                grafo.add_node(membro.idMembro, label=nome, fontcolor=corDoNoFG, color=corDoNoBG, height="0.2", URL=membro.url, root='True')
+                grafo.add_node(membro.idMembro, label=nome, fontcolor=corDoNoFG, color=corDoNoBG, height="0.2", URL="membro-" + membro.idLattes +".html", root='True')
 
                 for idColaborador in membro.listaIDLattesColaboradoresUnica:
                     inserir = 1
