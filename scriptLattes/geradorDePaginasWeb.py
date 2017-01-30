@@ -63,7 +63,7 @@ class GeradorDePaginasWeb:
             self.arquivoRis = open(self.dir + "/" + prefix + "publicacoes.ris", 'w')
 
         self.gerar_pagina_de_membros()
-        self.gerar_pagina_de_producao_qualificado_por_membro()
+        #self.gerar_pagina_de_producao_qualificado_por_membro()
         self.gerarPaginasDeProducoesBibliograficas()
         self.gerarPaginasDeProducoesTecnicas()
         self.gerarPaginasDeProducoesArtisticas()
@@ -113,8 +113,8 @@ class GeradorDePaginasWeb:
         <body onload="initialize()" onunload="GUnload()"> <div id="header">  \
         <center> <h2> ' + nomeGrupo + '</h2>'
 
-        s += '[ <a href=membros' + self.extensaoPagina + '>Membros</a> \
-            | <a href=producao_membros' + self.extensaoPagina + '>Produção qualificado por membro</a> \
+        #| <a href=producao_membros' + self.extensaoPagina + '>Produção qualificado por membro</a> \
+        s += '[ <a href=membros' + self.extensaoPagina + '><b>Membros</b></a> \
             | <a href=#producaoBibliografica>Produção bibliográfica</a> \
             | <a href=#producaoTecnica>Produção técnica</a> \
             | <a href=#producaoArtistica>Produção artística</a> '.decode("utf8")
@@ -140,6 +140,9 @@ class GeradorDePaginasWeb:
 
         if self.grupo.obterParametro('relatorio-incluir_internacionalizacao'):
             s += '| <a href=#internacionalizacao>Internacionalização</a> '.decode("utf8")
+
+        if self.grupo.obterParametro('relatorio-incluir_producao_com_colaboradores'):
+            s += '| <a href=producao-com-colaboradores/index' + self.extensaoPagina + '><b>Produção com colaboradores</b></a> '.decode("utf8")
 
         s += ' ] </center><br></div>'
         s += '<h3 id="producaoBibliografica">Produção bibliográfica</h3> <ul>'.decode("utf8")
@@ -1036,8 +1039,8 @@ class GeradorDePaginasWeb:
 
     def gerar_pagina_de_membros(self):
         s = self.pagina_top()
-        #s += u'\n<h3>Lista de membros</h3> <table id="membros" class="sortable" ><tr>\
-        s += u'\n<h3>Lista de membros</h3> <table id="membros" class="collapse-box" ><tr>\
+        #s += u'\n<h3>Lista de membros</h3> <table id="membros" class="collapse-box" ><tr>\
+        s += u'\n<h3>Lista de membros</h3> <table id="membros" class="sortable" ><tr>\
                 <th></th>\
                 <th></th>\
                 <th><b><font size=-1>Rótulo/Grupo</font></b></th>\

@@ -33,18 +33,10 @@ if 'win' in sys.platform.lower():
 sys.stdout = OutputStream(sys.stdout, sys.stdout.encoding)
 sys.stderr = OutputStream(sys.stderr, sys.stdout.encoding)
 
-if __name__ == "__main__":
-    logger = logging.getLogger(__name__)
-    logging.basicConfig(format='%(asctime)s - %(levelname)s (%(name)s) - %(message)s')
-    # logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s')
-    # logging.root.setLevel(level=logging.INFO)
-    logging.root.setLevel(level=logging.DEBUG)
-    logger.info("Executando '{}'".format(' '.join(sys.argv)))
 
-    arquivoConfiguracao = sys.argv[1]
+def executar_scriptLattes(arquivoConfiguracao):
     # os.chdir( os.path.abspath(os.path.join(arquivoConfiguracao, os.pardir)))
     novoGrupo = Grupo(arquivoConfiguracao)
-    # novoGrupo.imprimirListaDeParametros()
     novoGrupo.imprimirListaDeRotulos()
 
     if criarDiretorio(novoGrupo.obterParametro('global-diretorio_de_saida')):
@@ -70,3 +62,19 @@ if __name__ == "__main__":
         print '    Journal of the Brazilian Computer Society, vol.15, n.4, páginas 31-39, 2009.'
         print '    http://dx.doi.org/10.1007/BF03194511'
         print '\n\nscriptLattes executado!'
+
+        # para incluir a producao com colaboradores é necessário um novo chamado ao scriptLattes
+        if (novoGrupo.obterParametro('relatorio-incluir_producao_com_colaboradores')):
+            executar_scriptLattes( novoGrupo.obterParametro('global-diretorio_de_saida') + "/producao-com-colaboradores.config" )
+
+
+if __name__ == "__main__":
+    logger = logging.getLogger(__name__)
+    logging.basicConfig(format='%(asctime)s - %(levelname)s (%(name)s) - %(message)s')
+    # logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s')
+    # logging.root.setLevel(level=logging.INFO)
+    logging.root.setLevel(level=logging.DEBUG)
+    logger.info("Executando '{}'".format(' '.join(sys.argv)))
+
+    executar_scriptLattes(sys.argv[1])
+

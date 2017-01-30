@@ -229,12 +229,16 @@ class Grupo:
         self.salvarListaTXT(self.vectorRank, prefix + "authorRank.txt")
 
         # (4) lista unica de colaboradores (orientadores, ou qualquer outro tipo de parceiros...)
-        rawColaboradores = list([])
+        rawIDsColaboradores = list([])
+        rawIDsMembros       = list([])
+        for membro in self.listaDeMembros:
+            rawIDsMembros.append(membro.idLattes)
         for membro in self.listaDeMembros:
             for idColaborador in membro.listaIDLattesColaboradoresUnica:
-                rawColaboradores.append(idColaborador)
-        rawColaboradores = list(set(rawColaboradores))
-        self.salvarListaTXT(rawColaboradores, prefix + "colaboradores.txt")
+                if not idColaborador in rawIDsMembros:
+                    rawIDsColaboradores.append(idColaborador)
+        rawIDsColaboradores = list(set(rawIDsColaboradores))
+        self.salvarListaTXT(rawIDsColaboradores, prefix + "colaboradores.txt")
 
         # (5) Geolocalizacoes
         self.geolocalizacoes = list([])
@@ -244,6 +248,40 @@ class Grupo:
 
         # (6) arquivo GDF
         self.gerarArquivoGDF(prefix + "rede.gdf")
+
+        # (7) lista de membros + colaboradores : colaboracao exogena
+        t = []
+        entrada = buscarArquivo(self.obterParametro('global-arquivo_de_entrada'))
+        for linha in fileinput.input(entrada.decode('utf8')):
+            linha = linha.replace("\r", "")
+            linha = linha.replace("\n", "")
+            t.append(linha)
+        for idColaborador in rawIDsColaboradores:
+            t.append( idColaborador + " , , , Colaborador-Lattes" )
+        self.salvarListaTXT(t, "producao-com-colaboradores.list")
+
+        # (8) arquivo de configuracao para colaboracao exogena
+        t = []
+        for par in self.listaDeParametros:
+            valor = par[1]
+            if par[0]=='global-nome_do_grupo':
+                valor = self.obterParametro('global-nome_do_grupo') + " + Colaboradores na Plataforma Lattes"
+            if par[0]=='global-arquivo_de_entrada':
+                valor = self.obterParametro('global-diretorio_de_saida') + "/producao-com-colaboradores.list"
+            if par[0]=='global-diretorio_de_saida':
+                valor = self.obterParametro('global-diretorio_de_saida') + "/producao-com-colaboradores/"
+            if par[0]=='global-prefixo':
+                valor = ""
+            if par[0]=='relatorio-incluir_producao_com_colaboradores':
+                valor = "nao"
+            if par[0]=='grafo-mostrar_todos_os_nos_do_grafo':
+                valor = "nao"
+            if par[0]=='grafo-considerar_rotulos_dos_membros_do_grupo':
+                valor = "sim"
+            if par[0]=='mapa-mostrar_mapa_de_geolocalizacao':
+                valor = "nao"
+            t.append( par[0].ljust(60) + " = " + valor )
+        self.salvarListaTXT(t, "producao-com-colaboradores.config")
 
 
     def gerarArquivoGDF(self, nomeArquivo):
@@ -727,6 +765,8 @@ class Grupo:
         self.listaDeParametros.append(['mapa-incluir_alunos_de_doutorado', 'sim'])
         self.listaDeParametros.append(['mapa-incluir_alunos_de_mestrado', 'nao'])
 
+        # colaboracao exogena
+        self.listaDeParametros.append(['relatorio-incluir_producao_com_colaboradores', 'nao'])
 
     def identificar_lista_de_colaboradores_endogenos(self):
         self.colaboradores_endogenos = (list([]))
