@@ -94,6 +94,7 @@ class Grupo:
     colaboradores_endogenos = None
     listaDeColaboracoes = None
 
+    dicionarioDeGeolocalizacao = dict([])
 
 
     def __init__(self, arquivo):
@@ -160,9 +161,7 @@ class Grupo:
                 ###### self.listaDeMembros.append(Membro(idSequencial, '', nome, periodo, rotulo, self.itemsDesdeOAno, self.itemsAteOAno, xml=identificador))
                 ###	self.listaDeMembros.append(Membro(idSequencial, identificador, nome, periodo, rotulo, self.itemsDesdeOAno, self.itemsAteOAno, diretorioCache))
                 ###else:
-                self.listaDeMembros.append(
-                    Membro(idSequencial, identificador, nome, periodo, rotulo, self.itemsDesdeOAno, self.itemsAteOAno,
-                           self.diretorioCache))
+                self.listaDeMembros.append( Membro(idSequencial, identificador, nome, periodo, rotulo, self.itemsDesdeOAno, self.itemsAteOAno, self.diretorioCache, self.dicionarioDeGeolocalizacao))
 
                 self.listaDeRotulos.append(rotulo)
                 idSequencial += 1
@@ -173,6 +172,8 @@ class Grupo:
 
         if self.obterParametro('global-identificar_publicacoes_com_qualis'):
             self.qualis = Qualis(self) # carregamos Qualis a partir de arquivos definidos no arquivo de configuração
+
+
 
     def gerarXMLdeGrupo(self):
         if self.obterParametro('global-salvar_informacoes_em_formato_xml'):
@@ -779,4 +780,27 @@ class Grupo:
         
         for i in range(0, self.numeroDeMembros()):
             print ( self.colaboradores_endogenos[i] )
+
+
+    def carregar_dados_temporarios_de_geolocalizacao(self):
+        print ("\n\n[CARREGANDO DADOS DE GEOLOCALIZACAO]: dados/geolocalizao.txt")
+        for linha in fileinput.input('dados/geolocalizao.txt'):
+            linha    = linha.replace("\r", "")
+            linha    = linha.replace("\n", "")
+            linhaDiv = linha.split("\t")
+            if len(linhaDiv) == 3:
+                self.dicionarioDeGeolocalizacao[ linhaDiv[0] ]  = (linhaDiv[1], linhaDiv[2])
+                print(linha)
+
+    def salvar_dados_temporarios_de_geolocalizacao(self):
+        print ("\n\n[SALVANDO DADOS DE GEOLOCALIZACAO]: dados/geolocalizao.txt")
+        s = u''
+        for chave in self.dicionarioDeGeolocalizacao.keys():
+            (lat, lon) = self.dicionarioDeGeolocalizacao[chave]
+            s += '{}\t{}\t{}\n'.format( chave, lat, lon )
+            print u'- {}\t{}\t{}'.format(chave, lat, lon)
+
+        arquivo = open('dados/geolocalizao.txt', 'w')
+        arquivo.write(s)
+        arquivo.close()
 

@@ -119,7 +119,7 @@ def copiarArquivos(dir):
     # shutil.copy2(os.path.join(base, 'js', 'jquery.dataTables.min.js'), dir)
     # shutil.copy2(os.path.join(base, 'js', 'jquery.dataTables.rowGrouping.js'), dir)
 
-    print "Arquivos salvos em: >>'%s'<<" % os.path.abspath(dir)
+    print( "\n\nArquivos salvos em: >>{}<<".format(os.path.abspath(dir)) )
 
 
 # ---------------------------------------------------------------------------- #

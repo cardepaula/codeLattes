@@ -45,35 +45,22 @@ class Qualis:
             self.congressos = self.carregarQualis(grupo.obterParametro('global-arquivo_qualis_de_congressos'))
     
     def calcularTotaisDosQualis(self, grupo):
-        print ("**************************")
         if (not grupo.obterParametro('global-arquivo_qualis_de_periodicos')==''):
             self.qtdPB0 = self.calcularTotaisDosQualisPorTipo(self.qtdPB0, grupo.compilador.listaCompletaArtigoEmPeriodico)
             self.qtdPB7 = self.calcularTotaisDosQualisPorTipo(self.qtdPB7, grupo.compilador.listaCompletaArtigoAceito)
-        print ("**************************")
         if (not grupo.obterParametro('global-arquivo_qualis_de_congressos')==''):
-            print ("**************************a333")
             self.qtdPB4 = self.calcularTotaisDosQualisPorTipo(self.qtdPB4, grupo.compilador.listaCompletaTrabalhoCompletoEmCongresso)
             self.qtdPB5 = self.calcularTotaisDosQualisPorTipo(self.qtdPB5, grupo.compilador.listaCompletaResumoExpandidoEmCongresso)
 
     def calcularTotaisDosQualisPorTipo(self, qtd, listaCompleta):
         self.inicializaListaQualis(qtd)
-        print "/////////////////////////////////////////"
-        print qtd
-
         keys = listaCompleta.keys()
-        print keys
-        print listaCompleta
-
         if len(keys)>0: 
             for ano in keys:
                 elementos = listaCompleta[ano]
                 for index in range(0, len(elementos)):
-
                     pub = elementos[index]
-                    print pub
                     qtd[pub.qualis] += 1
-
-        print qtd
         return qtd
 
 

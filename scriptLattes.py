@@ -38,6 +38,7 @@ def executar_scriptLattes(arquivoConfiguracao):
     # os.chdir( os.path.abspath(os.path.join(arquivoConfiguracao, os.pardir)))
     novoGrupo = Grupo(arquivoConfiguracao)
     novoGrupo.imprimirListaDeRotulos()
+    novoGrupo.carregar_dados_temporarios_de_geolocalizacao()
 
     if criarDiretorio(novoGrupo.obterParametro('global-diretorio_de_saida')):
         novoGrupo.carregarDadosCVLattes() #obrigatorio
@@ -49,6 +50,8 @@ def executar_scriptLattes(arquivoConfiguracao):
         novoGrupo.gerarMapaDeGeolocalizacao() # obrigatorio
         novoGrupo.gerarPaginasWeb() # obrigatorio
         novoGrupo.gerarArquivosTemporarios() # obrigatorio
+
+        novoGrupo.salvar_dados_temporarios_de_geolocalizacao()
 
         # copiar imagens e css
         copiarArquivos(novoGrupo.obterParametro('global-diretorio_de_saida'))
@@ -66,6 +69,8 @@ def executar_scriptLattes(arquivoConfiguracao):
         # para incluir a producao com colaboradores é necessário um novo chamado ao scriptLattes
         if (novoGrupo.obterParametro('relatorio-incluir_producao_com_colaboradores')):
             executar_scriptLattes( novoGrupo.obterParametro('global-diretorio_de_saida') + "/producao-com-colaboradores.config" )
+
+
 
 
 if __name__ == "__main__":
