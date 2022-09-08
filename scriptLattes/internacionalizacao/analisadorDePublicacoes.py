@@ -7,12 +7,12 @@
 #  http://scriptlattes.sourceforge.net/
 #
 #
-#  Este programa é um software livre; você pode redistribui-lo e/ou 
-#  modifica-lo dentro dos termos da Licença Pública Geral GNU como 
-#  publicada pela Fundação do Software Livre (FSF); na versão 2 da 
+#  Este programa é um software livre; você pode redistribui-lo e/ou
+#  modifica-lo dentro dos termos da Licença Pública Geral GNU como
+#  publicada pela Fundação do Software Livre (FSF); na versão 2 da
 #  Licença, ou (na sua opinião) qualquer versão.
 #
-#  Este programa é distribuído na esperança que possa ser util, 
+#  Este programa é distribuído na esperança que possa ser util,
 #  mas SEM NENHUMA GARANTIA; sem uma garantia implicita de ADEQUAÇÂO a qualquer
 #  MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a
 #  Licença Pública Geral GNU para maiores detalhes.
@@ -25,7 +25,9 @@
 
 import http.cookiejar
 import time
-import urllib.request, urllib.error, urllib.parse
+import urllib.request
+import urllib.error
+import urllib.parse
 import xml.dom.minidom
 import os.path
 import re
@@ -298,17 +300,21 @@ class AnalisadorDePublicacoes:
                 pub = elementos[index]
                 if hasattr(pub, 'doi'):
                     if not pub.doi == "":
-                        listaDePaisesIdentificados = self.identificarPaisesEmPublicacao(pub.doi, ano)
-                        publicacaoEinternacionalizacao = PublicacaoEinternacionalizacao(pub)
-                        publicacaoEinternacionalizacao.atribuirListaDeIndicesDePaises(listaDePaisesIdentificados)
+                        listaDePaisesIdentificados = self.identificarPaisesEmPublicacao(
+                            pub.doi, ano)
+                        publicacaoEinternacionalizacao = PublicacaoEinternacionalizacao(
+                            pub)
+                        publicacaoEinternacionalizacao.atribuirListaDeIndicesDePaises(
+                            listaDePaisesIdentificados)
 
                         if self.listaDePublicacoesEinternacionalizacao.get(pub.ano) is None:
-                            self.listaDePublicacoesEinternacionalizacao[pub.ano] = []
-                        self.listaDePublicacoesEinternacionalizacao[pub.ano].append(publicacaoEinternacionalizacao)
+                            self.listaDePublicacoesEinternacionalizacao[pub.ano] = [
+                            ]
+                        self.listaDePublicacoesEinternacionalizacao[pub.ano].append(
+                            publicacaoEinternacionalizacao)
 
         # devolve uma lista com as publicacoes e paises
         return self.listaDePublicacoesEinternacionalizacao
-
 
     def identificarPaisesEmPublicacao(self, urlDOI, ano):
         listaDePaisesIdentificados = None
@@ -338,18 +344,19 @@ class AnalisadorDePublicacoes:
             if len(listaDePaisesIdentificados) > 0:
                 if "Brazil" not in listaDePaisesIdentificados and "Brasil" not in listaDePaisesIdentificados:
                     listaDePaisesIdentificados.append("Brazil")
-            cadeia = str(ano) + " , " + urlDOI + " , " + str(len(listaDePaisesIdentificados)) + ", "
+            cadeia = str(ano) + " , " + urlDOI + " , " + \
+                str(len(listaDePaisesIdentificados)) + ", "
             for nomPais in listaDePaisesIdentificados:
                 cadeia = cadeia + nomPais + "; "
             self.listaDoiValido.append(cadeia)
 
         return listaDePaisesIdentificados
 
-
     def procurarPais(self, dataDoi, nomeDePais, urlDOI):
         nomeDePais = nomeDePais.lower()
         nomeDePais = HTMLParser().unescape(nomeDePais.decode("utf8", "ignore"))
-        nomeDePais = unicodedata.normalize('NFKD', str(nomeDePais)).encode('ascii', 'ignore')
+        nomeDePais = unicodedata.normalize(
+            'NFKD', str(nomeDePais)).encode('ascii', 'ignore')
         if len(nomeDePais) <= 0:
             return False
         if len(dataDoi) == 2:
@@ -382,7 +389,6 @@ class AnalisadorDePublicacoes:
         else:
             return False
 
-
     def obterDadosAtravesDeDOI(self, urlDOI):
         print(('\nProcessando DOI: ' + urlDOI))
         txdata = None
@@ -406,7 +412,7 @@ class AnalisadorDePublicacoes:
             arquivoX.close()
             print(("- Utilizando DOI armazenado no cache: " + doiPath))
 
-        #-----------------------------------------------------------------
+        # -----------------------------------------------------------------
         # tentamos 3 vezes baixar a página web associado ao DOI
         else:
             tentativa = 1
@@ -415,14 +421,16 @@ class AnalisadorDePublicacoes:
                     req = urllib.request.Request(urlDOI, txdata, txheaders)
 
                     cj = http.cookiejar.CookieJar()
-                    opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
+                    opener = urllib.request.build_opener(
+                        urllib.request.HTTPCookieProcessor(cj))
                     response = opener.open(req)
                     rawDOIhtml = response.read()
                     print(("- Baixando publicacao com DOI: " + urlDOI))
 
                     # rawDOIhtml = HTMLParser.HTMLParser().unescape(rawDOIhtml.decode("utf8", "ignore"))
                     rawDOIhtml = HTMLParser().unescape(rawDOIhtml.decode("utf8", "ignore"))
-                    rawDOIhtml = unicodedata.normalize('NFKD', str(rawDOIhtml)).encode('ascii', 'ignore')
+                    rawDOIhtml = unicodedata.normalize(
+                        'NFKD', str(rawDOIhtml)).encode('ascii', 'ignore')
 
                     if not self.grupo.diretorioDoi == '':
                         print(("- Armazenando DOI armazenado no cache: " + doiPath))
@@ -432,7 +440,8 @@ class AnalisadorDePublicacoes:
                         f.close()
                     break
                 except:
-                    print(('[AVISO] Tentativa ' + str(tentativa) + ': DOI não está disponível na internet: ', urlDOI))
+                    print(('[AVISO] Tentativa ' + str(tentativa) +
+                          ': DOI não está disponível na internet: ', urlDOI))
                     time.sleep(10)
                     rawDOIhtml = None
                     tentativa += 1
@@ -446,7 +455,7 @@ class AnalisadorDePublicacoes:
                     print(("**caso -- " + parserData[0]))
                     caso = genericParser(parserData)
                     try:
-                        caso.feed(rawDOIhtml)  ####
+                        caso.feed(rawDOIhtml)
                     except:
                         caso.data = ""
                     doihtml = str(caso.data)
@@ -457,11 +466,12 @@ class AnalisadorDePublicacoes:
                 print("**caso - 10.1134")
                 casoUrl = parser101007()
                 try:
-                    casoUrl.feed(rawDOIhtml)  ###
+                    casoUrl.feed(rawDOIhtml)
                 except:
                     casoUrl.data = ""
                 doihtml = str(casoUrl.data)
-                parserData = ["10.1134", '', '', '', 'authoraddress=.*\+', '.*&contentid']
+                parserData = ["10.1134", '', '', '',
+                              'authoraddress=.*\+', '.*&contentid']
                 dataDoi.append(doihtml)
                 dataDoi.append(parserData)
 
@@ -491,8 +501,9 @@ class AnalisadorDePublicacoes:
                 except:
                     caso.data = ""
                 doihtml = str(caso.data)
-                #print doihtml
-                parserData = ["10.1590", '', '', '', ',.*,\s*', '[\s*|,|;|-|\.|\'|\"]']
+                # print doihtml
+                parserData = ["10.1590", '', '', '',
+                              ',.*,\s*', '[\s*|,|;|-|\.|\'|\"]']
                 dataDoi.append(doihtml)
                 dataDoi.append(parserData)
             else:
@@ -504,10 +515,10 @@ class AnalisadorDePublicacoes:
             dataDoi = []
         return dataDoi
 
-
     def html2texto(self, rawDOIhtml):
         # First we remove inline JavaScript/CSS:
-        cleaned = re.sub(r"(?is)<(script|style).*?>.*?(</\1>)", "", rawDOIhtml.strip())
+        cleaned = re.sub(r"(?is)<(script|style).*?>.*?(</\1>)",
+                         "", rawDOIhtml.strip())
         # Then we remove html comments. This has to be done before removing regular
         # tags since comments can contain '>' characters.
         cleaned = re.sub(r"(?s)<!--(.*?)-->[\n]?", "", cleaned)
@@ -519,7 +530,7 @@ class AnalisadorDePublicacoes:
         cleaned = re.sub(r"\r", "\n", cleaned)
         cleaned = re.sub(r"\t+", " ", cleaned)
 
-        #cleaned = re.sub(r"\"", "", cleaned) # novo
+        # cleaned = re.sub(r"\"", "", cleaned) # novo
 
         # Next we can remove the remaining tags:
         cleaned = re.sub(r"(?s)<.*?>", " ", cleaned)
@@ -530,7 +541,6 @@ class AnalisadorDePublicacoes:
 
         cleaned = re.sub(r"\s+\n", "\n", cleaned)
         return cleaned.strip()
-
 
     def procurarParser(self, urlDOI):
         idDoi = urlDOI[18:25]
@@ -543,11 +553,11 @@ class AnalisadorDePublicacoes:
                 atr = pai.getAttributeNode('idDoi')
                 if atr.value == idDoi:
                     fields.append(atr.value)
-                    filhos2 = [no for no in pai.childNodes if no.nodeType == x.ELEMENT_NODE]
+                    filhos2 = [
+                        no for no in pai.childNodes if no.nodeType == x.ELEMENT_NODE]
                     for filho in filhos2:
                         fields.append(self.node2Text(filho))
                     return fields
-
 
     def node2Text(self, node):
         text = ''
@@ -555,4 +565,3 @@ class AnalisadorDePublicacoes:
             if child.nodeType is child.TEXT_NODE:
                 text += child.data
         return text
-

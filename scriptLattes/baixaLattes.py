@@ -3,15 +3,15 @@
 # filename: baixaLattes.py
 #
 #
-# scriptLattes 
+# scriptLattes
 # http://scriptlattes.sourceforge.net/
 #
-# Este programa é um software livre; você pode redistribui-lo e/ou 
-# modifica-lo dentro dos termos da Licença Pública Geral GNU como 
-# publicada pela Fundação do Software Livre (FSF); na versão 2 da 
+# Este programa é um software livre; você pode redistribui-lo e/ou
+# modifica-lo dentro dos termos da Licença Pública Geral GNU como
+# publicada pela Fundação do Software Livre (FSF); na versão 2 da
 # Licença, ou (na sua opinião) qualquer versão.
 #
-# Este programa é distribuído na esperança que possa ser util, 
+# Este programa é distribuído na esperança que possa ser util,
 # mas SEM NENHUMA GARANTIA; sem uma garantia implicita de ADEQUAÇÂO a qualquer
 # MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a
 # Licença Pública Geral GNU para maiores detalhes.
@@ -22,8 +22,15 @@
 #
 #
 
-import sys, time, random, re, os
-import urllib.request, urllib.parse, urllib.error, io
+import sys
+import time
+import random
+import re
+import os
+import urllib.request
+import urllib.parse
+import urllib.error
+import io
 from PIL import Image
 
 try:
@@ -34,17 +41,17 @@ except:
 
 import http.cookiejar
 
-VERSION       = '2017-05-09'
+VERSION = '2017-05-09'
 REMOTE_SCRIPT = 'https://api.bitbucket.org/2.0/snippets/scriptlattes/g5Bx'
-HEADERS       = [('Accept-Language', 'en-us,en;q=0.5'),
-    ('Accept-Encoding', 'deflate'),
-    ('Keep-Alive', '115'),
-    ('Connection', 'keep-alive'),
-    ('Cache-Control', 'max-age=0'),
-    ('Host', 'buscatextual.cnpq.br'),
-    ('Origin', 'http,//buscatextual.cnpq.br'),
-    ('User-Agent', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36'),
-]
+HEADERS = [('Accept-Language', 'en-us,en;q=0.5'),
+           ('Accept-Encoding', 'deflate'),
+           ('Keep-Alive', '115'),
+           ('Connection', 'keep-alive'),
+           ('Cache-Control', 'max-age=0'),
+           ('Host', 'buscatextual.cnpq.br'),
+           ('Origin', 'http,//buscatextual.cnpq.br'),
+           ('User-Agent', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36'),
+           ]
 
 
 def __self_update():
@@ -90,28 +97,30 @@ def __get_data(id_lattes):
     br.set_handle_refresh(mechanize._http.HTTPRefreshProcessor(), max_time=1)
     br.addheaders = HEADERS
 
-    #Parte em que buscava o CVs (Obrigado Jorge Gustavo dos Santos Pinho!)
+    # Parte em que buscava o CVs (Obrigado Jorge Gustavo dos Santos Pinho!)
     #r = br.open(url)
 
     # Nova implementação
-    url_get_captcha = "http://buscatextual.cnpq.br/buscatextual/servlet/captcha?metodo=getImagemCaptcha&noCache="+str(int(time.time()))
+    url_get_captcha = "http://buscatextual.cnpq.br/buscatextual/servlet/captcha?metodo=getImagemCaptcha&noCache=" + \
+        str(int(time.time()))
     resp = br.open(url)
 
-    print (url_get_captcha)
+    print(url_get_captcha)
 
-    m    = re.search('(&id=).*', resp.geturl())
-    id   = m.group(0)
-    id   = id.replace('&id=', '')
+    m = re.search('(&id=).*', resp.geturl())
+    id = m.group(0)
+    id = id.replace('&id=', '')
 
     resp = br.open(url_get_captcha)
     file = io.StringIO(resp.read())
-    img  = Image.open(file)
-    img.show(title='CAPTCHA');
+    img = Image.open(file)
+    img.show(title='CAPTCHA')
 
-    captcha     = str(eval(input('\nINSIRA AS LETRAS DO CAPTCHA: ')));
-    url_captha  = "http://buscatextual.cnpq.br/buscatextual/servlet/captcha?informado="+captcha+"&id="+id+"&metodo=validaCaptcha"
-    resp        = br.open(url_captha)
-    resp        = br.open(url)
+    captcha = str(eval(input('\nINSIRA AS LETRAS DO CAPTCHA: ')))
+    url_captha = "http://buscatextual.cnpq.br/buscatextual/servlet/captcha?informado=" + \
+        captcha+"&id="+id+"&metodo=validaCaptcha"
+    resp = br.open(url_captha)
+    resp = br.open(url)
     # Fim da implementação
 
     response = resp.read()
@@ -126,25 +135,25 @@ def __get_data(id_lattes):
 
 
 def baixaCVLattes(id_lattes, debug=True):
-	tries = 50
-	while tries > 0:
-		try:
-			data = __get_data(id_lattes)
-			#time.sleep(random.random()+0.5) #0.5 a 1.5 segs de espera, nao altere esse tempo para não ser barrado do servidor do lattes
-			if 'infpessoa' not in data:
-				tries -= 1
-			else:
-				return data
-		except Exception as e:
-			if debug:
-				print(e)
-			tries -= 1
-	# depois de 5 tentativas, verifiquemos se existe uma nova versao do baixaLattes
-	#__self_update()
-	if debug:
-		print(('[AVISO] Nao é possível obter o CV Lattes: ', id_lattes))
-		print('[AVISO] Certifique-se que o CV existe.')
-	
-	print("Nao foi possivel baixar o CV Lattes em varias tentativas")
-	return "   "
-	#raise Exception("Nao foi possivel baixar o CV Lattes em 5 tentativas")
+    tries = 50
+    while tries > 0:
+        try:
+            data = __get_data(id_lattes)
+            # time.sleep(random.random()+0.5) #0.5 a 1.5 segs de espera, nao altere esse tempo para não ser barrado do servidor do lattes
+            if 'infpessoa' not in data:
+                tries -= 1
+            else:
+                return data
+        except Exception as e:
+            if debug:
+                print(e)
+            tries -= 1
+    # depois de 5 tentativas, verifiquemos se existe uma nova versao do baixaLattes
+    # __self_update()
+    if debug:
+        print(('[AVISO] Nao é possível obter o CV Lattes: ', id_lattes))
+        print('[AVISO] Certifique-se que o CV existe.')
+
+    print("Nao foi possivel baixar o CV Lattes em varias tentativas")
+    return "   "
+    #raise Exception("Nao foi possivel baixar o CV Lattes em 5 tentativas")

@@ -1,6 +1,7 @@
 from .geolocalizador import *
 
-endereco = 'Universidade de Sao Paulo, Instituto de Matematica e Estatastica, Departamento de Ciencia da Computacao. Rua do Matao 1010 Cidade Universitaria 05508090 - Sao Paulo, SP - Brasil Telefone: (11) 30916135 Ramal: 6235 Fax: (11) 30916134 URL da Homepage: http://www.ime.usp.br/~cesar/'.encode('utf8','replace')
+endereco = 'Universidade de Sao Paulo, Instituto de Matematica e Estatastica, Departamento de Ciencia da Computacao. Rua do Matao 1010 Cidade Universitaria 05508090 - Sao Paulo, SP - Brasil Telefone: (11) 30916135 Ramal: 6235 Fax: (11) 30916134 URL da Homepage: http://www.ime.usp.br/~cesar/'.encode(
+    'utf8', 'replace')
 g = Geolocalizador(endereco)
 
 
@@ -12,5 +13,6 @@ endereco = 'Universidade de Sao Paulo, Instituto de Matematica e Estatistica. Ru
 g = Geolocalizador(endereco)
 
 
-endereco = 'Universidade de Sao Paulo, Instituto de Matematica e Estatastica, Departamento de Cienci 6235 Fax: (11) 30916134 URL da Homepage: http://www.ime.usp.br/~cesar/'.encode('utf8','replace')
+endereco = 'Universidade de Sao Paulo, Instituto de Matematica e Estatastica, Departamento de Cienci 6235 Fax: (11) 30916134 URL da Homepage: http://www.ime.usp.br/~cesar/'.encode(
+    'utf8', 'replace')
 g = Geolocalizador(endereco)

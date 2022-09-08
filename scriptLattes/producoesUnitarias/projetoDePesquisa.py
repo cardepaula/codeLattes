@@ -7,12 +7,12 @@
 #  http://scriptlattes.sourceforge.net/
 #
 #
-#  Este programa é um software livre; você pode redistribui-lo e/ou 
-#  modifica-lo dentro dos termos da Licença Pública Geral GNU como 
-#  publicada pela Fundação do Software Livre (FSF); na versão 2 da 
+#  Este programa é um software livre; você pode redistribui-lo e/ou
+#  modifica-lo dentro dos termos da Licença Pública Geral GNU como
+#  publicada pela Fundação do Software Livre (FSF); na versão 2 da
 #  Licença, ou (na sua opinião) qualquer versão.
 #
-#  Este programa é distribuído na esperança que possa ser util, 
+#  Este programa é distribuído na esperança que possa ser util,
 #  mas SEM NENHUMA GARANTIA; sem uma garantia implicita de ADEQUAÇÂO a qualquer
 #  MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a
 #  Licença Pública Geral GNU para maiores detalhes.
@@ -54,31 +54,31 @@ class ProjetoDePesquisa:
         #self.nome = detalhe[2].strip()
         self.nome = partesDoItem[1]
 
-        self.descricao= list([])
+        self.descricao = list([])
         self.descricao.append(partesDoItem[2])
 
-        self.chave = self.nome # chave de comparação entre os objetos
+        self.chave = self.nome  # chave de comparação entre os objetos
 
-        self.ano = self.anoInicio # para comparação entre objetos
-
+        self.ano = self.anoInicio  # para comparação entre objetos
 
     def html(self, listaDeMembros):
-        if self.anoConclusao==datetime.datetime.now().year:
+        if self.anoConclusao == datetime.datetime.now().year:
             self.anoConclusao = 'Atual'
-        if self.anoInicio==0 and self.anoConclusao==0:
+        if self.anoInicio == 0 and self.anoConclusao == 0:
             s = '<span class="projects"> (*) </span> '
         else:
-            s = '<span class="projects">' + str(self.anoInicio) + '-' + str(self.anoConclusao) + '</span>. '
-        s+= '<b>' + self.nome + '</b>'
-
+            s = '<span class="projects">' + \
+                str(self.anoInicio) + '-' + \
+                str(self.anoConclusao) + '</span>. '
+        s += '<b>' + self.nome + '</b>'
 
         for i in range(0, len(self.idMembro)):
-            s+= '<br><i><font size=-1>'+ self.descricao[i] +'</font></i>'
-            m = listaDeMembros[ self.idMembro[i] ]
-            s+= '<br><i><font size=-1>Membro: <a href="'+m.url+'">'+m.nomeCompleto+'</a>.</font>'
+            s += '<br><i><font size=-1>' + self.descricao[i] + '</font></i>'
+            m = listaDeMembros[self.idMembro[i]]
+            s += '<br><i><font size=-1>Membro: <a href="' + \
+                m.url+'">'+m.nomeCompleto+'</a>.</font>'
 
         return s
-
 
     def compararCom(self, objeto):
         if set(self.idMembro).isdisjoint(set(objeto.idMembro)) and similaridade_entre_cadeias(self.nome, objeto.nome):
@@ -86,21 +86,21 @@ class ProjetoDePesquisa:
             # Essa parte é importante para a geracao do relorio de projetos
             self.idMembro.extend(objeto.idMembro)
 
-            self.descricao.extend(objeto.descricao) # Apenas juntamos as descrições
+            # Apenas juntamos as descrições
+            self.descricao.extend(objeto.descricao)
 
             return self
-        else: # nao similares
+        else:  # nao similares
             return None
 
-
-
     # ------------------------------------------------------------------------ #
+
     def __str__(self):
-        s  = "\n[PROJETO DE PESQUISA] \n"
+        s = "\n[PROJETO DE PESQUISA] \n"
         s += "+ID-MEMBRO   : " + str(self.idMembro) + "\n"
         s += "+ANO INICIO  : " + str(self.anoInicio) + "\n"
         s += "+ANO CONCLUS.: " + str(self.anoConclusao) + "\n"
-        s += "+NOME        : " + self.nome.encode('utf8','replace') + "\n"
-        s += "+DESCRICAO   : " + str(self.descricao).encode('utf8','replace') + "\n"
+        s += "+NOME        : " + self.nome.encode('utf8', 'replace') + "\n"
+        s += "+DESCRICAO   : " + \
+            str(self.descricao).encode('utf8', 'replace') + "\n"
         return s
-

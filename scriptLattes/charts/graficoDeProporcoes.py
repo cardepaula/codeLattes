@@ -7,12 +7,12 @@
 #  http://scriptlattes.sourceforge.net/
 #
 #
-#  Este programa é um software livre; você pode redistribui-lo e/ou 
-#  modifica-lo dentro dos termos da Licença Pública Geral GNU como 
-#  publicada pela Fundação do Software Livre (FSF); na versão 2 da 
+#  Este programa é um software livre; você pode redistribui-lo e/ou
+#  modifica-lo dentro dos termos da Licença Pública Geral GNU como
+#  publicada pela Fundação do Software Livre (FSF); na versão 2 da
 #  Licença, ou (na sua opinião) qualquer versão.
 #
-#  Este programa é distribuído na esperança que possa ser util, 
+#  Este programa é distribuído na esperança que possa ser util,
 #  mas SEM NENHUMA GARANTIA; sem uma garantia implicita de ADEQUAÇÂO a qualquer
 #  MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a
 #  Licença Pública Geral GNU para maiores detalhes.
@@ -27,10 +27,10 @@
 # Mon Mar  7 13:38:35 BRT 2011
 
 class GraficoDeProporcoes:
-	grupo = None
+    grupo = None
 
-	def __init__(self, grupo, diretorioDeSaida):
-		self.grupo = grupo
+    def __init__(self, grupo, diretorioDeSaida):
+        self.grupo = grupo
 
 # from pylab import *
 #
@@ -41,4 +41,3 @@ class GraficoDeProporcoes:
 #
 # pie(fracs, labels=labels, autopct='%1.1f%%', shadow=False)
 # show()
-

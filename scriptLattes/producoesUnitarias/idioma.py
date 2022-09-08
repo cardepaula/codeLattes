@@ -7,12 +7,12 @@
 #  http://scriptlattes.sourceforge.net/
 #
 #
-#  Este programa é um software livre; você pode redistribui-lo e/ou 
-#  modifica-lo dentro dos termos da Licença Pública Geral GNU como 
-#  publicada pela Fundação do Software Livre (FSF); na versão 2 da 
+#  Este programa é um software livre; você pode redistribui-lo e/ou
+#  modifica-lo dentro dos termos da Licença Pública Geral GNU como
+#  publicada pela Fundação do Software Livre (FSF); na versão 2 da
 #  Licença, ou (na sua opinião) qualquer versão.
 #
-#  Este programa é distribuído na esperança que possa ser util, 
+#  Este programa é distribuído na esperança que possa ser util,
 #  mas SEM NENHUMA GARANTIA; sem uma garantia implicita de ADEQUAÇÂO a qualquer
 #  MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a
 #  Licença Pública Geral GNU para maiores detalhes.
@@ -24,20 +24,21 @@
 
 
 class Idioma:
-	descricao = ''
-	nome = ''
-	proficiencia = ''
+    descricao = ''
+    nome = ''
+    proficiencia = ''
 
-	def __init__(self, partesDoItem):
-		# partesDoItem[0]: Nome do idioma
-		# partesDoItem[1]: Descricao da proficiencia do idioma
-		self.nome = partesDoItem[0].strip()
-		self.proficiencia = partesDoItem[1].strip()
+    def __init__(self, partesDoItem):
+        # partesDoItem[0]: Nome do idioma
+        # partesDoItem[1]: Descricao da proficiencia do idioma
+        self.nome = partesDoItem[0].strip()
+        self.proficiencia = partesDoItem[1].strip()
 
+    # ------------------------------------------------------------------------ #
 
-	# ------------------------------------------------------------------------ #
-	def __str__(self):
-		s  = "\n[IDIOMA] \n"
-		s += "+NOME        : " + self.nome.encode('utf8','replace') + "\n"
-		s += "+PROFICIENCIA: " + self.proficiencia.encode('utf8','replace') + "\n"
-		return s
+    def __str__(self):
+        s = "\n[IDIOMA] \n"
+        s += "+NOME        : " + self.nome.encode('utf8', 'replace') + "\n"
+        s += "+PROFICIENCIA: " + \
+            self.proficiencia.encode('utf8', 'replace') + "\n"
+        return s

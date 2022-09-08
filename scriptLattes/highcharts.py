@@ -8,12 +8,12 @@
 # http://scriptlattes.sourceforge.net/
 #
 #
-# Este programa é um software livre; você pode redistribui-lo e/ou 
-# modifica-lo dentro dos termos da Licença Pública Geral GNU como 
-# publicada pela Fundação do Software Livre (FSF); na versão 2 da 
+# Este programa é um software livre; você pode redistribui-lo e/ou
+# modifica-lo dentro dos termos da Licença Pública Geral GNU como
+# publicada pela Fundação do Software Livre (FSF); na versão 2 da
 # Licença, ou (na sua opinião) qualquer versão.
 #
-# Este programa é distribuído na esperança que possa ser util, 
+# Este programa é distribuído na esperança que possa ser util,
 # mas SEM NENHUMA GARANTIA; sem uma garantia implicita de ADEQUAÇÂO a qualquer
 # MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a
 # Licença Pública Geral GNU para maiores detalhes.
@@ -160,11 +160,12 @@ def format_json(d):
             else:
                 s += str(k)
             s += ',\n'
-        s = s.rpartition(',')[0]  # tira a vírgula após o último elemento # FIXME: usar join
+        # tira a vírgula após o último elemento # FIXME: usar join
+        s = s.rpartition(',')[0]
         s += ']'
     elif isinstance(d, dict):
-        s += '{' #if isinstance(d, dict) else '[\n'
-        keys = list(d.keys()) #if isinstance(d, dict)
+        s += '{'  # if isinstance(d, dict) else '[\n'
+        keys = list(d.keys())  # if isinstance(d, dict)
         for k in keys:
             s += (', \n' if k != keys[0] else '') + str(k) + ': '
             if isinstance(d[k], dict):
@@ -177,7 +178,7 @@ def format_json(d):
                 s += 'null'
             else:
                 s += str(d[k])
-        s += '}' #if isinstance(d, dict) else ']'
+        s += '}'  # if isinstance(d, dict) else ']'
     # s += '\n'
     return s
 
@@ -263,11 +264,11 @@ jsondata = {
         'column': {
             'stacking': None,
             # 'dataLabels': {
-                # 'enabled': 'false',
-                # 'color': "(Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'",
-                # 'style': {
-                #     'textShadow': '0 0 3px black'
-                # }
+            # 'enabled': 'false',
+            # 'color': "(Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'",
+            # 'style': {
+            #     'textShadow': '0 0 3px black'
+            # }
             # }
         },
         'series': {
@@ -299,6 +300,7 @@ jsondata = {
     },
     'series': []
 }
+
 
 class highchart(dict):
     htmldata = '''
@@ -368,4 +370,3 @@ class highchart(dict):
 
     def json(self):
         return format_json(self)
-

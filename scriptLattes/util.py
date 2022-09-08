@@ -1,16 +1,16 @@
-#!/usr/bin/env python 
+#!/usr/bin/env python
 # encoding: utf-8
 #
 #
 #  scriptLattes
 #  Copyright http://scriptlattes.sourceforge.net/
 #
-#  Este programa é um software livre; você pode redistribui-lo e/ou 
-#  modifica-lo dentro dos termos da Licença Pública Geral GNU como 
-#  publicada pela Fundação do Software Livre (FSF); na versão 2 da 
+#  Este programa é um software livre; você pode redistribui-lo e/ou
+#  modifica-lo dentro dos termos da Licença Pública Geral GNU como
+#  publicada pela Fundação do Software Livre (FSF); na versão 2 da
 #  Licença, ou (na sua opinião) qualquer versão.
 #
-#  Este programa é distribuído na esperança que possa ser util, 
+#  Este programa é distribuído na esperança que possa ser util,
 #  mas SEM NENHUMA GARANTIA; sem uma garantia implicita de ADEQUAÇÂO a qualquer
 #  MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a
 #  Licença Pública Geral GNU para maiores detalhes.
@@ -26,8 +26,8 @@ import shutil
 import sys
 import Levenshtein
 
-SEP     = os.path.sep
-BASE    = 'scriptLattes' + SEP
+SEP = os.path.sep
+BASE = 'scriptLattes' + SEP
 ABSBASE = os.path.abspath('.') + SEP
 
 
@@ -119,7 +119,7 @@ def copiarArquivos(dir):
     # shutil.copy2(os.path.join(base, 'js', 'jquery.dataTables.min.js'), dir)
     # shutil.copy2(os.path.join(base, 'js', 'jquery.dataTables.rowGrouping.js'), dir)
 
-    print(( "\n\nArquivos salvos em: >>{}<<".format(os.path.abspath(dir)) ))
+    print(("\n\nArquivos salvos em: >>{}<<".format(os.path.abspath(dir))))
 
 
 # ---------------------------------------------------------------------------- #
@@ -135,7 +135,7 @@ def similaridade_entre_cadeias(str1, str2, qualis=False):
     str2 = str2.strip().lower()
 
     # caso especial
-    if ('apresentação'==str1 or 'apresentação'==str2 or 'apresentacao'==str1 or 'apresentacao'==str2 ):
+    if ('apresentação' == str1 or 'apresentação' == str2 or 'apresentacao' == str1 or 'apresentacao' == str2):
         return 0
 
     if len(str1) == 0 or len(str2) == 0:
@@ -160,17 +160,19 @@ def criarDiretorio(dir):
     if not os.path.exists(dir):
         try:
             os.makedirs(dir)
-        ### except OSError as exc:
+        # except OSError as exc:
         except:
-            print(("\n[ERRO] Não foi possível criar ou atualizar o diretório: " + dir.encode('utf8')))
+            print(
+                ("\n[ERRO] Não foi possível criar ou atualizar o diretório: " + dir.encode('utf8')))
             print("[ERRO] Você conta com as permissões de escrita? \n")
             return 0
     return 1
 
 # Combining Dictionaries Of Lists
-def merge_dols(dol1, dol2):
-      result = dict(dol1, **dol2)
-      result.update((k, dol1[k] + dol2[k])
-          for k in set(dol1).intersection(dol2))
-      return result
 
+
+def merge_dols(dol1, dol2):
+    result = dict(dol1, **dol2)
+    result.update((k, dol1[k] + dol2[k])
+                  for k in set(dol1).intersection(dol2))
+    return result

@@ -7,12 +7,12 @@
 #  http://scriptlattes.sourceforge.net/
 #
 #
-#  Este programa é um software livre; você pode redistribui-lo e/ou 
-#  modifica-lo dentro dos termos da Licença Pública Geral GNU como 
-#  publicada pela Fundação do Software Livre (FSF); na versão 2 da 
+#  Este programa é um software livre; você pode redistribui-lo e/ou
+#  modifica-lo dentro dos termos da Licença Pública Geral GNU como
+#  publicada pela Fundação do Software Livre (FSF); na versão 2 da
 #  Licença, ou (na sua opinião) qualquer versão.
 #
-#  Este programa é distribuído na esperança que possa ser util, 
+#  Este programa é distribuído na esperança que possa ser util,
 #  mas SEM NENHUMA GARANTIA; sem uma garantia implicita de ADEQUAÇÂO a qualquer
 #  MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a
 #  Licença Pública Geral GNU para maiores detalhes.
@@ -46,7 +46,8 @@ class GeradorDeXML:
 
         xml = ''
         xml += "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n"
-        xml += '<curriculo_lattes data_processamento="' + self.getDataProcessamento() + '">\n'
+        xml += '<curriculo_lattes data_processamento="' + self.getDataProcessamento() + \
+            '">\n'
         for registro in self.membros:
             print(("- ID Lattes: [" + registro.idLattes + "]"))
             try:
@@ -69,7 +70,8 @@ class GeradorDeXML:
                 xmlTemp += self.getListaResumoEmCongresso(registro)
                 xmlTemp += self.getListaArtigoAceito(registro)
                 xmlTemp += self.getListaApresentacaoDeTrabalho(registro)
-                xmlTemp += self.getListaOutroTipoDeProducaoBibliografica(registro)
+                xmlTemp += self.getListaOutroTipoDeProducaoBibliografica(
+                    registro)
                 xmlTemp += self.getListaSoftwareComPatente(registro)
                 xmlTemp += self.getListaSoftwareSemPatente(registro)
                 xmlTemp += self.getListaProdutoTecnologico(registro)
@@ -131,7 +133,6 @@ class GeradorDeXML:
 
         return data
 
-
     def getListaOrganizacaoDeEvento(self, registro):
         xmlTemp = ''
         if registro.listaOrganizacaoDeEvento:
@@ -157,7 +158,6 @@ class GeradorDeXML:
             xmlTemp += '    </participacao_evento>\n'
         return xmlTemp
 
-
     def getListaOCOutroTipoDeOrientacao(self, registro):
         xmlTemp = ''
         if registro.listaOCOutroTipoDeOrientacao:
@@ -165,15 +165,18 @@ class GeradorDeXML:
             for orientacao in registro.listaOCOutroTipoDeOrientacao:
                 xmlTemp += '        <orientacao_outra>\n'
                 xmlTemp += '          <nome_aluno>' + orientacao.nome + '</nome_aluno>\n'
-                xmlTemp += '          <titulo_trabalho>' + orientacao.tituloDoTrabalho + '</titulo_trabalho>\n'
+                xmlTemp += '          <titulo_trabalho>' + \
+                    orientacao.tituloDoTrabalho + '</titulo_trabalho>\n'
                 xmlTemp += '          <ano>' + str(orientacao.ano) + '</ano>\n'
-                xmlTemp += '          <instituicao>' + orientacao.instituicao + '</instituicao>\n'
-                xmlTemp += '          <agencia_de_fomento>' + orientacao.agenciaDeFomento + '</agencia_de_fomento>\n'
-                xmlTemp += '          <tipo_de_orientacao>' + orientacao.tipoDeOrientacao + '</tipo_de_orientacao>\n'
+                xmlTemp += '          <instituicao>' + \
+                    orientacao.instituicao + '</instituicao>\n'
+                xmlTemp += '          <agencia_de_fomento>' + \
+                    orientacao.agenciaDeFomento + '</agencia_de_fomento>\n'
+                xmlTemp += '          <tipo_de_orientacao>' + \
+                    orientacao.tipoDeOrientacao + '</tipo_de_orientacao>\n'
                 xmlTemp += '        </orientacao_outra>\n'
             xmlTemp += '    </orientacao_outros_tipos_concluido>\n'
         return xmlTemp
-
 
     def getListaOCIniciacaoCientifica(self, registro):
         xmlTemp = ''
@@ -182,15 +185,18 @@ class GeradorDeXML:
             for orientacao in registro.listaOCIniciacaoCientifica:
                 xmlTemp += '        <iniciacao_cientifica>\n'
                 xmlTemp += '          <nome_aluno>' + orientacao.nome + '</nome_aluno>\n'
-                xmlTemp += '          <titulo_trabalho>' + orientacao.tituloDoTrabalho + '</titulo_trabalho>\n'
+                xmlTemp += '          <titulo_trabalho>' + \
+                    orientacao.tituloDoTrabalho + '</titulo_trabalho>\n'
                 xmlTemp += '          <ano>' + str(orientacao.ano) + '</ano>\n'
-                xmlTemp += '          <instituicao>' + orientacao.instituicao + '</instituicao>\n'
-                xmlTemp += '          <agencia_de_fomento>' + orientacao.agenciaDeFomento + '</agencia_de_fomento>\n'
-                xmlTemp += '          <tipo_de_orientacao>' + orientacao.tipoDeOrientacao + '</tipo_de_orientacao>\n'
+                xmlTemp += '          <instituicao>' + \
+                    orientacao.instituicao + '</instituicao>\n'
+                xmlTemp += '          <agencia_de_fomento>' + \
+                    orientacao.agenciaDeFomento + '</agencia_de_fomento>\n'
+                xmlTemp += '          <tipo_de_orientacao>' + \
+                    orientacao.tipoDeOrientacao + '</tipo_de_orientacao>\n'
                 xmlTemp += '        </iniciacao_cientifica>\n'
             xmlTemp += '    </orientacao_iniciacao_cientifica_concluido>\n'
         return xmlTemp
-
 
     def getListaOCTCC(self, registro):
         xmlTemp = ''
@@ -199,15 +205,18 @@ class GeradorDeXML:
             for orientacao in registro.listaOCTCC:
                 xmlTemp += '        <tcc>\n'
                 xmlTemp += '          <nome_aluno>' + orientacao.nome + '</nome_aluno>\n'
-                xmlTemp += '          <titulo_trabalho>' + orientacao.tituloDoTrabalho + '</titulo_trabalho>\n'
+                xmlTemp += '          <titulo_trabalho>' + \
+                    orientacao.tituloDoTrabalho + '</titulo_trabalho>\n'
                 xmlTemp += '          <ano>' + str(orientacao.ano) + '</ano>\n'
-                xmlTemp += '          <instituicao>' + orientacao.instituicao + '</instituicao>\n'
-                xmlTemp += '          <agencia_de_fomento>' + orientacao.agenciaDeFomento + '</agencia_de_fomento>\n'
-                xmlTemp += '          <tipo_de_orientacao>' + orientacao.tipoDeOrientacao + '</tipo_de_orientacao>\n'
+                xmlTemp += '          <instituicao>' + \
+                    orientacao.instituicao + '</instituicao>\n'
+                xmlTemp += '          <agencia_de_fomento>' + \
+                    orientacao.agenciaDeFomento + '</agencia_de_fomento>\n'
+                xmlTemp += '          <tipo_de_orientacao>' + \
+                    orientacao.tipoDeOrientacao + '</tipo_de_orientacao>\n'
                 xmlTemp += '        </tcc>\n'
             xmlTemp += '    </orientacao_tcc_concluido>\n'
         return xmlTemp
-
 
     def getListaOCMonografiaDeEspecializacao(self, registro):
         xmlTemp = ''
@@ -216,15 +225,18 @@ class GeradorDeXML:
             for orientacao in registro.listaOCMonografiaDeEspecializacao:
                 xmlTemp += '        <monografia>\n'
                 xmlTemp += '          <nome_aluno>' + orientacao.nome + '</nome_aluno>\n'
-                xmlTemp += '          <titulo_trabalho>' + orientacao.tituloDoTrabalho + '</titulo_trabalho>\n'
+                xmlTemp += '          <titulo_trabalho>' + \
+                    orientacao.tituloDoTrabalho + '</titulo_trabalho>\n'
                 xmlTemp += '          <ano>' + str(orientacao.ano) + '</ano>\n'
-                xmlTemp += '          <instituicao>' + orientacao.instituicao + '</instituicao>\n'
-                xmlTemp += '          <agencia_de_fomento>' + orientacao.agenciaDeFomento + '</agencia_de_fomento>\n'
-                xmlTemp += '          <tipo_de_orientacao>' + orientacao.tipoDeOrientacao + '</tipo_de_orientacao>\n'
+                xmlTemp += '          <instituicao>' + \
+                    orientacao.instituicao + '</instituicao>\n'
+                xmlTemp += '          <agencia_de_fomento>' + \
+                    orientacao.agenciaDeFomento + '</agencia_de_fomento>\n'
+                xmlTemp += '          <tipo_de_orientacao>' + \
+                    orientacao.tipoDeOrientacao + '</tipo_de_orientacao>\n'
                 xmlTemp += '        </monografia>\n'
             xmlTemp += '    </orientacao_especializacao_concluido>\n'
         return xmlTemp
-
 
     def getLlistaOCDissertacaoDeMestrado(self, registro):
         xmlTemp = ''
@@ -233,15 +245,18 @@ class GeradorDeXML:
             for orientacao in registro.listaOCDissertacaoDeMestrado:
                 xmlTemp += '        <dissertacao>\n'
                 xmlTemp += '          <nome_aluno>' + orientacao.nome + '</nome_aluno>\n'
-                xmlTemp += '          <titulo_trabalho>' + orientacao.tituloDoTrabalho + '</titulo_trabalho>\n'
+                xmlTemp += '          <titulo_trabalho>' + \
+                    orientacao.tituloDoTrabalho + '</titulo_trabalho>\n'
                 xmlTemp += '          <ano>' + str(orientacao.ano) + '</ano>\n'
-                xmlTemp += '          <instituicao>' + orientacao.instituicao + '</instituicao>\n'
-                xmlTemp += '          <agencia_de_fomento>' + orientacao.agenciaDeFomento + '</agencia_de_fomento>\n'
-                xmlTemp += '          <tipo_de_orientacao>' + orientacao.tipoDeOrientacao + '</tipo_de_orientacao>\n'
+                xmlTemp += '          <instituicao>' + \
+                    orientacao.instituicao + '</instituicao>\n'
+                xmlTemp += '          <agencia_de_fomento>' + \
+                    orientacao.agenciaDeFomento + '</agencia_de_fomento>\n'
+                xmlTemp += '          <tipo_de_orientacao>' + \
+                    orientacao.tipoDeOrientacao + '</tipo_de_orientacao>\n'
                 xmlTemp += '        </dissertacao>\n'
             xmlTemp += '    </orientacao_mestrado_concluido>\n'
         return xmlTemp
-
 
     def getListaOCTeseDeDoutorado(self, registro):
         xmlTemp = ''
@@ -250,11 +265,15 @@ class GeradorDeXML:
             for orientacao in registro.listaOCTeseDeDoutorado:
                 xmlTemp += '        <tese>\n'
                 xmlTemp += '          <nome_aluno>' + orientacao.nome + '</nome_aluno>\n'
-                xmlTemp += '          <titulo_trabalho>' + orientacao.tituloDoTrabalho + '</titulo_trabalho>\n'
+                xmlTemp += '          <titulo_trabalho>' + \
+                    orientacao.tituloDoTrabalho + '</titulo_trabalho>\n'
                 xmlTemp += '          <ano>' + str(orientacao.ano) + '</ano>\n'
-                xmlTemp += '          <instituicao>' + orientacao.instituicao + '</instituicao>\n'
-                xmlTemp += '          <agencia_de_fomento>' + orientacao.agenciaDeFomento + '</agencia_de_fomento>\n'
-                xmlTemp += '          <tipo_de_orientacao>' + orientacao.tipoDeOrientacao + '</tipo_de_orientacao>\n'
+                xmlTemp += '          <instituicao>' + \
+                    orientacao.instituicao + '</instituicao>\n'
+                xmlTemp += '          <agencia_de_fomento>' + \
+                    orientacao.agenciaDeFomento + '</agencia_de_fomento>\n'
+                xmlTemp += '          <tipo_de_orientacao>' + \
+                    orientacao.tipoDeOrientacao + '</tipo_de_orientacao>\n'
                 xmlTemp += '        </tese>\n'
             xmlTemp += '    </orientacao_doutorado_concluido>\n'
         return xmlTemp
@@ -266,11 +285,15 @@ class GeradorDeXML:
             for orientacao in registro.listaOCSupervisaoDePosDoutorado:
                 xmlTemp += '        <supervisao>\n'
                 xmlTemp += '          <nome_aluno>' + orientacao.nome + '</nome_aluno>\n'
-                xmlTemp += '          <titulo_trabalho>' + orientacao.tituloDoTrabalho + '</titulo_trabalho>\n'
+                xmlTemp += '          <titulo_trabalho>' + \
+                    orientacao.tituloDoTrabalho + '</titulo_trabalho>\n'
                 xmlTemp += '          <ano>' + str(orientacao.ano) + '</ano>\n'
-                xmlTemp += '          <instituicao>' + orientacao.instituicao + '</instituicao>\n'
-                xmlTemp += '          <agencia_de_fomento>' + orientacao.agenciaDeFomento + '</agencia_de_fomento>\n'
-                xmlTemp += '          <tipo_de_orientacao>' + orientacao.tipoDeOrientacao + '</tipo_de_orientacao>\n'
+                xmlTemp += '          <instituicao>' + \
+                    orientacao.instituicao + '</instituicao>\n'
+                xmlTemp += '          <agencia_de_fomento>' + \
+                    orientacao.agenciaDeFomento + '</agencia_de_fomento>\n'
+                xmlTemp += '          <tipo_de_orientacao>' + \
+                    orientacao.tipoDeOrientacao + '</tipo_de_orientacao>\n'
                 xmlTemp += '        </supervisao>\n'
             xmlTemp += '    </supervisao_pos_doutorado_concluido>\n'
         return xmlTemp
@@ -282,15 +305,18 @@ class GeradorDeXML:
             for orientacao in registro.listaOAOutroTipoDeOrientacao:
                 xmlTemp += '        <orientacao_outra>\n'
                 xmlTemp += '          <nome_aluno>' + orientacao.nome + '</nome_aluno>\n'
-                xmlTemp += '          <titulo_trabalho>' + orientacao.tituloDoTrabalho + '</titulo_trabalho>\n'
+                xmlTemp += '          <titulo_trabalho>' + \
+                    orientacao.tituloDoTrabalho + '</titulo_trabalho>\n'
                 xmlTemp += '          <ano>' + str(orientacao.ano) + '</ano>\n'
-                xmlTemp += '          <instituicao>' + orientacao.instituicao + '</instituicao>\n'
-                xmlTemp += '          <agencia_de_fomento>' + orientacao.agenciaDeFomento + '</agencia_de_fomento>\n'
-                xmlTemp += '          <tipo_de_orientacao>' + orientacao.tipoDeOrientacao + '</tipo_de_orientacao>\n'
+                xmlTemp += '          <instituicao>' + \
+                    orientacao.instituicao + '</instituicao>\n'
+                xmlTemp += '          <agencia_de_fomento>' + \
+                    orientacao.agenciaDeFomento + '</agencia_de_fomento>\n'
+                xmlTemp += '          <tipo_de_orientacao>' + \
+                    orientacao.tipoDeOrientacao + '</tipo_de_orientacao>\n'
                 xmlTemp += '        </orientacao_outra>\n'
             xmlTemp += '    </orientacao_outros_tipos_em_andamento>\n'
         return xmlTemp
-
 
     def getListaOAIniciacaoCientifica(self, registro):
         xmlTemp = ''
@@ -299,15 +325,18 @@ class GeradorDeXML:
             for orientacao in registro.listaOAIniciacaoCientifica:
                 xmlTemp += '        <iniciacao_cientifica>\n'
                 xmlTemp += '          <nome_aluno>' + orientacao.nome + '</nome_aluno>\n'
-                xmlTemp += '          <titulo_trabalho>' + orientacao.tituloDoTrabalho + '</titulo_trabalho>\n'
+                xmlTemp += '          <titulo_trabalho>' + \
+                    orientacao.tituloDoTrabalho + '</titulo_trabalho>\n'
                 xmlTemp += '          <ano>' + str(orientacao.ano) + '</ano>\n'
-                xmlTemp += '          <instituicao>' + orientacao.instituicao + '</instituicao>\n'
-                xmlTemp += '          <agencia_de_fomento>' + orientacao.agenciaDeFomento + '</agencia_de_fomento>\n'
-                xmlTemp += '          <tipo_de_orientacao>' + orientacao.tipoDeOrientacao + '</tipo_de_orientacao>\n'
+                xmlTemp += '          <instituicao>' + \
+                    orientacao.instituicao + '</instituicao>\n'
+                xmlTemp += '          <agencia_de_fomento>' + \
+                    orientacao.agenciaDeFomento + '</agencia_de_fomento>\n'
+                xmlTemp += '          <tipo_de_orientacao>' + \
+                    orientacao.tipoDeOrientacao + '</tipo_de_orientacao>\n'
                 xmlTemp += '        </iniciacao_cientifica>\n'
             xmlTemp += '    </orientacao_iniciacao_cientifica_em_andamento>\n'
         return xmlTemp
-
 
     def getListaOATCC(self, registro):
         xmlTemp = ''
@@ -316,15 +345,18 @@ class GeradorDeXML:
             for orientacao in registro.listaOATCC:
                 xmlTemp += '        <tcc>\n'
                 xmlTemp += '          <nome_aluno>' + orientacao.nome + '</nome_aluno>\n'
-                xmlTemp += '          <titulo_trabalho>' + orientacao.tituloDoTrabalho + '</titulo_trabalho>\n'
+                xmlTemp += '          <titulo_trabalho>' + \
+                    orientacao.tituloDoTrabalho + '</titulo_trabalho>\n'
                 xmlTemp += '          <ano>' + str(orientacao.ano) + '</ano>\n'
-                xmlTemp += '          <instituicao>' + orientacao.instituicao + '</instituicao>\n'
-                xmlTemp += '          <agencia_de_fomento>' + orientacao.agenciaDeFomento + '</agencia_de_fomento>\n'
-                xmlTemp += '          <tipo_de_orientacao>' + orientacao.tipoDeOrientacao + '</tipo_de_orientacao>\n'
+                xmlTemp += '          <instituicao>' + \
+                    orientacao.instituicao + '</instituicao>\n'
+                xmlTemp += '          <agencia_de_fomento>' + \
+                    orientacao.agenciaDeFomento + '</agencia_de_fomento>\n'
+                xmlTemp += '          <tipo_de_orientacao>' + \
+                    orientacao.tipoDeOrientacao + '</tipo_de_orientacao>\n'
                 xmlTemp += '        </tcc>\n'
             xmlTemp += '    </orientacao_tcc_em_andamento>\n'
         return xmlTemp
-
 
     def getListaOAMonografiaDeEspecializacao(self, registro):
         xmlTemp = ''
@@ -333,15 +365,18 @@ class GeradorDeXML:
             for orientacao in registro.listaOAMonografiaDeEspecializacao:
                 xmlTemp += '        <monografia>\n'
                 xmlTemp += '          <nome_aluno>' + orientacao.nome + '</nome_aluno>\n'
-                xmlTemp += '          <titulo_trabalho>' + orientacao.tituloDoTrabalho + '</titulo_trabalho>\n'
+                xmlTemp += '          <titulo_trabalho>' + \
+                    orientacao.tituloDoTrabalho + '</titulo_trabalho>\n'
                 xmlTemp += '          <ano>' + str(orientacao.ano) + '</ano>\n'
-                xmlTemp += '          <instituicao>' + orientacao.instituicao + '</instituicao>\n'
-                xmlTemp += '          <agencia_de_fomento>' + orientacao.agenciaDeFomento + '</agencia_de_fomento>\n'
-                xmlTemp += '          <tipo_de_orientacao>' + orientacao.tipoDeOrientacao + '</tipo_de_orientacao>\n'
+                xmlTemp += '          <instituicao>' + \
+                    orientacao.instituicao + '</instituicao>\n'
+                xmlTemp += '          <agencia_de_fomento>' + \
+                    orientacao.agenciaDeFomento + '</agencia_de_fomento>\n'
+                xmlTemp += '          <tipo_de_orientacao>' + \
+                    orientacao.tipoDeOrientacao + '</tipo_de_orientacao>\n'
                 xmlTemp += '        </monografia>\n'
             xmlTemp += '    </orientacao_monografia_especializacao_em_andamento>\n'
         return xmlTemp
-
 
     def getListaOADissertacaoDeMestrado(self, registro):
         xmlTemp = ''
@@ -350,15 +385,18 @@ class GeradorDeXML:
             for orientacao in registro.listaOADissertacaoDeMestrado:
                 xmlTemp += '        <dissertacao>\n'
                 xmlTemp += '          <nome_aluno>' + orientacao.nome + '</nome_aluno>\n'
-                xmlTemp += '          <titulo_trabalho>' + orientacao.tituloDoTrabalho + '</titulo_trabalho>\n'
+                xmlTemp += '          <titulo_trabalho>' + \
+                    orientacao.tituloDoTrabalho + '</titulo_trabalho>\n'
                 xmlTemp += '          <ano>' + str(orientacao.ano) + '</ano>\n'
-                xmlTemp += '          <instituicao>' + orientacao.instituicao + '</instituicao>\n'
-                xmlTemp += '          <agencia_de_fomento>' + orientacao.agenciaDeFomento + '</agencia_de_fomento>\n'
-                xmlTemp += '          <tipo_de_orientacao>' + orientacao.tipoDeOrientacao + '</tipo_de_orientacao>\n'
+                xmlTemp += '          <instituicao>' + \
+                    orientacao.instituicao + '</instituicao>\n'
+                xmlTemp += '          <agencia_de_fomento>' + \
+                    orientacao.agenciaDeFomento + '</agencia_de_fomento>\n'
+                xmlTemp += '          <tipo_de_orientacao>' + \
+                    orientacao.tipoDeOrientacao + '</tipo_de_orientacao>\n'
                 xmlTemp += '        </dissertacao>\n'
             xmlTemp += '    </orientacao_mestrado_em_andamento>\n'
         return xmlTemp
-
 
     def getListaOATeseDeDoutorado(self, registro):
         xmlTemp = ''
@@ -367,15 +405,18 @@ class GeradorDeXML:
             for orientacao in registro.listaOATeseDeDoutorado:
                 xmlTemp += '        <tese>\n'
                 xmlTemp += '          <nome_aluno>' + orientacao.nome + '</nome_aluno>\n'
-                xmlTemp += '          <titulo_trabalho>' + orientacao.tituloDoTrabalho + '</titulo_trabalho>\n'
+                xmlTemp += '          <titulo_trabalho>' + \
+                    orientacao.tituloDoTrabalho + '</titulo_trabalho>\n'
                 xmlTemp += '          <ano>' + str(orientacao.ano) + '</ano>\n'
-                xmlTemp += '          <instituicao>' + orientacao.instituicao + '</instituicao>\n'
-                xmlTemp += '          <agencia_de_fomento>' + orientacao.agenciaDeFomento + '</agencia_de_fomento>\n'
-                xmlTemp += '          <tipo_de_orientacao>' + orientacao.tipoDeOrientacao + '</tipo_de_orientacao>\n'
+                xmlTemp += '          <instituicao>' + \
+                    orientacao.instituicao + '</instituicao>\n'
+                xmlTemp += '          <agencia_de_fomento>' + \
+                    orientacao.agenciaDeFomento + '</agencia_de_fomento>\n'
+                xmlTemp += '          <tipo_de_orientacao>' + \
+                    orientacao.tipoDeOrientacao + '</tipo_de_orientacao>\n'
                 xmlTemp += '        </tese>\n'
             xmlTemp += '    </orientacao_doutorado_em_andamento>\n'
         return xmlTemp
-
 
     def getListaOASupervisaoDePosDoutorado(self, registro):
         xmlTemp = ''
@@ -384,11 +425,15 @@ class GeradorDeXML:
             for orientacao in registro.listaOASupervisaoDePosDoutorado:
                 xmlTemp += '        <supervisao>\n'
                 xmlTemp += '          <nome_aluno>' + orientacao.nome + '</nome_aluno>\n'
-                xmlTemp += '          <titulo_trabalho>' + orientacao.tituloDoTrabalho + '</titulo_trabalho>\n'
+                xmlTemp += '          <titulo_trabalho>' + \
+                    orientacao.tituloDoTrabalho + '</titulo_trabalho>\n'
                 xmlTemp += '          <ano>' + str(orientacao.ano) + '</ano>\n'
-                xmlTemp += '          <instituicao>' + orientacao.instituicao + '</instituicao>\n'
-                xmlTemp += '          <agencia_de_fomento>' + orientacao.agenciaDeFomento + '</agencia_de_fomento>\n'
-                xmlTemp += '          <tipo_de_orientacao>' + orientacao.tipoDeOrientacao + '</tipo_de_orientacao>\n'
+                xmlTemp += '          <instituicao>' + \
+                    orientacao.instituicao + '</instituicao>\n'
+                xmlTemp += '          <agencia_de_fomento>' + \
+                    orientacao.agenciaDeFomento + '</agencia_de_fomento>\n'
+                xmlTemp += '          <tipo_de_orientacao>' + \
+                    orientacao.tipoDeOrientacao + '</tipo_de_orientacao>\n'
                 xmlTemp += '        </supervisao>\n'
             xmlTemp += '    </supervisao_pos_doutorado_em_andamento>\n'
         return xmlTemp
@@ -432,7 +477,6 @@ class GeradorDeXML:
             xmlTemp += '    </producao_artistica>\n'
         return xmlTemp
 
-
     def getListaOutroTipoDeProducaoTecnica(self, registro):
         xmlTemp = ''
         if registro.listaOutroTipoDeProducaoTecnica:
@@ -446,7 +490,6 @@ class GeradorDeXML:
                 xmlTemp += '        </producao>\n'
             xmlTemp += '    </producao_tecnica>\n'
         return xmlTemp
-
 
     def getListaTrabalhoTecnico(self, registro):
         xmlTemp = ''
@@ -528,7 +571,6 @@ class GeradorDeXML:
             xmlTemp += '    </producao_bibliografica>\n'
         return xmlTemp
 
-
     def getListaApresentacaoDeTrabalho(self, registro):
         xmlTemp = ''
         if registro.listaApresentacaoDeTrabalho:
@@ -537,12 +579,12 @@ class GeradorDeXML:
                 xmlTemp += '        <trabalho_apresentado>\n'
                 xmlTemp += '          <titulo>' + apresentacao.titulo + '</titulo>\n'
                 xmlTemp += '          <autores>' + apresentacao.autores + '</autores>\n'
-                xmlTemp += '          <ano>' + str(apresentacao.ano) + '</ano>\n'
+                xmlTemp += '          <ano>' + \
+                    str(apresentacao.ano) + '</ano>\n'
                 xmlTemp += '          <natureza>' + apresentacao.natureza + '</natureza>\n'
                 xmlTemp += '        </trabalho_apresentado>\n'
             xmlTemp += '    </apresentacao_trabalho>\n'
         return xmlTemp
-
 
     def getListaArtigoAceito(self, registro):
         xmlTemp = ''
@@ -598,7 +640,6 @@ class GeradorDeXML:
             xmlTemp += '    </resumo_expandido_congresso>\n'
         return xmlTemp
 
-
     def getListaTrabalhoCompletoEmCongresso(self, registro):
         xmlTemp = ''
         if registro.listaTrabalhoCompletoEmCongresso:
@@ -608,8 +649,10 @@ class GeradorDeXML:
                 xmlTemp += '          <doi>' + trabalho_completo.doi + '</doi>\n'
                 xmlTemp += '          <autores>' + trabalho_completo.autores + '</autores>\n'
                 xmlTemp += '          <titulo>' + trabalho_completo.titulo + '</titulo>\n'
-                xmlTemp += '          <nome_evento>' + trabalho_completo.nomeDoEvento + '</nome_evento>\n'
-                xmlTemp += '          <ano>' + str(trabalho_completo.ano) + '</ano>\n'
+                xmlTemp += '          <nome_evento>' + \
+                    trabalho_completo.nomeDoEvento + '</nome_evento>\n'
+                xmlTemp += '          <ano>' + \
+                    str(trabalho_completo.ano) + '</ano>\n'
                 xmlTemp += '          <volume>' + trabalho_completo.volume + '</volume>\n'
                 xmlTemp += '          <paginas>' + trabalho_completo.paginas + '</paginas>\n'
                 xmlTemp += '        </trabalho_completo>\n'
@@ -622,10 +665,12 @@ class GeradorDeXML:
             xmlTemp += '    <texto_em_jornal>\n'
             for texto_jornal in registro.listaTextoEmJornalDeNoticia:
                 xmlTemp += '        <texto>\n'
-                xmlTemp += '          <ano>' + str(texto_jornal.ano) + '</ano>\n'
+                xmlTemp += '          <ano>' + \
+                    str(texto_jornal.ano) + '</ano>\n'
                 xmlTemp += '          <autores>' + texto_jornal.autores + '</autores>\n'
                 xmlTemp += '          <titulo>' + texto_jornal.titulo + '</titulo>\n'
-                xmlTemp += '          <nome_jornal>' + texto_jornal.nomeJornal + '</nome_jornal>\n'
+                xmlTemp += '          <nome_jornal>' + \
+                    texto_jornal.nomeJornal + '</nome_jornal>\n'
                 xmlTemp += '          <data>' + texto_jornal.data + '</data>\n'
                 xmlTemp += '          <volume>' + texto_jornal.volume + '</volume>\n'
                 xmlTemp += '          <paginas>' + texto_jornal.paginas + '</paginas>\n'
@@ -651,7 +696,6 @@ class GeradorDeXML:
             xmlTemp += '    </capitulos_livros>\n'
         return xmlTemp
 
-
     def getListaLivroPublicado(self, registro):
         xmlTemp = ''
         if registro.listaLivroPublicado:
@@ -663,11 +707,11 @@ class GeradorDeXML:
                 xmlTemp += '          <edicao>' + livro_publicado.edicao + '</edicao>\n'
                 xmlTemp += '          <volume>' + livro_publicado.volume + '</volume>\n'
                 xmlTemp += '          <paginas>' + livro_publicado.paginas + '</paginas>\n'
-                xmlTemp += '          <ano>' + str(livro_publicado.ano) + '</ano>\n'
+                xmlTemp += '          <ano>' + \
+                    str(livro_publicado.ano) + '</ano>\n'
                 xmlTemp += '        </livro>\n'
             xmlTemp += '    </livros_publicados>\n'
         return xmlTemp
-
 
     def getListaArtigosEmPeriodicos(self, registro):
         xmlTemp = ''
@@ -682,7 +726,8 @@ class GeradorDeXML:
                 xmlTemp += '          <volume>' + artigos_periodicos.revista + '</volume>\n'
                 xmlTemp += '          <paginas>' + artigos_periodicos.paginas + '</paginas>\n'
                 xmlTemp += '          <numero>' + artigos_periodicos.numero + '</numero>\n'
-                xmlTemp += '          <ano>' + str(artigos_periodicos.ano) + '</ano>\n'
+                xmlTemp += '          <ano>' + \
+                    str(artigos_periodicos.ano) + '</ano>\n'
                 xmlTemp += '        </artigo>\n'
             xmlTemp += '    </artigos_em_periodicos>\n'
         return xmlTemp
@@ -692,10 +737,10 @@ class GeradorDeXML:
         if registro.listaIDLattesColaboradoresUnica:
             xmlTemp += '    <colaboradores>\n'
             for idColaborador in registro.listaIDLattesColaboradoresUnica:
-                xmlTemp += '        <id_lattes_colaborador>' + idColaborador + '</id_lattes_colaborador>\n'
+                xmlTemp += '        <id_lattes_colaborador>' + \
+                    idColaborador + '</id_lattes_colaborador>\n'
             xmlTemp += '    </colaboradores>\n'
         return xmlTemp
-
 
     def getPremioOuTitulo(self, registro):
         xmlTemp = ''
@@ -703,30 +748,37 @@ class GeradorDeXML:
             xmlTemp += '    <premios_titulos>\n'
             for premios_titulo in registro.listaPremioOuTitulo:
                 xmlTemp += '        <premio_titulo>\n'
-                xmlTemp += '          <ano>' + str(premios_titulo.ano) + '</ano>\n'
+                xmlTemp += '          <ano>' + \
+                    str(premios_titulo.ano) + '</ano>\n'
                 xmlTemp += '          <descricao>' + premios_titulo.descricao + '</descricao>\n'
                 xmlTemp += '        </premio_titulo>\n'
             xmlTemp += '    </premios_titulos>\n'
         return xmlTemp
 
-
     def getDadosIdentificacao(self, registro):
         xmlTemp = ''
         xmlTemp += '    <identificacao>\n'
-        xmlTemp += '      <identificador10>' + registro.identificador10 + '</identificador10>\n'
-        xmlTemp += '      <nome_inicial>' + registro.nomeInicial.decode('utf8', 'ignore') + '</nome_inicial>\n'
+        xmlTemp += '      <identificador10>' + \
+            registro.identificador10 + '</identificador10>\n'
+        xmlTemp += '      <nome_inicial>' + \
+            registro.nomeInicial.decode('utf8', 'ignore') + '</nome_inicial>\n'
         xmlTemp += '      <nome_completo>' + registro.nomeCompleto + '</nome_completo>\n'
-        xmlTemp += '      <nome_citacao_bibliografica>' + registro.nomeEmCitacoesBibliograficas + '</nome_citacao_bibliografica>\n'
-        xmlTemp += '      <sexo>' + registro.sexo.encode('utf8', 'replace') + '</sexo>\n'
+        xmlTemp += '      <nome_citacao_bibliografica>' + \
+            registro.nomeEmCitacoesBibliograficas + '</nome_citacao_bibliografica>\n'
+        xmlTemp += '      <sexo>' + \
+            registro.sexo.encode('utf8', 'replace') + '</sexo>\n'
         xmlTemp += '    </identificacao>\n'
         return xmlTemp
 
     def getDadosEndereco(self, registro):
         xmlTemp = ''
         xmlTemp += '    <endereco>\n'
-        xmlTemp += '      <endereco_profissional>' + registro.enderecoProfissional + '</endereco_profissional>\n'
-        xmlTemp += '      <endereco_profissional_lat>' + registro.enderecoProfissionalLat + '</endereco_profissional_lat>\n'
-        xmlTemp += '      <endereco_profissional_long>' + registro.enderecoProfissionalLon + '</endereco_profissional_long>\n'
+        xmlTemp += '      <endereco_profissional>' + \
+            registro.enderecoProfissional + '</endereco_profissional>\n'
+        xmlTemp += '      <endereco_profissional_lat>' + \
+            registro.enderecoProfissionalLat + '</endereco_profissional_lat>\n'
+        xmlTemp += '      <endereco_profissional_long>' + \
+            registro.enderecoProfissionalLon + '</endereco_profissional_long>\n'
         xmlTemp += '    </endereco>\n'
         return xmlTemp
 
@@ -737,9 +789,11 @@ class GeradorDeXML:
             for formacao in registro.listaFormacaoAcademica:
                 xmlTemp += '        <formacao>\n'
                 xmlTemp += '          <ano_inicio>' + formacao.anoInicio + '</ano_inicio>\n'
-                xmlTemp += '          <ano_conclusao>' + formacao.anoConclusao + '</ano_conclusao>\n'
+                xmlTemp += '          <ano_conclusao>' + \
+                    formacao.anoConclusao + '</ano_conclusao>\n'
                 xmlTemp += '          <tipo>' + formacao.tipo + '</tipo>\n'
-                xmlTemp += '          <nome_instituicao>' + formacao.nomeInstituicao + '</nome_instituicao>\n'
+                xmlTemp += '          <nome_instituicao>' + \
+                    formacao.nomeInstituicao + '</nome_instituicao>\n'
                 xmlTemp += '          <descricao>' + formacao.descricao + '</descricao>\n'
                 xmlTemp += '        </formacao>\n'
             xmlTemp += '    </formacao_academica>\n'
@@ -751,17 +805,18 @@ class GeradorDeXML:
             xmlTemp += '    <projetos_pesquisa>\n'
             for pesquisa in registro.listaProjetoDePesquisa:
                 xmlTemp += '        <projeto>\n'
-                xmlTemp += '          <ano_inicio>' + str(pesquisa.anoInicio) + '</ano_inicio>\n'
-                xmlTemp += '          <ano_conclusao>' + str(pesquisa.anoConclusao) + '</ano_conclusao>\n'
+                xmlTemp += '          <ano_inicio>' + \
+                    str(pesquisa.anoInicio) + '</ano_inicio>\n'
+                xmlTemp += '          <ano_conclusao>' + \
+                    str(pesquisa.anoConclusao) + '</ano_conclusao>\n'
                 xmlTemp += '          <nome>' + pesquisa.nome + '</nome>\n'
                 descricaoTmp = ''
                 for item in pesquisa.descricao:
-                    descricaoTmp += item  ### <--
+                    descricaoTmp += item  # <--
                 xmlTemp += '          <descricao>' + descricaoTmp + '</descricao>\n'
                 xmlTemp += '        </projeto>\n'
             xmlTemp += '    </projetos_pesquisa>\n'
         return xmlTemp
-
 
     def getAreaDeAtuacao(self, registro):
         xmlTemp = ''
@@ -772,7 +827,6 @@ class GeradorDeXML:
             xmlTemp += '    </area_atuacao>\n'
         return xmlTemp
 
-
     def getIdiomas(self, registro):
         xmlTemp = ''
         if registro.listaIdioma:
@@ -780,11 +834,11 @@ class GeradorDeXML:
             for idioma in registro.listaIdioma:
                 xmlTemp += '      <idioma>\n'
                 xmlTemp += '          <nome>' + idioma.nome + '</nome>\n'
-                xmlTemp += '          <proficiencia>' + idioma.proficiencia + '</proficiencia>\n'
+                xmlTemp += '          <proficiencia>' + \
+                    idioma.proficiencia + '</proficiencia>\n'
                 xmlTemp += '      </idioma>\n'
             xmlTemp += '    </idiomas>\n'
         return xmlTemp
-
 
     def salvarXML(self, nome, conteudo):
         prefix = self.grupo.obterParametro('global-prefixo') + '-' if not self.grupo.obterParametro(
@@ -792,4 +846,3 @@ class GeradorDeXML:
         file = open(self.dir + "/" + prefix + nome, 'w')
         file.write(conteudo.encode('utf8'))
         file.close()
-

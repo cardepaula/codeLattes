@@ -91,7 +91,6 @@ class HTMLParser(_markupbase.ParserBase):
 
     CDATA_CONTENT_ELEMENTS = ("script", "style")
 
-
     def __init__(self):
         """Initialize and reset this instance."""
         self.reset()
@@ -142,19 +141,21 @@ class HTMLParser(_markupbase.ParserBase):
         i = 0
         n = len(rawdata)
         while i < n:
-            match = self.interesting.search(rawdata, i) # < or &
+            match = self.interesting.search(rawdata, i)  # < or &
             if match:
                 j = match.start()
             else:
                 if self.cdata_elem:
                     break
                 j = n
-            if i < j: self.handle_data(rawdata[i:j])
+            if i < j:
+                self.handle_data(rawdata[i:j])
             i = self.updatepos(i, j)
-            if i == n: break
+            if i == n:
+                break
             startswith = rawdata.startswith
             if startswith('<', i):
-                if starttagopen.match(rawdata, i): # < + letter
+                if starttagopen.match(rawdata, i):  # < + letter
                     k = self.parse_starttag(i)
                 elif startswith("</", i):
                     k = self.parse_endtag(i)
@@ -192,7 +193,7 @@ class HTMLParser(_markupbase.ParserBase):
                     i = self.updatepos(i, k)
                     continue
                 else:
-                    if ";" in rawdata[i:]: #bail by consuming &#
+                    if ";" in rawdata[i:]:  # bail by consuming &#
                         self.handle_data(rawdata[0:2])
                         i = self.updatepos(i, 2)
                     break
@@ -267,7 +268,7 @@ class HTMLParser(_markupbase.ParserBase):
     def parse_pi(self, i):
         rawdata = self.rawdata
         assert rawdata[i:i+2] == '<?', 'unexpected call to parse_pi()'
-        match = piclose.search(rawdata, i+2) # >
+        match = piclose.search(rawdata, i+2)  # >
         if not match:
             return -1
         j = match.start()
@@ -299,7 +300,7 @@ class HTMLParser(_markupbase.ParserBase):
             if not rest:
                 attrvalue = None
             elif attrvalue[:1] == '\'' == attrvalue[-1:] or \
-                 attrvalue[:1] == '"' == attrvalue[-1:]:
+                    attrvalue[:1] == '"' == attrvalue[-1:]:
                 attrvalue = attrvalue[1:-1]
             if attrvalue:
                 attrvalue = self.unescape(attrvalue)
@@ -312,7 +313,7 @@ class HTMLParser(_markupbase.ParserBase):
             if "\n" in self.__starttag_text:
                 lineno = lineno + self.__starttag_text.count("\n")
                 offset = len(self.__starttag_text) \
-                         - self.__starttag_text.rfind("\n")
+                    - self.__starttag_text.rfind("\n")
             else:
                 offset = offset + len(self.__starttag_text)
             self.handle_data(rawdata[i:endpos])
@@ -363,11 +364,11 @@ class HTMLParser(_markupbase.ParserBase):
     def parse_endtag(self, i):
         rawdata = self.rawdata
         assert rawdata[i:i+2] == "</", "unexpected call to parse_endtag"
-        match = endendtag.search(rawdata, i+1) # >
+        match = endendtag.search(rawdata, i+1)  # >
         if not match:
             return -1
         gtpos = match.end()
-        match = endtagfind.match(rawdata, i) # </ + tag + >
+        match = endtagfind.match(rawdata, i)  # </ + tag + >
         if not match:
             if self.cdata_elem is not None:
                 self.handle_data(rawdata[i:gtpos])
@@ -389,7 +390,7 @@ class HTMLParser(_markupbase.ParserBase):
             self.handle_endtag(tagname)
             return gtpos+1
 
-        elem = match.group(1).lower() # script or style
+        elem = match.group(1).lower()  # script or style
         if self.cdata_elem is not None:
             if elem != self.cdata_elem:
                 self.handle_data(rawdata[i:gtpos])
@@ -441,15 +442,17 @@ class HTMLParser(_markupbase.ParserBase):
 
     # Internal -- helper to remove special character quoting
     entitydefs = None
+
     def unescape(self, s):
         if '&' not in s:
             return s
+
         def replaceEntities(s):
             s = s.groups()[0]
             try:
                 if s[0] == "#":
                     s = s[1:]
-                    if s[0] in ['x','X']:
+                    if s[0] in ['x', 'X']:
                         c = int(s[1:], 16)
                     else:
                         c = int(s)
@@ -461,7 +464,7 @@ class HTMLParser(_markupbase.ParserBase):
                 # which is not part of HTML 4
                 import html.entities
                 if HTMLParser.entitydefs is None:
-                    entitydefs = HTMLParser.entitydefs = {'apos':"'"}
+                    entitydefs = HTMLParser.entitydefs = {'apos': "'"}
                     for k, v in list(html.entities.name2codepoint.items()):
                         entitydefs[k] = chr(v)
                 try:

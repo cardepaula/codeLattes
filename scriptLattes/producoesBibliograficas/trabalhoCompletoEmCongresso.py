@@ -8,10 +8,10 @@
 #
 # Este programa é um software livre; você pode redistribui-lo e/ou
 # modifica-lo dentro dos termos da Licença Pública Geral GNU como
-# publicada pela Fundação do Software Livre (FSF); na versão 2 da 
+# publicada pela Fundação do Software Livre (FSF); na versão 2 da
 # Licença, ou (na sua opinião) qualquer versão.
 #
-# Este programa é distribuído na esperança que possa ser util, 
+# Este programa é distribuído na esperança que possa ser util,
 # mas SEM NENHUMA GARANTIA; sem uma garantia implicita de ADEQUAÇÂO a qualquer
 # MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a
 # Licença Pública Geral GNU para maiores detalhes.
@@ -64,10 +64,12 @@ class TrabalhoCompletoEmCongresso:
                 partes = self.item.partition(".. ")
 
             # Verificar quando há um numero de autores > que 25
-            if partes[1] == '':  # muitos autores (mais de 25) e o lattes insere etal. termina lista com ;
+            # muitos autores (mais de 25) e o lattes insere etal. termina lista com ;
+            if partes[1] == '':
                 partes = self.item.partition(" ; ")
                 a = partes[0].partition(", et al.")  # remocao do et al.
-                a = a[0] + a[2]  # estes autores nao estao bem separados pois falta ';'
+                # estes autores nao estao bem separados pois falta ';'
+                a = a[0] + a[2]
                 b = a.replace(', ', '*')
                 c = b.replace(' ', ' ; ')
                 self.autores = c.replace('*', ', ')
@@ -138,7 +140,6 @@ class TrabalhoCompletoEmCongresso:
             self.volume = ''
             self.paginas = ''
 
-
     def compararCom(self, objeto):
         if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(self.titulo, objeto.titulo):
             # Os IDs dos membros são agrupados.
@@ -170,18 +171,20 @@ class TrabalhoCompletoEmCongresso:
     def html(self, listaDeMembros):
         s = self.autores + '. <b>' + self.titulo + '</b>. '
 
-        s += 'Em: <font color=#330066>' + self.nomeDoEvento + '</font>, ' if not self.nomeDoEvento == ''  else ''
-        s += 'v. ' + self.volume + ', ' if not self.volume == ''  else ''
+        s += 'Em: <font color=#330066>' + self.nomeDoEvento + \
+            '</font>, ' if not self.nomeDoEvento == '' else ''
+        s += 'v. ' + self.volume + ', ' if not self.volume == '' else ''
         s += 'p. ' + self.paginas + ', ' if not self.paginas == '' else ''
         s += str(self.ano) + '.' if str(self.ano).isdigit() else '.'
 
         if not self.doi == '':
-            s += ' <a href="' + self.doi + '" target="_blank" style="PADDING-RIGHT:4px;"><img border=0 src="doi.png"></a>'
+            s += ' <a href="' + self.doi + \
+                '" target="_blank" style="PADDING-RIGHT:4px;"><img border=0 src="doi.png"></a>'
 
         s += menuHTMLdeBuscaPB(self.titulo)
         # TODO: a lógica para qualis de conferencias é outra (provavelmente precisará recair na lógica antiga do scriptLattes, ou seja, exigir um CSV)
         #print (type(self.qualis)), type(self.qualissimilar)
-        #print "#########################################################################"
+        # print "#########################################################################"
         s += formata_qualis(self.qualis, self.qualissimilar)
         return s
 
@@ -218,8 +221,8 @@ class TrabalhoCompletoEmCongresso:
         else:  # tratamento individual
             try:
                 s += "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}".format(nomeCompleto, self.ano, self.doi,
-                                                                      self.titulo, self.nomeDoEvento, self.autores,
-                                                                      self.qualis, self.qualissimilar)
+                                                                     self.titulo, self.nomeDoEvento, self.autores,
+                                                                     self.qualis, self.qualissimilar)
             except UnicodeDecodeError as err:
                 print(nomeCompleto)
                 print((str(self.ano)))
@@ -240,7 +243,8 @@ class TrabalhoCompletoEmCongresso:
         s += "+DOI         : " + self.doi.encode('utf8', 'replace') + "\n"
         s += "+AUTORES     : " + self.autores.encode('utf8', 'replace') + "\n"
         s += "+TITULO      : " + self.titulo.encode('utf8', 'replace') + "\n"
-        s += "+NOME EVENTO : " + self.nomeDoEvento.encode('utf8', 'replace') + "\n"
+        s += "+NOME EVENTO : " + \
+            self.nomeDoEvento.encode('utf8', 'replace') + "\n"
         ###		s += "+ANAIS       : " + self.tituloDosAnais.encode('utf8','replace') + "\n"
         s += "+ANO         : " + str(self.ano) + "\n"
         s += "+VOLUME      : " + self.volume.encode('utf8', 'replace') + "\n"
