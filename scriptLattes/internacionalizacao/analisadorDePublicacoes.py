@@ -23,18 +23,18 @@
 #
 
 
-import cookielib
+import http.cookiejar
 import time
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import xml.dom.minidom
 import os.path
 import re
 
-from publicacaoEinternacionalizacao import *
-from genericParser import *
-from parser101007 import *
-from parser101590 import *
-from parser101021 import *
+from .publicacaoEinternacionalizacao import *
+from .genericParser import *
+from .parser101007 import *
+from .parser101590 import *
+from .parser101021 import *
 
 
 class AnalisadorDePublicacoes:
@@ -291,7 +291,7 @@ class AnalisadorDePublicacoes:
     def analisarInternacionalizacaoNaCoautoria(self):
         # listaCompletaPB = self.grupo.compilador.listaCompletaPB
         listaCompletaPB = self.grupo.compilador.listaCompletaArtigoEmPeriodico
-        keys = listaCompletaPB.keys()
+        keys = list(listaCompletaPB.keys())
         for ano in keys:
             elementos = listaCompletaPB[ano]
             for index in range(0, len(elementos)):
@@ -317,7 +317,7 @@ class AnalisadorDePublicacoes:
         if dataDoi:
             listaDePaisesIdentificados = []
 
-            for key in self.paises.keys():
+            for key in list(self.paises.keys()):
                 nomeDePais = key
                 # Procuramos o nome em ingles (nome original)
                 totalInternacionais = 0
@@ -331,7 +331,7 @@ class AnalisadorDePublicacoes:
                                 listaDePaisesIdentificados.append(nomeDePais)
                                 break
 
-        print "- Paises identificados : " + str(listaDePaisesIdentificados)
+        print(("- Paises identificados : " + str(listaDePaisesIdentificados)))
 
         # na lista de paises identificados
         if listaDePaisesIdentificados is not None:
@@ -349,7 +349,7 @@ class AnalisadorDePublicacoes:
     def procurarPais(self, dataDoi, nomeDePais, urlDOI):
         nomeDePais = nomeDePais.lower()
         nomeDePais = HTMLParser().unescape(nomeDePais.decode("utf8", "ignore"))
-        nomeDePais = unicodedata.normalize('NFKD', unicode(nomeDePais)).encode('ascii', 'ignore')
+        nomeDePais = unicodedata.normalize('NFKD', str(nomeDePais)).encode('ascii', 'ignore')
         if len(nomeDePais) <= 0:
             return False
         if len(dataDoi) == 2:
@@ -384,7 +384,7 @@ class AnalisadorDePublicacoes:
 
 
     def obterDadosAtravesDeDOI(self, urlDOI):
-        print '\nProcessando DOI: ' + urlDOI
+        print(('\nProcessando DOI: ' + urlDOI))
         txdata = None
         txheaders = {
             'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:2.0) Gecko/20100101 Firefox/4.0',
@@ -404,7 +404,7 @@ class AnalisadorDePublicacoes:
             arquivoX = open(doiPath)
             rawDOIhtml = arquivoX.read()
             arquivoX.close()
-            print "- Utilizando DOI armazenado no cache: " + doiPath
+            print(("- Utilizando DOI armazenado no cache: " + doiPath))
 
         #-----------------------------------------------------------------
         # tentamos 3 vezes baixar a página web associado ao DOI
@@ -412,27 +412,27 @@ class AnalisadorDePublicacoes:
             tentativa = 1
             while tentativa <= 1:
                 try:
-                    req = urllib2.Request(urlDOI, txdata, txheaders)
+                    req = urllib.request.Request(urlDOI, txdata, txheaders)
 
-                    cj = cookielib.CookieJar()
-                    opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
+                    cj = http.cookiejar.CookieJar()
+                    opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
                     response = opener.open(req)
                     rawDOIhtml = response.read()
-                    print "- Baixando publicacao com DOI: " + urlDOI
+                    print(("- Baixando publicacao com DOI: " + urlDOI))
 
                     # rawDOIhtml = HTMLParser.HTMLParser().unescape(rawDOIhtml.decode("utf8", "ignore"))
                     rawDOIhtml = HTMLParser().unescape(rawDOIhtml.decode("utf8", "ignore"))
-                    rawDOIhtml = unicodedata.normalize('NFKD', unicode(rawDOIhtml)).encode('ascii', 'ignore')
+                    rawDOIhtml = unicodedata.normalize('NFKD', str(rawDOIhtml)).encode('ascii', 'ignore')
 
                     if not self.grupo.diretorioDoi == '':
-                        print "- Armazenando DOI armazenado no cache: " + doiPath
+                        print(("- Armazenando DOI armazenado no cache: " + doiPath))
                         filename = doiPath
                         f = open(filename, "w")
                         f.write(rawDOIhtml)
                         f.close()
                     break
                 except:
-                    print '[AVISO] Tentativa ' + str(tentativa) + ': DOI não está disponível na internet: ', urlDOI
+                    print(('[AVISO] Tentativa ' + str(tentativa) + ': DOI não está disponível na internet: ', urlDOI))
                     time.sleep(10)
                     rawDOIhtml = None
                     tentativa += 1
@@ -443,7 +443,7 @@ class AnalisadorDePublicacoes:
             parserData = self.procurarParser(urlDOI)
             if parserData is not None:
                 if len(parserData) == 6:
-                    print "**caso -- " + parserData[0]
+                    print(("**caso -- " + parserData[0]))
                     caso = genericParser(parserData)
                     try:
                         caso.feed(rawDOIhtml)  ####
@@ -454,7 +454,7 @@ class AnalisadorDePublicacoes:
                     dataDoi.append(parserData)
 
             elif urlDOI.find("10.1134") > -1:
-                print "**caso - 10.1134"
+                print("**caso - 10.1134")
                 casoUrl = parser101007()
                 try:
                     casoUrl.feed(rawDOIhtml)  ###
@@ -484,7 +484,7 @@ class AnalisadorDePublicacoes:
                 #		dataDoi.append(parserData)
 
             elif urlDOI.find("10.1590") > -1:
-                print "**caso -- 10.1590"
+                print("**caso -- 10.1590")
                 caso = parser101590()
                 try:
                     caso.feed(rawDOIhtml)
@@ -496,7 +496,7 @@ class AnalisadorDePublicacoes:
                 dataDoi.append(doihtml)
                 dataDoi.append(parserData)
             else:
-                print "**caso DEFAULT não esta no xml"
+                print("**caso DEFAULT não esta no xml")
                 doihtml = self.html2texto(rawDOIhtml)
                 dataDoi.append(doihtml)
 

@@ -26,7 +26,7 @@ import os
 import re
 
 from PySide import QtCore, QtGui
-from base_panel import BasePanel
+from .base_panel import BasePanel
 
 
 class SingleProcessingTabPanel(BasePanel):
@@ -125,5 +125,5 @@ class SingleProcessingTabPanel(BasePanel):
         # getting from output result folder
         results = re.findall(r"\>\'.*?\'\<", s)
         if results:
-            self.output_folder = unicode(results[0][2:-2] + os.sep)
+            self.output_folder = str(results[0][2:-2] + os.sep)
             self.ui.resultsWidget.setDisabled(False)

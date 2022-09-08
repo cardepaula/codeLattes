@@ -23,16 +23,16 @@
 #
 
 import sys, time, random, re, os
-import urllib, cStringIO
+import urllib.request, urllib.parse, urllib.error, io
 from PIL import Image
 
 try:
     import mechanize
 except:
-    print "Erro, voce precisa do Mechanize instalado no sistema, instale no Ubuntu com 'sudo apt-get install python-mechanize"
+    print("Erro, voce precisa do Mechanize instalado no sistema, instale no Ubuntu com 'sudo apt-get install python-mechanize")
 
 
-import cookielib
+import http.cookiejar
 
 VERSION       = '2017-05-09'
 REMOTE_SCRIPT = 'https://api.bitbucket.org/2.0/snippets/scriptlattes/g5Bx'
@@ -52,24 +52,24 @@ def __self_update():
     try:
         import simplejson
     except:
-        print "Erro, voce precisa do Simplejson instalado no sistema, instale no Ubuntu com 'sudo apt-get install python-simplejson'"
+        print("Erro, voce precisa do Simplejson instalado no sistema, instale no Ubuntu com 'sudo apt-get install python-simplejson'")
         sys.exit(1)
     br = mechanize.Browser()
     r = br.open(REMOTE_SCRIPT)
     d = simplejson.loads(r.read())
     if d['updated_on'][:13] != VERSION:
-        print "BaixaLattes desatualizado, atualizando..."
+        print("BaixaLattes desatualizado, atualizando...")
         r = br.open(d['files']['baixaLattes.py']['links']['self']['href'])
         content = r.read()
         fpath = os.path.abspath(inspect.getfile(inspect.currentframe()))
         try:
             handler = file(fpath, 'w')
         except:
-            print "Erro na escrita do novo arquivo, verifique se o arquivo '%s' tem permissao de escrita" % fpath
+            print(("Erro na escrita do novo arquivo, verifique se o arquivo '%s' tem permissao de escrita" % fpath))
             sys.exit(1)
         handler.write(content)
         handler.close()
-        print "BaixaLattes atualizado, reinicie o programa para utilizar a nova versão, encerrando o ScriptLattes"
+        print("BaixaLattes atualizado, reinicie o programa para utilizar a nova versão, encerrando o ScriptLattes")
         sys.exit(0)
 
 
@@ -80,7 +80,7 @@ def __get_data(id_lattes):
     else:
         url = 'http://lattes.cnpq.br/'+id_lattes
     br = mechanize.Browser()
-    br.set_cookiejar(cookielib.LWPCookieJar())
+    br.set_cookiejar(http.cookiejar.LWPCookieJar())
 
     br.set_handle_equiv(True)
     br.set_handle_gzip(True)
@@ -104,11 +104,11 @@ def __get_data(id_lattes):
     id   = id.replace('&id=', '')
 
     resp = br.open(url_get_captcha)
-    file = cStringIO.StringIO(resp.read())
+    file = io.StringIO(resp.read())
     img  = Image.open(file)
     img.show(title='CAPTCHA');
 
-    captcha     = str(raw_input('\nINSIRA AS LETRAS DO CAPTCHA: '));
+    captcha     = str(eval(input('\nINSIRA AS LETRAS DO CAPTCHA: ')));
     url_captha  = "http://buscatextual.cnpq.br/buscatextual/servlet/captcha?informado="+captcha+"&id="+id+"&metodo=validaCaptcha"
     resp        = br.open(url_captha)
     resp        = br.open(url)
@@ -135,16 +135,16 @@ def baixaCVLattes(id_lattes, debug=True):
 				tries -= 1
 			else:
 				return data
-		except Exception, e:
+		except Exception as e:
 			if debug:
-				print e
+				print(e)
 			tries -= 1
 	# depois de 5 tentativas, verifiquemos se existe uma nova versao do baixaLattes
 	#__self_update()
 	if debug:
-		print '[AVISO] Nao é possível obter o CV Lattes: ', id_lattes
-		print '[AVISO] Certifique-se que o CV existe.'
+		print(('[AVISO] Nao é possível obter o CV Lattes: ', id_lattes))
+		print('[AVISO] Certifique-se que o CV existe.')
 	
-	print "Nao foi possivel baixar o CV Lattes em varias tentativas"
+	print("Nao foi possivel baixar o CV Lattes em varias tentativas")
 	return "   "
 	#raise Exception("Nao foi possivel baixar o CV Lattes em 5 tentativas")

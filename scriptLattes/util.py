@@ -51,7 +51,7 @@ class OutputStream:
             self.output.write(text)
         except:
             try:
-                self.output.write(unicode(text))
+                self.output.write(str(text))
             except:
                 self.output.write('ERRO na impressao')
 
@@ -80,7 +80,7 @@ def copiarArquivos(dir):
         if os.path.exists(dst):
             shutil.rmtree(dst)
         shutil.copytree(os.path.join(base, 'css'), dst)
-    except OSError, e:
+    except OSError as e:
         pass  # provavelmente diretório já existe
         logging.warning(e)
 
@@ -99,7 +99,7 @@ def copiarArquivos(dir):
         if os.path.exists(dst):
             shutil.rmtree(dst)
         shutil.copytree(os.path.join(base, 'images'), dst)
-    except OSError, e:
+    except OSError as e:
         pass  # provavelmente diretório já existe
         logging.warning(e)
 
@@ -108,7 +108,7 @@ def copiarArquivos(dir):
         if os.path.exists(dst):
             shutil.rmtree(dst)
         shutil.copytree(os.path.join(base, 'js'), dst)
-    except OSError, e:
+    except OSError as e:
         pass  # provavelmente diretório já existe
         logging.warning(e)
 
@@ -119,7 +119,7 @@ def copiarArquivos(dir):
     # shutil.copy2(os.path.join(base, 'js', 'jquery.dataTables.min.js'), dir)
     # shutil.copy2(os.path.join(base, 'js', 'jquery.dataTables.rowGrouping.js'), dir)
 
-    print( "\n\nArquivos salvos em: >>{}<<".format(os.path.abspath(dir)) )
+    print(( "\n\nArquivos salvos em: >>{}<<".format(os.path.abspath(dir)) ))
 
 
 # ---------------------------------------------------------------------------- #
@@ -135,7 +135,7 @@ def similaridade_entre_cadeias(str1, str2, qualis=False):
     str2 = str2.strip().lower()
 
     # caso especial
-    if (u'apresentação'==str1 or u'apresentação'==str2 or u'apresentacao'==str1 or u'apresentacao'==str2 ):
+    if ('apresentação'==str1 or 'apresentação'==str2 or 'apresentacao'==str1 or 'apresentacao'==str2 ):
         return 0
 
     if len(str1) == 0 or len(str2) == 0:
@@ -162,8 +162,8 @@ def criarDiretorio(dir):
             os.makedirs(dir)
         ### except OSError as exc:
         except:
-            print "\n[ERRO] Não foi possível criar ou atualizar o diretório: " + dir.encode('utf8')
-            print "[ERRO] Você conta com as permissões de escrita? \n"
+            print(("\n[ERRO] Não foi possível criar ou atualizar o diretório: " + dir.encode('utf8')))
+            print("[ERRO] Você conta com as permissões de escrita? \n")
             return 0
     return 1
 

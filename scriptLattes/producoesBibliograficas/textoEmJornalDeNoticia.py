@@ -60,7 +60,7 @@ class TextoEmJornalDeNoticia:
 			self.autores = partes[0].strip()
 			partes = partes[2]
 
-			if len(re.findall(u'\d\d \w+. (?:19|20)\d\d', partes))>0:
+			if len(re.findall('\d\d \w+. (?:19|20)\d\d', partes))>0:
 				partes = partes.rpartition(",")
 				self.data = partes[2].strip().rstrip(".").rstrip(",")
 				partes = partes[0]

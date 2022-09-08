@@ -27,11 +27,11 @@ import os
 # from htmlentitydefs import name2codepoint
 import pandas
 from lxml import etree
-from baixaLattes import baixaCVLattes
+from .baixaLattes import baixaCVLattes
 
-from parserLattes import *
-from parserLattesXML import *
-from charts.geolocalizador import *
+from .parserLattes import *
+from .parserLattesXML import *
+from .charts.geolocalizador import *
 
 
 class Membro:
@@ -181,10 +181,10 @@ class Membro:
                 if ano1.isdigit() and ano2.isdigit():
                     self.listaPeriodo.append([int(ano1), int(ano2)])
                 else:
-                    print(
-                    "\n[AVISO IMPORTANTE] Periodo nao válido: {}. (periodo desconsiderado na lista)".format(periodo))
-                    print("[AVISO IMPORTANTE] CV Lattes: {}. Membro: {}\n".format(self.idLattes,
-                                                                                  self.nomeInicial.encode('utf8')))
+                    print((
+                    "\n[AVISO IMPORTANTE] Periodo nao válido: {}. (periodo desconsiderado na lista)".format(periodo)))
+                    print(("[AVISO IMPORTANTE] CV Lattes: {}. Membro: {}\n".format(self.idLattes,
+                                                                                  self.nomeInicial.encode('utf8'))))
 
 
     def carregarDadosCVLattes(self):
@@ -195,14 +195,14 @@ class Membro:
             cvLattesXML = arquivoX.read()
             arquivoX.close()
 
-            extended_chars = u''.join(unichr(c) for c in xrange(127, 65536, 1))  # srange(r"[\0x80-\0x7FF]")
+            extended_chars = ''.join(chr(c) for c in range(127, 65536, 1))  # srange(r"[\0x80-\0x7FF]")
             special_chars = ' -'''
             cvLattesXML = cvLattesXML.decode('iso-8859-1', 'replace') + extended_chars + special_chars
             parser = ParserLattesXML(self.idMembro, cvLattesXML)
 
             self.idLattes = parser.idLattes
             self.url = parser.url
-            print "(*) Utilizando CV armazenado no cache: " + cvPath
+            print(("(*) Utilizando CV armazenado no cache: " + cvPath))
 
         elif '0000000000000000' == self.idLattes:
             # se o codigo for '0000000000000000' então serao considerados dados de pessoa estrangeira - sem Lattes.
@@ -215,16 +215,16 @@ class Membro:
                 arquivoH = open(cvPath)
                 cvLattesHTML = arquivoH.read()
                 if self.idMembro!='':
-                    print "(*) Utilizando CV armazenado no cache: "+cvPath
+                    print(("(*) Utilizando CV armazenado no cache: "+cvPath))
             else:
                 cvLattesHTML = baixaCVLattes(self.idLattes)
                 if not self.diretorioCache=='':
                     file = open(cvPath, 'w')
                     file.write(cvLattesHTML)
                     file.close()
-                    print " (*) O CV está sendo armazenado no Cache"
+                    print(" (*) O CV está sendo armazenado no Cache")
 
-            extended_chars = u''.join(unichr(c) for c in xrange(127, 65536, 1))  # srange(r"[\0x80-\0x7FF]")
+            extended_chars = ''.join(chr(c) for c in range(127, 65536, 1))  # srange(r"[\0x80-\0x7FF]")
             special_chars = ' -'''
             #cvLattesHTML  = cvLattesHTML.decode('ascii','replace')+extended_chars+special_chars                                          # Wed Jul 25 16:47:39 BRT 2012
             cvLattesHTML = cvLattesHTML.decode('iso-8859-1', 'replace') + extended_chars + special_chars
@@ -383,7 +383,7 @@ class Membro:
 
 
     def filtrarItems(self, lista):
-        return filter(self.estaDentroDoPeriodo, lista)
+        return list(filter(self.estaDentroDoPeriodo, lista))
 
         # Not pythonic
         # for i in range(0, len(lista)):
@@ -555,5 +555,5 @@ class Membro:
 # http://wiki.python.org/moin/EscapingHtml
 def htmlentitydecode(s):
     return re.sub('&(%s);' % '|'.join(name2codepoint),
-                  lambda m: unichr(name2codepoint[m.group(1)]), s)
+                  lambda m: chr(name2codepoint[m.group(1)]), s)
 

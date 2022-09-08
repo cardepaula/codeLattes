@@ -65,17 +65,17 @@ class ProgramaComputador:
 
             partes = partes[2]
             partes = partes.split(".");
-            print partes
+            print(partes)
 
             self.tipoPatente = partes[0].split(":")[1].strip();
             self.numeroRegistro = partes[1].split(":")[1].split(",")[0].strip();
             self.dataDeposito = partes[1].split(":")[2].split(",")[0].strip();
         except:
-            print "Erro no registro ", self.item
+            print(("Erro no registro ", self.item))
 
         self.chave = self.autores  # chave de comparação entre os objetos
 
-        print self.__str__()
+        print((self.__str__()))
 
     def compararCom(self, objeto):
         if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(self.titulo, objeto.titulo):

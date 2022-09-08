@@ -2,7 +2,7 @@
 # caso 3 http://pubs.acs.org procura toda data entre affiliations e citation
 import  unicodedata
 
-from HTMLParserNew import HTMLParser
+from .HTMLParserNew import HTMLParser
 
 
 class parser101021(HTMLParser):
@@ -22,5 +22,5 @@ class parser101021(HTMLParser):
 		      				self.recording -=1
 	def handle_data(self, data):
 	    if self.recording:			
-			data = ''.join((c for c in unicodedata.normalize('NFD',unicode(data.decode("utf-8"))) if unicodedata.category(c) != 'Mn'))
+			data = ''.join((c for c in unicodedata.normalize('NFD',str(data.decode("utf-8"))) if unicodedata.category(c) != 'Mn'))
 			self.data.append(data)

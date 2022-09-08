@@ -26,8 +26,8 @@ import os
 import re
 
 from PySide import QtCore, QtGui
-from base_panel import BasePanel
-from text_dialog import Ui_Dialog
+from .base_panel import BasePanel
+from .text_dialog import Ui_Dialog
 
 
 class MultiProcessingTableModel(QtCore.QAbstractTableModel):
@@ -77,7 +77,7 @@ def finished_signal_factory(panel, index, process):
         results = re.findall(r"\>\'.*?\'\<", output)
         output_folder = ''
         if results:
-            output_folder = unicode(results[0][2:-2] + os.sep)
+            output_folder = str(results[0][2:-2] + os.sep)
             o = file(os.path.join(output_folder, 'saida.txt'), 'w')
             o.write(output)
             o.close()
@@ -156,7 +156,7 @@ class MultipleProcessingTabPanel(BasePanel):
                 f.replace(folderpath + os.path.sep, '')
             ))
             self.ui.tableWidget.setItem(index, 1, QtGui.QTableWidgetItem(
-                u"Não executado"
+                "Não executado"
             ))
 
         hheader = QtGui.QHeaderView(QtCore.Qt.Orientation.Horizontal)

@@ -2,7 +2,7 @@
 # caso 2 http://www.scielo.br/ procura entre o 7mo y 10mo <p>
 import  unicodedata
 
-from HTMLParserNew import HTMLParser
+from .HTMLParserNew import HTMLParser
 
 
 class parser101590(HTMLParser):
@@ -21,6 +21,6 @@ class parser101590(HTMLParser):
 	      		self.recording -=1
 	def handle_data(self, data):
 	    if self.recording and self.count > 4 and self.count < 11:			
-			data = ''.join((c for c in unicodedata.normalize('NFD',unicode(data.decode("utf-8"))) if unicodedata.category(c) != 'Mn'))
+			data = ''.join((c for c in unicodedata.normalize('NFD',str(data.decode("utf-8"))) if unicodedata.category(c) != 'Mn'))
 			self.data.append(data)
 	

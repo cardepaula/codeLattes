@@ -63,7 +63,7 @@ class ResumoEmCongresso:
 			partes = partes[2]
 
 			#-------------------------
-			aux = re.findall(u', ((?:19|20)\d\d)\\b', partes)
+			aux = re.findall(', ((?:19|20)\d\d)\\b', partes)
 			if len(aux)>0:
 	#			partes = partes.rpartition(",")
 				self.ano = aux[-1].strip().rstrip(".").rstrip(",")
@@ -96,7 +96,7 @@ class ResumoEmCongresso:
 				self.volume = partes[2].rstrip(".").rstrip(",")
 				partes = partes[0]
 	
-			aux = re.findall(u', ((?:19|20)\d\d)\\b', partes)
+			aux = re.findall(', ((?:19|20)\d\d)\\b', partes)
 			if len(aux)>0:
 				partes = partes.rpartition(",")
 				self.ano = aux[-1].strip().rstrip(".").rstrip(",")

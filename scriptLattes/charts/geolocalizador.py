@@ -23,7 +23,7 @@
 #
 #
 
-import urllib2    
+import urllib.request, urllib.error, urllib.parse    
 import re
 import unicodedata
 
@@ -83,7 +83,7 @@ class Geolocalizador:
         #print "  .CEP    = "+cep
 
         cep   = self.corrigirCEP(cep)
-        chave = u'{} {} {} {}'.format(pais, uf, cidade, cep)
+        chave = '{} {} {} {}'.format(pais, uf, cidade, cep)
         chave = re.sub('\s+','+', chave)
         chave = unicodedata.normalize('NFKD', chave).encode('ASCII', 'ignore') 
 
@@ -91,8 +91,8 @@ class Geolocalizador:
             (self.lat, self.lon) = self.dicionarioDeGeolocalizacao[chave]
         else:
             query = "http://maps.googleapis.com/maps/api/geocode/xml?address="+chave.encode('utf8')+"&sensor=false"
-            req = urllib2.Request(query)
-            res = urllib2.urlopen(req).read()
+            req = urllib.request.Request(query)
+            res = urllib.request.urlopen(req).read()
             res = res.replace("\r","")
             res = res.replace("\n","")
             res = re.findall(r'<location>(.+?)</location>', res)

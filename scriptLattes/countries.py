@@ -249,7 +249,7 @@ def identificarPaisesEmPublicacao(urlDOI, paises):
 	doihtml = urlDOI
 	listaDePaisesIdentificados = []
 
-	for key in paises.keys():
+	for key in list(paises.keys()):
 		nomeDePais = key
 		# Procuramos o nome em ingles (nome original)
 		if procurarPais(doihtml, nomeDePais, prefixo):
@@ -291,5 +291,5 @@ texto = texto.lower()
 
 
 
-print identificarPaisesEmPublicacao(texto, paises)
+print((identificarPaisesEmPublicacao(texto, paises)))
 

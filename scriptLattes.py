@@ -59,12 +59,12 @@ def executar_scriptLattes(arquivoConfiguracao):
         # finalizando o processo
         #print '[AVISO] Quem vê \'Lattes\', não vê coração! B-)'
         #print '[AVISO] Por favor, cadastre-se na página: http://scriptlattes.sourceforge.net\n'
-        print '\n\n[PARA REFERENCIAR/CITAR ESTE SOFTWARE USE]'
-        print '    Jesus P. Mena-Chalco & Roberto M. Cesar-Jr.'
-        print '    scriptLattes: An open-source knowledge extraction system from the Lattes Platform.'
-        print '    Journal of the Brazilian Computer Society, vol.15, n.4, páginas 31-39, 2009.'
-        print '    http://dx.doi.org/10.1007/BF03194511'
-        print '\n\nscriptLattes executado!'
+        print('\n\n[PARA REFERENCIAR/CITAR ESTE SOFTWARE USE]')
+        print('    Jesus P. Mena-Chalco & Roberto M. Cesar-Jr.')
+        print('    scriptLattes: An open-source knowledge extraction system from the Lattes Platform.')
+        print('    Journal of the Brazilian Computer Society, vol.15, n.4, páginas 31-39, 2009.')
+        print('    http://dx.doi.org/10.1007/BF03194511')
+        print('\n\nscriptLattes executado!')
 
         # para incluir a producao com colaboradores é necessário um novo chamado ao scriptLattes
         if (novoGrupo.obterParametro('relatorio-incluir_producao_com_colaboradores')):

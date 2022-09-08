@@ -17,9 +17,9 @@ limitations under the License.
 
 import codecs
 import logging
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import pickle
-from HTMLParser import HTMLParser
+from html.parser import HTMLParser
 import datetime
 
 import requests
@@ -88,8 +88,8 @@ class QualisExtractor(object):
             jid = acesso_inicial.cookies['JSESSIONID']
             logger.info('Iniciando sessão qualis. ID da Sessão: {}'.format(jid))
             url1 = url_base + "publico/pesquisaPublicaClassificacao.seam;jsessionid=" + jid + "?conversationPropagation=begin"
-            req1 = urllib2.Request(url1)
-            arq1 = urllib2.urlopen(req1)
+            req1 = urllib.request.Request(url1)
+            arq1 = urllib.request.urlopen(req1)
 
             self.url2 = url_base + "publico/pesquisaPublicaClassificacao.seam;jsessionid=" + jid
             self.initialized = True
@@ -153,16 +153,16 @@ class QualisExtractor(object):
             scroller = 1
             more = 1
             # FIXME: armazenar mapeamento do nome da área para seu código, e utilizar o código nas URLs abaixo.
-            reqn = urllib2.Request(self.url2,
+            reqn = urllib.request.Request(self.url2,
                                    'consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3AsomAreaAvaliacao=' + str(
                                        area) + '&consultaPublicaClassificacaoForm%3AsomEstrato=org.jboss.seam.ui.NoSelectionConverter.noSelectionValue&consultaPublicaClassificacaoForm%3AbtnPesquisarTituloPorArea=Pesquisar&javax.faces.ViewState=j_id2')
 
-            arqn = urllib2.urlopen(reqn)
+            arqn = urllib.request.urlopen(reqn)
             data = []
             logger.info('Qualis da area {} desatualizado!'.format(area))
             logger.info('Extraindo qualis da area: {}'.format(area))
             while more == 1:
-                reqn = urllib2.Request(self.url2,
+                reqn = urllib.request.Request(self.url2,
                                        'AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3AsomAreaAvaliacao=' + str(
                                            area) + '&consultaPublicaClassificacaoForm%3AsomEstrato=org.jboss.seam.ui.NoSelectionConverter.noSelectionValue&javax.faces.ViewState=j_id3&ajaxSingle=consultaPublicaClassificacaoForm%3AscrollerArea&consultaPublicaClassificacaoForm%3AscrollerArea=' + str(
                                            scroller) + '&AJAX%3AEVENTS_COUNT=1&')
@@ -171,9 +171,9 @@ class QualisExtractor(object):
                 tries = 10
                 for i in range(tries):
                     try:
-                        arqn = urllib2.urlopen(reqn)
+                        arqn = urllib.request.urlopen(reqn)
                         break  # success
-                    except urllib2.URLError as err:
+                    except urllib.error.URLError as err:
                         logger.warning('Erro extraindo qualis. Tentando novamente.')
                         # continue
                         # if not isinstance(err.reason, socket.timeout):
@@ -229,9 +229,9 @@ class QualisExtractor(object):
         arqn = None
         for i in range(tries):
             try:
-                arqn = urllib2.urlopen(req)
+                arqn = urllib.request.urlopen(req)
                 break  # success
-            except urllib2.URLError as err:
+            except urllib.error.URLError as err:
                 logger.warning('Erro extraindo Qualis do ISSN {}. Tentando novamente.'.format(issn))
             if i == tries - 1:
                 logger.warning(
@@ -262,7 +262,7 @@ class QualisExtractor(object):
         # url0 = url + "?conversationPropagation=begin"
         # urllib2.urlopen(urllib2.Request(url0))
 
-        req = urllib2.Request(url,
+        req = urllib.request.Request(url,
                               'consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Aissn=' + str(
                                   issn) + '&consultaPublicaClassificacaoForm%3AbtnPesquisarISSN=Pesquisar&javax.faces.ViewState=j_id2')
         html_document = self.read_url(req)
@@ -271,7 +271,7 @@ class QualisExtractor(object):
 
         pages = self.other_pages(html_document)
         for scroller in pages:
-            req = urllib2.Request(url,
+            req = urllib.request.Request(url,
                                   'AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Aissn=' + str(
                                       issn) + '&javax.faces.ViewState=j_id3&ajaxSingle=consultaPublicaClassificacaoForm%3Adatascroller1&consultaPublicaClassificacaoForm%3Adatascroller1=' + str(
                                       scroller) + '&AJAX%3AEVENTS_COUNT=1&')
@@ -306,10 +306,10 @@ class QualisExtractor(object):
             issn_data = issn_data[issn_data['area'].isin(self.areas_to_extract)]
 
         # XXX: note que se houver chaves repetidas, só o último valor é salvo. Neste caso aqui não há problema, já que cada área só tem uma avaliação.
-        qualis = dict(zip(issn_data['area'], issn_data['estrato']))
+        qualis = dict(list(zip(issn_data['area'], issn_data['estrato'])))
 
         print("----------------")
-        print qualis
+        print(qualis)
         print("----------------")
 
         return qualis
@@ -335,7 +335,7 @@ class QualisExtractor(object):
         # url0 = url + "?conversationPropagation=begin"
         # urllib2.urlopen(urllib2.Request(url0))
 
-        req = urllib2.Request(url,
+        req = urllib.request.Request(url,
                               'consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Atitulo=' +
                               str(journal_title) +
                               '&consultaPublicaClassificacaoForm%3AbtnPesquisarTitulo=Pesquisar&javax.faces.ViewState=j_id2')
@@ -345,7 +345,7 @@ class QualisExtractor(object):
 
         pages = self.other_pages(html_document)
         for scroller in pages:
-            req = urllib2.Request(url,
+            req = urllib.request.Request(url,
                                   'AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Atitulo=' +
                                   str(journal_title) +
                                   '&javax.faces.ViewState=j_id3&ajaxSingle=consultaPublicaClassificacaoForm%3Adatascroller2&consultaPublicaClassificacaoForm%3Adatascroller2=' +
@@ -384,9 +384,9 @@ class QualisExtractor(object):
             data = data[data['area'].isin(self.areas_to_extract)]
 
         # XXX: note que se houver chaves repetidas, só o último valor é salvo. Neste caso aqui não há problema, já que cada área só tem uma avaliação.
-        qualis = dict(zip(data['area'], data['estrato']))
+        qualis = dict(list(zip(data['area'], data['estrato'])))
 
-        print ('###################', qualis)
+        print(('###################', qualis))
 
         return qualis
 
@@ -445,7 +445,7 @@ class QualisExtractor(object):
         table_lines = tree.xpath("//table[@id='consultaPublicaClassificacaoForm:listaVeiculosIssn']/tbody/tr")
 
         for tr in table_lines:
-            print tr
+            print(tr)
 
             line = []
             for td in tr:

@@ -42,7 +42,7 @@ class GraficoDeInternacionalizacao:
 		self.listaCompleta = listaCompleta
 
 		listaDePaisesEquantidades = {}
-		keys = self.listaCompleta.keys()
+		keys = list(self.listaCompleta.keys())
 		for ano in keys:
 			elementos = self.listaCompleta[ano]
 			for index in range(0, len(elementos)):
@@ -67,7 +67,7 @@ class GraficoDeInternacionalizacao:
 						else:
 							self.publicacoesRealizadasComParceirasComEstrangeiros += 1
 
-		listaDePaisesEquantidadesOrd = sorted(listaDePaisesEquantidades.items(), key=operator.itemgetter(1,0), reverse=True)
+		listaDePaisesEquantidadesOrd = sorted(list(listaDePaisesEquantidades.items()), key=operator.itemgetter(1,0), reverse=True)
 
 		self.vetorDePaises = []
 		self.vetorDeQuantidades = []
@@ -90,9 +90,9 @@ class GraficoDeInternacionalizacao:
 		script = ""
 
 		if len(self.vetorDePaises)>0: # Apenas para listas com elemtos
-			print "\n[CRIANDO GRAFICO DE BARRAS - INTERNACIONALIZACAO]"
-			print self.vetorDePaises
-			print self.vetorDeQuantidades
+			print("\n[CRIANDO GRAFICO DE BARRAS - INTERNACIONALIZACAO]")
+			print((self.vetorDePaises))
+			print((self.vetorDeQuantidades))
 
 			script = "<script type='text/javascript' src='https://www.google.com/jsapi'></script>"
 

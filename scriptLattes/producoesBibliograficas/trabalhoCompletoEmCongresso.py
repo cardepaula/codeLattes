@@ -93,7 +93,7 @@ class TrabalhoCompletoEmCongresso:
                 self.volume = partes[2].rstrip(".").rstrip(",")
                 partes = partes[0]
 
-            aux = re.findall(u', ((?:19|20)\d\d)\\b', partes)
+            aux = re.findall(', ((?:19|20)\d\d)\\b', partes)
 
             if len(aux) > 0:
                 partes = partes.rpartition(",")
@@ -211,24 +211,24 @@ class TrabalhoCompletoEmCongresso:
             self.qualis = ''
         if self.qualissimilar == None:
             self.qualissimilar = ''
-        s = u"trabalhoCompletoEmCongresso\t"
+        s = "trabalhoCompletoEmCongresso\t"
         if nomeCompleto == "":  # tratamento grupal
             s += str(
                 self.ano) + "\t" + self.doi + "\t" + self.titulo + "\t" + self.nomeDoEvento + "\t" + self.autores + "\t" + self.qualis + "\t" + self.qualissimilar
         else:  # tratamento individual
             try:
-                s += u"{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}".format(nomeCompleto, self.ano, self.doi,
+                s += "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}".format(nomeCompleto, self.ano, self.doi,
                                                                       self.titulo, self.nomeDoEvento, self.autores,
                                                                       self.qualis, self.qualissimilar)
-            except UnicodeDecodeError, err:
+            except UnicodeDecodeError as err:
                 print(nomeCompleto)
-                print(str(self.ano))
-                print(self.doi)
-                print(self.titulo)
-                print(self.nomeDoEvento)
-                print(self.autores)
-                print(self.qualis)
-                print(self.qualissimilar)
+                print((str(self.ano)))
+                print((self.doi))
+                print((self.titulo))
+                print((self.nomeDoEvento))
+                print((self.autores))
+                print((self.qualis))
+                print((self.qualissimilar))
                 logger.warning(err)
         return s
 

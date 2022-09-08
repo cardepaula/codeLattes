@@ -298,7 +298,7 @@ class CompiladorDeListas:
 
         for membro in grupo.listaDeMembros:
             if membro.idLattes == '0000000000000000':
-                print ":: Processando coautor sem CV-Lattes" + membro.nomeInicial
+                print(":: Processando coautor sem CV-Lattes" + membro.nomeInicial)
 
                 self.adicionarCoautorNaLista(self.listaCompletaArtigoEmPeriodico, membro)
                 self.adicionarCoautorNaLista(self.listaCompletaArtigoEmPeriodico, membro)
@@ -328,7 +328,7 @@ class CompiladorDeListas:
 
 
     def adicionarCoautorNaLista(self, listaCompleta, membro):
-        keys = listaCompleta.keys()
+        keys = list(listaCompleta.keys())
         for ano in keys:
             for pub in listaCompleta[ano]:
                 if self.procuraNomeEmPublicacao(membro.nomeInicial, pub.autores):
@@ -369,9 +369,9 @@ class CompiladorDeListas:
                 for i in range(0, len(listaCompleta[pub.ano])):
                     item = pub.compararCom(listaCompleta[pub.ano][i])  # comparamos: pub com listaCompleta[pub.ano][i]
                     if not item == None:  # sao similares
-                        print "\n[AVISO] PRODUÇÕES SIMILARES",
-                        print pub,
-                        print listaCompleta[pub.ano][i]
+                        print("\n[AVISO] PRODUÇÕES SIMILARES", end=' ')
+                        print(pub, end=' ')
+                        print(listaCompleta[pub.ano][i])
                         # print "Membro " + str(pub.idMembro) + ": " + pub.titulo.encode('utf8')
                         # print "Membro " + str(listaCompleta[pub.ano][i].idMembro) + ": " + listaCompleta[pub.ano][i].titulo.encode('utf8')
 
@@ -391,7 +391,7 @@ class CompiladorDeListas:
         return listaCompleta
 
     def compilarListasCompletas(self, listaCompleta, listaTotal):
-        keys = listaCompleta.keys()
+        keys = list(listaCompleta.keys())
         for ano in keys:
             if listaTotal.get(ano) == None:
                 listaTotal[ano] = []
@@ -460,7 +460,7 @@ class CompiladorDeListas:
         for i in range(0, self.grupo.numeroDeMembros()):
             listaDeColaboracoes.append( dict([]) )
 
-        keys = listaCompleta.keys()
+        keys = list(listaCompleta.keys())
         keys.sort(reverse=True)
         for k in keys:
             for pub in listaCompleta[k]:
@@ -606,202 +606,202 @@ class CompiladorDeListas:
 
 
     def imprimirMatrizesDeFrequencia(self):
-        print "\n[LISTA DE MATRIZES DE FREQUENCIA]"
-        print "\nArtigo em periodico"
-        print self.matrizArtigoEmPeriodico
-        print "\nLivro publicado"
-        print self.matrizLivroPublicado
-        print "\nCapitulo de livro publicado"
-        print self.matrizCapituloDeLivroPublicado
-        print "\nTexto em jornal de noticia"
-        print self.matrizTextoEmJornalDeNoticia
-        print "\nTrabalho completo em congresso"
-        print self.matrizTrabalhoCompletoEmCongresso
-        print "\nResumo expandido em congresso"
-        print self.matrizResumoExpandidoEmCongresso
-        print "\nResumo em congresso"
-        print self.matrizResumoEmCongresso
-        print "\nArtigo aceito"
-        print self.matrizArtigoAceito
-        print "\nApresentacao de trabalho"
-        print self.matrizApresentacaoDeTrabalho
-        print "\nOutro tipo de producao bibliografica"
-        print self.matrizOutroTipoDeProducaoBibliografica
-        print "\nSoftware com patente"
-        print self.matrizSoftwareComPatente
-        print "\nSoftware sem patente"
-        print self.matrizSoftwareSemPatente
-        print "\nProduto tecnologico"
-        print self.matrizProdutoTecnologico
-        print "\nProcesso ou tecnica"
-        print self.matrizProcessoOuTecnica
-        print "\nTrabalho tecnico"
-        print self.matrizTrabalhoTecnico
-        print "\nOutro tipo de producao tecnica"
-        print self.matrizOutroTipoDeProducaoTecnica
+        print("\n[LISTA DE MATRIZES DE FREQUENCIA]")
+        print("\nArtigo em periodico")
+        print(self.matrizArtigoEmPeriodico)
+        print("\nLivro publicado")
+        print(self.matrizLivroPublicado)
+        print("\nCapitulo de livro publicado")
+        print(self.matrizCapituloDeLivroPublicado)
+        print("\nTexto em jornal de noticia")
+        print(self.matrizTextoEmJornalDeNoticia)
+        print("\nTrabalho completo em congresso")
+        print(self.matrizTrabalhoCompletoEmCongresso)
+        print("\nResumo expandido em congresso")
+        print(self.matrizResumoExpandidoEmCongresso)
+        print("\nResumo em congresso")
+        print(self.matrizResumoEmCongresso)
+        print("\nArtigo aceito")
+        print(self.matrizArtigoAceito)
+        print("\nApresentacao de trabalho")
+        print(self.matrizApresentacaoDeTrabalho)
+        print("\nOutro tipo de producao bibliografica")
+        print(self.matrizOutroTipoDeProducaoBibliografica)
+        print("\nSoftware com patente")
+        print(self.matrizSoftwareComPatente)
+        print("\nSoftware sem patente")
+        print(self.matrizSoftwareSemPatente)
+        print("\nProduto tecnologico")
+        print(self.matrizProdutoTecnologico)
+        print("\nProcesso ou tecnica")
+        print(self.matrizProcessoOuTecnica)
+        print("\nTrabalho tecnico")
+        print(self.matrizTrabalhoTecnico)
+        print("\nOutro tipo de producao tecnica")
+        print(self.matrizOutroTipoDeProducaoTecnica)
 
-        print "\nPatente"
-        print self.matrizPatente
-        print "\nPrograma de computador"
-        print self.matrizProgramaComputador
-        print "\nDesenho industrial"
-        print self.matrizDesenhoIndustrial
+        print("\nPatente")
+        print(self.matrizPatente)
+        print("\nPrograma de computador")
+        print(self.matrizProgramaComputador)
+        print("\nDesenho industrial")
+        print(self.matrizDesenhoIndustrial)
 
-        print "\nProducao artistica"
-        print self.matrizProducaoArtistica
+        print("\nProducao artistica")
+        print(self.matrizProducaoArtistica)
 
 
     def imprimirListasCompletas(self):
-        print "\n\n[LISTA COMPILADA DE PRODUÇÕES]"
+        print("\n\n[LISTA COMPILADA DE PRODUÇÕES]")
 
-        print "\nArtigo em periodico"
+        print("\nArtigo em periodico")
         self.imprimirListaProducoes(self.listaCompletaArtigoEmPeriodico)
-        print "\nLivro publicado"
+        print("\nLivro publicado")
         self.imprimirListaProducoes(self.listaCompletaLivroPublicado)
-        print "\nCapitulo de livro publicado"
+        print("\nCapitulo de livro publicado")
         self.imprimirListaProducoes(self.listaCompletaCapituloDeLivroPublicado)
-        print "\nTexto em jornal de noticia"
+        print("\nTexto em jornal de noticia")
         self.imprimirListaProducoes(self.listaCompletaTextoEmJornalDeNoticia)
-        print "\nTrabalho completo em congresso"
+        print("\nTrabalho completo em congresso")
         self.imprimirListaProducoes(self.listaCompletaTrabalhoCompletoEmCongresso)
-        print "\nResumo expandido em congresso"
+        print("\nResumo expandido em congresso")
         self.imprimirListaProducoes(self.listaCompletaResumoExpandidoEmCongresso)
-        print "\nResumo em congresso"
+        print("\nResumo em congresso")
         self.imprimirListaProducoes(self.listaCompletaResumoEmCongresso)
-        print "\nArtigo aceito"
+        print("\nArtigo aceito")
         self.imprimirListaProducoes(self.listaCompletaArtigoAceito)
-        print "\nApresentacao de trabalho"
+        print("\nApresentacao de trabalho")
         self.imprimirListaProducoes(self.listaCompletaApresentacaoDeTrabalho)
-        print "\nOutro tipo de producao bibliografica"
+        print("\nOutro tipo de producao bibliografica")
         self.imprimirListaProducoes(self.listaCompletaOutroTipoDeProducaoBibliografica)
-        print "\nTOTAL DE PB"
+        print("\nTOTAL DE PB")
         self.imprimirListaProducoes(self.listaCompletaPB)
 
-        print "\nSoftware com patente"
+        print("\nSoftware com patente")
         self.imprimirListaProducoes(self.listaCompletaSoftwareComPatente)
-        print "\nSoftware sem patente"
+        print("\nSoftware sem patente")
         self.imprimirListaProducoes(self.listaCompletaSoftwareSemPatente)
-        print "\nProduto tecnologico"
+        print("\nProduto tecnologico")
         self.imprimirListaProducoes(self.listaCompletaProdutoTecnologico)
-        print "\nProcesso ou tecnica"
+        print("\nProcesso ou tecnica")
         self.imprimirListaProducoes(self.listaCompletaProcessoOuTecnica)
-        print "\nTrabalho tecnico"
+        print("\nTrabalho tecnico")
         self.imprimirListaProducoes(self.listaCompletaTrabalhoTecnico)
-        print "\nOutro tipo de producao tecnica"
+        print("\nOutro tipo de producao tecnica")
         self.imprimirListaProducoes(self.listaCompletaOutroTipoDeProducaoTecnica)
-        print "\nTOTAL DE PT"
+        print("\nTOTAL DE PT")
         self.imprimirListaProducoes(self.listaCompletaPT)
 
-        print "\nPatente"
+        print("\nPatente")
         self.imprimirListaProducoes(self.listaCompletaPatente)
-        print "\nPrograma de computador"
+        print("\nPrograma de computador")
         self.imprimirListaProducoes(self.listaCompletaProgramaComputador)
-        print "\nDesenho industrial"
+        print("\nDesenho industrial")
         self.imprimirListaProducoes(self.listaCompletaDesenhoIndustrial)
-        print "\nTOTAL DE PR"
+        print("\nTOTAL DE PR")
         self.imprimirListaProducoes(self.listaCompletaPR)
 
-        print "\nProducao artistica"
+        print("\nProducao artistica")
         self.imprimirListaProducoes(self.listaCompletaProducaoArtistica)
-        print "\nTOTAL DE PA"
+        print("\nTOTAL DE PA")
         self.imprimirListaProducoes(self.listaCompletaPA)
 
-        print "\n\n[LISTA COMPILADA DE ORIENTAÇÕES]"
-        print "\nOA - Pos doutorado"
+        print("\n\n[LISTA COMPILADA DE ORIENTAÇÕES]")
+        print("\nOA - Pos doutorado")
         self.imprimirListaOrientacoes(self.listaCompletaOASupervisaoDePosDoutorado)
-        print "\nOA - Doutorado"
+        print("\nOA - Doutorado")
         self.imprimirListaOrientacoes(self.listaCompletaOATeseDeDoutorado)
-        print "\nOA - Mestrado"
+        print("\nOA - Mestrado")
         self.imprimirListaOrientacoes(self.listaCompletaOADissertacaoDeMestrado)
-        print "\nOA - Monografia de especializacao"
+        print("\nOA - Monografia de especializacao")
         self.imprimirListaOrientacoes(self.listaCompletaOAMonografiaDeEspecializacao)
-        print "\nOA - TCC"
+        print("\nOA - TCC")
         self.imprimirListaOrientacoes(self.listaCompletaOATCC)
-        print "\nOA - Iniciacao cientifica"
+        print("\nOA - Iniciacao cientifica")
         self.imprimirListaOrientacoes(self.listaCompletaOAIniciacaoCientifica)
-        print "\nOA - Outro tipo de orientacao"
+        print("\nOA - Outro tipo de orientacao")
         self.imprimirListaOrientacoes(self.listaCompletaOAOutroTipoDeOrientacao)
-        print "\nTOTAL DE OA"
+        print("\nTOTAL DE OA")
         self.imprimirListaOrientacoes(self.listaCompletaOA)
 
-        print "\nOC - Pos doutorado"
+        print("\nOC - Pos doutorado")
         self.imprimirListaOrientacoes(self.listaCompletaOCSupervisaoDePosDoutorado)
-        print "\nOC - Doutorado"
+        print("\nOC - Doutorado")
         self.imprimirListaOrientacoes(self.listaCompletaOCTeseDeDoutorado)
-        print "\nOC - Mestrado"
+        print("\nOC - Mestrado")
         self.imprimirListaOrientacoes(self.listaCompletaOCDissertacaoDeMestrado)
-        print "\nOC - Monografia de especializacao"
+        print("\nOC - Monografia de especializacao")
         self.imprimirListaOrientacoes(self.listaCompletaOCMonografiaDeEspecializacao)
-        print "\nOC - TCC"
+        print("\nOC - TCC")
         self.imprimirListaOrientacoes(self.listaCompletaOCTCC)
-        print "\nOC - Iniciacao cientifica"
+        print("\nOC - Iniciacao cientifica")
         self.imprimirListaOrientacoes(self.listaCompletaOCIniciacaoCientifica)
-        print "\nOC - Outro tipo de orientacao"
+        print("\nOC - Outro tipo de orientacao")
         self.imprimirListaOrientacoes(self.listaCompletaOCOutroTipoDeOrientacao)
-        print "\nTOTAL DE OC"
+        print("\nTOTAL DE OC")
         self.imprimirListaOrientacoes(self.listaCompletaOC)
 
-        print "\n[LISTA COMPILADA DE PROJETOS]"
+        print("\n[LISTA COMPILADA DE PROJETOS]")
         self.imprimirListaProjetos(self.listaCompletaProjetoDePesquisa)
 
-        print "\n[LISTA COMPILADA DE PREMIOS]"
+        print("\n[LISTA COMPILADA DE PREMIOS]")
         self.imprimirListaPremios(self.listaCompletaPremioOuTitulo)
 
-        print "\n[LISTA COMPILADA DE PARTICIPACAO EM EVENTOS] ..."
-        print "\n[LISTA COMPILADA DE ORGANIZACAO DE EVENTOS] ..."
+        print("\n[LISTA COMPILADA DE PARTICIPACAO EM EVENTOS] ...")
+        print("\n[LISTA COMPILADA DE ORGANIZACAO DE EVENTOS] ...")
 
 
     def imprimirListaProducoes(self, listaCompleta):
-        print "---------------------------------------------------------------------------"
-        keys = listaCompleta.keys()
+        print("---------------------------------------------------------------------------")
+        keys = list(listaCompleta.keys())
         keys.sort(reverse=True)
         for k in keys:
-            print k
+            print(k)
             listaCompleta[k].sort(key=operator.attrgetter('autores'))
 
             for pub in listaCompleta[k]:
-                print "--- " + str(pub.idMembro)
-                print "--- " + pub.autores.encode('utf8')
-                print "--- " + pub.titulo.encode('utf8') + "\n"
+                print("--- " + str(pub.idMembro))
+                print("--- " + pub.autores.encode('utf8'))
+                print("--- " + pub.titulo.encode('utf8') + "\n")
 
 
     def imprimirListaOrientacoes(self, listaCompleta):
-        print "---------------------------------------------------------------------------"
-        keys = listaCompleta.keys()
+        print("---------------------------------------------------------------------------")
+        keys = list(listaCompleta.keys())
         keys.sort(reverse=True)
         for k in keys:
-            print k
+            print(k)
             listaCompleta[k].sort(key=operator.attrgetter('nome'))
 
             for pub in listaCompleta[k]:
-                print "--- " + str(pub.idMembro)
-                print "--- " + pub.nome.encode('utf8')
-                print "--- " + pub.tituloDoTrabalho.encode('utf8') + "\n"
+                print("--- " + str(pub.idMembro))
+                print("--- " + pub.nome.encode('utf8'))
+                print("--- " + pub.tituloDoTrabalho.encode('utf8') + "\n")
 
 
     def imprimirListaProjetos(self, listaCompleta):
-        print "---------------------------------------------------------------------------"
-        keys = listaCompleta.keys()
+        print("---------------------------------------------------------------------------")
+        keys = list(listaCompleta.keys())
         keys.sort(reverse=True)
         for k in keys:
-            print k
+            print(k)
             listaCompleta[k].sort(key=operator.attrgetter('nome'))
 
             for pub in listaCompleta[k]:
-                print "--- " + str(pub.idMembro)
-                print "--- " + pub.nome.encode('utf8')
-                print "--- " + pub.cargo.encode('utf8') + "\n"
+                print("--- " + str(pub.idMembro))
+                print("--- " + pub.nome.encode('utf8'))
+                print("--- " + pub.cargo.encode('utf8') + "\n")
 
 
     def imprimirListaPremios(self, listaCompleta):
-        print "---------------------------------------------------------------------------"
-        keys = listaCompleta.keys()
+        print("---------------------------------------------------------------------------")
+        keys = list(listaCompleta.keys())
         keys.sort(reverse=True)
         for k in keys:
-            print k
+            print(k)
             listaCompleta[k].sort(key=operator.attrgetter('descricao'))
 
             for pub in listaCompleta[k]:
-                print "--- " + str(pub.idMembro)
-                print "--- " + pub.descricao.encode('utf8') + "\n"
+                print("--- " + str(pub.idMembro))
+                print("--- " + pub.descricao.encode('utf8') + "\n")
 

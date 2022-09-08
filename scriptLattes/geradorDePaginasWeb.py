@@ -29,9 +29,9 @@ import logging
 
 import pandas
 from pandas.core.indexing import IndexingError
-from charts.graficoDeInternacionalizacao import *
-from highcharts import *  # highcharts
-import membro
+from .charts.graficoDeInternacionalizacao import *
+from .highcharts import *  # highcharts
+from . import membro
 
 logger = logging.getLogger('scriptLattes')
 
@@ -572,7 +572,7 @@ class GeradorDePaginasWeb:
     @staticmethod
     def arranjar_publicacoes(listaCompleta):
         l = []
-        for ano in sorted(listaCompleta.keys(), reverse=True):
+        for ano in sorted(list(listaCompleta.keys()), reverse=True):
             publicacoes = sorted(listaCompleta[ano], key=lambda x: x.chave.lower())
             for indice, publicacao in enumerate(publicacoes):
                 l.append((ano, indice, publicacao))
@@ -587,7 +587,7 @@ class GeradorDePaginasWeb:
 
     @staticmethod
     def template_pagina_de_producoes():
-        st = u'''
+        st = '''
                 {top}
                 {grafico}
                 <h3>{titulo}</h3> <br>
@@ -603,7 +603,7 @@ class GeradorDePaginasWeb:
 
     @staticmethod
     def template_producao():
-        s = u'''
+        s = '''
             <tr valign="top"><td>{indice}. &nbsp;</td> <td>{publicacao}</td></tr>
             '''
         return s
@@ -611,7 +611,7 @@ class GeradorDePaginasWeb:
     @staticmethod
     def gerar_grafico_de_producoes(listaCompleta, titulo):
         chart = highchart(type=chart_type.column)
-        chart.set_y_title(u'Quantidade')
+        chart.set_y_title('Quantidade')
         # chart.set_x_title(u'Ano')
         # chart.set_x_categories(sorted(listaCompleta.keys()))
         # chart['xAxis']['type'] = 'categories'
@@ -636,11 +636,11 @@ class GeradorDePaginasWeb:
                         #            if area not in areas_map:
                         #                areas_map[area] = len(areas_map)
                     except AttributeError:
-                        logger.debug(u"publicação sem atributo qualis")
+                        logger.debug("publicação sem atributo qualis")
                         estrato_area_ano_freq[None][None][ano] += 1  # producao que nao tem qualis
 
         series = []
-        if not estrato_area_ano_freq.keys():  # produções vazias
+        if not list(estrato_area_ano_freq.keys()):  # produções vazias
             logger.debug("produções vazias")
         ###elif len(estrato_area_ano_freq.keys()) == 1 and None in estrato_area_ano_freq.keys():  # gráfico normal sem qualis
         else:  # gráfico normal sem qualis
@@ -659,7 +659,7 @@ class GeradorDePaginasWeb:
             for ano in categories:
                 freq = estrato_area_ano_freq[None][None][ano]
                 data.append([ano, freq])
-            series.append({'name': u'Total', 'data': data})
+            series.append({'name': 'Total', 'data': data})
 
             # for ano, pub in sorted(listaCompleta.items()):
             #     series.append({'name': ano, 'data': [len(pub)]}) #, 'y': [len(pub)]})
@@ -713,9 +713,9 @@ class GeradorDePaginasWeb:
                 elif prefixo == 'PB5':
                     totais_qualis = self.formatarTotaisQualis(self.grupo.qualis.qtdPB5)
 
-        total_producoes = sum(len(v) for v in lista_completa.values())
+        total_producoes = sum(len(v) for v in list(lista_completa.values()))
 
-        keys = sorted(lista_completa.keys(), reverse=True)
+        keys = sorted(list(lista_completa.keys()), reverse=True)
         if keys:  # apenas geramos páginas web para lista com pelo menos 1 elemento
             max_elementos = int(self.grupo.obterParametro('global-itens_por_pagina'))
             total_paginas = int(math.ceil( total_producoes / (max_elementos * 1.0)))  # dividimos os relatórios em grupos (e.g 1000 items)
@@ -772,7 +772,7 @@ class GeradorDePaginasWeb:
         gInternacionalizacao = GraficoDeInternacionalizacao(listaCompleta)
         htmlCharts = gInternacionalizacao.criarGraficoDeBarrasDeOcorrencias()
 
-        keys = listaCompleta.keys()
+        keys = list(listaCompleta.keys())
         keys.sort(reverse=True)
         if len(keys) > 0:  # apenas geramos páginas web para lista com pelo menos 1 elemento
             for ano in keys:
@@ -907,8 +907,8 @@ class GeradorDePaginasWeb:
                 O grau de colaboração (<i>Collaboration Rank</i>) é um valor numérico que indica o impacto de um membro no grafo de colaborações.\
                 <br>Esta medida é similar ao <i>PageRank</i> para grafos direcionais (com pesos).<br><p>'.decode("utf8")
 
-            ranks, autores, rotulos = zip(
-                *sorted(zip(self.grupo.vectorRank, self.grupo.nomes, self.grupo.rotulos), reverse=True))
+            ranks, autores, rotulos = list(zip(
+                *sorted(zip(self.grupo.vectorRank, self.grupo.nomes, self.grupo.rotulos), reverse=True)))
 
             s += '<table border=1><tr> <td><i><b>Collaboration Rank</b></i></td> <td><b>Membro</b></td> </tr>'
             for i in range(0, len(ranks)):
@@ -941,23 +941,23 @@ class GeradorDePaginasWeb:
 
     @staticmethod
     def producao_qualis(elemento, membro):
-        tabela_template = u"<table style=\"width: 100%; display: block; overflow-x: auto;\"><tbody>" \
-                          u"<br><span style=\"font-size:14px;\"><b>Totais de publicações com Qualis:</b></span><br><br>" \
-                          u"<div style=\"width:100%; overflow-x:scroll;\">{body}</div>" \
-                          u"</tbody></table>"
+        tabela_template = "<table style=\"width: 100%; display: block; overflow-x: auto;\"><tbody>" \
+                          "<br><span style=\"font-size:14px;\"><b>Totais de publicações com Qualis:</b></span><br><br>" \
+                          "<div style=\"width:100%; overflow-x:scroll;\">{body}</div>" \
+                          "</tbody></table>"
 
-        first_column_template = u'<div style="float:left; width:200px; height: auto; border: 1px solid black; border-collapse: collapse; margin-left:0px; margin-top:0px;' \
+        first_column_template = '<div style="float:left; width:200px; height: auto; border: 1px solid black; border-collapse: collapse; margin-left:0px; margin-top:0px;' \
                                 ' background:#CCC; vertical-align: middle; padding: 4px 0; {extra_style}"><b>{header}</b></div>'
-        header_template = u'<div style="float:left; width:{width}px; height: auto; border-style: solid; border-color: black; border-width: 1 1 1 0; border-collapse: collapse; margin-left:0px; margin-top:0px;' \
+        header_template = '<div style="float:left; width:{width}px; height: auto; border-style: solid; border-color: black; border-width: 1 1 1 0; border-collapse: collapse; margin-left:0px; margin-top:0px;' \
                           ' background:#CCC; text-align: center; vertical-align: middle; padding: 4px 0;"><b>{header}</b></div>'
-        line_template = u'<div style="float:left; width:{width}px; height: auto; border-style: solid; border-color: black; border-width: 1 1 1 0; border-collapse: collapse; margin-left:0px; margin-top:0px;' \
+        line_template = '<div style="float:left; width:{width}px; height: auto; border-style: solid; border-color: black; border-width: 1 1 1 0; border-collapse: collapse; margin-left:0px; margin-top:0px;' \
                         ' background:#EAEAEA; text-align: center; vertical-align: middle; padding: 4px 0;">{value}</div>'  # padding:4px 6px;
 
         cell_size = 40
         num_estratos = len(membro.tabela_qualis['estrato'].unique())
 
         header_ano = first_column_template.format(header='Ano', extra_style='text-align: center;')
-        header_estrato = first_column_template.format(header=u'Área \\ Estrato', extra_style='text-align: center;')
+        header_estrato = first_column_template.format(header='Área \\ Estrato', extra_style='text-align: center;')
 
         for ano in sorted(membro.tabela_qualis['ano'].unique()):
             header_ano += header_template.format(header=ano, width=num_estratos * (cell_size + 1) - 1)
@@ -1040,7 +1040,7 @@ class GeradorDePaginasWeb:
     def gerar_pagina_de_membros(self):
         s = self.pagina_top()
         #s += u'\n<h3>Lista de membros</h3> <table id="membros" class="collapse-box" ><tr>\
-        s += u'\n<h3>Lista de membros</h3> <table id="membros" class="sortable" ><tr>\
+        s += '\n<h3>Lista de membros</h3> <table id="membros" class="sortable" ><tr>\
                 <th></th>\
                 <th></th>\
                 <th><b><font size=-1>Rótulo/Grupo</font></b></th>\
@@ -1076,7 +1076,7 @@ class GeradorDePaginasWeb:
             ##         <td valign="center" height="40px">' + str(elemento) + '.</td> \
             ##        <td valign="top" height="40px"><img src="' + membro.foto + '" width="40px"></td> \
 
-            s += u'\n<tr class="testetabela"> \
+            s += '\n<tr class="testetabela"> \
                      <td valign="center">{0}.</td> \
                      <td><a href="membro-{1}.html"> {2}</a></td> \
                      <td><font size=-2>{3}</font></td> \
@@ -1148,7 +1148,7 @@ class GeradorDePaginasWeb:
         nomeCompleto = unicodedata.normalize('NFKD', membro.nomeCompleto).encode('ASCII', 'ignore')
 
         s = self.pagina_top()
-        s += u'\n<h3>{0}</h3>\
+        s += '\n<h3>{0}</h3>\
                 {7}<br><p>\
                 <table border=0>\
                 <tr><td>\
@@ -1177,165 +1177,165 @@ class GeradorDePaginasWeb:
                         membro.nomePrimeiraGrandeArea,
                         membro.nomePrimeiraArea)
 
-        (nPB0, lista_PB0, titulo_PB0) = self.gerar_lista_de_producoes_de_membro( membro.listaArtigoEmPeriodico, u"Artigos completos publicados em periódicos" )
-        (nPB1, lista_PB1, titulo_PB1) = self.gerar_lista_de_producoes_de_membro( membro.listaLivroPublicado, u"Livros publicados/organizados ou edições" )
-        (nPB2, lista_PB2, titulo_PB2) = self.gerar_lista_de_producoes_de_membro( membro.listaCapituloDeLivroPublicado, u"Capítulos de livros publicados" )
-        (nPB3, lista_PB3, titulo_PB3) = self.gerar_lista_de_producoes_de_membro( membro.listaTextoEmJornalDeNoticia, u"Textos em jornais de notícias/revistas" )
-        (nPB4, lista_PB4, titulo_PB4) = self.gerar_lista_de_producoes_de_membro( membro.listaTrabalhoCompletoEmCongresso, u"Trabalhos completos publicados em anais de congressos" )
-        (nPB5, lista_PB5, titulo_PB5) = self.gerar_lista_de_producoes_de_membro( membro.listaResumoExpandidoEmCongresso, u"Resumos expandidos publicados em anais de congressos" )
-        (nPB6, lista_PB6, titulo_PB6) = self.gerar_lista_de_producoes_de_membro( membro.listaResumoEmCongresso, u"Resumos publicados em anais de congressos" )
-        (nPB7, lista_PB7, titulo_PB7) = self.gerar_lista_de_producoes_de_membro( membro.listaArtigoAceito, u"Artigos aceitos para publicação" )
-        (nPB8, lista_PB8, titulo_PB8) = self.gerar_lista_de_producoes_de_membro( membro.listaApresentacaoDeTrabalho, u"Apresentações de trabalho" )
-        (nPB9, lista_PB9, titulo_PB9) = self.gerar_lista_de_producoes_de_membro( membro.listaOutroTipoDeProducaoBibliografica, u"Demais tipos de produção bibliográfica" )
+        (nPB0, lista_PB0, titulo_PB0) = self.gerar_lista_de_producoes_de_membro( membro.listaArtigoEmPeriodico, "Artigos completos publicados em periódicos" )
+        (nPB1, lista_PB1, titulo_PB1) = self.gerar_lista_de_producoes_de_membro( membro.listaLivroPublicado, "Livros publicados/organizados ou edições" )
+        (nPB2, lista_PB2, titulo_PB2) = self.gerar_lista_de_producoes_de_membro( membro.listaCapituloDeLivroPublicado, "Capítulos de livros publicados" )
+        (nPB3, lista_PB3, titulo_PB3) = self.gerar_lista_de_producoes_de_membro( membro.listaTextoEmJornalDeNoticia, "Textos em jornais de notícias/revistas" )
+        (nPB4, lista_PB4, titulo_PB4) = self.gerar_lista_de_producoes_de_membro( membro.listaTrabalhoCompletoEmCongresso, "Trabalhos completos publicados em anais de congressos" )
+        (nPB5, lista_PB5, titulo_PB5) = self.gerar_lista_de_producoes_de_membro( membro.listaResumoExpandidoEmCongresso, "Resumos expandidos publicados em anais de congressos" )
+        (nPB6, lista_PB6, titulo_PB6) = self.gerar_lista_de_producoes_de_membro( membro.listaResumoEmCongresso, "Resumos publicados em anais de congressos" )
+        (nPB7, lista_PB7, titulo_PB7) = self.gerar_lista_de_producoes_de_membro( membro.listaArtigoAceito, "Artigos aceitos para publicação" )
+        (nPB8, lista_PB8, titulo_PB8) = self.gerar_lista_de_producoes_de_membro( membro.listaApresentacaoDeTrabalho, "Apresentações de trabalho" )
+        (nPB9, lista_PB9, titulo_PB9) = self.gerar_lista_de_producoes_de_membro( membro.listaOutroTipoDeProducaoBibliografica, "Demais tipos de produção bibliográfica" )
 
-        (nPT0, lista_PT0, titulo_PT0) = self.gerar_lista_de_producoes_de_membro( membro.listaSoftwareComPatente, u"Programas de computador com registro de patente" )
-        (nPT1, lista_PT1, titulo_PT1) = self.gerar_lista_de_producoes_de_membro( membro.listaSoftwareSemPatente, u"Programas de computador sem registro de patente" )
-        (nPT2, lista_PT2, titulo_PT2) = self.gerar_lista_de_producoes_de_membro( membro.listaProdutoTecnologico, u"Produtos tecnológicos" )
-        (nPT3, lista_PT3, titulo_PT3) = self.gerar_lista_de_producoes_de_membro( membro.listaProcessoOuTecnica, u"Processos ou técnicas" )
-        (nPT4, lista_PT4, titulo_PT4) = self.gerar_lista_de_producoes_de_membro( membro.listaTrabalhoTecnico, u"Trabalhos técnicos" )
-        (nPT5, lista_PT5, titulo_PT5) = self.gerar_lista_de_producoes_de_membro( membro.listaOutroTipoDeProducaoTecnica, u"Demais tipos de produção técnica" )
+        (nPT0, lista_PT0, titulo_PT0) = self.gerar_lista_de_producoes_de_membro( membro.listaSoftwareComPatente, "Programas de computador com registro de patente" )
+        (nPT1, lista_PT1, titulo_PT1) = self.gerar_lista_de_producoes_de_membro( membro.listaSoftwareSemPatente, "Programas de computador sem registro de patente" )
+        (nPT2, lista_PT2, titulo_PT2) = self.gerar_lista_de_producoes_de_membro( membro.listaProdutoTecnologico, "Produtos tecnológicos" )
+        (nPT3, lista_PT3, titulo_PT3) = self.gerar_lista_de_producoes_de_membro( membro.listaProcessoOuTecnica, "Processos ou técnicas" )
+        (nPT4, lista_PT4, titulo_PT4) = self.gerar_lista_de_producoes_de_membro( membro.listaTrabalhoTecnico, "Trabalhos técnicos" )
+        (nPT5, lista_PT5, titulo_PT5) = self.gerar_lista_de_producoes_de_membro( membro.listaOutroTipoDeProducaoTecnica, "Demais tipos de produção técnica" )
 
-        (nPA0, lista_PA0, titulo_PA0) = self.gerar_lista_de_producoes_de_membro( membro.listaProducaoArtistica, u"Total de produção artística" )
+        (nPA0, lista_PA0, titulo_PA0) = self.gerar_lista_de_producoes_de_membro( membro.listaProducaoArtistica, "Total de produção artística" )
 
-        (nOA0, lista_OA0, titulo_OA0) = self.gerar_lista_de_producoes_de_membro( membro.listaOASupervisaoDePosDoutorado, u"Supervisão de pós-doutorado" )
-        (nOA1, lista_OA1, titulo_OA1) = self.gerar_lista_de_producoes_de_membro( membro.listaOATeseDeDoutorado, u"Tese de doutorado" )
-        (nOA2, lista_OA2, titulo_OA2) = self.gerar_lista_de_producoes_de_membro( membro.listaOADissertacaoDeMestrado, u"Dissertação de mestrado" )
-        (nOA3, lista_OA3, titulo_OA3) = self.gerar_lista_de_producoes_de_membro( membro.listaOAMonografiaDeEspecializacao, u"Monografia de conclusão de curso de aperfeiçoamento/especialização" )
-        (nOA4, lista_OA4, titulo_OA4) = self.gerar_lista_de_producoes_de_membro( membro.listaOATCC, u"Trabalho de conclusão de curso de graduação" )
-        (nOA5, lista_OA5, titulo_OA5) = self.gerar_lista_de_producoes_de_membro( membro.listaOAIniciacaoCientifica, u"Iniciação científica" )
-        (nOA6, lista_OA6, titulo_OA6) = self.gerar_lista_de_producoes_de_membro( membro.listaOAOutroTipoDeOrientacao, u"Orientações de outra natureza" )
+        (nOA0, lista_OA0, titulo_OA0) = self.gerar_lista_de_producoes_de_membro( membro.listaOASupervisaoDePosDoutorado, "Supervisão de pós-doutorado" )
+        (nOA1, lista_OA1, titulo_OA1) = self.gerar_lista_de_producoes_de_membro( membro.listaOATeseDeDoutorado, "Tese de doutorado" )
+        (nOA2, lista_OA2, titulo_OA2) = self.gerar_lista_de_producoes_de_membro( membro.listaOADissertacaoDeMestrado, "Dissertação de mestrado" )
+        (nOA3, lista_OA3, titulo_OA3) = self.gerar_lista_de_producoes_de_membro( membro.listaOAMonografiaDeEspecializacao, "Monografia de conclusão de curso de aperfeiçoamento/especialização" )
+        (nOA4, lista_OA4, titulo_OA4) = self.gerar_lista_de_producoes_de_membro( membro.listaOATCC, "Trabalho de conclusão de curso de graduação" )
+        (nOA5, lista_OA5, titulo_OA5) = self.gerar_lista_de_producoes_de_membro( membro.listaOAIniciacaoCientifica, "Iniciação científica" )
+        (nOA6, lista_OA6, titulo_OA6) = self.gerar_lista_de_producoes_de_membro( membro.listaOAOutroTipoDeOrientacao, "Orientações de outra natureza" )
 
-        (nOC0, lista_OC0, titulo_OC0) = self.gerar_lista_de_producoes_de_membro( membro.listaOCSupervisaoDePosDoutorado, u"Supervisão de pós-doutorado" )
-        (nOC1, lista_OC1, titulo_OC1) = self.gerar_lista_de_producoes_de_membro( membro.listaOCTeseDeDoutorado, u"Tese de doutorado" )
-        (nOC2, lista_OC2, titulo_OC2) = self.gerar_lista_de_producoes_de_membro( membro.listaOCDissertacaoDeMestrado, u"Dissertação de mestrado" )
-        (nOC3, lista_OC3, titulo_OC3) = self.gerar_lista_de_producoes_de_membro( membro.listaOCMonografiaDeEspecializacao, u"Monografia de conclusão de curso de aperfeiçoamento/especialização" )
-        (nOC4, lista_OC4, titulo_OC4) = self.gerar_lista_de_producoes_de_membro( membro.listaOCTCC, u"Trabalho de conclusão de curso de graduação" )
-        (nOC5, lista_OC5, titulo_OC5) = self.gerar_lista_de_producoes_de_membro( membro.listaOCIniciacaoCientifica, u"Iniciação científica" )
-        (nOC6, lista_OC6, titulo_OC6) = self.gerar_lista_de_producoes_de_membro( membro.listaOCOutroTipoDeOrientacao, u"Orientações de outra natureza" )
+        (nOC0, lista_OC0, titulo_OC0) = self.gerar_lista_de_producoes_de_membro( membro.listaOCSupervisaoDePosDoutorado, "Supervisão de pós-doutorado" )
+        (nOC1, lista_OC1, titulo_OC1) = self.gerar_lista_de_producoes_de_membro( membro.listaOCTeseDeDoutorado, "Tese de doutorado" )
+        (nOC2, lista_OC2, titulo_OC2) = self.gerar_lista_de_producoes_de_membro( membro.listaOCDissertacaoDeMestrado, "Dissertação de mestrado" )
+        (nOC3, lista_OC3, titulo_OC3) = self.gerar_lista_de_producoes_de_membro( membro.listaOCMonografiaDeEspecializacao, "Monografia de conclusão de curso de aperfeiçoamento/especialização" )
+        (nOC4, lista_OC4, titulo_OC4) = self.gerar_lista_de_producoes_de_membro( membro.listaOCTCC, "Trabalho de conclusão de curso de graduação" )
+        (nOC5, lista_OC5, titulo_OC5) = self.gerar_lista_de_producoes_de_membro( membro.listaOCIniciacaoCientifica, "Iniciação científica" )
+        (nOC6, lista_OC6, titulo_OC6) = self.gerar_lista_de_producoes_de_membro( membro.listaOCOutroTipoDeOrientacao, "Orientações de outra natureza" )
 
-        (nPj0, lista_Pj0, titulo_Pj0) = self.gerar_lista_de_producoes_de_membro( membro.listaProjetoDePesquisa, u"Total de projetos de pesquisa" )
-        (nPm0, lista_Pm0, titulo_Pm0) = self.gerar_lista_de_producoes_de_membro( membro.listaPremioOuTitulo, u"Total de prêmios e títulos" )
-        (nEp0, lista_Ep0, titulo_Ep0) = self.gerar_lista_de_producoes_de_membro( membro.listaParticipacaoEmEvento, u"Total de participação em eventos" )
-        (nEo0, lista_Eo0, titulo_Eo0) = self.gerar_lista_de_producoes_de_membro( membro.listaOrganizacaoDeEvento, u"Total de organização de eventos" )
+        (nPj0, lista_Pj0, titulo_Pj0) = self.gerar_lista_de_producoes_de_membro( membro.listaProjetoDePesquisa, "Total de projetos de pesquisa" )
+        (nPm0, lista_Pm0, titulo_Pm0) = self.gerar_lista_de_producoes_de_membro( membro.listaPremioOuTitulo, "Total de prêmios e títulos" )
+        (nEp0, lista_Ep0, titulo_Ep0) = self.gerar_lista_de_producoes_de_membro( membro.listaParticipacaoEmEvento, "Total de participação em eventos" )
+        (nEo0, lista_Eo0, titulo_Eo0) = self.gerar_lista_de_producoes_de_membro( membro.listaOrganizacaoDeEvento, "Total de organização de eventos" )
 
-        (nCE, lista_CE, titulo_CE, lista_CE_detalhe)    = self.gerar_lista_de_colaboracoes (membro, u'Colaborações endôgenas')
+        (nCE, lista_CE, titulo_CE, lista_CE_detalhe)    = self.gerar_lista_de_colaboracoes (membro, 'Colaborações endôgenas')
         
-        s += u'<h3>Produção bibliográfica</h3> <ul>'
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'PB0', titulo_PB0, nPB0 )
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'PB1', titulo_PB1, nPB1 )
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'PB2', titulo_PB2, nPB2 )
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'PB3', titulo_PB3, nPB3 )
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'PB4', titulo_PB4, nPB4 )
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'PB5', titulo_PB5, nPB5 )
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'PB6', titulo_PB6, nPB6 )
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'PB7', titulo_PB7, nPB7 )
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'PB8', titulo_PB8, nPB8 )
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'PB9', titulo_PB9, nPB9 )
-        s += u'</ul>'
-        s += u'<h3>Produção técnica</h3> <ul>'
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'PT0', titulo_PT0, nPT0 )
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'PT1', titulo_PT1, nPT1 )
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'PT2', titulo_PT2, nPT2 )
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'PT3', titulo_PT3, nPT3 )
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'PT4', titulo_PT4, nPT4 )
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'PT5', titulo_PT5, nPT5 )
-        s += u'</ul>'
-        s += u'<h3>Produção artística</h3> <ul>'
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'PA0', titulo_PA0, nPA0 )
-        s += u'</ul>'
-        s += u'<h3>Orientações em andamento</h3> <ul>'
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'OA0', titulo_OA0, nOA0 )
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'OA1', titulo_OA1, nOA1 )
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'OA2', titulo_OA2, nOA2 )
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'OA3', titulo_OA3, nOA3 )
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'OA4', titulo_OA4, nOA4 )
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'OA5', titulo_OA5, nOA5 )
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'OA6', titulo_OA6, nOA6 )
-        s += u'</ul>'
-        s += u'<h3>Supervisões e orientações concluídas</h3> <ul>'
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'OC0', titulo_OC0, nOC0 )
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'OC1', titulo_OC1, nOC1 )
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'OC2', titulo_OC2, nOC2 )
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'OC3', titulo_OC3, nOC3 )
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'OC4', titulo_OC4, nOC4 )
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'OC5', titulo_OC5, nOC5 )
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'OC6', titulo_OC6, nOC6 )
-        s += u'</ul>'
-        s += u'<h3>Projetos de pesquisa</h3> <ul>'
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'Pj0', titulo_Pj0, nPj0 )
-        s += u'</ul>'
-        s += u'<h3>Prêmios e títulos</h3> <ul>'
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'Pm0', titulo_Pm0, nPm0 )
-        s += u'</ul>'
-        s += u'<h3>Participação em eventos</h3> <ul>'
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'Ep0', titulo_Ep0, nEp0 )
-        s += u'</ul>'
-        s += u'<h3>Organização de eventos</h3> <ul>'
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'Eo0', titulo_Eo0, nEo0 )
-        s += u'</ul>'
+        s += '<h3>Produção bibliográfica</h3> <ul>'
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'PB0', titulo_PB0, nPB0 )
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'PB1', titulo_PB1, nPB1 )
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'PB2', titulo_PB2, nPB2 )
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'PB3', titulo_PB3, nPB3 )
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'PB4', titulo_PB4, nPB4 )
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'PB5', titulo_PB5, nPB5 )
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'PB6', titulo_PB6, nPB6 )
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'PB7', titulo_PB7, nPB7 )
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'PB8', titulo_PB8, nPB8 )
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'PB9', titulo_PB9, nPB9 )
+        s += '</ul>'
+        s += '<h3>Produção técnica</h3> <ul>'
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'PT0', titulo_PT0, nPT0 )
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'PT1', titulo_PT1, nPT1 )
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'PT2', titulo_PT2, nPT2 )
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'PT3', titulo_PT3, nPT3 )
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'PT4', titulo_PT4, nPT4 )
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'PT5', titulo_PT5, nPT5 )
+        s += '</ul>'
+        s += '<h3>Produção artística</h3> <ul>'
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'PA0', titulo_PA0, nPA0 )
+        s += '</ul>'
+        s += '<h3>Orientações em andamento</h3> <ul>'
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'OA0', titulo_OA0, nOA0 )
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'OA1', titulo_OA1, nOA1 )
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'OA2', titulo_OA2, nOA2 )
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'OA3', titulo_OA3, nOA3 )
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'OA4', titulo_OA4, nOA4 )
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'OA5', titulo_OA5, nOA5 )
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'OA6', titulo_OA6, nOA6 )
+        s += '</ul>'
+        s += '<h3>Supervisões e orientações concluídas</h3> <ul>'
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'OC0', titulo_OC0, nOC0 )
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'OC1', titulo_OC1, nOC1 )
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'OC2', titulo_OC2, nOC2 )
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'OC3', titulo_OC3, nOC3 )
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'OC4', titulo_OC4, nOC4 )
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'OC5', titulo_OC5, nOC5 )
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'OC6', titulo_OC6, nOC6 )
+        s += '</ul>'
+        s += '<h3>Projetos de pesquisa</h3> <ul>'
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'Pj0', titulo_Pj0, nPj0 )
+        s += '</ul>'
+        s += '<h3>Prêmios e títulos</h3> <ul>'
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'Pm0', titulo_Pm0, nPm0 )
+        s += '</ul>'
+        s += '<h3>Participação em eventos</h3> <ul>'
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'Ep0', titulo_Ep0, nEp0 )
+        s += '</ul>'
+        s += '<h3>Organização de eventos</h3> <ul>'
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'Eo0', titulo_Eo0, nEo0 )
+        s += '</ul>'
         #-------- 
-        s += u'<h3>Lista de colaborações</h3> <ul>'
-        s += u'<li><a href="#{}">{}</a> ({}) </li>'.format( 'CE', titulo_CE, nCE ) 
-        s += u'    <ul> {} </ul>'.format( lista_CE ) 
-        s += u'</ul>'
+        s += '<h3>Lista de colaborações</h3> <ul>'
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format( 'CE', titulo_CE, nCE ) 
+        s += '    <ul> {} </ul>'.format( lista_CE ) 
+        s += '</ul>'
 
-        s += u'<hr>'
-        s += u'<h3>Produção bibliográfica</h3> <ul>'
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PB0', titulo_PB0, nPB0, lista_PB0)
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PB1', titulo_PB1, nPB1, lista_PB1)
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PB2', titulo_PB2, nPB2, lista_PB2)
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PB3', titulo_PB3, nPB3, lista_PB3)
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PB4', titulo_PB4, nPB4, lista_PB4)
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PB5', titulo_PB5, nPB5, lista_PB5)
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PB6', titulo_PB6, nPB6, lista_PB6)
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PB7', titulo_PB7, nPB7, lista_PB7)
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PB8', titulo_PB8, nPB8, lista_PB8)
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PB9', titulo_PB9, nPB9, lista_PB9)
-        s += u'</ul>'
-        s += u'<h3>Produção técnica</h3> <ul>'
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PT0', titulo_PT0, nPT0, lista_PT0)
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PT1', titulo_PT1, nPT1, lista_PT1)
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PT2', titulo_PT2, nPT2, lista_PT2)
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PT3', titulo_PT3, nPT3, lista_PT3)
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PT4', titulo_PT4, nPT4, lista_PT4)
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PT5', titulo_PT5, nPT5, lista_PT5)
-        s += u'</ul>'
-        s += u'<h3>Produção artística</h3> <ul>'
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PA0', titulo_PA0, nPA0, lista_PA0)
-        s += u'</ul>'
-        s += u'<h3>Orientações em andamento</h3> <ul>'
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'OA0', titulo_OA0, nOA0, lista_OA0)
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'OA1', titulo_OA1, nOA1, lista_OA1)
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'OA2', titulo_OA2, nOA2, lista_OA2)
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'OA3', titulo_OA3, nOA3, lista_OA3)
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'OA4', titulo_OA4, nOA4, lista_OA4)
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'OA5', titulo_OA5, nOA5, lista_OA5)
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'OA6', titulo_OA6, nOA6, lista_OA6)
-        s += u'</ul>'
-        s += u'<h3>Supervisões e orientações concluídas</h3> <ul>'
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'OC0', titulo_OC0, nOC0, lista_OC0)
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'OC1', titulo_OC1, nOC1, lista_OC1)
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'OC2', titulo_OC2, nOC2, lista_OC2)
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'OC3', titulo_OC3, nOC3, lista_OC3)
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'OC4', titulo_OC4, nOC4, lista_OC4)
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'OC5', titulo_OC5, nOC5, lista_OC5)
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'OC6', titulo_OC6, nOC6, lista_OC6)
-        s += u'</ul>'
-        s += u'<h3>Projetos de pesquisa</h3> <ul>'
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'Pj0', titulo_Pj0, nPj0, lista_Pj0)
-        s += u'</ul>'
-        s += u'<h3>Prêmios e títulos</h3> <ul>'
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'Pm0', titulo_Pm0, nPm0, lista_Pm0)
-        s += u'</ul>'
-        s += u'<h3>Participação em eventos</h3> <ul>'
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'Ep0', titulo_Ep0, nEp0, lista_Ep0)
-        s += u'</ul>'
-        s += u'<h3>Organização de eventos</h3> <ul>'
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'Eo0', titulo_Eo0, nEo0, lista_Eo0)
-        s += u'</ul>'
-        s += u'<h3>Lista de colaborações</h3> <ul>'
-        s += u'<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'CE', titulo_CE, nCE, lista_CE_detalhe)
-        s += u'</ul>'
+        s += '<hr>'
+        s += '<h3>Produção bibliográfica</h3> <ul>'
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PB0', titulo_PB0, nPB0, lista_PB0)
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PB1', titulo_PB1, nPB1, lista_PB1)
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PB2', titulo_PB2, nPB2, lista_PB2)
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PB3', titulo_PB3, nPB3, lista_PB3)
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PB4', titulo_PB4, nPB4, lista_PB4)
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PB5', titulo_PB5, nPB5, lista_PB5)
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PB6', titulo_PB6, nPB6, lista_PB6)
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PB7', titulo_PB7, nPB7, lista_PB7)
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PB8', titulo_PB8, nPB8, lista_PB8)
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PB9', titulo_PB9, nPB9, lista_PB9)
+        s += '</ul>'
+        s += '<h3>Produção técnica</h3> <ul>'
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PT0', titulo_PT0, nPT0, lista_PT0)
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PT1', titulo_PT1, nPT1, lista_PT1)
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PT2', titulo_PT2, nPT2, lista_PT2)
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PT3', titulo_PT3, nPT3, lista_PT3)
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PT4', titulo_PT4, nPT4, lista_PT4)
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PT5', titulo_PT5, nPT5, lista_PT5)
+        s += '</ul>'
+        s += '<h3>Produção artística</h3> <ul>'
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'PA0', titulo_PA0, nPA0, lista_PA0)
+        s += '</ul>'
+        s += '<h3>Orientações em andamento</h3> <ul>'
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'OA0', titulo_OA0, nOA0, lista_OA0)
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'OA1', titulo_OA1, nOA1, lista_OA1)
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'OA2', titulo_OA2, nOA2, lista_OA2)
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'OA3', titulo_OA3, nOA3, lista_OA3)
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'OA4', titulo_OA4, nOA4, lista_OA4)
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'OA5', titulo_OA5, nOA5, lista_OA5)
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'OA6', titulo_OA6, nOA6, lista_OA6)
+        s += '</ul>'
+        s += '<h3>Supervisões e orientações concluídas</h3> <ul>'
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'OC0', titulo_OC0, nOC0, lista_OC0)
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'OC1', titulo_OC1, nOC1, lista_OC1)
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'OC2', titulo_OC2, nOC2, lista_OC2)
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'OC3', titulo_OC3, nOC3, lista_OC3)
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'OC4', titulo_OC4, nOC4, lista_OC4)
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'OC5', titulo_OC5, nOC5, lista_OC5)
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'OC6', titulo_OC6, nOC6, lista_OC6)
+        s += '</ul>'
+        s += '<h3>Projetos de pesquisa</h3> <ul>'
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'Pj0', titulo_Pj0, nPj0, lista_Pj0)
+        s += '</ul>'
+        s += '<h3>Prêmios e títulos</h3> <ul>'
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'Pm0', titulo_Pm0, nPm0, lista_Pm0)
+        s += '</ul>'
+        s += '<h3>Participação em eventos</h3> <ul>'
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'Ep0', titulo_Ep0, nEp0, lista_Ep0)
+        s += '</ul>'
+        s += '<h3>Organização de eventos</h3> <ul>'
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'Eo0', titulo_Eo0, nEo0, lista_Eo0)
+        s += '</ul>'
+        s += '<h3>Lista de colaborações</h3> <ul>'
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format( 'CE', titulo_CE, nCE, lista_CE_detalhe)
+        s += '</ul>'
 
         s += self.paginaBottom()
         self.salvarPagina("membro-" + membro.idLattes + self.extensaoPagina, s)
@@ -1356,13 +1356,13 @@ class GeradorDePaginasWeb:
         colaboradores = self.grupo.colaboradores_endogenos[membro.idMembro]
         for (idColaborador, quantidade) in sorted(colaboradores, key=lambda x:(-x[1],x[0])):
             colaborador = self.grupo.listaDeMembros[idColaborador] 
-            s       += u'<li><a href="#{0}">{1}</a> ({2})'.format(colaborador.idLattes, colaborador.nomeCompleto, quantidade)
-            detalhe += u'<li id="{0}"> <b>{3} &hArr; <a href="membro-{0}{4}">{1}</a></b> ({2}) <ol>'.format(colaborador.idLattes, colaborador.nomeCompleto, quantidade, membro.nomeCompleto, self.extensaoPagina)
+            s       += '<li><a href="#{0}">{1}</a> ({2})'.format(colaborador.idLattes, colaborador.nomeCompleto, quantidade)
+            detalhe += '<li id="{0}"> <b>{3} &hArr; <a href="membro-{0}{4}">{1}</a></b> ({2}) <ol>'.format(colaborador.idLattes, colaborador.nomeCompleto, quantidade, membro.nomeCompleto, self.extensaoPagina)
 
             for publicacao in self.grupo.listaDeColaboracoes[membro.idMembro][idColaborador]:
                 detalhe +=  '<li>' + publicacao.html(self.grupo.listaDeMembros)
 
-            detalhe += u'</ol><br>'
+            detalhe += '</ol><br>'
         s += '</ol><br>'
 
         detalhe += '</ul><br>'
@@ -1392,17 +1392,17 @@ class GeradorDePaginasWeb:
 
     def gerar_pagina_de_producao_qualificado_por_membro(self):
         html = self.pagina_top()
-        html += u'<h3>Produção qualificado por área e membro</h3>'
-        table_template = u'<table id="producao_por_membro" class="display nowrap">' \
-                         u'  <thead>{head}</thead>' \
-                         u'  <tfoot>{foot}</tfoot>' \
-                         u'  <tbody>{body}</tbody>' \
-                         u'</table>'
-        table_line_template = u'<tr>{line}</tr>'
+        html += '<h3>Produção qualificado por área e membro</h3>'
+        table_template = '<table id="producao_por_membro" class="display nowrap">' \
+                         '  <thead>{head}</thead>' \
+                         '  <tfoot>{foot}</tfoot>' \
+                         '  <tbody>{body}</tbody>' \
+                         '</table>'
+        table_line_template = '<tr>{line}</tr>'
 
-        first_column_template = u'<td style="{extra_style}">{header}</td>'
-        header_template = u'<th colspan="{colspan}" {extra_pars}>{header}</th>'
-        cell_template = u'<td class="dt-body-center">{value}</td>'
+        first_column_template = '<td style="{extra_style}">{header}</td>'
+        header_template = '<th colspan="{colspan}" {extra_pars}>{header}</th>'
+        cell_template = '<td class="dt-body-center">{value}</td>'
         # first_column_template = u'<td style="border: 1px solid black; border-collapse: collapse; background:#CCC;' \
         #                         u'vertical-align: middle; padding: 4px 0; {extra_style}">{header}</td>'
         # header_template = u'<th colspan="{colspan}" style="border-style: solid; border-color: black;' \
@@ -1412,12 +1412,12 @@ class GeradorDePaginasWeb:
         #                 u'border-width: 1 1 1 0; border-collapse: collapse; margin-left:0px; margin-top:0px;' \
         #                 u'background:#EAEAEA; text-align: center; vertical-align: middle; padding: 4px 0;">{value}</td>'
 
-        header_area = header_template.format(header=u'Área', colspan=1, extra_pars='rowspan="2"')
+        header_area = header_template.format(header='Área', colspan=1, extra_pars='rowspan="2"')
         # header_membro = header_template.format(header=u'Membro', colspan=1)
         header_anos = header_template.format(header='Ano', colspan=1, extra_pars='')
-        header_estratos = header_template.format(header=u'Membro \\ Estrato', colspan=1, extra_pars='')
+        header_estratos = header_template.format(header='Membro \\ Estrato', colspan=1, extra_pars='')
 
-        footer = u'<th>Área</th><th>Membro</th>'
+        footer = '<th>Área</th><th>Membro</th>'
 
         producao_por_membro = self.producao_qualis_por_membro(self.grupo.listaDeMembros)
 
@@ -1445,7 +1445,7 @@ class GeradorDePaginasWeb:
         areas = sorted(producao_por_membro.index.get_level_values('area').unique())
         membros = sorted(producao_por_membro.index.get_level_values('membro').unique())
 
-        lines = u''
+        lines = ''
         for area in areas:
             line_area = first_column_template.format(header=area, extra_style='')
             for membro in membros:
@@ -1527,7 +1527,7 @@ class GeradorDePaginasWeb:
         nome_grupo = self.grupo.obterParametro('global-nome_do_grupo').decode("utf8")
 
         s = self.html1
-        template = u'<head>' \
+        template = '<head>' \
                    '<meta http-equiv="Content-Type" content="text/html; charset=utf8">' \
                    '<meta name="Generator" content="scriptLattes">' \
                    '<title>{nome_grupo}</title>' \

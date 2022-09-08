@@ -56,7 +56,7 @@ class ProdutoTecnologico:
 		self.autores = partes[0].strip()
 		partes = partes[2]
 
-		aux = re.findall(u' ((?:19|20)\d\d)\\b', partes)
+		aux = re.findall(' ((?:19|20)\d\d)\\b', partes)
 		if len(aux)>0:
 			self.ano = aux[-1] #.strip().rstrip(".").rstrip(",")
 			partes = partes.rpartition(" ")

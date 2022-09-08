@@ -78,7 +78,7 @@ class GrafoDeColaboracoes:
 
 
     def criarGrafoDeCoAutoriaSemPesos(self):
-        print "\n[CRIANDO GRAFOS DE COLABORACOES SEM PESOS]"
+        print("\n[CRIANDO GRAFOS DE COLABORACOES SEM PESOS]")
 
         grafo = pygraphviz.AGraph(directed=False, overlap="False", id="grafo1", name="grafo1")
         grafo.node_attr['shape']='rectangle'
@@ -106,7 +106,7 @@ class GrafoDeColaboracoes:
 
 
     def criarGrafoDeCoAutoriaComPesos(self):
-        print "\n[CRIANDO GRAFOS DE COLABORACOES COM PESOS]"
+        print("\n[CRIANDO GRAFOS DE COLABORACOES COM PESOS]")
 
         grafo = pygraphviz.AGraph(directed=False, overlap="False", id="grafo2", name="grafo2")
         grafo.node_attr['shape']='rectangle'
@@ -134,7 +134,7 @@ class GrafoDeColaboracoes:
 
 
     def criarGrafoDeCoAutoriaNormalizada(self):
-        print "\n[CRIANDO GRAFOS DE COLABORACOES NORMALIZADO]"
+        print("\n[CRIANDO GRAFOS DE COLABORACOES NORMALIZADO]")
 
         grafo = pygraphviz.AGraph(directed=True, overlap="False", id="grafo3", name="grafo3")
         grafo.node_attr['shape']='rectangle'
@@ -168,7 +168,7 @@ class GrafoDeColaboracoes:
 
 
     def criarGrafoDeCoAutoriaCompleta(self):
-        print "\n[CRIANDO GRAFOS DE COLABORACOES SEM PESOS - COMPLETA]"
+        print("\n[CRIANDO GRAFOS DE COLABORACOES SEM PESOS - COMPLETA]")
 
         grafo = pygraphviz.AGraph(strict=False, directed=False, ratio="compress")
         grafo.node_attr['shape']='rectangle'

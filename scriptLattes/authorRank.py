@@ -33,10 +33,10 @@ class AuthorRank:
 		self.matriz = matriz
 		self.vectorRank = numpy.ones(matriz.shape[0], dtype=numpy.float32)
 
-		print "[CALCULANDO AUTHOR-RANK (PROCESSO ITERATIVO)]"
+		print("[CALCULANDO AUTHOR-RANK (PROCESSO ITERATIVO)]")
 		for index in range(0,iteracoes):
 			self.vectorRank = self.calcularRanks(self.vectorRank)
-			print str(index) + " ",
+			print(str(index) + " ", end=' ')
 
 
 	def calcularRanks(self, vectorRank):

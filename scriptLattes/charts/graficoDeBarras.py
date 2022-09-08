@@ -50,7 +50,7 @@ class GraficoDeBarras:
 		vetorDeAnos = []
 		vetorDeQuantidades = []
 
-		keys = self.listaCompleta.keys()
+		keys = list(self.listaCompleta.keys())
 		keys.sort(reverse=False) #keys.sort(reverse=True)
 		for k in keys:
 			if k==0:
@@ -61,7 +61,7 @@ class GraficoDeBarras:
 			vetorDeQuantidades.append( len(self.listaCompleta[k]) )
 
 		if len(vetorDeAnos)>0: # Apenas para listas com elemtos
-			print self.prefixo + ": " , vetorDeAnos , vetorDeQuantidades
+			print((self.prefixo + ": " , vetorDeAnos , vetorDeQuantidades))
 
 			ind = np.arange(len(vetorDeAnos)) 
 			bar_width = 0.20

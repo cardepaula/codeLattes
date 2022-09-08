@@ -31,7 +31,7 @@ class MapaDeGeolocalizacao:
     def __init__(self, grupo):
         self.grupo = grupo
 
-        print "\n[CRIANDO MAPA DE GEOLOCALIZAÇÃO] (Esta operação pode demorar)"
+        print("\n[CRIANDO MAPA DE GEOLOCALIZAÇÃO] (Esta operação pode demorar)")
         self.gerarMapa()
 
     def gerarMapa(self):
@@ -83,13 +83,13 @@ class MapaDeGeolocalizacao:
                 membro.obterCoordenadasDeGeolocalizacao()
                 nomeCompleto = unicodedata.normalize('NFKD', membro.nomeCompleto).encode('ASCII', 'ignore')
                 if not membro.enderecoProfissionalLat=='0' and not membro.enderecoProfissionalLon=='0':
-                    print "-", nomeCompleto , membro.url , membro.enderecoProfissionalLat , membro.enderecoProfissionalLon
+                    print(("-", nomeCompleto , membro.url , membro.enderecoProfissionalLat , membro.enderecoProfissionalLon))
                     enderecoProfissional = unicodedata.normalize('NFKD', membro.enderecoProfissional).encode('ASCII', 'ignore')
                     self.mapa += '\n    setMarker0(map, '+membro.enderecoProfissionalLat+'+0.001*Math.random(), '+membro.enderecoProfissionalLon+'+0.001*Math.random(), "'+nomeCompleto+'", "'+enderecoProfissional+'", "'+membro.url+'", "'+membro.foto+'");'
 
 
         if self.grupo.obterParametro('mapa-incluir_alunos_de_pos_doutorado'):
-            keys =self.grupo.compilador.listaCompletaOCSupervisaoDePosDoutorado.keys()
+            keys =list(self.grupo.compilador.listaCompletaOCSupervisaoDePosDoutorado.keys())
             for ano in keys:        
                 for aluno in self.grupo.compilador.listaCompletaOCSupervisaoDePosDoutorado[ano]:
                     idOrientando = aluno.idOrientando
@@ -103,11 +103,11 @@ class MapaDeGeolocalizacao:
                             enderecoProfissional = unicodedata.normalize('NFKD', membro.enderecoProfissional).encode('ASCII', 'ignore')
                             self.mapa += '\n    setMarker1(map, '+membro.enderecoProfissionalLat+'+0.001*Math.random(), '+membro.enderecoProfissionalLon+'+0.001*Math.random(), "'+nomeCompleto+'","'+enderecoProfissional+'","'+self.obterNomesDosOrientadores(aluno, self.grupo.listaDeMembros)+'","'+membro.url+'","'+membro.foto+'");'
                         cvsProcessados.add(idOrientando)
-                        print "-Processando o CV do ex-posdoc: "+idOrientando+" "+nomeCompleto.encode('utf8')
+                        print(("-Processando o CV do ex-posdoc: "+idOrientando+" "+nomeCompleto.encode('utf8')))
 
 
         if self.grupo.obterParametro('mapa-incluir_alunos_de_doutorado'):
-            keys =self.grupo.compilador.listaCompletaOCTeseDeDoutorado.keys()
+            keys =list(self.grupo.compilador.listaCompletaOCTeseDeDoutorado.keys())
             for ano in keys:        
                 for aluno in self.grupo.compilador.listaCompletaOCTeseDeDoutorado[ano]:
                     idOrientando = aluno.idOrientando
@@ -121,11 +121,11 @@ class MapaDeGeolocalizacao:
                             enderecoProfissional = unicodedata.normalize('NFKD', membro.enderecoProfissional).encode('ASCII', 'ignore')
                             self.mapa += '\n    setMarker2(map, '+membro.enderecoProfissionalLat+'+0.001*Math.random(), '+membro.enderecoProfissionalLon+'+0.001*Math.random(), "'+nomeCompleto+'","'+enderecoProfissional+'","'+self.obterNomesDosOrientadores(aluno, self.grupo.listaDeMembros)+'","'+membro.url+'","'+membro.foto+'");'
                         cvsProcessados.add(idOrientando)
-                        print "-Processando o CV do ex-aluno de doutorado: "+idOrientando+" "+nomeCompleto.encode('utf8')
+                        print(("-Processando o CV do ex-aluno de doutorado: "+idOrientando+" "+nomeCompleto.encode('utf8')))
 
 
         if self.grupo.obterParametro('mapa-incluir_alunos_de_mestrado'):
-            keys =self.grupo.compilador.listaCompletaOCDissertacaoDeMestrado.keys()
+            keys =list(self.grupo.compilador.listaCompletaOCDissertacaoDeMestrado.keys())
             for ano in keys:        
                 for aluno in self.grupo.compilador.listaCompletaOCDissertacaoDeMestrado[ano]:
                     idOrientando = aluno.idOrientando
@@ -139,7 +139,7 @@ class MapaDeGeolocalizacao:
                             enderecoProfissional = unicodedata.normalize('NFKD', membro.enderecoProfissional).encode('ASCII', 'ignore')
                             self.mapa += '\n    setMarker3(map, '+membro.enderecoProfissionalLat+'+0.001*Math.random(), '+membro.enderecoProfissionalLon+'+0.001*Math.random(), "'+nomeCompleto+'","'+enderecoProfissional+'","'+self.obterNomesDosOrientadores(aluno, self.grupo.listaDeMembros)+'","'+membro.url+'","'+membro.foto+'");'
                         cvsProcessados.add(idOrientando)
-                        print "-Processando o CV do ex-aluno de mestrado: "+idOrientando+" "+nomeCompleto.encode('utf8')
+                        print(("-Processando o CV do ex-aluno de mestrado: "+idOrientando+" "+nomeCompleto.encode('utf8')))
 
         self.mapa+= '\
   } \n\
@@ -151,7 +151,7 @@ class MapaDeGeolocalizacao:
         #print "--------------------------------------------------------------------"
         
         self.mapa = re.sub("\'", '', self.mapa)
-        print "\n[MAPA DE GEOLOCALIZACAO CRIADO]"
+        print("\n[MAPA DE GEOLOCALIZACAO CRIADO]")
 
 
     def obterNomesDosOrientadores(self, aluno, listaDeMembros):

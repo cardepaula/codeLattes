@@ -52,7 +52,7 @@ class OrganizacaoDeEvento:
 			self.autores = partes[0].strip()
 			partes = partes[2]
 
-			aux = re.findall(u' \((.*?)\)', partes)
+			aux = re.findall(' \((.*?)\)', partes)
 			if len(aux)>0:
 				self.natureza = aux[-1]
 				partes = partes.rpartition(" (")
@@ -60,7 +60,7 @@ class OrganizacaoDeEvento:
 			else:
 				self.natureza = ''
 
-			aux = re.findall(u'\. ((?:19|20)\d\d)\\b', partes)
+			aux = re.findall('\. ((?:19|20)\d\d)\\b', partes)
 			if len(aux)>0:
 				self.ano = aux[-1]
 				partes = partes.rpartition(" ")

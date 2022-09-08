@@ -76,11 +76,11 @@ class OrientacaoConcluida:
 				self.agenciaDeFomento = ''
 			
 			partes = partes1[0]
-			aux = re.findall(u'((?:19|20)\d\d)\\b', partes)
+			aux = re.findall('((?:19|20)\d\d)\\b', partes)
 			if len(aux)>0:
 				self.ano = aux[0] #.strip().rstrip(".").rstrip(",")
 	
-				aux = re.findall(u'(.*). (?:19|20)\d\d\\b', partes)
+				aux = re.findall('(.*). (?:19|20)\d\d\\b', partes)
 				partes = aux[0]
 			else:
 				self.ano = ''

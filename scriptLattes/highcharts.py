@@ -144,7 +144,7 @@ false = jsbool(False)
 
 
 def format_json(d):
-    s = u''
+    s = ''
     # FIXME: juntar as duas lógicas abaixo
     if isinstance(d, list):
         s += '['
@@ -153,7 +153,7 @@ def format_json(d):
                 s += format_json(k)
             elif isinstance(k, list):
                 s += format_json(k)
-            elif isinstance(k, str) or isinstance(k, unicode):
+            elif isinstance(k, str) or isinstance(k, str):
                 s += '\'' + k + '\''
             elif k is None:  # we explicitly want None
                 s += 'null'
@@ -164,14 +164,14 @@ def format_json(d):
         s += ']'
     elif isinstance(d, dict):
         s += '{' #if isinstance(d, dict) else '[\n'
-        keys = d.keys() #if isinstance(d, dict)
+        keys = list(d.keys()) #if isinstance(d, dict)
         for k in keys:
             s += (', \n' if k != keys[0] else '') + str(k) + ': '
             if isinstance(d[k], dict):
                 s += format_json(d[k])
             elif isinstance(d[k], list):
                 s += format_json(d[k])
-            elif isinstance(d[k], str) or isinstance(d[k], unicode):
+            elif isinstance(d[k], str) or isinstance(d[k], str):
                 s += '\'' + d[k] + '\''
             elif d[k] is None:  # we explicitly want None
                 s += 'null'
@@ -245,7 +245,7 @@ jsondata = {
         'valueSuffix': '',
         'shared': false,
         'headerFormat': '<span style="font-size: 10px">{point.key}{point.stack}{series.stack}</span><br/>',
-        'pointFormat': '<span style="color:{series.color}">\u25CF</span> {series.name}: <b>{point.y}</b><br/>',
+        'pointFormat': '<span style="color:{series.color}">\\u25CF</span> {series.name}: <b>{point.y}</b><br/>',
         # 'footerFormat': 'verbatim',
         # 'formatter': jscmd('''function() {
         #     return '<span style="fill:{this.series.color}">\u25CF</span>' +
@@ -301,7 +301,7 @@ jsondata = {
 }
 
 class highchart(dict):
-    htmldata = u'''
+    htmldata = '''
         <script type="text/javascript" src="./jquery.min.js"></script>
         <!--
         <script type="text/javascript" src="./highcharts.js"></script>

@@ -25,8 +25,8 @@
 
 import re
 
-from HTMLParser import HTMLParser
-from htmlentitydefs import name2codepoint
+from html.parser import HTMLParser
+from html.entities import name2codepoint
 
 
 class DepuradorDOIhtml(HTMLParser):
@@ -67,5 +67,5 @@ def stripBlanks(s):
 
 def htmlentitydecode(s):
 	return re.sub('&(%s);' % '|'.join(name2codepoint), 
-		lambda m: unichr(name2codepoint[m.group(1)]), s)
+		lambda m: chr(name2codepoint[m.group(1)]), s)
 

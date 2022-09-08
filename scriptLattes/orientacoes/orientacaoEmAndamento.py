@@ -62,7 +62,7 @@ class OrientacaoEmAndamento:
 				self.tipoDeOrientacao = 'Supervisor'
 				partes = partes[0]
 		
-		partes1 = partes.partition(u'. Início: ')
+		partes1 = partes.partition('. Início: ')
 		partes = partes1[0].rpartition(". ")
 		if not partes[1]=='':
 			self.nome = partes[0].strip(".").strip(",")
@@ -75,7 +75,7 @@ class OrientacaoEmAndamento:
 		self.ano = partes[0]
 		partes = partes[2]
 
-		aux = re.findall(u'((?:19|20)\d\d)\\b', self.ano)
+		aux = re.findall('((?:19|20)\d\d)\\b', self.ano)
 		if len(aux)>0:
 			self.ano = aux[0] #.strip().rstrip(".").rstrip(",")
 		else:

@@ -67,11 +67,11 @@ class Patente:
             self.numeroRegistro = partes[2].split(":")[1].split(",")[0].strip();
             self.dataDeposito = partes[2].split(":")[2].split(",")[0].strip();
         except:
-            print "Erro no registro ", self.item
+            print(("Erro no registro ", self.item))
 
         self.chave = self.autores  # chave de comparação entre os objetos
 
-        print self.__str__()
+        print((self.__str__()))
 
     def compararCom(self, objeto):
         if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(self.titulo, objeto.titulo):

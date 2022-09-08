@@ -29,20 +29,20 @@
 # Por enquanto esta característica fica sem documentação.
 # ---------------------------------------------------------------------------- #
 
-from htmlentitydefs import name2codepoint
-from HTMLParser import HTMLParser
+from html.entities import name2codepoint
+from html.parser import HTMLParser
 
-from producoesBibliograficas.artigoEmPeriodico import *
-from producoesBibliograficas.livroPublicado import *
-from producoesBibliograficas.capituloDeLivroPublicado import *
-from producoesBibliograficas.textoEmJornalDeNoticia import *
-from producoesBibliograficas.trabalhoCompletoEmCongresso import *
-from producoesBibliograficas.resumoExpandidoEmCongresso import *
-from producoesBibliograficas.resumoEmCongresso import *
-from producoesBibliograficas.artigoAceito import *
-from producoesBibliograficas.apresentacaoDeTrabalho import *
-from producoesBibliograficas.outroTipoDeProducaoBibliografica import *
-from orientacoes.orientacaoConcluida import *
+from .producoesBibliograficas.artigoEmPeriodico import *
+from .producoesBibliograficas.livroPublicado import *
+from .producoesBibliograficas.capituloDeLivroPublicado import *
+from .producoesBibliograficas.textoEmJornalDeNoticia import *
+from .producoesBibliograficas.trabalhoCompletoEmCongresso import *
+from .producoesBibliograficas.resumoExpandidoEmCongresso import *
+from .producoesBibliograficas.resumoEmCongresso import *
+from .producoesBibliograficas.artigoAceito import *
+from .producoesBibliograficas.apresentacaoDeTrabalho import *
+from .producoesBibliograficas.outroTipoDeProducaoBibliografica import *
+from .orientacoes.orientacaoConcluida import *
 
 
 class ParserLattesXML(HTMLParser):
@@ -917,5 +917,5 @@ def stripBlanks(s):
 
 def htmlentitydecode(s):                                                                               
 	return re.sub('&(%s);' % '|'.join(name2codepoint),                                                 
-		lambda m: unichr(name2codepoint[m.group(1)]), s)   
+		lambda m: chr(name2codepoint[m.group(1)]), s)   
 

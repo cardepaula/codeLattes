@@ -54,7 +54,7 @@ class Qualis:
 
     def calcularTotaisDosQualisPorTipo(self, qtd, listaCompleta):
         self.inicializaListaQualis(qtd)
-        keys = listaCompleta.keys()
+        keys = list(listaCompleta.keys())
         if len(keys)>0: 
             for ano in keys:
                 elementos = listaCompleta[ano]
@@ -76,7 +76,7 @@ class Qualis:
                 #print "CASOU NOME: ", nome, sigla
                 return self.periodicos.get(nome) , ''    # Retorna Qualis do nome exato encontrado - Casamento perfeito
             else:
-                chaves = self.periodicos.keys()
+                chaves = list(self.periodicos.keys())
                 for i in range(0,len(chaves)):
                     distI = similaridade_entre_cadeias( nome, chaves[i], qualis=True)
                     if distI>dist: # comparamos: nome com cada nome de periodico
@@ -88,7 +88,7 @@ class Qualis:
             if self.congressos.get(nome)!=None:
                 return self.congressos.get(nome) , '' # Retorna Qualis do nome exato encontrado - Casamento perfeito
             else:
-                chaves = self.congressos.keys()
+                chaves = list(self.congressos.keys())
                 for i in range(0,len(chaves)):
                     distI = similaridade_entre_cadeias( nome, chaves[i], qualis=True)
                     if distI>dist: # comparamos: nome com cada nome de evento
@@ -162,7 +162,7 @@ class Qualis:
 
                 lista[nome]  = qualis
                 lista[sigla] = qualis    # Armazena a sigla/issn do evento/periodico
-            print "[QUALIS]: "+str(len(lista))+" itens adicionados de "+arquivo
+            print(("[QUALIS]: "+str(len(lista))+" itens adicionados de "+arquivo))
         return lista
 
 
@@ -170,9 +170,9 @@ class Qualis:
         #nome = nome.replace(u"\u00A0", " ")
         #nome = nome.replace(u"\u2010", " ")
         #nome = nome.replace(u"-"," ")
-        nome = nome.replace(u"\u00A0", "")
-        nome = nome.replace(u"\u2010", "")
-        nome = nome.replace(u"-","")
+        nome = nome.replace("\\u00A0", "")
+        nome = nome.replace("\\u2010", "")
+        nome = nome.replace("-","")
 
         #nome = re.sub(r"\(.*\)", " ", nome)
         #nome = re.sub(r"\(", " ", nome)

@@ -25,19 +25,19 @@
 import fileinput
 import unicodedata
 
-from geradorDeXML import *
-from qualis import *
+from .geradorDeXML import *
+from .qualis import *
 from scriptLattes.util import *
 from scriptLattes.qualis import *
 
-import util
-from membro import Membro
-from compiladorDeListas import CompiladorDeListas
-from authorRank import AuthorRank
-from geradorDePaginasWeb import GeradorDePaginasWeb
-from charts.grafoDeColaboracoes import *
-from charts.mapaDeGeolocalizacao import *
-from qualis.qualis import *
+from . import util
+from .membro import Membro
+from .compiladorDeListas import CompiladorDeListas
+from .authorRank import AuthorRank
+from .geradorDePaginasWeb import GeradorDePaginasWeb
+from .charts.grafoDeColaboracoes import *
+from .charts.mapaDeGeolocalizacao import *
+from .qualis.qualis import *
 
 
 
@@ -181,15 +181,15 @@ class Grupo:
             self.geradorDeXml.gerarXmlParaGrupo()
 
             if self.geradorDeXml.listaErroXml:
-                print "\n\n[AVISO] Erro ao gerar XML para os lattes abaixo:"
+                print("\n\n[AVISO] Erro ao gerar XML para os lattes abaixo:")
                 for item in self.geradorDeXml.listaErroXml:
-                    print "- [ID Lattes: " + item + "]"
+                    print(("- [ID Lattes: " + item + "]"))
 
     def gerarCSVdeQualisdeGrupo(self):
         prefix = self.obterParametro('global-prefixo') + '-' if not self.obterParametro('global-prefixo') == '' else ''
 
         # Salvamos a lista individual
-        s = u''
+        s = ''
         for membro in self.listaDeMembros:
             nomeCompleto = unicodedata.normalize('NFKD', membro.nomeCompleto).encode('ASCII', 'ignore')
             s += self.imprimeCSVListaIndividual(nomeCompleto, membro.listaArtigoEmPeriodico)
@@ -198,7 +198,7 @@ class Grupo:
         self.salvarArquivoGenerico(s.encode('utf8'), prefix + 'publicacoesPorMembro.csv')
 
         # Salvamos a lista total (publicações do grupo)
-        s = u''
+        s = ''
         s += self.imprimeCSVListaGrupal(self.compilador.listaCompletaArtigoEmPeriodico)
         s += self.imprimeCSVListaGrupal(self.compilador.listaCompletaTrabalhoCompletoEmCongresso)
         s += self.imprimeCSVListaGrupal(self.compilador.listaCompletaResumoExpandidoEmCongresso)
@@ -206,7 +206,7 @@ class Grupo:
 
 
     def gerarArquivosTemporarios(self):
-        print "\n[CRIANDO ARQUIVOS TEMPORARIOS: CSV, RIS, TXT, GDF]"
+        print("\n[CRIANDO ARQUIVOS TEMPORARIOS: CSV, RIS, TXT, GDF]")
 
         self.gerarRISdeMembros()
         self.gerarCSVdeQualisdeGrupo()
@@ -334,15 +334,15 @@ class Grupo:
 
 
     def imprimeCSVListaIndividual(self, nomeCompleto, lista):
-        s = u""
+        s = ""
         for pub in lista:
             s += pub.csv(nomeCompleto) + "\n"
         return s
 
 
     def imprimeCSVListaGrupal(self, listaCompleta):
-        s = u""
-        keys = listaCompleta.keys()
+        s = ""
+        keys = list(listaCompleta.keys())
         keys.sort(reverse=True)
 
         if len(keys) > 0:
@@ -351,7 +351,7 @@ class Grupo:
                 elementos.sort(key=lambda x: x.chave.lower())
                 for index in range(0, len(elementos)):
                     pub = elementos[index]
-                    s += pub.csv(u' ') + "\n"
+                    s += pub.csv(' ') + "\n"
         return s
 
 
@@ -373,11 +373,11 @@ class Grupo:
     def carregarDadosCVLattes(self):
         indice = 1
         for membro in self.listaDeMembros:
-            print('\n[LENDO REGISTRO LATTES: {0}o. DA LISTA]'.format(indice))
+            print(('\n[LENDO REGISTRO LATTES: {0}o. DA LISTA]'.format(indice)))
             indice += 1
             membro.carregarDadosCVLattes()
             membro.filtrarItemsPorPeriodo()
-            print membro
+            print(membro)
 
     def gerarMapaDeGeolocalizacao(self):
         if self.obterParametro('mapa-mostrar_mapa_de_geolocalizacao'):
@@ -416,7 +416,7 @@ class Grupo:
 
     def identificarQualisEmPublicacoes(self):
         if self.obterParametro('global-identificar_publicacoes_com_qualis'):
-            print "\n[IDENTIFICANDO QUALIS EM PUBLICAÇÕES]"
+            print("\n[IDENTIFICANDO QUALIS EM PUBLICAÇÕES]")
             for membro in self.listaDeMembros:
                 self.qualis.analisarPublicacoes(membro, self)  # Qualis - Adiciona Qualis as publicacoes dos membros
             self.qualis.calcularTotaisDosQualis(self)
@@ -436,7 +436,7 @@ class Grupo:
 
         for i in range(0, len(lista)):
             elemento = lista[i]
-            if type(elemento) == type(unicode()):
+            if type(elemento) == type(str()):
                 elemento = elemento.encode("utf8")
             else:
                 elemento = str(elemento)
@@ -515,7 +515,7 @@ class Grupo:
         arquivo = open(dir + "/" + nomeArquivo, 'w')
         for i in range(0, len(listaDoiValido)):
             elemento = listaDoiValido[i]
-            if type(elemento) == type(unicode()):
+            if type(elemento) == type(str()):
                 elemento = elemento.encode("utf8")
             else:
                 elemento = str(elemento)
@@ -523,7 +523,7 @@ class Grupo:
         arquivo.close()
 
     def gerarGraficosDeBarras(self):
-        print "\n[CRIANDO GRAFICOS DE BARRAS]"
+        print("\n[CRIANDO GRAFICOS DE BARRAS]")
         gBarra = GraficoDeBarras(self.obterParametro('global-diretorio_de_saida'))
 
         gBarra.criarGrafico(self.compilador.listaCompletaArtigoEmPeriodico, 'PB0', 'Numero de publicacoes')
@@ -540,7 +540,7 @@ class Grupo:
 
         gBarra.criarGrafico(self.compilador.listaCompletaSoftwareComPatente, 'PT0', 'Numero de producoes tecnicas')
         gBarra.criarGrafico(self.compilador.listaCompletaSoftwareSemPatente, 'PT1', 'Numero de producoes tecnicas')
-        gBarra.criarGrafico(self.compilador.listaCompletaProdutoTecnologico, 'PT2', u'Numero de producoes tecnicas')
+        gBarra.criarGrafico(self.compilador.listaCompletaProdutoTecnologico, 'PT2', 'Numero de producoes tecnicas')
         gBarra.criarGrafico(self.compilador.listaCompletaProcessoOuTecnica, 'PT3', 'Numero de producoes tecnicas')
         gBarra.criarGrafico(self.compilador.listaCompletaTrabalhoTecnico, 'PT4', 'Numero de producoes tecnicas')
         gBarra.criarGrafico(self.compilador.listaCompletaOutroTipoDeProducaoTecnica, 'PT5',
@@ -588,9 +588,9 @@ class Grupo:
             self.grafosDeColaboracoes = GrafoDeColaboracoes(self, self.obterParametro('global-diretorio_de_saida') )
             self.identificar_lista_de_colaboradores_endogenos()
 
-        print "\n[ROTULOS]"
-        print "- " + str(self.listaDeRotulos)
-        print "- " + str(self.listaDeRotulosCores)
+        print("\n[ROTULOS]")
+        print(("- " + str(self.listaDeRotulos)))
+        print(("- " + str(self.listaDeRotulosCores)))
 
     def gerarGraficoDeProporcoes(self):
         if self.obterParametro('relatorio-incluir_grafico_de_proporcoes_bibliograficas'):
@@ -598,7 +598,7 @@ class Grupo:
 
     def calcularInternacionalizacao(self):
         if self.obterParametro('relatorio-incluir_internacionalizacao'):
-            print "\n[ANALISANDO INTERNACIONALIZACAO]"
+            print("\n[ANALISANDO INTERNACIONALIZACAO]")
             self.analisadorDePublicacoes = AnalisadorDePublicacoes(self)
             self.listaDePublicacoesEinternacionalizacao = self.analisadorDePublicacoes.analisarInternacionalizacaoNaCoautoria()
             if self.analisadorDePublicacoes.listaDoiValido is not None:
@@ -612,10 +612,10 @@ class Grupo:
 
     def imprimirMatrizesDeFrequencia(self):
         self.compilador.imprimirMatrizesDeFrequencia()
-        print "\n[VETOR DE CO-AUTORIA]"
-        print self.vetorDeCoAutoria
-        print "\n[MATRIZ DE FREQUENCIA NORMALIZADA]"
-        print self.matrizDeFrequenciaNormalizada
+        print("\n[VETOR DE CO-AUTORIA]")
+        print((self.vetorDeCoAutoria))
+        print("\n[MATRIZ DE FREQUENCIA NORMALIZADA]")
+        print((self.matrizDeFrequenciaNormalizada))
 
     def numeroDeMembros(self):
         return len(self.listaDeMembros)
@@ -625,17 +625,17 @@ class Grupo:
 
     def imprimirListaDeParametros(self):
         for par in self.listaDeParametros:  # .keys():
-            print "[PARAMETRO] ", par[0], " = ", par[1]
-        print
+            print(("[PARAMETRO] ", par[0], " = ", par[1]))
+        print()
 
     def imprimirListaDeMembros(self):
         for membro in self.listaDeMembros:
-            print membro
-        print
+            print(membro)
+        print()
 
     def imprimirListaDeRotulos(self):
         for rotulo in self.listaDeRotulos:
-            print "[ROTULO] ", rotulo
+            print(("[ROTULO] ", rotulo))
 
     def atualizarParametro(self, parametro, valor):
         parametro = parametro.strip().lower()
@@ -645,7 +645,7 @@ class Grupo:
             if parametro == self.listaDeParametros[i][0]:
                 self.listaDeParametros[i][1] = valor
                 return
-        print "[AVISO IMPORTANTE] Nome de parametro desconhecido: " + parametro
+        print(("[AVISO IMPORTANTE] Nome de parametro desconhecido: " + parametro))
 
     def obterParametro(self, parametro):
         for i in range(0, len(self.listaDeParametros)):
@@ -779,7 +779,7 @@ class Grupo:
                     self.colaboradores_endogenos[i].append( (j, self.matrizDeAdjacencia[i,j]) )
         
         for i in range(0, self.numeroDeMembros()):
-            print ( self.colaboradores_endogenos[i] )
+            print(( self.colaboradores_endogenos[i] ))
 
 
     def carregar_dados_temporarios_de_geolocalizacao(self):
@@ -794,11 +794,11 @@ class Grupo:
 
     def salvar_dados_temporarios_de_geolocalizacao(self):
         print ("\n\n[SALVANDO DADOS DE GEOLOCALIZACAO]: dados/geolocalizao.txt")
-        s = u''
-        for chave in self.dicionarioDeGeolocalizacao.keys():
+        s = ''
+        for chave in list(self.dicionarioDeGeolocalizacao.keys()):
             (lat, lon) = self.dicionarioDeGeolocalizacao[chave]
             s += '{}\t{}\t{}\n'.format( chave, lat, lon )
-            print u'- {}\t{}\t{}'.format(chave, lat, lon)
+            print(('- {}\t{}\t{}'.format(chave, lat, lon)))
 
         arquivo = open('dados/geolocalizao.txt', 'w')
         arquivo.write(s)
