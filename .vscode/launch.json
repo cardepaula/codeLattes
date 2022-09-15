@@ -8,7 +8,8 @@
       "name": "ScriptLattes - Teste 01",
       "type": "python",
       "request": "launch",
-      "program": "./scriptLattes.py ${workspaceFolder}/exemplo/teste-01.config",
+      "program": "./scriptLattes.py",
+      "args": ["${workspaceFolder}/exemplo/teste-01.config"],
       "console": "integratedTerminal",
       "justMyCode": true
     },
@@ -16,7 +17,8 @@
       "name": "ScriptLattes - Teste 02",
       "type": "python",
       "request": "launch",
-      "program": "./scriptLattes.py ./exemplo/teste-02.config",
+      "program": "./scriptLattes.py",
+      "args": ["${workspaceFolder}/exemplo/teste-02.config"],
       "console": "integratedTerminal",
       "justMyCode": true
     }
