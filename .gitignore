@@ -110,3 +110,4 @@ crashlytics-build.properties
 dados/
 cvs-downloaded
 venv
+pylint.out
