@@ -35,5 +35,5 @@ class AreaDeAtuacao:
     def __str__(self):
         s = "[AREAS DE ATUACAO] \n"
         s += "+DESCRICAO   : " + \
-            self.descricao.encode('utf8', 'replace') + "\n"
+            self.descricao + "\n"
         return s

@@ -72,5 +72,5 @@ class PremioOuTitulo:
         s += "+ID-MEMBROL  : " + str(self.idMembro) + "\n"
         s += "+ANO         : " + str(self.ano) + "\n"
         s += "+DESCRICAO   : " + \
-            self.descricao.encode('utf8', 'replace') + "\n"
+            self.descricao + "\n"
         return s

@@ -106,10 +106,10 @@ class OrganizacaoDeEvento:
     def __str__(self):
         s = "\n[ORGANIZACAO DE EVENTO]\n"
         s += "+ID-MEMBRO   : " + str(self.idMembro) + "\n"
-        s += "+AUTORES     : " + self.autores.encode('utf8', 'replace') + "\n"
+        s += "+AUTORES     : " + self.autores + "\n"
         s += "+EVENTO      : " + \
-            self.nomeDoEvento.encode('utf8', 'replace') + "\n"
+            self.nomeDoEvento + "\n"
         s += "+ANO         : " + str(self.ano) + "\n"
-        s += "+NATUREZA    : " + self.natureza.encode('utf8', 'replace') + "\n"
+        s += "+NATUREZA    : " + self.natureza + "\n"
 #		s += "+item         : @@" + self.item.encode('utf8','replace') + "@@\n"
         return s

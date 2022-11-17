@@ -118,9 +118,9 @@ class ApresentacaoDeTrabalho:
         s = "\n[APRESENTACAO DE TRABALHO] \n"
         s += "+ID-MEMBRO   : " + str(self.idMembro) + "\n"
         s += "+RELEVANTE   : " + str(self.relevante) + "\n"
-        s += "+AUTORES     : " + self.autores.encode('utf8', 'replace') + "\n"
-        s += "+TITULO      : " + self.titulo.encode('utf8', 'replace') + "\n"
+        s += "+AUTORES     : " + self.autores + "\n"
+        s += "+TITULO      : " + self.titulo + "\n"
         s += "+ANO         : " + str(self.ano) + "\n"
-        s += "+NATUREZA    : " + self.natureza.encode('utf8', 'replace') + "\n"
-        s += "+item        : " + self.item.encode('utf8', 'replace') + "\n"
+        s += "+NATUREZA    : " + self.natureza + "\n"
+        s += "+item        : " + self.item + "\n"
         return s

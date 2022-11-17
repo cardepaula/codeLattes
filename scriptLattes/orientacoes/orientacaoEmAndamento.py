@@ -140,17 +140,17 @@ class OrientacaoEmAndamento:
         s = "\n[ORIENTANDO] \n"
         s += "+ID-ORIENTADOR: " + str(self.idMembro) + "\n"
         s += "+ID-ALUNO     : " + \
-            self.idOrientando.encode('utf8', 'replace') + "\n"
-        s += "+NOME         : " + self.nome.encode('utf8', 'replace') + "\n"
+            self.idOrientando + "\n"
+        s += "+NOME         : " + self.nome + "\n"
         s += "+TITULO TRAB. : " + \
-            self.tituloDoTrabalho.encode('utf8', 'replace') + "\n"
+            self.tituloDoTrabalho + "\n"
         s += "+ANO INICIO   : " + str(self.ano) + "\n"
         s += "+INSTITUICAO  : " + \
-            self.instituicao.encode('utf8', 'replace') + "\n"
+            self.instituicao + "\n"
         s += "+AGENCIA      : " + \
-            self.agenciaDeFomento.encode('utf8', 'replace') + "\n"
+            self.agenciaDeFomento + "\n"
         s += "+TIPO ORIENTA.: " + \
-            self.tipoDeOrientacao.encode('utf8', 'replace') + "\n"
+            self.tipoDeOrientacao + "\n"
 #		s += "+item         : @@" + self.item.encode('utf8','replace') + "@@\n"
 
         return s

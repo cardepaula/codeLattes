@@ -38,7 +38,7 @@ class Idioma:
 
     def __str__(self):
         s = "\n[IDIOMA] \n"
-        s += "+NOME        : " + self.nome.encode('utf8', 'replace') + "\n"
+        s += "+NOME        : " + self.nome + "\n"
         s += "+PROFICIENCIA: " + \
-            self.proficiencia.encode('utf8', 'replace') + "\n"
+            self.proficiencia + "\n"
         return s

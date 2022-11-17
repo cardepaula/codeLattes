@@ -197,14 +197,14 @@ class ResumoExpandidoEmCongresso:
         s = "\n[RESUMO EXPANDIDO EM CONGRESSO] \n"
         s += "+ID-MEMBRO   : " + str(self.idMembro) + "\n"
         s += "+RELEVANTE   : " + str(self.relevante) + "\n"
-        s += "+DOI         : " + self.doi.encode('utf8', 'replace') + "\n"
-        s += "+AUTORES     : " + self.autores.encode('utf8', 'replace') + "\n"
-        s += "+TITULO      : " + self.titulo.encode('utf8', 'replace') + "\n"
+        s += "+DOI         : " + self.doi + "\n"
+        s += "+AUTORES     : " + self.autores + "\n"
+        s += "+TITULO      : " + self.titulo + "\n"
         s += "+NOME EVENTO : " + \
-            self.nomeDoEvento.encode('utf8', 'replace') + "\n"
+            self.nomeDoEvento + "\n"
         s += "+ANO         : " + str(self.ano) + "\n"
-        s += "+VOLUME      : " + self.volume.encode('utf8', 'replace') + "\n"
-        s += "+PAGINAS     : " + self.paginas.encode('utf8', 'replace') + "\n"
-        s += "+item        : " + self.item.encode('utf8', 'replace') + "\n"
+        s += "+VOLUME      : " + self.volume + "\n"
+        s += "+PAGINAS     : " + self.paginas + "\n"
+        s += "+item        : " + self.item + "\n"
 
         return s

@@ -100,7 +100,7 @@ class ProjetoDePesquisa:
         s += "+ID-MEMBRO   : " + str(self.idMembro) + "\n"
         s += "+ANO INICIO  : " + str(self.anoInicio) + "\n"
         s += "+ANO CONCLUS.: " + str(self.anoConclusao) + "\n"
-        s += "+NOME        : " + self.nome.encode('utf8', 'replace') + "\n"
+        s += "+NOME        : " + self.nome + "\n"
         s += "+DESCRICAO   : " + \
-            str(self.descricao).encode('utf8', 'replace') + "\n"
+            str(self.descricao) + "\n"
         return s

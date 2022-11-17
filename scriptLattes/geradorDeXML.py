@@ -766,7 +766,7 @@ class GeradorDeXML:
         xmlTemp += '      <nome_citacao_bibliografica>' + \
             registro.nomeEmCitacoesBibliograficas + '</nome_citacao_bibliografica>\n'
         xmlTemp += '      <sexo>' + \
-            registro.sexo.encode('utf8', 'replace') + '</sexo>\n'
+            registro.sexo + '</sexo>\n'
         xmlTemp += '    </identificacao>\n'
         return xmlTemp
 

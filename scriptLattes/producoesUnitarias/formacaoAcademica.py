@@ -80,12 +80,12 @@ class FormacaoAcademica:
     def __str__(self):
         s = "\n[FORMACAO ACADEMICA] \n"
         s += "+ANO INICIO  : " + \
-            self.anoInicio.encode('utf8', 'replace') + "\n"
+            self.anoInicio + "\n"
         s += "+ANO CONCLUS.: " + \
-            self.anoConclusao.encode('utf8', 'replace') + "\n"
-        s += "+TIPO        : " + self.tipo.encode('utf8', 'replace') + "\n"
+            self.anoConclusao + "\n"
+        s += "+TIPO        : " + self.tipo + "\n"
         s += "+INSTITUICAO : " + \
-            self.nomeInstituicao.encode('utf8', 'replace') + "\n"
+            self.nomeInstituicao + "\n"
         s += "+DESCRICAO   : " + \
-            self.descricao.encode('utf8', 'replace') + "\n"
+            self.descricao + "\n"
         return s

@@ -361,7 +361,7 @@ class AnalisadorDePublicacoes:
             return False
         if len(dataDoi) == 2:
             doihtml = dataDoi[0]
-            doihtml = doihtml.encode('utf8', 'replace')
+            doihtml = doihtml
             doihtml = doihtml.lower()
             doihtml = doihtml.replace('\\r\\n', '')
             doihtml = doihtml.replace('\\t', '')
@@ -378,7 +378,7 @@ class AnalisadorDePublicacoes:
                 return False
         elif len(dataDoi) == 1:
             doihtml = dataDoi[0]
-            doihtml = doihtml.encode('utf8', 'replace')
+            doihtml = doihtml
             doihtml = doihtml.lower()
             prefixo = ",.*,\s*"
             if re.search(prefixo + re.escape(nomeDePais) + r"\s*\n", doihtml):

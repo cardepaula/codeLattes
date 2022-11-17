@@ -79,6 +79,6 @@ class ParticipacaoEmEvento:
         s = "\n[PARTICIPACAO EM EVENTO] \n"
         s += "+ID-MEMBRO   : " + str(self.idMembro) + "\n"
         s += "+item         : @@" + \
-            self.item.encode('utf8', 'replace') + "@@\n"
+            self.item + "@@\n"
 
         return s
