@@ -111,3 +111,4 @@ dados/
 cvs-downloaded
 venv
 pylint.out
+exemplo/cache
