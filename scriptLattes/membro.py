@@ -524,8 +524,7 @@ class Membro:
         s = "+ ID-MEMBRO   : " + str(self.idMembro) + "\n"
         s += "+ ROTULO      : " + self.rotulo + "\n"
         #s += "+ ALIAS       : " + self.nomeInicial.encode('utf8','replace') + "\n"
-        s += "+ NOME REAL   : " + \
-            self.nomeCompleto.encode('utf8', 'replace') + "\n"
+        s += "+ NOME REAL   : " + self.nomeCompleto + "\n"
         #s += "+ SEXO        : " + self.sexo.encode('utf8','replace') + "\n"
         #s += "+ NOME Cits.  : " + self.nomeEmCitacoesBibliograficas.encode('utf8','replace') + "\n"
         #s += "+ PERIODO     : " + self.periodo.encode('utf8','replace') + "\n"
@@ -540,7 +539,7 @@ class Membro:
         if verbose:
             s += "\n[COLABORADORES]"
             for idColaborador in self.listaIDLattesColaboradoresUnica:
-                s += "\n+ " + idColaborador.encode('utf8', 'replace')
+                s += "\n+ " + idColaborador
 
         else:
             s += "\n- Numero de colaboradores (identificado)      : " + str(
