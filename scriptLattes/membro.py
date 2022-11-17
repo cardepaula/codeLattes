@@ -21,7 +21,6 @@
 #
 #
 
-import sets
 import time
 import os
 # from htmlentitydefs import name2codepoint
@@ -257,8 +256,7 @@ class Membro:
         self.listaAreaDeAtuacao = parser.listaAreaDeAtuacao
         self.listaIdioma = parser.listaIdioma
         self.listaPremioOuTitulo = parser.listaPremioOuTitulo
-        self.listaIDLattesColaboradoresUnica = sets.Set(
-            self.listaIDLattesColaboradores)
+        self.listaIDLattesColaboradoresUnica = set(self.listaIDLattesColaboradores)
 
         # Produção bibliográfica
         self.listaArtigoEmPeriodico = parser.listaArtigoEmPeriodico
