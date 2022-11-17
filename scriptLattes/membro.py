@@ -230,6 +230,7 @@ class Membro:
             special_chars = ' -'''
             # cvLattesHTML  = cvLattesHTML.decode('ascii','replace')+extended_chars+special_chars                                          # Wed Jul 25 16:47:39 BRT 2012
             extended_chars = extended_chars.encode('utf-8', 'surrogatepass').decode('utf-8',  'replace')
+            cvLattesHTML = cvLattesHTML + extended_chars + special_chars
             # reference:
             # https://stackoverflow.com/questions/38147259/how-can-i-convert-surrogate-pairs-to-normal-string-in-python
             # https://bugs.python.org/issue26260
