@@ -144,8 +144,7 @@ class Membro:
         self.idMembro = idMembro
         self.idLattes = identificador
         self.nomeInicial = nome
-        self.nomeCompleto = nome.split(
-            ";")[0].strip().decode('utf8', 'replace')
+        self.nomeCompleto = nome.split(";")[0].strip()
         self.periodo = periodo
         self.rotulo = rotulo
         self.rotuloCorFG = '#000000'
@@ -319,8 +318,7 @@ class Membro:
             descricao = self.listaAreaDeAtuacao[0].descricao
             partes = descricao.split('/')
             nomePrimeiraGrandeArea = partes[0]
-            nomePrimeiraGrandeArea = nomePrimeiraGrandeArea.replace(
-                "Grande área:".decode('utf-8'), '').strip()
+            nomePrimeiraGrandeArea = nomePrimeiraGrandeArea.replace("Grande área:", '').strip()
 
             if len(partes) > 1:
                 partes = partes[1].split(":")

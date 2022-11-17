@@ -99,8 +99,7 @@ class GeradorDePaginasWeb:
             self.arquivoRis.close()
 
     def gerarPaginaPrincipal(self):
-        nomeGrupo = self.grupo.obterParametro(
-            'global-nome_do_grupo').decode("utf8")
+        nomeGrupo = self.grupo.obterParametro('global-nome_do_grupo')
 
         s = self.html1 + ' \
         <head> \
@@ -119,26 +118,26 @@ class GeradorDePaginasWeb:
         s += '[ <a href=membros' + self.extensaoPagina + '><b>Membros</b></a> \
             | <a href=#producaoBibliografica>Produção bibliográfica</a> \
             | <a href=#producaoTecnica>Produção técnica</a> \
-            | <a href=#producaoArtistica>Produção artística</a> '.decode("utf8")
+            | <a href=#producaoArtistica>Produção artística</a> '
 
         if self.grupo.obterParametro('relatorio-mostrar_orientacoes'):
-            s += '| <a href=#orientacoes>Orientações</a> '.decode("utf8")
+            s += '| <a href=#orientacoes>Orientações</a> '
 
         if self.grupo.obterParametro('relatorio-incluir_projeto'):
-            s += '| <a href=#projetos>Projetos</a> '.decode("utf8")
+            s += '| <a href=#projetos>Projetos</a> '
 
         if self.grupo.obterParametro('relatorio-incluir_premio'):
-            s += '| <a href=#premios>Prêmios</a> '.decode("utf8")
+            s += '| <a href=#premios>Prêmios</a> '
 
         if self.grupo.obterParametro('relatorio-incluir_participacao_em_evento') or self.grupo.obterParametro(
                 'relatorio-incluir_organizacao_de_evento'):
-            s += '| <a href=#eventos>Eventos</a> '.decode("utf8")
+            s += '| <a href=#eventos>Eventos</a> '
 
         if self.grupo.obterParametro('grafo-mostrar_grafo_de_colaboracoes'):
-            s += '| <a href=#grafo>Grafo de colaborações</a> '.decode("utf8")
+            s += '| <a href=#grafo>Grafo de colaborações</a> '
 
         if self.grupo.obterParametro('mapa-mostrar_mapa_de_geolocalizacao'):
-            s += '| <a href=#mapa>Mapa de geolocalização</a> '.decode("utf8")
+            s += '| <a href=#mapa>Mapa de geolocalização</a> '
 
         if self.grupo.obterParametro('relatorio-incluir_internacionalizacao'):
             s += '| <a href=#internacionalizacao>Internacionalização</a> '.decode(
@@ -146,7 +145,7 @@ class GeradorDePaginasWeb:
 
         if self.grupo.obterParametro('relatorio-incluir_producao_com_colaboradores'):
             s += '| <a href=producao-com-colaboradores/index' + self.extensaoPagina + \
-                '><b>Produção com colaboradores</b></a> '.decode("utf8")
+                '><b>Produção com colaboradores</b></a> '
 
         s += ' ] </center><br></div>'
         s += '<h3 id="producaoBibliografica">Produção bibliográfica</h3> <ul>'.decode(
@@ -204,7 +203,7 @@ class GeradorDePaginasWeb:
             s += '<li> <a href="PT3-0' + self.extensaoPagina + '">Processos ou técnicas</a> '.decode(
                 "utf8") + '(' + str(self.nPT3) + ')'
         if self.nPT4 > 0:
-            s += '<li> <a href="PT4-0' + self.extensaoPagina + '">Trabalhos técnicos</a> '.decode("utf8") + '(' + str(
+            s += '<li> <a href="PT4-0' + self.extensaoPagina + '">Trabalhos técnicos</a> ' + '(' + str(
                 self.nPT4) + ')'
         if self.nPT5 > 0:
             s += '<li> <a href="PT5-0' + self.extensaoPagina + '">Demais tipos de produção técnica</a> '.decode(
@@ -216,15 +215,15 @@ class GeradorDePaginasWeb:
             s += '<i>Nenhum item achado nos currículos Lattes</i>'.decode(
                 "utf8")
 
-            # s+='</ul> <h3 id="patenteRegistro">Patente e Registro</h3> <ul>'.decode("utf8")
+            # s+='</ul> <h3 id="patenteRegistro">Patente e Registro</h3> <ul>'
         # if self.nPR0>0:
-        #	s+= '<li> <a href="PR0-0'+self.extensaoPagina+'">Patente</a> '.decode("utf8")+'('+str(self.nPR0)+')'
+        #	s+= '<li> <a href="PR0-0'+self.extensaoPagina+'">Patente</a> '+'('+str(self.nPR0)+')'
         # if self.nPR1>0:
-        #	s+= '<li> <a href="PR1-0'+self.extensaoPagina+'">Programa de computador</a> '.decode("utf8")+'('+str(self.nPR1)+')'
+        #	s+= '<li> <a href="PR1-0'+self.extensaoPagina+'">Programa de computador</a> '+'('+str(self.nPR1)+')'
         # if self.nPR2>0:
-        #	s+= '<li> <a href="PR2-0'+self.extensaoPagina+'">Desenho industrial</a> '.decode("utf8")+'('+str(self.nPR2)+')'
+        #	s+= '<li> <a href="PR2-0'+self.extensaoPagina+'">Desenho industrial</a> '+'('+str(self.nPR2)+')'
         # if self.nPR0 == 0 and self.nPR1 == 0 and self.nPR2 == 0:
-        #	s+= '<i>Nenhum item achado nos currículos Lattes</i>'.decode("utf8")
+        #	s+= '<i>Nenhum item achado nos currículos Lattes</i>'
 
         s += '</ul> <h3 id="producaoArtistica">Produção artística</h3> <ul>'.decode(
             "utf8")
@@ -238,7 +237,7 @@ class GeradorDePaginasWeb:
         if self.grupo.obterParametro('relatorio-mostrar_orientacoes'):
             s += '</ul> <h3 id="orientacoes">Orientações</h3> <ul>'.decode(
                 "utf8")
-            s += '<li><b>Orientações em andamento</b>'.decode("utf8")
+            s += '<li><b>Orientações em andamento</b>'
             s += '<ul>'
             if self.nOA0 > 0:
                 s += '<li> <a href="OA0-0' + self.extensaoPagina + '">Supervisão de pós-doutorado</a> '.decode(
@@ -780,7 +779,7 @@ class GeradorDePaginasWeb:
                 pagina_html = self.template_pagina_de_producoes()
                 pagina_html = pagina_html.format(top=self.pagina_top(), bottom=self.paginaBottom(),
                                                  grafico=grafico.html(), height=grafico['chart']['height'],
-                                                 titulo=titulo_pagina.decode("utf8"), numero_itens=str(total_producoes),
+                                                 titulo=titulo_pagina, numero_itens=str(total_producoes),
                                                  totais_qualis=totais_qualis,
                                                  indice_paginas=self.gerarIndiceDePaginas(total_paginas, numero_pagina,
                                                                                           prefixo),
@@ -793,7 +792,7 @@ class GeradorDePaginasWeb:
         if numeroDePaginas == 1:
             return ''
         else:
-            s = 'Página: '.decode("utf8")
+            s = 'Página: '
             for i in range(0, numeroDePaginas):
                 if i == numeroDePaginaAtual:
                     s += '<b>' + str(i + 1) + '</b> &nbsp;'
@@ -861,7 +860,7 @@ class GeradorDePaginasWeb:
 
                         st += self.gerarIndiceDePaginas(
                             numeroDePaginas, numeroDePaginaAtual, prefixo)
-                        st += s  # .decode("utf8")
+                        st += s
                         st += '</table>'
                         st += self.paginaBottom()
 
@@ -887,9 +886,9 @@ class GeradorDePaginasWeb:
             lista += 'Livros publicados/organizados ou edições, '.decode(
                 "utf8")
         if self.grupo.obterParametro('grafo-incluir_capitulo_de_livro_publicado'):
-            lista += 'Capítulos de livros publicados, '.decode("utf8")
+            lista += 'Capítulos de livros publicados, '
         if self.grupo.obterParametro('grafo-incluir_texto_em_jornal_de_noticia'):
-            lista += 'Textos em jornais de notícias/revistas, '.decode("utf8")
+            lista += 'Textos em jornais de notícias/revistas, '
         if self.grupo.obterParametro('grafo-incluir_trabalho_completo_em_congresso'):
             lista += 'Trabalhos completos publicados em anais de congressos, '.decode(
                 "utf8")
@@ -900,11 +899,11 @@ class GeradorDePaginasWeb:
             lista += 'Resumos publicados em anais de congressos, '.decode(
                 "utf8")
         if self.grupo.obterParametro('grafo-incluir_artigo_aceito_para_publicacao'):
-            lista += 'Artigos aceitos para publicação, '.decode("utf8")
+            lista += 'Artigos aceitos para publicação, '
         if self.grupo.obterParametro('grafo-incluir_apresentacao_de_trabalho'):
-            lista += 'Apresentações de trabalho, '.decode("utf8")
+            lista += 'Apresentações de trabalho, '
         if self.grupo.obterParametro('grafo-incluir_outro_tipo_de_producao_bibliografica'):
-            lista += 'Demais tipos de produção bibliográfica, '.decode("utf8")
+            lista += 'Demais tipos de produção bibliográfica, '
 
         lista = lista.strip().strip(",")
 
@@ -916,19 +915,19 @@ class GeradorDePaginasWeb:
 
         prefix = self.grupo.obterParametro('global-prefixo') + '-' if not self.grupo.obterParametro(
             'global-prefixo') == '' else ''
-        # s+='Veja <a href="grafoDeColaboracoesInterativo'+self.extensaoPagina+'?entradaScriptLattes=./'+prefix+'matrizDeAdjacencia.xml">na seguinte página</a> uma versão interativa do grafo de colabora&ccedil;&otilde;es.<br><p><br><p>'.decode("utf8")
+        # s+='Veja <a href="grafoDeColaboracoesInterativo'+self.extensaoPagina+'?entradaScriptLattes=./'+prefix+'matrizDeAdjacencia.xml">na seguinte página</a> uma versão interativa do grafo de colabora&ccedil;&otilde;es.<br><p><br><p>'
 
         s += '\nClique no nome dentro do vértice para visualizar o currículo Lattes. Para cada nó: o valor entre colchetes indica o número \
         de produ&ccedil;&otilde;es feitas em colabora&ccedil;&atilde;o apenas com os outros membros do próprio grupo. <br>'.decode(
             "utf8")
 
         if self.grupo.obterParametro('grafo-considerar_rotulos_dos_membros_do_grupo'):
-            s += 'As cores representam os seguintes rótulos: '.decode("utf8")
+            s += 'As cores representam os seguintes rótulos: '
             for i in range(0, len(self.grupo.listaDeRotulos)):
                 rot = self.grupo.listaDeRotulos[i].decode("utf8", "ignore")
-                cor = self.grupo.listaDeRotulosCores[i].decode("utf8")
+                cor = self.grupo.listaDeRotulosCores[i]
                 if rot == '':
-                    rot = '[Sem rótulo]'.decode("utf8")
+                    rot = '[Sem rótulo]'
                 s += '<span style="background-color:' + cor + \
                     '">&nbsp;&nbsp;&nbsp;&nbsp;</span>' + rot + ' '
         s += '\
@@ -939,22 +938,22 @@ class GeradorDePaginasWeb:
             <img src=grafoDeColaboracoesComPesos.png border=1 ISMAP USEMAP="#grafo2"> <br><p> \
         <li><b>Grafo de colabora&ccedil;&otilde;es com pesos normalizados</b><br> \
             <img src=grafoDeColaboracoesNormalizado.png border=1 ISMAP USEMAP="#grafo3"> \
-        </ul>'.decode("utf8")
+        </ul>'
 
         cmapx1 = self.grupo.grafosDeColaboracoes.grafoDeCoAutoriaSemPesosCMAPX
         cmapx2 = self.grupo.grafosDeColaboracoes.grafoDeCoAutoriaComPesosCMAPX
         cmapx3 = self.grupo.grafosDeColaboracoes.grafoDeCoAutoriaNormalizadoCMAPX
         s += '<map id="grafo1" name="grafo1">' + \
-            cmapx1.decode("utf8") + '\n</map>\n'
+            cmapx1 + '\n</map>\n'
         s += '<map id="grafo2" name="grafo2">' + \
-            cmapx2.decode("utf8") + '\n</map>\n'
+            cmapx2 + '\n</map>\n'
         s += '<map id="grafo3" name="grafo3">' + \
-            cmapx3.decode("utf8") + '\n</map>\n'
+            cmapx3 + '\n</map>\n'
 
         if self.grupo.obterParametro('grafo-incluir_grau_de_colaboracao'):
             s += '<br><p><h3>Grau de colaboração</h3> \
                 O grau de colaboração (<i>Collaboration Rank</i>) é um valor numérico que indica o impacto de um membro no grafo de colaborações.\
-                <br>Esta medida é similar ao <i>PageRank</i> para grafos direcionais (com pesos).<br><p>'.decode("utf8")
+                <br>Esta medida é similar ao <i>PageRank</i> para grafos direcionais (com pesos).<br><p>'
 
             ranks, autores, rotulos = list(zip(
                 *sorted(zip(self.grupo.vectorRank, self.grupo.nomes, self.grupo.rotulos), reverse=True)))
@@ -971,7 +970,7 @@ class GeradorDePaginasWeb:
                     somaAuthorRank = 0
 
                     rot = self.grupo.listaDeRotulos[i].decode("utf8", "ignore")
-                    cor = self.grupo.listaDeRotulosCores[i].decode("utf8")
+                    cor = self.grupo.listaDeRotulosCores[i]
                     s += '<b><span style="background-color:' + cor + \
                         '">&nbsp;&nbsp;&nbsp;&nbsp;</span>' + rot + '</b><br>'
 
@@ -1718,7 +1717,7 @@ class GeradorDePaginasWeb:
 
     def pagina_top(self, cabecalho=''):
         nome_grupo = self.grupo.obterParametro(
-            'global-nome_do_grupo').decode("utf8")
+            'global-nome_do_grupo')
 
         s = self.html1
         template = '<head>' \
@@ -1781,11 +1780,11 @@ class GeradorDePaginasWeb:
             </script>'
         s += '</body>' + self.html2
 
-        return s.decode("utf8")
+        return s
 
     def salvarPagina(self, nome, conteudo):
         file = open(os.path.join(self.dir, nome), 'w')
-        file.write(conteudo.encode('utf8', 'replace'))
+        file.write(conteudo)
         file.close()
 
     def salvarPublicacaoEmFormatoRIS(self, pub):

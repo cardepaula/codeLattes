@@ -162,9 +162,9 @@ class Qualis:
 
                 campos = linha.split('\t')
                 # ISSN de periodicos ou SIGLA de congressos
-                sigla = campos[0].rstrip().decode("utf8")
+                sigla = campos[0].rstrip()
                 # Nome do periodico ou evento
-                nome = campos[1].rstrip().decode("utf8")
+                nome = campos[1].rstrip()
                 qualis = campos[2].rstrip()    # Estrato Qualis
 
                 #nome   = self.padronizarNome(nome)

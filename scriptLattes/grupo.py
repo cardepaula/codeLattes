@@ -139,7 +139,7 @@ class Grupo:
             self.obterParametro('global-arquivo_de_entrada'))
 
         idSequencial = 0
-        for linha in fileinput.input(entrada.decode('utf8')):
+        for linha in fileinput.input(entrada):
             linha = linha.replace("\r", "")
             linha = linha.replace("\n", "")
 
