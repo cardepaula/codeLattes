@@ -124,8 +124,8 @@ def __get_data(id_lattes):
     # Fim da implementação
 
     response = resp.read()
-    if 'infpessoa' in response:
-        return response
+    if b'infpessoa' in response:
+        return response.decode('windows-1252')
 
     br.select_form(nr=0)
     br.form.set_all_readonly(False)
