@@ -229,8 +229,7 @@ class Membro:
                 127, 65536, 1))  # srange(r"[\0x80-\0x7FF]")
             special_chars = ' -'''
             # cvLattesHTML  = cvLattesHTML.decode('ascii','replace')+extended_chars+special_chars                                          # Wed Jul 25 16:47:39 BRT 2012
-            cvLattesHTML = cvLattesHTML.decode(
-                'iso-8859-1', 'replace') + extended_chars + special_chars
+            extended_chars = extended_chars.encode('utf-8', 'surrogatepass').decode('utf-8',  'replace')
             parser = ParserLattes(self.idMembro, cvLattesHTML)
 
             p = re.compile('[a-zA-Z]+')
