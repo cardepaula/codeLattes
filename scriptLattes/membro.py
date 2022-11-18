@@ -225,6 +225,8 @@ class Membro:
                     file.write(cvLattesHTML)
                     file.close()
                     print(" (*) O CV está sendo armazenado no Cache")
+            if cvLattesHTML == '   ':
+                raise Exception("CV Lattes vazio")
 
             extended_chars = ''.join(chr(c) for c in range(127, 65536, 1))  # srange(r"[\0x80-\0x7FF]")
             special_chars = ' -'''
