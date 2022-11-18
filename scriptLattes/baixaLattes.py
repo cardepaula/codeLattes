@@ -85,7 +85,8 @@ def __get_data(id_lattes):
     if p.match(id_lattes):
         url = 'http://buscatextual.cnpq.br/buscatextual/visualizacv.do?id='+id_lattes
     else:
-        url = 'http://lattes.cnpq.br/'+id_lattes
+        # url = 'http://lattes.cnpq.br/'+id_lattes
+        url = 'file://'+os.path.abspath(os.getcwd())+'/cvs-downloaded/'+id_lattes+'.html'
     br = mechanize.Browser()
     br.set_cookiejar(http.cookiejar.LWPCookieJar())
 
@@ -101,25 +102,25 @@ def __get_data(id_lattes):
     #r = br.open(url)
 
     # Nova implementação
-    url_get_captcha = "http://buscatextual.cnpq.br/buscatextual/servlet/captcha?metodo=getImagemCaptcha&noCache=" + \
-        str(int(time.time()))
-    resp = br.open(url)
+    # url_get_captcha = "http://buscatextual.cnpq.br/buscatextual/servlet/captcha?metodo=getImagemCaptcha&noCache=" + \
+    #     str(int(time.time()))
+    # resp = br.open(url)
 
-    print(url_get_captcha)
+    # print('baixaLattes.py - url_get_captcha: ', url_get_captcha)
 
-    m = re.search('(&id=).*', resp.geturl())
-    id = m.group(0)
-    id = id.replace('&id=', '')
+    # m = re.search('(&id=).*', resp.geturl())
+    # id = m.group(0)
+    # id = id.replace('&id=', '')
 
-    resp = br.open(url_get_captcha)
-    file = io.StringIO(resp.read())
-    img = Image.open(file)
-    img.show(title='CAPTCHA')
+    # resp = br.open(url_get_captcha)
+    # file = io.StringIO(resp.read())
+    # img = Image.open(file)
+    # img.show(title='CAPTCHA')
 
-    captcha = str(eval(input('\nINSIRA AS LETRAS DO CAPTCHA: ')))
-    url_captha = "http://buscatextual.cnpq.br/buscatextual/servlet/captcha?informado=" + \
-        captcha+"&id="+id+"&metodo=validaCaptcha"
-    resp = br.open(url_captha)
+    # captcha = str(eval(input('\nINSIRA AS LETRAS DO CAPTCHA: ')))
+    # url_captha = "http://buscatextual.cnpq.br/buscatextual/servlet/captcha?informado=" + \
+    #     captcha+"&id="+id+"&metodo=validaCaptcha"
+    # resp = br.open(url_captha)
     resp = br.open(url)
     # Fim da implementação
 
