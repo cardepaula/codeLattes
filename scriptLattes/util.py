@@ -37,16 +37,18 @@ class OutputStream:
         self.output = output
 
     def write(self, text):
-        try:
-            text = text.decode(self.encoding)
-        except:
-            try:
-                text = text.decode('utf8').encode('iso-8859-1')
-            except:
-                try:
-                    text = text.encode('iso-8859-1')
-                except:
-                    pass
+        # TODO verificar a necessidade dessa validaçao
+        # try:
+        #     # text = text.decode(self.encoding)
+        #     text = text
+        # except:
+        #     try:
+        #         text = text.decode('utf8').encode('iso-8859-1')
+        #     except:
+        #         try:
+        #             text = text.encode('iso-8859-1')
+        #         except:
+        #             pass
         try:
             self.output.write(text)
         except:
