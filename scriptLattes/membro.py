@@ -215,6 +215,7 @@ class Membro:
             if os.path.exists(cvPath):
                 arquivoH = open(cvPath)
                 cvLattesHTML = arquivoH.read()
+
                 if self.idMembro != '':
                     print(("(*) Utilizando CV armazenado no cache: "+cvPath))
             else:
@@ -225,8 +226,7 @@ class Membro:
                     file.close()
                     print(" (*) O CV está sendo armazenado no Cache")
 
-            extended_chars = ''.join(chr(c) for c in range(
-                127, 65536, 1))  # srange(r"[\0x80-\0x7FF]")
+            extended_chars = ''.join(chr(c) for c in range(127, 65536, 1))  # srange(r"[\0x80-\0x7FF]")
             special_chars = ' -'''
             # cvLattesHTML  = cvLattesHTML.decode('ascii','replace')+extended_chars+special_chars                                          # Wed Jul 25 16:47:39 BRT 2012
             extended_chars = extended_chars.encode('utf-8', 'surrogatepass').decode('utf-8',  'replace')
