@@ -140,80 +140,58 @@ class GeradorDePaginasWeb:
             s += '| <a href=#mapa>Mapa de geolocalização</a> '
 
         if self.grupo.obterParametro('relatorio-incluir_internacionalizacao'):
-            s += '| <a href=#internacionalizacao>Internacionalização</a> '.decode(
-                "utf8")
+            s += '| <a href=#internacionalizacao>Internacionalização</a> '
 
         if self.grupo.obterParametro('relatorio-incluir_producao_com_colaboradores'):
             s += '| <a href=producao-com-colaboradores/index' + self.extensaoPagina + \
                 '><b>Produção com colaboradores</b></a> '
 
         s += ' ] </center><br></div>'
-        s += '<h3 id="producaoBibliografica">Produção bibliográfica</h3> <ul>'.decode(
-            "utf8")
+        s += '<h3 id="producaoBibliografica">Produção bibliográfica</h3> <ul>'
 
         if self.nPB0 > 0:
-            s += '<li> <a href="PB0-0' + self.extensaoPagina + '">Artigos completos publicados em periódicos</a> '.decode(
-                "utf8") + '(' + str(self.nPB0) + ')'
+            s += '<li> <a href="PB0-0' + self.extensaoPagina + '">Artigos completos publicados em periódicos</a> ' + '(' + str(self.nPB0) + ')'
         if self.nPB1 > 0:
-            s += '<li> <a href="PB1-0' + self.extensaoPagina + '">Livros publicados/organizados ou edições</a> '.decode(
-                "utf8") + '(' + str(self.nPB1) + ')'
+            s += '<li> <a href="PB1-0' + self.extensaoPagina + '">Livros publicados/organizados ou edições</a> ' + '(' + str(self.nPB1) + ')'
         if self.nPB2 > 0:
-            s += '<li> <a href="PB2-0' + self.extensaoPagina + '">Capítulos de livros publicados </a> '.decode(
-                "utf8") + '(' + str(self.nPB2) + ')'
+            s += '<li> <a href="PB2-0' + self.extensaoPagina + '">Capítulos de livros publicados </a> ' + '(' + str(self.nPB2) + ')'
         if self.nPB3 > 0:
-            s += '<li> <a href="PB3-0' + self.extensaoPagina + '">Textos em jornais de notícias/revistas </a> '.decode(
-                "utf8") + '(' + str(self.nPB3) + ')'
+            s += '<li> <a href="PB3-0' + self.extensaoPagina + '">Textos em jornais de notícias/revistas </a> ' + '(' + str(self.nPB3) + ')'
         if self.nPB4 > 0:
-            s += '<li> <a href="PB4-0' + self.extensaoPagina + '">Trabalhos completos publicados em anais de congressos </a> '.decode(
-                "utf8") + '(' + str(self.nPB4) + ')'
+            s += '<li> <a href="PB4-0' + self.extensaoPagina + '">Trabalhos completos publicados em anais de congressos </a> ' + '(' + str(self.nPB4) + ')'
         if self.nPB5 > 0:
-            s += '<li> <a href="PB5-0' + self.extensaoPagina + '">Resumos expandidos publicados em anais de congressos </a> '.decode(
-                "utf8") + '(' + str(self.nPB5) + ')'
+            s += '<li> <a href="PB5-0' + self.extensaoPagina + '">Resumos expandidos publicados em anais de congressos </a> ' + '(' + str(self.nPB5) + ')'
         if self.nPB6 > 0:
-            s += '<li> <a href="PB6-0' + self.extensaoPagina + '">Resumos publicados em anais de congressos </a> '.decode(
-                "utf8") + '(' + str(self.nPB6) + ')'
+            s += '<li> <a href="PB6-0' + self.extensaoPagina + '">Resumos publicados em anais de congressos </a> ' + '(' + str(self.nPB6) + ')'
         if self.nPB7 > 0:
-            s += '<li> <a href="PB7-0' + self.extensaoPagina + '">Artigos aceitos para publicação </a> '.decode(
-                "utf8") + '(' + str(self.nPB7) + ')'
+            s += '<li> <a href="PB7-0' + self.extensaoPagina + '">Artigos aceitos para publicação </a> ' + '(' + str(self.nPB7) + ')'
         if self.nPB8 > 0:
-            s += '<li> <a href="PB8-0' + self.extensaoPagina + '">Apresentações de trabalho </a> '.decode(
-                "utf8") + '(' + str(self.nPB8) + ')'
+            s += '<li> <a href="PB8-0' + self.extensaoPagina + '">Apresentações de trabalho </a> ' + '(' + str(self.nPB8) + ')'
         if self.nPB9 > 0:
-            s += '<li> <a href="PB9-0' + self.extensaoPagina + '">Demais tipos de produção bibliográfica </a> '.decode(
-                "utf8") + '(' + str(self.nPB9) + ')'
+            s += '<li> <a href="PB9-0' + self.extensaoPagina + '">Demais tipos de produção bibliográfica </a> ' + '(' + str(self.nPB9) + ')'
         if self.nPB > 0:
-            s += '<li> <a href="PB-0' + self.extensaoPagina + '">Total de produção bibliográfica</a> '.decode(
-                "utf8") + '(' + str(self.nPB) + ')'
+            s += '<li> <a href="PB-0' + self.extensaoPagina + '">Total de produção bibliográfica</a> ' + '(' + str(self.nPB) + ')'
         else:
-            s += '<i>Nenhum item achado nos currículos Lattes</i>'.decode(
-                "utf8")
+            s += '<i>Nenhum item achado nos currículos Lattes</i>'
 
-        s += '</ul> <h3 id="producaoTecnica">Produção técnica</h3> <ul>'.decode(
-            "utf8")
+        s += '</ul> <h3 id="producaoTecnica">Produção técnica</h3> <ul>'
         if self.nPT0 > 0:
-            s += '<li> <a href="PT0-0' + self.extensaoPagina + '">Programas de computador com registro de patente</a> '.decode(
-                "utf8") + '(' + str(self.nPT0) + ')'
+            s += '<li> <a href="PT0-0' + self.extensaoPagina + '">Programas de computador com registro de patente</a> ' + '(' + str(self.nPT0) + ')'
         if self.nPT1 > 0:
-            s += '<li> <a href="PT1-0' + self.extensaoPagina + '">Programas de computador sem registro de patente</a> '.decode(
-                "utf8") + '(' + str(self.nPT1) + ')'
+            s += '<li> <a href="PT1-0' + self.extensaoPagina + '">Programas de computador sem registro de patente</a> ' + '(' + str(self.nPT1) + ')'
         if self.nPT2 > 0:
-            s += '<li> <a href="PT2-0' + self.extensaoPagina + '">Produtos tecnológicos</a> '.decode(
-                "utf8") + '(' + str(self.nPT2) + ')'
+            s += '<li> <a href="PT2-0' + self.extensaoPagina + '">Produtos tecnológicos</a> ' + '(' + str(self.nPT2) + ')'
         if self.nPT3 > 0:
-            s += '<li> <a href="PT3-0' + self.extensaoPagina + '">Processos ou técnicas</a> '.decode(
-                "utf8") + '(' + str(self.nPT3) + ')'
+            s += '<li> <a href="PT3-0' + self.extensaoPagina + '">Processos ou técnicas</a> ' + '(' + str(self.nPT3) + ')'
         if self.nPT4 > 0:
             s += '<li> <a href="PT4-0' + self.extensaoPagina + '">Trabalhos técnicos</a> ' + '(' + str(
                 self.nPT4) + ')'
         if self.nPT5 > 0:
-            s += '<li> <a href="PT5-0' + self.extensaoPagina + '">Demais tipos de produção técnica</a> '.decode(
-                "utf8") + '(' + str(self.nPT5) + ')'
+            s += '<li> <a href="PT5-0' + self.extensaoPagina + '">Demais tipos de produção técnica</a> ' + '(' + str(self.nPT5) + ')'
         if self.nPT > 0:
-            s += '<li> <a href="PT-0' + self.extensaoPagina + '">Total de produção técnica</a> '.decode(
-                "utf8") + '(' + str(self.nPT) + ')'
+            s += '<li> <a href="PT-0' + self.extensaoPagina + '">Total de produção técnica</a> ' + '(' + str(self.nPT) + ')'
         else:
-            s += '<i>Nenhum item achado nos currículos Lattes</i>'.decode(
-                "utf8")
+            s += '<i>Nenhum item achado nos currículos Lattes</i>'
 
             # s+='</ul> <h3 id="patenteRegistro">Patente e Registro</h3> <ul>'
         # if self.nPR0>0:
@@ -225,128 +203,92 @@ class GeradorDePaginasWeb:
         # if self.nPR0 == 0 and self.nPR1 == 0 and self.nPR2 == 0:
         #	s+= '<i>Nenhum item achado nos currículos Lattes</i>'
 
-        s += '</ul> <h3 id="producaoArtistica">Produção artística</h3> <ul>'.decode(
-            "utf8")
+        s += '</ul> <h3 id="producaoArtistica">Produção artística</h3> <ul>'
         if self.nPA > 0:
-            s += '<li> <a href="PA-0' + self.extensaoPagina + '">Total de produção artística</a> '.decode(
-                "utf8") + '(' + str(self.nPA) + ')'
+            s += '<li> <a href="PA-0' + self.extensaoPagina + '">Total de produção artística</a> ' + '(' + str(self.nPA) + ')'
         else:
-            s += '<i>Nenhum item achado nos currículos Lattes</i>'.decode(
-                "utf8")
+            s += '<i>Nenhum item achado nos currículos Lattes</i>'
 
         if self.grupo.obterParametro('relatorio-mostrar_orientacoes'):
-            s += '</ul> <h3 id="orientacoes">Orientações</h3> <ul>'.decode(
-                "utf8")
+            s += '</ul> <h3 id="orientacoes">Orientações</h3> <ul>'
             s += '<li><b>Orientações em andamento</b>'
             s += '<ul>'
             if self.nOA0 > 0:
-                s += '<li> <a href="OA0-0' + self.extensaoPagina + '">Supervisão de pós-doutorado</a> '.decode(
-                    "utf8") + '(' + str(self.nOA0) + ')'
+                s += '<li> <a href="OA0-0' + self.extensaoPagina + '">Supervisão de pós-doutorado</a> ' + '(' + str(self.nOA0) + ')'
             if self.nOA1 > 0:
-                s += '<li> <a href="OA1-0' + self.extensaoPagina + '">Tese de doutorado</a> '.decode(
-                    "utf8") + '(' + str(self.nOA1) + ')'
+                s += '<li> <a href="OA1-0' + self.extensaoPagina + '">Tese de doutorado</a> ' + '(' + str(self.nOA1) + ')'
             if self.nOA2 > 0:
-                s += '<li> <a href="OA2-0' + self.extensaoPagina + '">Dissertação de mestrado</a> '.decode(
-                    "utf8") + '(' + str(self.nOA2) + ')'
+                s += '<li> <a href="OA2-0' + self.extensaoPagina + '">Dissertação de mestrado</a> ' + '(' + str(self.nOA2) + ')'
             if self.nOA3 > 0:
-                s += '<li> <a href="OA3-0' + self.extensaoPagina + '">Monografia de conclusão de curso de aperfeiçoamento/especialização</a> '.decode(
-                    "utf8") + '(' + str(self.nOA3) + ')'
+                s += '<li> <a href="OA3-0' + self.extensaoPagina + '">Monografia de conclusão de curso de aperfeiçoamento/especialização</a> ' + '(' + str(self.nOA3) + ')'
             if self.nOA4 > 0:
-                s += '<li> <a href="OA4-0' + self.extensaoPagina + '">Trabalho de conclusão de curso de graduação</a> '.decode(
-                    "utf8") + '(' + str(self.nOA4) + ')'
+                s += '<li> <a href="OA4-0' + self.extensaoPagina + '">Trabalho de conclusão de curso de graduação</a> ' + '(' + str(self.nOA4) + ')'
             if self.nOA5 > 0:
-                s += '<li> <a href="OA5-0' + self.extensaoPagina + '">Iniciação científica</a> '.decode(
-                    "utf8") + '(' + str(self.nOA5) + ')'
+                s += '<li> <a href="OA5-0' + self.extensaoPagina + '">Iniciação científica</a> ' + '(' + str(self.nOA5) + ')'
             if self.nOA6 > 0:
-                s += '<li> <a href="OA6-0' + self.extensaoPagina + '">Orientações de outra natureza</a> '.decode(
-                    "utf8") + '(' + str(self.nOA6) + ')'
+                s += '<li> <a href="OA6-0' + self.extensaoPagina + '">Orientações de outra natureza</a> ' + '(' + str(self.nOA6) + ')'
             if self.nOA > 0:
-                s += '<li> <a href="OA-0' + self.extensaoPagina + '">Total de orientações em andamento</a> '.decode(
-                    "utf8") + '(' + str(self.nOA) + ')'
+                s += '<li> <a href="OA-0' + self.extensaoPagina + '">Total de orientações em andamento</a> ' + '(' + str(self.nOA) + ')'
             else:
-                s += '<i>Nenhum item achado nos currículos Lattes</i>'.decode(
-                    "utf8")
+                s += '<i>Nenhum item achado nos currículos Lattes</i>'
             s += '</ul>'
 
-            s += '<li><b>Supervisões e orientações concluídas</b>'.decode(
-                "utf8")
+            s += '<li><b>Supervisões e orientações concluídas</b>'
             s += '<ul>'
             if self.nOC0 > 0:
-                s += '<li> <a href="OC0-0' + self.extensaoPagina + '">Supervisão de pós-doutorado</a> '.decode(
-                    "utf8") + '(' + str(self.nOC0) + ')'
+                s += '<li> <a href="OC0-0' + self.extensaoPagina + '">Supervisão de pós-doutorado</a> ' + '(' + str(self.nOC0) + ')'
             if self.nOC1 > 0:
-                s += '<li> <a href="OC1-0' + self.extensaoPagina + '">Tese de doutorado</a> '.decode(
-                    "utf8") + '(' + str(self.nOC1) + ')'
+                s += '<li> <a href="OC1-0' + self.extensaoPagina + '">Tese de doutorado</a> ' + '(' + str(self.nOC1) + ')'
             if self.nOC2 > 0:
-                s += '<li> <a href="OC2-0' + self.extensaoPagina + '">Dissertação de mestrado</a> '.decode(
-                    "utf8") + '(' + str(self.nOC2) + ')'
+                s += '<li> <a href="OC2-0' + self.extensaoPagina + '">Dissertação de mestrado</a> ' + '(' + str(self.nOC2) + ')'
             if self.nOC3 > 0:
-                s += '<li> <a href="OC3-0' + self.extensaoPagina + '">Monografia de conclusão de curso de aperfeiçoamento/especialização</a> '.decode(
-                    "utf8") + '(' + str(self.nOC3) + ')'
+                s += '<li> <a href="OC3-0' + self.extensaoPagina + '">Monografia de conclusão de curso de aperfeiçoamento/especialização</a> ' + '(' + str(self.nOC3) + ')'
             if self.nOC4 > 0:
-                s += '<li> <a href="OC4-0' + self.extensaoPagina + '">Trabalho de conclusão de curso de graduação</a> '.decode(
-                    "utf8") + '(' + str(self.nOC4) + ')'
+                s += '<li> <a href="OC4-0' + self.extensaoPagina + '">Trabalho de conclusão de curso de graduação</a> ' + '(' + str(self.nOC4) + ')'
             if self.nOC5 > 0:
-                s += '<li> <a href="OC5-0' + self.extensaoPagina + '">Iniciação científica</a> '.decode(
-                    "utf8") + '(' + str(self.nOC5) + ')'
+                s += '<li> <a href="OC5-0' + self.extensaoPagina + '">Iniciação científica</a> ' + '(' + str(self.nOC5) + ')'
             if self.nOC6 > 0:
-                s += '<li> <a href="OC6-0' + self.extensaoPagina + '">Orientações de outra natureza</a> '.decode(
-                    "utf8") + '(' + str(self.nOC6) + ')'
+                s += '<li> <a href="OC6-0' + self.extensaoPagina + '">Orientações de outra natureza</a> ' + '(' + str(self.nOC6) + ')'
             if self.nOC > 0:
-                s += '<li> <a href="OC-0' + self.extensaoPagina + '">Total de orientações concluídas</a> '.decode(
-                    "utf8") + '(' + str(self.nOC) + ')'
+                s += '<li> <a href="OC-0' + self.extensaoPagina + '">Total de orientações concluídas</a> ' + '(' + str(self.nOC) + ')'
             else:
-                s += '<i>Nenhum item achado nos currículos Lattes</i>'.decode(
-                    "utf8")
+                s += '<i>Nenhum item achado nos currículos Lattes</i>'
             s += '</ul>'
 
         if self.grupo.obterParametro('relatorio-incluir_projeto'):
-            s += '</ul> <h3 id="projetos">Projetos de pesquisa</h3> <ul>'.decode(
-                "utf8")
+            s += '</ul> <h3 id="projetos">Projetos de pesquisa</h3> <ul>'
             if self.nPj > 0:
-                s += '<li> <a href="Pj-0' + self.extensaoPagina + '">Total de projetos de pesquisa</a> '.decode(
-                    "utf8") + '(' + str(self.nPj) + ')'
+                s += '<li> <a href="Pj-0' + self.extensaoPagina + '">Total de projetos de pesquisa</a> ' + '(' + str(self.nPj) + ')'
             else:
-                s += '<i>Nenhum item achado nos currículos Lattes</i>'.decode(
-                    "utf8")
+                s += '<i>Nenhum item achado nos currículos Lattes</i>'
             s += '</ul>'
 
         if self.grupo.obterParametro('relatorio-incluir_premio'):
-            s += '</ul> <h3 id="premios">Prêmios e títulos</h3> <ul>'.decode(
-                "utf8")
+            s += '</ul> <h3 id="premios">Prêmios e títulos</h3> <ul>'
             if self.nPm > 0:
-                s += '<li> <a href="Pm-0' + self.extensaoPagina + '">Total de prêmios e títulos</a> '.decode(
-                    "utf8") + '(' + str(self.nPm) + ')'
+                s += '<li> <a href="Pm-0' + self.extensaoPagina + '">Total de prêmios e títulos</a> ' + '(' + str(self.nPm) + ')'
             else:
-                s += '<i>Nenhum item achado nos currículos Lattes</i>'.decode(
-                    "utf8")
+                s += '<i>Nenhum item achado nos currículos Lattes</i>'
             s += '</ul>'
 
         if self.grupo.obterParametro('relatorio-incluir_participacao_em_evento'):
-            s += '</ul> <h3 id="eventos">Participação em eventos</h3> <ul>'.decode(
-                "utf8")
+            s += '</ul> <h3 id="eventos">Participação em eventos</h3> <ul>'
             if self.nEp > 0:
-                s += '<li> <a href="Ep-0' + self.extensaoPagina + '">Total de participação em eventos</a> '.decode(
-                    "utf8") + '(' + str(self.nEp) + ')'
+                s += '<li> <a href="Ep-0' + self.extensaoPagina + '">Total de participação em eventos</a> ' + '(' + str(self.nEp) + ')'
             else:
-                s += '<i>Nenhum item achado nos currículos Lattes</i>'.decode(
-                    "utf8")
+                s += '<i>Nenhum item achado nos currículos Lattes</i>'
             s += '</ul>'
 
         if self.grupo.obterParametro('relatorio-incluir_organizacao_de_evento'):
-            s += '</ul> <h3 id="eventos">Organização de eventos</h3> <ul>'.decode(
-                "utf8")
+            s += '</ul> <h3 id="eventos">Organização de eventos</h3> <ul>'
             if self.nEo > 0:
-                s += '<li> <a href="Eo-0' + self.extensaoPagina + '">Total de organização de eventos</a> '.decode(
-                    "utf8") + '(' + str(self.nEo) + ')'
+                s += '<li> <a href="Eo-0' + self.extensaoPagina + '">Total de organização de eventos</a> ' + '(' + str(self.nEo) + ')'
             else:
-                s += '<i>Nenhum item achado nos currículos Lattes</i>'.decode(
-                    "utf8")
+                s += '<i>Nenhum item achado nos currículos Lattes</i>'
             s += '</ul>'
 
         if self.grupo.obterParametro('grafo-mostrar_grafo_de_colaboracoes'):
-            s += '</ul> <h3 id="grafo">Grafo de colaborações</h3> <ul>'.decode(
-                "utf8")
+            s += '</ul> <h3 id="grafo">Grafo de colaborações</h3> <ul>'
             s += '<a href="grafoDeColaboracoes' + self.extensaoPagina + \
                 '"><img src="grafoDeColaboracoesSemPesos-t.png" border=1> </a>'
         s += '</ul>'
@@ -355,28 +297,21 @@ class GeradorDePaginasWeb:
             s += '<h3 id="mapa">Mapa de geolocaliza&ccedil;&atilde;o</h3> <br> <div id="map_canvas" style="width: 800px; height: 600px"></div> <br>'
             s += '<b>Legenda</b><table>'
             if self.grupo.obterParametro('mapa-incluir_membros_do_grupo'):
-                s += '<tr><td> <img src=lattesPoint0.png></td> <td> Membro (orientador) </td></tr>'.decode(
-                    "utf8")
+                s += '<tr><td> <img src=lattesPoint0.png></td> <td> Membro (orientador) </td></tr>'
             if self.grupo.obterParametro('mapa-incluir_alunos_de_pos_doutorado'):
-                s += '<tr><td> <img src=lattesPoint1.png></td> <td>  Pesquisador com pós-doutorado concluído e ID Lattes cadastrado no currículo do supervisor </td></tr>'.decode(
-                    "utf8")
+                s += '<tr><td> <img src=lattesPoint1.png></td> <td>  Pesquisador com pós-doutorado concluído e ID Lattes cadastrado no currículo do supervisor </td></tr>'
             if self.grupo.obterParametro('mapa-incluir_alunos_de_doutorado'):
-                s += '<tr><td> <img src=lattesPoint2.png></td> <td>  Aluno com doutorado concluído e ID Lattes cadastrado no currículo do orientador </td></tr>'.decode(
-                    "utf8")
+                s += '<tr><td> <img src=lattesPoint2.png></td> <td>  Aluno com doutorado concluído e ID Lattes cadastrado no currículo do orientador </td></tr>'
             if self.grupo.obterParametro('mapa-incluir_alunos_de_mestrado'):
-                s += '<tr><td> <img src=lattesPoint3.png></td> <td>  Aluno com mestrado e ID Lattes cadastrado no currículo do orientador </td></tr>'.decode(
-                    "utf8")
+                s += '<tr><td> <img src=lattesPoint3.png></td> <td>  Aluno com mestrado e ID Lattes cadastrado no currículo do orientador </td></tr>'
             s += '</table>'
 
         if self.grupo.obterParametro('relatorio-incluir_internacionalizacao'):
-            s += '</ul> <h3 id="internacionalizacao">Internacionalização</h3> <ul>'.decode(
-                "utf8")
+            s += '</ul> <h3 id="internacionalizacao">Internacionalização</h3> <ul>'
             if self.nIn0 > 0:
-                s += '<li> <a href="In0-0' + self.extensaoPagina + '">Coautoria e internacionalização</a> '.decode(
-                    "utf8") + '(' + str(self.nIn0) + ')'
+                s += '<li> <a href="In0-0' + self.extensaoPagina + '">Coautoria e internacionalização</a> ' + '(' + str(self.nIn0) + ')'
             else:
-                s += '<i>Nenhuma publicação com DOI disponível para análise</i>'.decode(
-                    "utf8")
+                s += '<i>Nenhuma publicação com DOI disponível para análise</i>'
             s += '</ul>'
 
         s += self.paginaBottom()
@@ -665,7 +600,7 @@ class GeradorDePaginasWeb:
             logger.debug("produções vazias")
         # elif len(estrato_area_ano_freq.keys()) == 1 and None in estrato_area_ano_freq.keys():  # gráfico normal sem qualis
         else:  # gráfico normal sem qualis
-            chart.settitle(titulo.decode('utf8'))
+            chart.settitle(titulo)
             chart['plotOptions']['column']['stacking'] = None
             chart['chart']['height'] = 300
             # chart['legend']['title'] = {'text': 'Ano'}
@@ -839,24 +774,17 @@ class GeradorDePaginasWeb:
 
                     if numeroDeItem % maxElementos == 0 or numeroDeItem == numeroTotalDeProducoes:
                         st = self.pagina_top(cabecalho=htmlCharts)
-                        st += '\n<h3>' + tituloPagina.decode(
-                            "utf8") + '</h3> <br> <center> <table> <tr> <td valign="top"><div id="barchart_div"></div> </td> <td valign="top"><div id="geochart_div"></div> </td> </tr> </table> </center>'
+                        st += '\n<h3>' + tituloPagina + '</h3> <br> <center> <table> <tr> <td valign="top"><div id="barchart_div"></div> </td> <td valign="top"><div id="geochart_div"></div> </td> </tr> </table> </center>'
                         st += '<table>'
-                        st += '<tr><td>Número total de publicações realizadas SEM parceria com estrangeiros:</td><td>'.decode(
-                            "utf8") + str(
-                            gInternacionalizacao.numeroDePublicacoesRealizadasSemParceirasComEstrangeiros()) + '</td><td><i>(publicações realizadas só por pesquisadores brasileiros)</i></td></tr>'.decode(
-                            "utf8")
-                        st += '<tr><td>Número total de publicações realizadas COM parceria com estrangeiros:</td><td>'.decode(
-                            "utf8") + str(
+                        st += '<tr><td>Número total de publicações realizadas SEM parceria com estrangeiros:</td><td>' + str(
+                            gInternacionalizacao.numeroDePublicacoesRealizadasSemParceirasComEstrangeiros()) + '</td><td><i>(publicações realizadas só por pesquisadores brasileiros)</i></td></tr>'
+                        st += '<tr><td>Número total de publicações realizadas COM parceria com estrangeiros:</td><td>' + str(
                             gInternacionalizacao.numeroDePublicacoesRealizadasComParceirasComEstrangeiros()) + '</td><td></td></tr>'
-                        st += '<tr><td>Número total de publicações com parcerias NÂO identificadas:</td><td>'.decode(
-                            "utf8") + str(
+                        st += '<tr><td>Número total de publicações com parcerias NÂO identificadas:</td><td>' + str(
                             gInternacionalizacao.numeroDePublicacoesComParceriasNaoIdentificadas()) + '</td><td></td></tr>'
-                        st += '<tr><td>Número total de publicações com DOI cadastrado:</td><td><b>'.decode(
-                            "utf8") + str(numeroTotalDeProducoes) + '</b></td><td></td></tr>'
+                        st += '<tr><td>Número total de publicações com DOI cadastrado:</td><td><b>' + str(numeroTotalDeProducoes) + '</b></td><td></td></tr>'
                         st += '</table>'
-                        st += '<br> <font color="red">(*) A estimativa de "coautoria e internacionalização" é baseada na análise automática dos DOIs das publicações cadastradas nos CVs Lattes. A identificação de países, para cada publicação, é feita através de buscas simples de nomes de países.</font><br><p>'.decode(
-                            "utf8")
+                        st += '<br> <font color="red">(*) A estimativa de "coautoria e internacionalização" é baseada na análise automática dos DOIs das publicações cadastradas nos CVs Lattes. A identificação de países, para cada publicação, é feita através de buscas simples de nomes de países.</font><br><p>'
 
                         st += self.gerarIndiceDePaginas(
                             numeroDePaginas, numeroDePaginaAtual, prefixo)
@@ -880,24 +808,19 @@ class GeradorDePaginasWeb:
     def gerarPaginaDeGrafosDeColaboracoes(self):
         lista = ''
         if self.grupo.obterParametro('grafo-incluir_artigo_em_periodico'):
-            lista += 'Artigos completos publicados em periódicos, '.decode(
-                "utf8")
+            lista += 'Artigos completos publicados em periódicos, '
         if self.grupo.obterParametro('grafo-incluir_livro_publicado'):
-            lista += 'Livros publicados/organizados ou edições, '.decode(
-                "utf8")
+            lista += 'Livros publicados/organizados ou edições, '
         if self.grupo.obterParametro('grafo-incluir_capitulo_de_livro_publicado'):
             lista += 'Capítulos de livros publicados, '
         if self.grupo.obterParametro('grafo-incluir_texto_em_jornal_de_noticia'):
             lista += 'Textos em jornais de notícias/revistas, '
         if self.grupo.obterParametro('grafo-incluir_trabalho_completo_em_congresso'):
-            lista += 'Trabalhos completos publicados em anais de congressos, '.decode(
-                "utf8")
+            lista += 'Trabalhos completos publicados em anais de congressos, '
         if self.grupo.obterParametro('grafo-incluir_resumo_expandido_em_congresso'):
-            lista += 'Resumos expandidos publicados em anais de congressos, '.decode(
-                "utf8")
+            lista += 'Resumos expandidos publicados em anais de congressos, '
         if self.grupo.obterParametro('grafo-incluir_resumo_em_congresso'):
-            lista += 'Resumos publicados em anais de congressos, '.decode(
-                "utf8")
+            lista += 'Resumos publicados em anais de congressos, '
         if self.grupo.obterParametro('grafo-incluir_artigo_aceito_para_publicacao'):
             lista += 'Artigos aceitos para publicação, '
         if self.grupo.obterParametro('grafo-incluir_apresentacao_de_trabalho'):
@@ -910,21 +833,19 @@ class GeradorDePaginasWeb:
         s = self.pagina_top()
         s += '\n<h3>Grafo de colabora&ccedil;&otilde;es</h3> \
         <a href=membros' + self.extensaoPagina + '>' + str(self.grupo.numeroDeMembros()) + ' curriculos Lattes</a> foram considerados, \
-        gerando os seguintes grafos de colabora&ccedil;&otilde;es encontradas com base nas produ&ccedil;&otilde;es: <i>' + lista + '</i>. <br><p>'.decode(
-            "utf8")
+        gerando os seguintes grafos de colabora&ccedil;&otilde;es encontradas com base nas produ&ccedil;&otilde;es: <i>' + lista + '</i>. <br><p>'
 
         prefix = self.grupo.obterParametro('global-prefixo') + '-' if not self.grupo.obterParametro(
             'global-prefixo') == '' else ''
         # s+='Veja <a href="grafoDeColaboracoesInterativo'+self.extensaoPagina+'?entradaScriptLattes=./'+prefix+'matrizDeAdjacencia.xml">na seguinte página</a> uma versão interativa do grafo de colabora&ccedil;&otilde;es.<br><p><br><p>'
 
         s += '\nClique no nome dentro do vértice para visualizar o currículo Lattes. Para cada nó: o valor entre colchetes indica o número \
-        de produ&ccedil;&otilde;es feitas em colabora&ccedil;&atilde;o apenas com os outros membros do próprio grupo. <br>'.decode(
-            "utf8")
+        de produ&ccedil;&otilde;es feitas em colabora&ccedil;&atilde;o apenas com os outros membros do próprio grupo. <br>'
 
         if self.grupo.obterParametro('grafo-considerar_rotulos_dos_membros_do_grupo'):
             s += 'As cores representam os seguintes rótulos: '
             for i in range(0, len(self.grupo.listaDeRotulos)):
-                rot = self.grupo.listaDeRotulos[i].decode("utf8", "ignore")
+                rot = self.grupo.listaDeRotulos[i]
                 cor = self.grupo.listaDeRotulosCores[i]
                 if rot == '':
                     rot = '[Sem rótulo]'
@@ -969,7 +890,7 @@ class GeradorDePaginasWeb:
                 for i in range(0, len(self.grupo.listaDeRotulos)):
                     somaAuthorRank = 0
 
-                    rot = self.grupo.listaDeRotulos[i].decode("utf8", "ignore")
+                    rot = self.grupo.listaDeRotulos[i]
                     cor = self.grupo.listaDeRotulosCores[i]
                     s += '<b><span style="background-color:' + cor + \
                         '">&nbsp;&nbsp;&nbsp;&nbsp;</span>' + rot + '</b><br>'
@@ -1119,7 +1040,6 @@ class GeradorDePaginasWeb:
             elemento += 1
             bolsa = membro.bolsaProdutividade if membro.bolsaProdutividade else ''
             rotulo = membro.rotulo if not membro.rotulo == '[Sem rotulo]' else ''
-            rotulo = rotulo.decode('iso-8859-1', 'replace')
             nomeCompleto = unicodedata.normalize(
                 'NFKD', membro.nomeCompleto).encode('ASCII', 'ignore').decode()
 
@@ -1129,11 +1049,11 @@ class GeradorDePaginasWeb:
             # print membro.nomeCompleto
             # print type(membro.nomeCompleto)
             # print " "
-            #nomeCompleto = membro.nomeCompleto.decode('utf8','replace')
+            #nomeCompleto = membro.nomeCompleto
             # print nomeCompleto
             # print type(nomeCompleto)
             # print " --------------------------------------------"
-            #nomeCompleto = membro.nomeCompleto.decode('iso-8859-1','replace')
+            #nomeCompleto = membro.nomeCompleto
 
             # html_qualis = self.producao_qualis(elemento, membro)
             # <td valign="center" height="40px">' + str(elemento) + '.</td> \
@@ -1206,7 +1126,6 @@ class GeradorDePaginasWeb:
     def gerar_pagina_individual_de_membro(self, membro):
         bolsa = membro.bolsaProdutividade if membro.bolsaProdutividade else ''
         rotulo = membro.rotulo if not membro.rotulo == '[Sem rotulo]' else ''
-        rotulo = rotulo.decode('iso-8859-1', 'replace')
         nomeCompleto = unicodedata.normalize(
             'NFKD', membro.nomeCompleto).encode('ASCII', 'ignore').decode()
 

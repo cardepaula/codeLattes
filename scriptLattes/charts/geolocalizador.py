@@ -94,7 +94,7 @@ class Geolocalizador:
             (self.lat, self.lon) = self.dicionarioDeGeolocalizacao[chave]
         else:
             query = "http://maps.googleapis.com/maps/api/geocode/xml?address=" + \
-                chave.encode('utf8')+"&sensor=false"
+                chave+"&sensor=false"
             req = urllib.request.Request(query)
             res = urllib.request.urlopen(req).read()
             res = res.replace("\r", "")
