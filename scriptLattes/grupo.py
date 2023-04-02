@@ -197,7 +197,7 @@ class Grupo:
         s = ''
         for membro in self.listaDeMembros:
             nomeCompleto = unicodedata.normalize(
-                'NFKD', membro.nomeCompleto).encode('ASCII', 'ignore')
+                'NFKD', membro.nomeCompleto).encode('ASCII', 'ignore').decode()
             s += self.imprimeCSVListaIndividual(nomeCompleto,
                                                 membro.listaArtigoEmPeriodico)
             s += self.imprimeCSVListaIndividual(nomeCompleto,
@@ -314,7 +314,7 @@ class Grupo:
         i = 0
         for membro in self.listaDeMembros:
             nomeCompleto = unicodedata.normalize(
-                'NFKD', membro.nomeCompleto).encode('ASCII', 'ignore')
+                'NFKD', membro.nomeCompleto).encode('ASCII', 'ignore').decode()
             string += "\n" + str(
                 i) + "," + membro.idLattes + "," + nomeCompleto + "," + membro.rotulo + "," + membro.enderecoProfissionalLat + "," + membro.enderecoProfissionalLon + ","
             string += str(self.vectorRank[i]) + ","

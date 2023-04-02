@@ -356,7 +356,7 @@ class AnalisadorDePublicacoes:
         nomeDePais = nomeDePais.lower()
         nomeDePais = HTMLParser().unescape(nomeDePais.decode("utf8", "ignore"))
         nomeDePais = unicodedata.normalize(
-            'NFKD', str(nomeDePais)).encode('ascii', 'ignore')
+            'NFKD', str(nomeDePais)).encode('ASCII', 'ignore').decode()
         if len(nomeDePais) <= 0:
             return False
         if len(dataDoi) == 2:
@@ -430,7 +430,7 @@ class AnalisadorDePublicacoes:
                     # rawDOIhtml = HTMLParser.HTMLParser().unescape(rawDOIhtml.decode("utf8", "ignore"))
                     rawDOIhtml = HTMLParser().unescape(rawDOIhtml.decode("utf8", "ignore"))
                     rawDOIhtml = unicodedata.normalize(
-                        'NFKD', str(rawDOIhtml)).encode('ascii', 'ignore')
+                        'NFKD', str(rawDOIhtml)).encode('ASCII', 'ignore').decode()
 
                     if not self.grupo.diretorioDoi == '':
                         print(("- Armazenando DOI armazenado no cache: " + doiPath))

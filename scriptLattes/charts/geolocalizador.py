@@ -88,7 +88,7 @@ class Geolocalizador:
         cep = self.corrigirCEP(cep)
         chave = '{} {} {} {}'.format(pais, uf, cidade, cep)
         chave = re.sub('\s+', '+', chave)
-        chave = unicodedata.normalize('NFKD', chave).encode('ASCII', 'ignore')
+        chave = unicodedata.normalize('NFKD', chave).encode('ASCII', 'ignore').decode()
 
         if chave in self.dicionarioDeGeolocalizacao:
             (self.lat, self.lon) = self.dicionarioDeGeolocalizacao[chave]

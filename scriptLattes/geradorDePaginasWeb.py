@@ -1121,7 +1121,7 @@ class GeradorDePaginasWeb:
             rotulo = membro.rotulo if not membro.rotulo == '[Sem rotulo]' else ''
             rotulo = rotulo.decode('iso-8859-1', 'replace')
             nomeCompleto = unicodedata.normalize(
-                'NFKD', membro.nomeCompleto).encode('ASCII', 'ignore')
+                'NFKD', membro.nomeCompleto).encode('ASCII', 'ignore').decode()
 
             self.gerar_pagina_individual_de_membro(membro)
 
@@ -1208,7 +1208,7 @@ class GeradorDePaginasWeb:
         rotulo = membro.rotulo if not membro.rotulo == '[Sem rotulo]' else ''
         rotulo = rotulo.decode('iso-8859-1', 'replace')
         nomeCompleto = unicodedata.normalize(
-            'NFKD', membro.nomeCompleto).encode('ASCII', 'ignore')
+            'NFKD', membro.nomeCompleto).encode('ASCII', 'ignore').decode()
 
         s = self.pagina_top()
         s += '\n<h3>{0}</h3>\
@@ -1547,7 +1547,7 @@ class GeradorDePaginasWeb:
 
         for m in lista_de_membros:
             nome_membro = unicodedata.normalize(
-                'NFKD', m.nomeCompleto).encode('ASCII', 'ignore')
+                'NFKD', m.nomeCompleto).encode('ASCII', 'ignore').decode()
             df = pandas.DataFrame(
                 {'membro': [nome_membro] * len(m.tabela_qualis)}, index=m.tabela_qualis.index)
             producao_por_membro = producao_por_membro.append(
