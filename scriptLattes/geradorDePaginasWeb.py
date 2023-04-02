@@ -1707,7 +1707,7 @@ class GeradorDePaginasWeb:
         file.close()
 
     def salvarPublicacaoEmFormatoRIS(self, pub):
-        self.arquivoRis.write(pub.ris().encode('utf8'))
+        self.arquivoRis.write(pub.ris())
 
     def formatarTotaisQualis(self, qtd):
         st = '(<b>A1</b>: '+str(qtd['A1'])+', <b>A2</b>: '+str(qtd['A2']) + \
