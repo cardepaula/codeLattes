@@ -844,5 +844,5 @@ class GeradorDeXML:
         prefix = self.grupo.obterParametro('global-prefixo') + '-' if not self.grupo.obterParametro(
             'global-prefixo') == '' else ''
         file = open(self.dir + "/" + prefix + nome, 'w')
-        file.write(conteudo.encode('utf8'))
+        file.write(conteudo)
         file.close()

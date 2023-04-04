@@ -204,8 +204,7 @@ class Grupo:
                                                 membro.listaTrabalhoCompletoEmCongresso)
             s += self.imprimeCSVListaIndividual(nomeCompleto,
                                                 membro.listaResumoExpandidoEmCongresso)
-        self.salvarArquivoGenerico(
-            s.encode('utf8'), prefix + 'publicacoesPorMembro.csv')
+        self.salvarArquivoGenerico(s, prefix + 'publicacoesPorMembro.csv')
 
         # Salvamos a lista total (publicações do grupo)
         s = ''
@@ -215,8 +214,7 @@ class Grupo:
             self.compilador.listaCompletaTrabalhoCompletoEmCongresso)
         s += self.imprimeCSVListaGrupal(
             self.compilador.listaCompletaResumoExpandidoEmCongresso)
-        self.salvarArquivoGenerico(
-            s.encode('utf8'), prefix + 'publicacoesDoGrupo.csv')
+        self.salvarArquivoGenerico(s, prefix + 'publicacoesDoGrupo.csv')
 
     def gerarArquivosTemporarios(self):
         print("\n[CRIANDO ARQUIVOS TEMPORARIOS: CSV, RIS, TXT, GDF]")
@@ -273,7 +271,7 @@ class Grupo:
         t = []
         entrada = buscarArquivo(
             self.obterParametro('global-arquivo_de_entrada'))
-        for linha in fileinput.input(entrada.decode('utf8')):
+        for linha in fileinput.input(entrada):
             linha = linha.replace("\r", "")
             linha = linha.replace("\n", "")
             t.append(linha)
@@ -380,7 +378,7 @@ class Grupo:
             'global-prefixo') + '-' if not self.obterParametro('global-prefixo') == '' else ''
         s = ""
         for membro in self.listaDeMembros:
-            s += membro.ris().encode('utf8') + "\n"
+            s += membro.ris() + "\n"
         self.salvarArquivoGenerico(s, prefix + 'membros.ris')
 
     def salvarArquivoGenerico(self, conteudo, nomeArquivo):
@@ -459,7 +457,7 @@ class Grupo:
         for i in range(0, len(lista)):
             elemento = lista[i]
             if type(elemento) == type(str()):
-                elemento = elemento.encode("utf8")
+                elemento = elemento
             else:
                 elemento = str(elemento)
             arquivo.write(elemento + '\n')
@@ -517,7 +515,7 @@ class Grupo:
         s += '\n</graph>\
             \n</graphml>'
 
-        arquivo.write(s.encode('utf8'))
+        arquivo.write(s)
         arquivo.close()
 
     def salvarVetorDeProducoes(self, vetor, nomeArquivo):
