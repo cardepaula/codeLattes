@@ -171,10 +171,14 @@ def criarDiretorio(dir):
     return 1
 
 # Combining Dictionaries Of Lists
-
-
 def merge_dols(dol1, dol2):
-    result = dict(dol1, **dol2)
-    result.update((k, dol1[k] + dol2[k])
-                  for k in set(dol1).intersection(dol2))
+    result = {}
+    if len(dol1) > 0 and len(dol2) > 0:
+        result = dol1 | dol2
+        result.update((k, dol1[k] + dol2[k])
+                         for k in set(dol1).intersection(dol2))
+    elif len(dol1) > 0:
+        result = dol1
+    elif len(dol2) > 0:
+        result = dol2
     return result
