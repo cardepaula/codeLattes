@@ -185,7 +185,6 @@ class ParserLattesXML(HTMLParser):
         self.foto = ''
 
         # feed it!
-        # print cvLattesXML #.encode("utf8")
         self.feed(cvLattesXML)
 
     # ------------------------------------------------------------------------ #

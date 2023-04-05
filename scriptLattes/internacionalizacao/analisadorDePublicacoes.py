@@ -371,8 +371,6 @@ class AnalisadorDePublicacoes:
             idDoi = dataDoi[1][0]
             if re.search((prefixo, '')[prefixo is None] + re.escape(nomeDePais) + (posfixo, '')[posfixo is None],
                          doihtml):
-                # print "generic case"
-                # print idDoi+" "+(prefixo,'')[prefixo is None] +" "+(posfixo,'')[posfixo is None]
                 return True
             else:
                 return False
@@ -501,7 +499,6 @@ class AnalisadorDePublicacoes:
                 except:
                     caso.data = ""
                 doihtml = str(caso.data)
-                # print doihtml
                 parserData = ["10.1590", '', '', '',
                               ',.*,\s*', '[\s*|,|;|-|\.|\'|\"]']
                 dataDoi.append(doihtml)

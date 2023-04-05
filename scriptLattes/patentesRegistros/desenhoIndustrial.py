@@ -73,8 +73,6 @@ class DesenhoIndustrial:
 
         self.chave = self.autores  # chave de comparação entre os objetos
 
-        # print self.__str__()
-
     def compararCom(self, objeto):
         if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(self.titulo, objeto.titulo):
             # Os IDs dos membros são agrupados.

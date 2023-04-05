@@ -305,8 +305,6 @@ class ParserLattes(HTMLParser):
         # feed it!
         cvLattesHTML, errors = tidy_document(
             cvLattesHTML, options={'numeric-entities': 1})
-        # print errors
-        # print cvLattesHTML.encode("utf8")
 
         # tentativa errada (não previsível)
         # options = dict(output_xhtml=1, add_xml_decl=1, indent=1, tidy_mark=0)
@@ -835,7 +833,6 @@ class ParserLattes(HTMLParser):
                 self.achouOrientacoes = 1
             if 'Patentes e registros' == dado:
                 self.achouPatenteRegistro = 1
-                # print "0==>>>>ACHOU PATENTE e REGISTRO"
             if 'Outras informações relevantes' == dado:
                 self.achouOutrasInformacoesRelevantes = 1
             self.umaUnidade = 0
@@ -855,13 +852,11 @@ class ParserLattes(HTMLParser):
                 self.achouPatente = 1
                 self.achouProgramaComputador = 0
                 self.achouDesenhoIndustrial = 0
-                # print "1==>>>>ACHOU PATENTE e REGISTRO"
             if 'Programa de computador' == dado:
                 self.salvarItem = 1
                 self.achouPatente = 0
                 self.achouProgramaComputador = 1
                 self.achouDesenhoIndustrial = 0
-                # print "2==>>>>ACHOU PATENTE e REGISTRO"
             if 'Desenho industrial' == dado:
                 self.salvarItem = 1
                 self.achouPatente = 0

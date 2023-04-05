@@ -183,8 +183,7 @@ class TrabalhoCompletoEmCongresso:
 
         s += menuHTMLdeBuscaPB(self.titulo)
         # TODO: a lógica para qualis de conferencias é outra (provavelmente precisará recair na lógica antiga do scriptLattes, ou seja, exigir um CSV)
-        #print (type(self.qualis)), type(self.qualissimilar)
-        # print "#########################################################################"
+
         s += formata_qualis(self.qualis, self.qualissimilar)
         return s
 

@@ -169,10 +169,6 @@ class MapaDeGeolocalizacao:
   } \n\
 </script>\n'
 
-        # print "--------------------------------------------------------------------"
-        # print self.mapa.encode('utf8','replace')
-        # print "--------------------------------------------------------------------"
-
         self.mapa = re.sub("\'", '', self.mapa)
         print("\n[MAPA DE GEOLOCALIZACAO CRIADO]")
 

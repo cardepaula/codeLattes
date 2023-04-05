@@ -80,11 +80,6 @@ class Geolocalizador:
             if len(aux) > 0:
                 (cidade, pais) = aux[0]
 
-        # print "  .Pais   = "+pais.encode('utf8')
-        # print "  .UF     = "+uf
-        # print "  .Cidade = "+cidade.encode('utf8')
-        # print "  .CEP    = "+cep
-
         cep = self.corrigirCEP(cep)
         chave = '{} {} {} {}'.format(pais, uf, cidade, cep)
         chave = re.sub('\s+', '+', chave)

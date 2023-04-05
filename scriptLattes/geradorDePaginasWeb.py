@@ -1045,16 +1045,6 @@ class GeradorDePaginasWeb:
 
             self.gerar_pagina_individual_de_membro(membro)
 
-            # print " --------------------------------------------"
-            # print membro.nomeCompleto
-            # print type(membro.nomeCompleto)
-            # print " "
-            #nomeCompleto = membro.nomeCompleto
-            # print nomeCompleto
-            # print type(nomeCompleto)
-            # print " --------------------------------------------"
-            #nomeCompleto = membro.nomeCompleto
-
             # html_qualis = self.producao_qualis(elemento, membro)
             # <td valign="center" height="40px">' + str(elemento) + '.</td> \
             # <td valign="top" height="40px"><img src="' + membro.foto + '" width="40px"></td> \

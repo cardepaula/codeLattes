@@ -75,11 +75,9 @@ class Qualis:
         # Percorrer lista de periodicos tentando casar com nome usando funcao similaridade_entre_cadeias(str1, str2) de scriptLattes.py
         if tipo == 'P':
             if self.periodicos.get(sigla) != None:
-                # print "CASOU ISSN: ", nome, sigla
                 # Retorna Qualis do issn/sigla exato encontrado - Casamento perfeito
                 return self.periodicos.get(sigla), ''
             elif self.periodicos.get(nome) != None:
-                # print "CASOU NOME: ", nome, sigla
                 # Retorna Qualis do nome exato encontrado - Casamento perfeito
                 return self.periodicos.get(nome), ''
             else:

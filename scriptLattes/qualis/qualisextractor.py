@@ -443,7 +443,6 @@ class QualisExtractor(object):
         # /html/body/div[3]/div[4]/form/table/tbody/tr[2]/td/table/tbody/tr/td/div[2]/div/div/table/tbody/tr/td[11]
         last_bts = tree.xpath(
             "//table[@id='consultaPublicaClassificacaoForm:datascroller1_table']/tbody/tr/td")
-        # print etree.tostring(last_bts)
         # se encontrar um botao com onclick='page:last', entao ainda tem paginas
         if len(last_bts) > 0:
             onclick = last_bts[-1].get("onclick")

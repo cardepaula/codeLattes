@@ -361,8 +361,6 @@ class CompiladorDeListas:
             for pub in listaCompleta[ano]:
                 if self.procuraNomeEmPublicacao(membro.nomeInicial, pub.autores):
                     pub.idMembro.add(membro.idMembro)
-                    # print ">>>" + membro.nomeInicial
-                    # print ">>>" + pub.autores
 
     def procuraNomeEmPublicacao(self, nomesAbreviados, nomesDosCoautores):
         nomesAbreviados = nomesAbreviados.lower()
@@ -400,8 +398,6 @@ class CompiladorDeListas:
                         print("\n[AVISO] PRODUÇÕES SIMILARES", end=' ')
                         print(pub, end=' ')
                         print(listaCompleta[pub.ano][i])
-                        # print "Membro " + str(pub.idMembro) + ": " + pub.titulo.encode('utf8')
-                        # print "Membro " + str(listaCompleta[pub.ano][i].idMembro) + ": " + listaCompleta[pub.ano][i].titulo.encode('utf8')
 
                         listaCompleta[pub.ano][i] = item
                         inserir = 0
