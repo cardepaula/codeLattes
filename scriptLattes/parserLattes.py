@@ -329,10 +329,10 @@ class ParserLattes(HTMLParser):
         issn = issn[:8]
         self.issn = issn[0:4]+'-'+issn[4:8]
 
-    def handle_starttag(self, tag, attributes):
+    def handle_starttag(self, tag, attrs):
 
         if tag == 'h2':
-            for name, value in attributes:
+            for name, value in attrs:
                 if name == 'class' and value == 'nome':
                     self.salvarNome = 1
                     self.item = ''
@@ -342,7 +342,7 @@ class ParserLattes(HTMLParser):
             self.recuperarIdentificador16 = 1
 
         if tag == 'p':
-            for name, value in attributes:
+            for name, value in attrs:
                 if name == 'class' and value == 'resumo':
                     self.salvarTextoResumo = 1
                     self.item = ''
@@ -360,16 +360,16 @@ class ParserLattes(HTMLParser):
         if tag == 'div':
             self.citado = 0
 
-            for name, value in attributes:
+            for name, value in attrs:
                 if name == 'cvuri':
                     self.parse_issn(value)
 
-            for name, value in attributes:
+            for name, value in attrs:
                 if name == 'class' and value == 'title-wrapper':
                     self.umaUnidade = 1
                     break
 
-            for name, value in attributes:
+            for name, value in attrs:
                 if name == 'class' and value == 'layout-cell-pad-5':
                     if self.achouNomeEmCitacoes:
                         self.salvarNomeEmCitacoes = 1
@@ -429,19 +429,19 @@ class ParserLattes(HTMLParser):
 
         if tag == 'img':
             if self.salvarFoto:
-                for name, value in attributes:
+                for name, value in attrs:
                     if name == 'src' and 'servletrecuperafoto' in value:
                         self.foto = value
                         self.salvarFoto = 0
                         break
 
             if self.salvarItem:
-                for name, value in attributes:
+                for name, value in attrs:
                     if name == 'src' and 'ico_relevante' in value:
                         self.relevante = 1
                         break
 
-                """for name,value in attributes:
+                """for name,value in attrs:
                     if name=='data-issn':
                         if len(value) == 8:
                             self.issn = value[0:4]+'-'+value[4:8]
@@ -453,13 +453,13 @@ class ParserLattes(HTMLParser):
 
         if tag == 'span':
             if self.achouProducaoEmCTA:
-                for name, value in attributes:
+                for name, value in attrs:
                     if name == 'class' and value == 'informacao-artigo':
                         self.spanInformacaoArtigo = 1
 
         if tag == 'a':
             if self.salvarItem:  # and self.achouArtigoEmPeriodico:
-                for name, value in attributes:
+                for name, value in attrs:
                     if name == 'href' and 'doi' in value:
                         self.doi = value
                         break
