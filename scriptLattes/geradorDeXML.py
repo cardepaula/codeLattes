@@ -761,7 +761,7 @@ class GeradorDeXML:
         xmlTemp += '      <identificador10>' + \
             registro.identificador10 + '</identificador10>\n'
         xmlTemp += '      <nome_inicial>' + \
-            registro.nomeInicial.decode('utf8', 'ignore') + '</nome_inicial>\n'
+            registro.nomeInicial + '</nome_inicial>\n'
         xmlTemp += '      <nome_completo>' + registro.nomeCompleto + '</nome_completo>\n'
         xmlTemp += '      <nome_citacao_bibliografica>' + \
             registro.nomeEmCitacoesBibliograficas + '</nome_citacao_bibliografica>\n'
