@@ -96,7 +96,7 @@ class Geolocalizador:
             query = "http://maps.googleapis.com/maps/api/geocode/xml?address=" + \
                 chave+"&sensor=false"
             req = urllib.request.Request(query)
-            res = urllib.request.urlopen(req).read()
+            res = urllib.request.urlopen(req).read().decode()
             res = res.replace("\r", "")
             res = res.replace("\n", "")
             res = re.findall(r'<location>(.+?)</location>', res)
