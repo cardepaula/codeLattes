@@ -115,7 +115,7 @@ class MapaDeGeolocalizacao:
                                     aluno, self.grupo.listaDeMembros)+'","'+membro.url+'","'+membro.foto+'");'
                         cvsProcessados.add(idOrientando)
                         print(("-Processando o CV do ex-posdoc: " +
-                              idOrientando+" "+nomeCompleto.encode('utf8')))
+                              idOrientando+" "+nomeCompleto))
 
         if self.grupo.obterParametro('mapa-incluir_alunos_de_doutorado'):
             keys = list(
@@ -139,7 +139,7 @@ class MapaDeGeolocalizacao:
                                     aluno, self.grupo.listaDeMembros)+'","'+membro.url+'","'+membro.foto+'");'
                         cvsProcessados.add(idOrientando)
                         print(("-Processando o CV do ex-aluno de doutorado: " +
-                              idOrientando+" "+nomeCompleto.encode('utf8')))
+                              idOrientando+" "+nomeCompleto))
 
         if self.grupo.obterParametro('mapa-incluir_alunos_de_mestrado'):
             keys = list(
@@ -163,7 +163,7 @@ class MapaDeGeolocalizacao:
                                     aluno, self.grupo.listaDeMembros)+'","'+membro.url+'","'+membro.foto+'");'
                         cvsProcessados.add(idOrientando)
                         print(("-Processando o CV do ex-aluno de mestrado: " +
-                              idOrientando+" "+nomeCompleto.encode('utf8')))
+                              idOrientando+" "+nomeCompleto))
 
         self.mapa += '\
   } \n\

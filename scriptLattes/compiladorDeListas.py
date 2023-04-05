@@ -838,8 +838,8 @@ class CompiladorDeListas:
 
             for pub in listaCompleta[k]:
                 print("--- " + str(pub.idMembro))
-                print("--- " + pub.autores.encode('utf8'))
-                print("--- " + pub.titulo.encode('utf8') + "\n")
+                print("--- " + pub.autores)
+                print("--- " + pub.titulo + "\n")
 
     def imprimirListaOrientacoes(self, listaCompleta):
         print("---------------------------------------------------------------------------")
@@ -851,8 +851,8 @@ class CompiladorDeListas:
 
             for pub in listaCompleta[k]:
                 print("--- " + str(pub.idMembro))
-                print("--- " + pub.nome.encode('utf8'))
-                print("--- " + pub.tituloDoTrabalho.encode('utf8') + "\n")
+                print("--- " + pub.nome)
+                print("--- " + pub.tituloDoTrabalho + "\n")
 
     def imprimirListaProjetos(self, listaCompleta):
         print("---------------------------------------------------------------------------")
@@ -864,8 +864,8 @@ class CompiladorDeListas:
 
             for pub in listaCompleta[k]:
                 print("--- " + str(pub.idMembro))
-                print("--- " + pub.nome.encode('utf8'))
-                print("--- " + pub.cargo.encode('utf8') + "\n")
+                print("--- " + pub.nome)
+                print("--- " + pub.cargo + "\n")
 
     def imprimirListaPremios(self, listaCompleta):
         print("---------------------------------------------------------------------------")
@@ -877,4 +877,4 @@ class CompiladorDeListas:
 
             for pub in listaCompleta[k]:
                 print("--- " + str(pub.idMembro))
-                print("--- " + pub.descricao.encode('utf8') + "\n")
+                print("--- " + pub.descricao + "\n")

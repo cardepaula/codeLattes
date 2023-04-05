@@ -71,8 +71,7 @@ class GraficoDeBarras:
             rects = plt.bar(ind, vetorDeQuantidades,
                             color='#006600', edgecolor='#006600')
 
-            plt.ylabel(self.titulo.encode('utf8'), fontsize=10,
-                       color='#000099')  # , family='sans-serif')
+            plt.ylabel(self.titulo, fontsize=10, color='#000099')  # , family='sans-serif')
             plt.yticks([])
 
             plt.xticks(ind+2*bar_width, vetorDeAnos, rotation=90,

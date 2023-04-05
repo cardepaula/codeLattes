@@ -183,8 +183,7 @@ class Membro:
                 else:
                     print((
                         "\n[AVISO IMPORTANTE] Periodo nao válido: {}. (periodo desconsiderado na lista)".format(periodo)))
-                    print(("[AVISO IMPORTANTE] CV Lattes: {}. Membro: {}\n".format(self.idLattes,
-                                                                                   self.nomeInicial.encode('utf8'))))
+                    print(("[AVISO IMPORTANTE] CV Lattes: {}. Membro: {}\n".format(self.idLattes, self.nomeInicial)))
 
     def carregarDadosCVLattes(self):
         cvPath = self.diretorioCache + '/' + self.idLattes

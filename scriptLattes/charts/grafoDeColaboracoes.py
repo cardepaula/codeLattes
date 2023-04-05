@@ -105,7 +105,7 @@ class GrafoDeColaboracoes:
                     grafo.add_node(membro.idMembro, label=nome, fontcolor=membro.rotuloCorFG,
                                    color=membro.rotuloCorBG, height="0.2", URL="membro-" + membro.idLattes + ".html")
                 except:
-                    grafo.add_node(membro.idMembro, label=nome.encode('utf8'), fontcolor=membro.rotuloCorFG,
+                    grafo.add_node(membro.idMembro, label=nome, fontcolor=membro.rotuloCorFG,
                                    color=membro.rotuloCorBG, height="0.2", URL="membro-" + membro.idLattes + ".html")
 
         # Inserimos as arestas
@@ -136,7 +136,7 @@ class GrafoDeColaboracoes:
                     grafo.add_node(membro.idMembro, label=nome, fontcolor=membro.rotuloCorFG,
                                    color=membro.rotuloCorBG, height="0.2", URL="membro-" + membro.idLattes + ".html")
                 except:
-                    grafo.add_node(membro.idMembro, label=nome.encode('utf8'), fontcolor=membro.rotuloCorFG,
+                    grafo.add_node(membro.idMembro, label=nome, fontcolor=membro.rotuloCorFG,
                                    color=membro.rotuloCorBG, height="0.2", URL="membro-" + membro.idLattes + ".html")
 
         # Inserimos as arestas
@@ -168,7 +168,7 @@ class GrafoDeColaboracoes:
                     grafo.add_node(membro.idMembro, label=nome, fontcolor=membro.rotuloCorFG,
                                    color=membro.rotuloCorBG, height="0.2", URL="membro-" + membro.idLattes + ".html")
                 except:
-                    grafo.add_node(membro.idMembro, label=nome.encode('utf8'), fontcolor=membro.rotuloCorFG,
+                    grafo.add_node(membro.idMembro, label=nome, fontcolor=membro.rotuloCorFG,
                                    color=membro.rotuloCorBG, height="0.2", URL="membro-" + membro.idLattes + ".html")
 
         # Inserimos as arestas

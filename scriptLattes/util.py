@@ -164,8 +164,7 @@ def criarDiretorio(dir):
             os.makedirs(dir)
         # except OSError as exc:
         except:
-            print(
-                ("\n[ERRO] Não foi possível criar ou atualizar o diretório: " + dir.encode('utf8')))
+            print(("\n[ERRO] Não foi possível criar ou atualizar o diretório: " + dir))
             print("[ERRO] Você conta com as permissões de escrita? \n")
             return 0
     return 1
