@@ -1,0 +1,5 @@
+brasil+sao+paulo+Sao+Paulo+05508090	-23.5598580	-46.7329875
+brasil+sao+paulo+Sao+Paulo+05509900	-23.5791684	-46.7085727
+brasil+sao+paulo+Sao+Bernardo+do+Campo+09606070	-23.6763382	-46.5625127
+brasil+sao+paulo+Santo+Andre+09210580	-23.6447853	-46.5305749
+brasil+parana+Cornelio+Procopio+86300000	-23.1827465	-50.6456587
