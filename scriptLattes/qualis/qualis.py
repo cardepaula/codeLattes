@@ -143,6 +143,8 @@ class Qualis:
     def inicializaListaQualis(self, lista):
         lista['A1'] = 0
         lista['A2'] = 0
+        lista['A3'] = 0
+        lista['A4'] = 0
         lista['B1'] = 0
         lista['B2'] = 0
         lista['B3'] = 0
