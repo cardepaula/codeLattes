@@ -28,6 +28,8 @@ import requests
 from lxml import etree
 import pandas as pd
 
+from html import unescape
+
 
 logger = logging.getLogger(__name__)
 
@@ -482,7 +484,7 @@ class QualisExtractor(object):
 
             line = []
             for td in tr:
-                line.append(HTMLParser().unescape(td.text.strip()))
+                line.append(unescape(td.text.strip()))
             issn_q, journal_q, estrato_q, area_q, classif_q = line
 
             if not issn_q or not journal_q:
