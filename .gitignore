@@ -112,3 +112,6 @@ cvs-downloaded
 venv
 pylint.out
 exemplo/cache
+teste-01
+PPcomp*
+Qualis_*
