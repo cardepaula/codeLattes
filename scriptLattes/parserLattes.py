@@ -24,7 +24,11 @@
 
 import sys
 from html.entities import name2codepoint
-from tidylib import tidy_document
+# from tidylib import tidy_document
+from bs4 import BeautifulSoup
+import html
+
+import difflib
 
 
 # ---------------------------------------------------------------------------- #
@@ -226,6 +230,13 @@ class ParserLattes(HTMLParser):
     complemento = ''
 
     # ------------------------------------------------------------------------ #
+
+    def convert_numeric_entities(self, soup):
+        for element in soup.find_all(text=True):
+            if element.parent.name not in ['script', 'style']:
+                converted_text = html.unescape(element)
+                element.replace_with(converted_text)
+
     def __init__(self, idMembro, cvLattesHTML):
         HTMLParser.__init__(self)
 
@@ -303,14 +314,18 @@ class ParserLattes(HTMLParser):
         cvLattesHTML = cvLattesHTML.replace("<X<", "&lt;X&lt;")
 
         # feed it!
-        cvLattesHTML, errors = tidy_document(
-            cvLattesHTML, options={'numeric-entities': 1})
+        # cvLattesHTML, errors = tidy_document(cvLattesHTML, options={'numeric-entities': 1})
+        cvLattesHTML = BeautifulSoup(cvLattesHTML, 'html.parser')
+
+        self.convert_numeric_entities(cvLattesHTML)
+
+
 
         # tentativa errada (não previsível)
         # options = dict(output_xhtml=1, add_xml_decl=1, indent=1, tidy_mark=0)
         # cvLattesHTML = str(tidy.parseString(cvLattesHTML, **options))
 
-        self.feed(cvLattesHTML)
+        self.feed(str(cvLattesHTML))
 
     # ------------------------------------------------------------------------ #
 
@@ -495,8 +510,7 @@ class ParserLattes(HTMLParser):
             self.salvarBolsaProdutividade = 0
 
         if tag == 'span' and self.salvarIdentificador16 == 1:
-            self.identificador16 = re.findall(
-                'http://lattes.cnpq.br/(\d{16})', value)
+            self.identificador16 = re.findall('http://lattes.cnpq.br/(\d{16})', value) #talvez substituir por self.item
             self.salvarIdentificador16 = 0
 
         # Cabeçalhos
