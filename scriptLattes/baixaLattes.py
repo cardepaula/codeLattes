@@ -70,7 +70,7 @@ def __self_update():
         content = r.read()
         fpath = os.path.abspath(inspect.getfile(inspect.currentframe()))
         try:
-            handler = file(fpath, 'w')
+            handler = open(fpath, 'w')
         except:
             print(("Erro na escrita do novo arquivo, verifique se o arquivo '%s' tem permissao de escrita" % fpath))
             sys.exit(1)
