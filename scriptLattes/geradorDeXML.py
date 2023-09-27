@@ -80,7 +80,7 @@ class GeradorDeXML:
                 xmlTemp += self.getListaOutroTipoDeProducaoTecnica(registro)
 
                 # xmlTemp += self.getListaPatente(registro)
-                #xmlTemp += self.getListaRegistroSoftware(registro)
+                # xmlTemp += self.getListaRegistroSoftware(registro)
 
                 xmlTemp += self.getListaProducaoArtistica(registro)
                 xmlTemp += self.getListaOASupervisaoDePosDoutorado(registro)
@@ -101,7 +101,7 @@ class GeradorDeXML:
                 xmlTemp += self.getListaOrganizacaoDeEvento(registro)
 
                 xmlTemp += '  </pesquisador>\n'
-            except:
+            except BaseException:
                 # adicionar ids para a lista de erros
                 self.listaErroXml.append(registro.idLattes)
                 continue

@@ -76,7 +76,7 @@ class OrientacaoEmAndamento:
         self.ano = partes[0]
         partes = partes[2]
 
-        aux = re.findall('((?:19|20)\d\d)\\b', self.ano)
+        aux = re.findall('((?:19|20)\\d\\d)\\b', self.ano)
         if len(aux) > 0:
             self.ano = aux[0]  # .strip().rstrip(".").rstrip(",")
         else:
@@ -93,7 +93,9 @@ class OrientacaoEmAndamento:
         self.chave = self.nome  # chave de comparação entre os objetos
 
     def compararCom(self, objeto):
-        if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(self.nome, objeto.nome):
+        if self.idMembro.isdisjoint(
+                objeto.idMembro) and similaridade_entre_cadeias(
+                self.nome, objeto.nome):
             # Os IDs dos membros são agrupados.
             # Essa parte é importante para a criação do GRAFO de colaborações
             self.idMembro.update(objeto.idMembro)
@@ -112,8 +114,8 @@ class OrientacaoEmAndamento:
             return None
 
     def html(self, listaDeMembros):
-        s = '<a href="http://lattes.cnpq.br/'+self.idOrientando+'">' + \
-            self.nome+'</a>' if len(self.idOrientando) == 16 else self.nome
+        s = '<a href="http://lattes.cnpq.br/' + self.idOrientando + '">' + \
+            self.nome + '</a>' if len(self.idOrientando) == 16 else self.nome
         s += '. <b>' + self.tituloDoTrabalho + '</b>. '
         s += self.instituicao + ', ' if not self.instituicao == '' else ''
         s += self.agenciaDeFomento + '. ' if not self.agenciaDeFomento == '' else '. '
@@ -123,14 +125,14 @@ class OrientacaoEmAndamento:
         lista = list(self.idMembro)
         if len(lista) == 1:
             m = listaDeMembros[lista[0]]
-            s += '<br><i><font size=-1>'+self.tipoDeOrientacao + \
-                ': <a href="'+m.url+'">'+m.nomeCompleto+'</a>.</font></i>'
+            s += '<br><i><font size=-1>' + self.tipoDeOrientacao + \
+                ': <a href="' + m.url + '">' + m.nomeCompleto + '</a>.</font></i>'
         else:
             s += '<br><i><font size=-1>Orientadores: '
             for i in lista:
                 m = listaDeMembros[i]
-                s += '<a href="'+m.url+'">'+m.nomeCompleto+'</a>, '
-            s = s.rstrip(', ')+'.</font></i>'
+                s += '<a href="' + m.url + '">' + m.nomeCompleto + '</a>, '
+            s = s.rstrip(', ') + '.</font></i>'
 
         return s
 
@@ -151,6 +153,6 @@ class OrientacaoEmAndamento:
             self.agenciaDeFomento + "\n"
         s += "+TIPO ORIENTA.: " + \
             self.tipoDeOrientacao + "\n"
-#		s += "+item         : @@" + self.item.encode('utf8','replace') + "@@\n"
+        # s += "+item         : @@" + self.item.encode('utf8','replace') + "@@\n"
 
         return s

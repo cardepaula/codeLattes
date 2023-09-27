@@ -35,7 +35,7 @@ from PIL import Image
 
 try:
     import mechanize
-except:
+except BaseException:
     print("Erro, voce precisa do Mechanize instalado no sistema, instale no Ubuntu com 'sudo apt-get install python-mechanize")
 
 
@@ -58,7 +58,7 @@ def __self_update():
     import inspect
     try:
         import simplejson
-    except:
+    except BaseException:
         print("Erro, voce precisa do Simplejson instalado no sistema, instale no Ubuntu com 'sudo apt-get install python-simplejson'")
         sys.exit(1)
     br = mechanize.Browser()
@@ -71,7 +71,7 @@ def __self_update():
         fpath = os.path.abspath(inspect.getfile(inspect.currentframe()))
         try:
             handler = open(fpath, 'w')
-        except:
+        except BaseException:
             print(("Erro na escrita do novo arquivo, verifique se o arquivo '%s' tem permissao de escrita" % fpath))
             sys.exit(1)
         handler.write(content)
@@ -83,10 +83,12 @@ def __self_update():
 def __get_data(id_lattes):
     p = re.compile('[a-zA-Z]+')
     if p.match(id_lattes):
-        url = 'http://buscatextual.cnpq.br/buscatextual/visualizacv.do?id='+id_lattes
+        url = 'http://buscatextual.cnpq.br/buscatextual/visualizacv.do?id=' + id_lattes
     else:
         # url = 'http://lattes.cnpq.br/'+id_lattes
-        url = 'file://'+os.path.abspath(os.getcwd())+'/cvs-downloaded/'+id_lattes+'.html'
+        url = 'file://' + \
+            os.path.abspath(os.getcwd()) + \
+            '/cvs-downloaded/' + id_lattes + '.html'
     br = mechanize.Browser()
     br.set_cookiejar(http.cookiejar.LWPCookieJar())
 
@@ -99,7 +101,7 @@ def __get_data(id_lattes):
     br.addheaders = HEADERS
 
     # Parte em que buscava o CVs (Obrigado Jorge Gustavo dos Santos Pinho!)
-    #r = br.open(url)
+    # r = br.open(url)
 
     # Nova implementação
     # url_get_captcha = "http://buscatextual.cnpq.br/buscatextual/servlet/captcha?metodo=getImagemCaptcha&noCache=" + \
@@ -140,7 +142,8 @@ def baixaCVLattes(id_lattes, debug=True):
     while tries > 0:
         try:
             data = __get_data(id_lattes)
-            # time.sleep(random.random()+0.5) #0.5 a 1.5 segs de espera, nao altere esse tempo para não ser barrado do servidor do lattes
+            # time.sleep(random.random()+0.5) #0.5 a 1.5 segs de espera, nao
+            # altere esse tempo para não ser barrado do servidor do lattes
             if 'infpessoa' not in data:
                 tries -= 1
             else:
@@ -157,4 +160,4 @@ def baixaCVLattes(id_lattes, debug=True):
 
     print("Nao foi possivel baixar o CV Lattes em varias tentativas")
     return "   "
-    #raise Exception("Nao foi possivel baixar o CV Lattes em 5 tentativas")
+    # raise Exception("Nao foi possivel baixar o CV Lattes em 5 tentativas")

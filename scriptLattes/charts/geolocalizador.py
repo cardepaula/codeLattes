@@ -38,7 +38,7 @@ class Geolocalizador:
 
     def __init__(self, endereco, dicionarioDeGeolocalizacao=None):
         self.endereco = endereco
-        if not dicionarioDeGeolocalizacao == None:
+        if dicionarioDeGeolocalizacao is not None:
             self.dicionarioDeGeolocalizacao = dicionarioDeGeolocalizacao
 
         aux = re.findall(r'(.*) URL.*', self.endereco)
@@ -63,14 +63,14 @@ class Geolocalizador:
             (cidade, uf) = aux[0]
 
             aux = re.findall(r'(\d\d\d\d\d\d\d\d)', re.sub(
-                '\s*-\s*', '', self.endereco))
+                '\\s*-\\s*', '', self.endereco))
             if len(aux) > 0:
                 cep = aux[0]
 
             if cep == '':
                 cep = self.obterNomeCapital(uf)
             if not uf == '':
-                #uf = 'brazil ' +self.obterNomeUF(uf)
+                # uf = 'brazil ' +self.obterNomeUF(uf)
                 uf = self.obterNomeUF(uf)
 
             pais = 'brasil'
@@ -82,14 +82,16 @@ class Geolocalizador:
 
         cep = self.corrigirCEP(cep)
         chave = '{} {} {} {}'.format(pais, uf, cidade, cep)
-        chave = re.sub('\s+', '+', chave)
-        chave = unicodedata.normalize('NFKD', chave).encode('ASCII', 'ignore').decode()
+        chave = re.sub('\\s+', '+', chave)
+        chave = unicodedata.normalize(
+            'NFKD', chave).encode(
+            'ASCII', 'ignore').decode()
 
         if chave in self.dicionarioDeGeolocalizacao:
             (self.lat, self.lon) = self.dicionarioDeGeolocalizacao[chave]
         else:
             query = "http://maps.googleapis.com/maps/api/geocode/xml?address=" + \
-                chave+"&sensor=false"
+                chave + "&sensor=false"
             req = urllib.request.Request(query)
             res = urllib.request.urlopen(req).read().decode()
             res = res.replace("\r", "")
@@ -101,7 +103,8 @@ class Geolocalizador:
                 lon = re.findall(r'<lng>(.*)</lng>', res[0])
                 self.lat = lat[0]
                 self.lon = lon[0]
-                # print "  .Verif. = http://www.gorissen.info/Pierre/maps/googleMapLocation.php?lat="+self.lat+"&lon="+self.lon+"&setLatLon=Set"
+                # print "  .Verif. =
+                # http://www.gorissen.info/Pierre/maps/googleMapLocation.php?lat="+self.lat+"&lon="+self.lon+"&setLatLon=Set"
 
                 self.dicionarioDeGeolocalizacao[chave] = (self.lat, self.lon)
 

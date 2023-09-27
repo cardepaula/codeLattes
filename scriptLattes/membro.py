@@ -54,7 +54,7 @@ class Membro:
     atualizacaoCV = ''
     foto = ''
     textoResumo = ''
-    ### xml = None
+    # xml = None
 
     itemsDesdeOAno = ''  # periodo global
     itemsAteOAno = ''  # periodo global
@@ -137,9 +137,20 @@ class Membro:
 
     dicionarioDeGeolocalizacao = None
 
-    # def __init__(self, idMembro, identificador, nome, periodo, rotulo, itemsDesdeOAno, itemsAteOAno, xml=''):
+    # def __init__(self, idMembro, identificador, nome, periodo, rotulo,
+    # itemsDesdeOAno, itemsAteOAno, xml=''):
 
-    def __init__(self, idMembro, identificador, nome, periodo, rotulo, itemsDesdeOAno, itemsAteOAno, diretorioCache, dicionarioDeGeolocalizacao=None):
+    def __init__(
+            self,
+            idMembro,
+            identificador,
+            nome,
+            periodo,
+            rotulo,
+            itemsDesdeOAno,
+            itemsAteOAno,
+            diretorioCache,
+            dicionarioDeGeolocalizacao=None):
         self.idMembro = idMembro
         self.idLattes = identificador
         self.nomeInicial = nome
@@ -164,7 +175,7 @@ class Membro:
 
     def criarListaDePeriodos(self, periodoDoMembro):
         self.listaPeriodo = []
-        periodoDoMembro = re.sub('\s+', '', periodoDoMembro)
+        periodoDoMembro = re.sub('\\s+', '', periodoDoMembro)
 
         if not periodoDoMembro:  # se nao especificado o periodo, entao aceitamos todos os items do CV Lattes
             self.listaPeriodo = [[0, 10000]]
@@ -183,7 +194,8 @@ class Membro:
                 else:
                     print((
                         "\n[AVISO IMPORTANTE] Periodo nao válido: {}. (periodo desconsiderado na lista)".format(periodo)))
-                    print(("[AVISO IMPORTANTE] CV Lattes: {}. Membro: {}\n".format(self.idLattes, self.nomeInicial)))
+                    print(("[AVISO IMPORTANTE] CV Lattes: {}. Membro: {}\n".format(
+                        self.idLattes, self.nomeInicial)))
 
     def carregarDadosCVLattes(self):
         cvPath = self.diretorioCache + '/' + self.idLattes
@@ -216,7 +228,7 @@ class Membro:
                 cvLattesHTML = arquivoH.read()
 
                 if self.idMembro != '':
-                    print(("(*) Utilizando CV armazenado no cache: "+cvPath))
+                    print(("(*) Utilizando CV armazenado no cache: " + cvPath))
             else:
                 cvLattesHTML = baixaCVLattes(self.idLattes)
                 if not self.diretorioCache == '':
@@ -230,10 +242,17 @@ class Membro:
                 ##########################################
                 raise Exception("CV Lattes vazio")
 
-            extended_chars = ''.join(chr(c) for c in range(127, 65536, 1))  # srange(r"[\0x80-\0x7FF]")
+            extended_chars = ''.join(chr(c) for c in range(
+                127, 65536, 1))  # srange(r"[\0x80-\0x7FF]")
             special_chars = ' -'''
-            # cvLattesHTML  = cvLattesHTML.decode('ascii','replace')+extended_chars+special_chars                                          # Wed Jul 25 16:47:39 BRT 2012
-            extended_chars = extended_chars.encode('utf-8', 'surrogatepass').decode('utf-8',  'replace')
+            # cvLattesHTML  =
+            # cvLattesHTML.decode('ascii','replace')+extended_chars+special_chars
+            # # Wed Jul 25 16:47:39 BRT 2012
+            extended_chars = extended_chars.encode(
+                'utf-8',
+                'surrogatepass').decode(
+                'utf-8',
+                'replace')
             cvLattesHTML = cvLattesHTML + extended_chars + special_chars
             # reference:
             # https://stackoverflow.com/questions/38147259/how-can-i-convert-surrogate-pairs-to-normal-string-in-python
@@ -264,7 +283,8 @@ class Membro:
         self.listaAreaDeAtuacao = parser.listaAreaDeAtuacao
         self.listaIdioma = parser.listaIdioma
         self.listaPremioOuTitulo = parser.listaPremioOuTitulo
-        self.listaIDLattesColaboradoresUnica = set(self.listaIDLattesColaboradores)
+        self.listaIDLattesColaboradoresUnica = set(
+            self.listaIDLattesColaboradores)
 
         # Produção bibliográfica
         self.listaArtigoEmPeriodico = parser.listaArtigoEmPeriodico
@@ -324,7 +344,8 @@ class Membro:
             descricao = self.listaAreaDeAtuacao[0].descricao
             partes = descricao.split('/')
             nomePrimeiraGrandeArea = partes[0]
-            nomePrimeiraGrandeArea = nomePrimeiraGrandeArea.replace("Grande área:", '').strip()
+            nomePrimeiraGrandeArea = nomePrimeiraGrandeArea.replace(
+                "Grande área:", '').strip()
 
             if len(partes) > 1:
                 partes = partes[1].split(":")
@@ -447,7 +468,8 @@ class Membro:
             if objeto.anoConclusao.lower() == 'atual':
                 objeto.anoConclusao = str(datetime.datetime.now().year)
 
-            # Para projetos de pesquisa sem anos! (sim... tem gente que não coloca os anos!)
+            # Para projetos de pesquisa sem anos! (sim... tem gente que não
+            # coloca os anos!)
             if objeto.anoInicio == '':
                 objeto.anoInicio = '0'
             if objeto.anoConclusao == '':
@@ -462,7 +484,8 @@ class Membro:
             else:
                 fora = 0
                 for per in self.listaPeriodo:
-                    if objeto.anoInicio > per[1] and objeto.anoConclusao > per[1] or objeto.anoInicio < per[0] and objeto.anoConclusao < per[0]:
+                    if objeto.anoInicio > per[1] and objeto.anoConclusao > per[
+                            1] or objeto.anoInicio < per[0] and objeto.anoConclusao < per[0]:
                         fora += 1
                 if fora == len(self.listaPeriodo):
                     return 0
@@ -495,7 +518,7 @@ class Membro:
         s = ''
         s += '\nTY  - MEMBRO'
         s += '\nNOME  - ' + self.nomeCompleto
-        #s+= '\nSEXO  - '+self.sexo
+        # s+= '\nSEXO  - '+self.sexo
         s += '\nCITA  - ' + self.nomeEmCitacoesBibliograficas
         s += '\nBOLS  - ' + self.bolsaProdutividade
         s += '\nENDE  - ' + self.enderecoProfissional
@@ -527,18 +550,18 @@ class Membro:
 
         s = "+ ID-MEMBRO   : " + str(self.idMembro) + "\n"
         s += "+ ROTULO      : " + self.rotulo + "\n"
-        #s += "+ ALIAS       : " + self.nomeInicial.encode('utf8','replace') + "\n"
+        # s += "+ ALIAS       : " + self.nomeInicial.encode('utf8','replace') + "\n"
         s += "+ NOME REAL   : " + self.nomeCompleto + "\n"
-        #s += "+ SEXO        : " + self.sexo.encode('utf8','replace') + "\n"
-        #s += "+ NOME Cits.  : " + self.nomeEmCitacoesBibliograficas.encode('utf8','replace') + "\n"
-        #s += "+ PERIODO     : " + self.periodo.encode('utf8','replace') + "\n"
-        #s += "+ BOLSA Prod. : " + self.bolsaProdutividade.encode('utf8','replace') + "\n"
-        #s += "+ ENDERECO    : " + self.enderecoProfissional.encode('utf8','replace') +"\n"
-        #s += "+ URL         : " + self.url.encode('utf8','replace') +"\n"
-        #s += "+ ATUALIZACAO : " + self.atualizacaoCV.encode('utf8','replace') +"\n"
-        #s += "+ FOTO        : " + self.foto.encode('utf8','replace') +"\n"
-        #s += "+ RESUMO      : " + self.textoResumo.encode('utf8','replace') + "\n"
-        #s += "+ COLABORADs. : " + str(len(self.listaIDLattesColaboradoresUnica))
+        # s += "+ SEXO        : " + self.sexo.encode('utf8','replace') + "\n"
+        # s += "+ NOME Cits.  : " + self.nomeEmCitacoesBibliograficas.encode('utf8','replace') + "\n"
+        # s += "+ PERIODO     : " + self.periodo.encode('utf8','replace') + "\n"
+        # s += "+ BOLSA Prod. : " + self.bolsaProdutividade.encode('utf8','replace') + "\n"
+        # s += "+ ENDERECO    : " + self.enderecoProfissional.encode('utf8','replace') +"\n"
+        # s += "+ URL         : " + self.url.encode('utf8','replace') +"\n"
+        # s += "+ ATUALIZACAO : " + self.atualizacaoCV.encode('utf8','replace') +"\n"
+        # s += "+ FOTO        : " + self.foto.encode('utf8','replace') +"\n"
+        # s += "+ RESUMO      : " + self.textoResumo.encode('utf8','replace') + "\n"
+        # s += "+ COLABORADs. : " + str(len(self.listaIDLattesColaboradoresUnica))
 
         if verbose:
             s += "\n[COLABORADORES]"

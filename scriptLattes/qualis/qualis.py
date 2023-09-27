@@ -72,12 +72,14 @@ class Qualis:
     def buscaQualis(self, tipo, nome, sigla=''):
         dist = 0
         indice = 0
-        # Percorrer lista de periodicos tentando casar com nome usando funcao similaridade_entre_cadeias(str1, str2) de scriptLattes.py
+        # Percorrer lista de periodicos tentando casar com nome usando funcao
+        # similaridade_entre_cadeias(str1, str2) de scriptLattes.py
         if tipo == 'P':
-            if self.periodicos.get(sigla) != None:
-                # Retorna Qualis do issn/sigla exato encontrado - Casamento perfeito
+            if self.periodicos.get(sigla) is not None:
+                # Retorna Qualis do issn/sigla exato encontrado - Casamento
+                # perfeito
                 return self.periodicos.get(sigla), ''
-            elif self.periodicos.get(nome) != None:
+            elif self.periodicos.get(nome) is not None:
                 # Retorna Qualis do nome exato encontrado - Casamento perfeito
                 return self.periodicos.get(nome), ''
             else:
@@ -92,7 +94,7 @@ class Qualis:
                     # Retorna Qualis de nome similar
                     return self.periodicos.get(chaves[indice]), chaves[indice]
         else:
-            if self.congressos.get(nome) != None:
+            if self.congressos.get(nome) is not None:
                 # Retorna Qualis do nome exato encontrado - Casamento perfeito
                 return self.congressos.get(nome), ''
             else:
@@ -125,7 +127,7 @@ class Qualis:
             for pub in membro.listaTrabalhoCompletoEmCongresso:
                 qualis, similar = self.buscaQualis('C', pub.nomeDoEvento)
                 if qualis == 'Qualis nao identificado':
-                    if self.congressos.get(pub.sigla) != None:
+                    if self.congressos.get(pub.sigla) is not None:
                         # Retorna Qualis da sigla com nome do evento
                         qualis = self.congressos.get(pub.sigla)
                         similar = pub.sigla
@@ -167,28 +169,28 @@ class Qualis:
                 nome = campos[1].rstrip()
                 qualis = campos[2].rstrip()    # Estrato Qualis
 
-                #nome   = self.padronizarNome(nome)
-                #sigla  = self.padronizarNome(sigla)
+                # nome   = self.padronizarNome(nome)
+                # sigla  = self.padronizarNome(sigla)
                 sigla = sigla.replace("-", "")
 
                 lista[nome] = qualis
                 # Armazena a sigla/issn do evento/periodico
                 lista[sigla] = qualis
-            print(("[QUALIS]: "+str(len(lista)) +
-                  " itens adicionados de "+arquivo))
+            print(("[QUALIS]: " + str(len(lista)) +
+                  " itens adicionados de " + arquivo))
         return lista
 
     def padronizarNome(self, nome):
-        #nome = nome.replace(u"\u00A0", " ")
-        #nome = nome.replace(u"\u2010", " ")
-        #nome = nome.replace(u"-"," ")
+        # nome = nome.replace(u"\u00A0", " ")
+        # nome = nome.replace(u"\u2010", " ")
+        # nome = nome.replace(u"-"," ")
         nome = nome.replace("\\u00A0", "")
         nome = nome.replace("\\u2010", "")
         nome = nome.replace("-", "")
 
-        #nome = re.sub(r"\(.*\)", " ", nome)
-        #nome = re.sub(r"\(", " ", nome)
-        #nome = re.sub(r"\)", " ", nome)
-        nome = re.sub("\s+", ' ', nome)
+        # nome = re.sub(r"\(.*\)", " ", nome)
+        # nome = re.sub(r"\(", " ", nome)
+        # nome = re.sub(r"\)", " ", nome)
+        nome = re.sub("\\s+", ' ', nome)
         nome = nome.strip()
         return nome

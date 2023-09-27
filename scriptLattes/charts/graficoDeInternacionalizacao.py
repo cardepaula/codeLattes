@@ -57,7 +57,7 @@ class GraficoDeInternacionalizacao:
                         for pais in publicacaoEinternacionalizacao.listaDePaises:
                             if (not pais == 'Brazil'):
                                 soBrasil = False
-                            if listaDePaisesEquantidades.get(pais) == None:
+                            if listaDePaisesEquantidades.get(pais) is None:
                                 listaDePaisesEquantidades[pais] = 0
                             listaDePaisesEquantidades[pais] += 1
 
@@ -66,8 +66,10 @@ class GraficoDeInternacionalizacao:
                         else:
                             self.publicacoesRealizadasComParceirasComEstrangeiros += 1
 
-        listaDePaisesEquantidadesOrd = sorted(list(
-            listaDePaisesEquantidades.items()), key=operator.itemgetter(1, 0), reverse=True)
+        listaDePaisesEquantidadesOrd = sorted(
+            list(
+                listaDePaisesEquantidades.items()), key=operator.itemgetter(
+                1, 0), reverse=True)
 
         self.vetorDePaises = []
         self.vetorDeQuantidades = []
@@ -122,7 +124,8 @@ class GraficoDeInternacionalizacao:
 
             # ---------------------------------------------------------------- #
             # Barchart
-            height = str(int((math.floor(len(self.vetorDePaises)/2)+1)*40))
+            height = str(
+                int((math.floor(len(self.vetorDePaises) / 2) + 1) * 40))
 
             script += " \
             <script type='text/javascript'>\
@@ -141,7 +144,7 @@ class GraficoDeInternacionalizacao:
             script += " \
               ]);\
               var options = {\
-                width: 500, height: "+str(height)+",\
+                width: 500, height: " + str(height) + ",\
                 vAxis: {title: 'Pais',  titleTextStyle: {color: 'black'}},\
                 legend: 'none',\
                 chd: 's:underp',\

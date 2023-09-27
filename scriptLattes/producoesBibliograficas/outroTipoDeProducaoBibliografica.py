@@ -57,7 +57,7 @@ class OutroTipoDeProducaoBibliografica:
             self.autores = partes[0].strip()
             partes = partes[2]
 
-            aux = re.findall(' \((.*?)\)\.$', partes)
+            aux = re.findall(' \\((.*?)\\)\\.$', partes)
             if len(aux) > 0:
                 self.natureza = aux[-1]
                 partes = partes.rpartition(" (")
@@ -65,7 +65,7 @@ class OutroTipoDeProducaoBibliografica:
             else:
                 self.natureza = ''
 
-            aux = re.findall(' ((?:19|20)\d\d)\\b', partes)
+            aux = re.findall(' ((?:19|20)\\d\\d)\\b', partes)
             if len(aux) > 0:
                 self.ano = aux[-1]  # .strip().rstrip(".").rstrip(",")
                 partes = partes.rpartition(" ")
@@ -83,7 +83,9 @@ class OutroTipoDeProducaoBibliografica:
             self.natureza = ''
 
     def compararCom(self, objeto):
-        if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(self.titulo, objeto.titulo):
+        if self.idMembro.isdisjoint(
+                objeto.idMembro) and similaridade_entre_cadeias(
+                self.titulo, objeto.titulo):
             # Os IDs dos membros são agrupados.
             # Essa parte é importante para a criação do GRAFO de colaborações
             self.idMembro.update(objeto.idMembro)

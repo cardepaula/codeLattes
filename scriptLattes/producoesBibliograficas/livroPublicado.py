@@ -107,7 +107,9 @@ class LivroPublicado:
             editora = ''
 
     def compararCom(self, objeto):
-        if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(self.titulo, objeto.titulo):
+        if self.idMembro.isdisjoint(
+                objeto.idMembro) and similaridade_entre_cadeias(
+                self.titulo, objeto.titulo):
             # Os IDs dos membros são agrupados.
             # Essa parte é importante para a criação do GRAFO de colaborações
             self.idMembro.update(objeto.idMembro)
@@ -153,13 +155,13 @@ class LivroPublicado:
             p2 = paginas[1]
         s = '\n'
         s += '\nTY  - BOOK'
-        s += '\nAU  - '+self.autores
-        s += '\nTI  - '+self.titulo
-        s += '\nIS  - '+self.edicao
-        s += '\nPY  - '+str(self.ano)
-        s += '\nVL  - '+self.volume
-        s += '\nSP  - '+p1
-        s += '\nEP  - '+p2
+        s += '\nAU  - ' + self.autores
+        s += '\nTI  - ' + self.titulo
+        s += '\nIS  - ' + self.edicao
+        s += '\nPY  - ' + str(self.ano)
+        s += '\nVL  - ' + self.volume
+        s += '\nSP  - ' + p1
+        s += '\nEP  - ' + p2
         s += '\nER  - '
         return s
 

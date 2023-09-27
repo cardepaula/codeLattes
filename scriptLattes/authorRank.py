@@ -47,6 +47,6 @@ class AuthorRank:
             soma = 0
             for j in range(0, len(vectorRank)):
                 soma += vectorRank[j] * self.matriz[j, i]
-            vectorRankNovo[i] = (1-d) + d*soma
+            vectorRankNovo[i] = (1 - d) + d * soma
 
         return vectorRankNovo

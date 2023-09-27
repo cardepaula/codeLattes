@@ -50,8 +50,8 @@ class ProjetoDePesquisa:
         self.anoConclusao = anos[2].strip()
 
         # detalhe = partesDoItem[1].rpartition(":")
-        #self.cargo = detalhe[0].strip()
-        #self.nome = detalhe[2].strip()
+        # self.cargo = detalhe[0].strip()
+        # self.nome = detalhe[2].strip()
         self.nome = partesDoItem[1]
 
         self.descricao = list([])
@@ -76,12 +76,13 @@ class ProjetoDePesquisa:
             s += '<br><i><font size=-1>' + self.descricao[i] + '</font></i>'
             m = listaDeMembros[self.idMembro[i]]
             s += '<br><i><font size=-1>Membro: <a href="' + \
-                m.url+'">'+m.nomeCompleto+'</a>.</font>'
+                m.url + '">' + m.nomeCompleto + '</a>.</font>'
 
         return s
 
     def compararCom(self, objeto):
-        if set(self.idMembro).isdisjoint(set(objeto.idMembro)) and similaridade_entre_cadeias(self.nome, objeto.nome):
+        if set(self.idMembro).isdisjoint(set(objeto.idMembro)
+                                         ) and similaridade_entre_cadeias(self.nome, objeto.nome):
             # Os IDs dos membros são agrupados.
             # Essa parte é importante para a geracao do relorio de projetos
             self.idMembro.extend(objeto.idMembro)

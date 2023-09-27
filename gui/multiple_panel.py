@@ -68,11 +68,11 @@ def finished_signal_factory(panel, index, process):
     def finished():
         try:
             output = str(process.readAllStandardOutput())
-        except:
+        except BaseException:
             output = "Error capturing output"
         try:
             errors = str(process.readAllStandardError())
-        except:
+        except BaseException:
             errors = "Error capturing output"
         results = re.findall(r"\>\'.*?\'\<", output)
         output_folder = ''
@@ -84,7 +84,8 @@ def finished_signal_factory(panel, index, process):
             e = file(os.path.join(output_folder, 'erros.txt'), 'w')
             e.write(errors)
             e.close()
-        panel.finish_process(index, output_folder, errors.strip(), output.strip())
+        panel.finish_process(index, output_folder,
+                             errors.strip(), output.strip())
 
     return finished
 
@@ -102,10 +103,10 @@ class MultipleProcessingTabPanel(BasePanel):
             self.make_list()
         self.ui.tableWidget.cellClicked.connect(self.cell_clicked)
 
-
     def open_link(self, folder):
         path = self.get_output_folder(folder) + 'index.html'
-        QtGui.QDesktopServices.openUrl(QtCore.QUrl(path, QtCore.QUrl.TolerantMode))
+        QtGui.QDesktopServices.openUrl(
+            QtCore.QUrl(path, QtCore.QUrl.TolerantMode))
 
     def open_folder(self, folder):
         path = self.get_output_folder(folder)
@@ -119,7 +120,7 @@ class MultipleProcessingTabPanel(BasePanel):
         dialog.show()
 
     def cell_clicked(self, row, column):
-        #self.open_dialog('teste')
+        # self.open_dialog('teste')
         if self.results.get(row, False):
             if column == 2 and self.results[row][0]:
                 self.open_folder(self.results[row][0])
@@ -132,8 +133,8 @@ class MultipleProcessingTabPanel(BasePanel):
 
     def choose_folder(self):
         last_folder = self.settings.value('lastFolder', '.')
-        folderpath = QtGui.QFileDialog.getExistingDirectory(self.parent,
-                                                            "Abrir pasta com configs", last_folder)
+        folderpath = QtGui.QFileDialog.getExistingDirectory(
+            self.parent, "Abrir pasta com configs", last_folder)
         if folderpath:
             self.settings.setValue('lastFolder', folderpath)
             self.ui.input_multiple.setPlainText(folderpath)
@@ -196,8 +197,9 @@ class MultipleProcessingTabPanel(BasePanel):
         if not self.processes:
             return None
         index, filepath = self.processes.pop(0)
-        self.ui.tableWidget.setItem(index, 1,
-                                    self.make_cell("Processando...", (255, 255, 100)))
+        self.ui.tableWidget.setItem(
+            index, 1, self.make_cell(
+                "Processando...", (255, 255, 100)))
         process = QtCore.QProcess(self.parent)
         process.finished.connect(finished_signal_factory(self, index, process))
         process.start(self.parent.CMD, [filepath])
@@ -211,24 +213,30 @@ class MultipleProcessingTabPanel(BasePanel):
     def finish_process(self, index, output_folder, errors, output):
         self.results[index] = (output_folder, output, errors)
         if output:
-            self.ui.tableWidget.setItem(index, 4,
-                                        self.make_cell("Abrir", (200, 200, 200)))
+            self.ui.tableWidget.setItem(
+                index, 4, self.make_cell(
+                    "Abrir", (200, 200, 200)))
         if output_folder:
-            self.ui.tableWidget.setItem(index, 1,
-                                        self.make_cell("Finalizado!", (150, 255, 150)))
-            self.ui.tableWidget.setItem(index, 2,
-                                        self.make_cell(output_folder, (150, 255, 150)))
-            self.ui.tableWidget.setItem(index, 3,
-                                        self.make_cell("Abrir", (150, 255, 150)))
+            self.ui.tableWidget.setItem(
+                index, 1, self.make_cell(
+                    "Finalizado!", (150, 255, 150)))
+            self.ui.tableWidget.setItem(
+                index, 2, self.make_cell(
+                    output_folder, (150, 255, 150)))
+            self.ui.tableWidget.setItem(
+                index, 3, self.make_cell(
+                    "Abrir", (150, 255, 150)))
         else:
-            self.ui.tableWidget.setItem(index, 1,
-                                        self.make_cell("Erro!", (255, 150, 150)))
-            self.ui.tableWidget.setItem(index, 5,
-                                        self.make_cell("Abrir", (255, 150, 150)))
+            self.ui.tableWidget.setItem(
+                index, 1, self.make_cell(
+                    "Erro!", (255, 150, 150)))
+            self.ui.tableWidget.setItem(
+                index, 5, self.make_cell(
+                    "Abrir", (255, 150, 150)))
 
-        #open_folder = QtGui.QTableWidgetItem("Abrir Pasta")
-        #self.ui.tableWidget.itemClicked()
-        #self.ui.tableWidget.setItem(index, 2, open_folder)
+        # open_folder = QtGui.QTableWidgetItem("Abrir Pasta")
+        # self.ui.tableWidget.itemClicked()
+        # self.ui.tableWidget.setItem(index, 2, open_folder)
         if len(self.results) == len(self.file_list):
             self.disable_running()
         else:
@@ -236,4 +244,3 @@ class MultipleProcessingTabPanel(BasePanel):
                 self.run_process()
             else:
                 self.ui.statusbar.showMessage('Finalizando...')
-    

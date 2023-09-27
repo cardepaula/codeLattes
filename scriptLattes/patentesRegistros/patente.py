@@ -67,7 +67,7 @@ class Patente:
             self.tipoPatente = partes[1].split(":")[1].strip()
             self.numeroRegistro = partes[2].split(":")[1].split(",")[0].strip()
             self.dataDeposito = partes[2].split(":")[2].split(",")[0].strip()
-        except:
+        except BaseException:
             print(("Erro no registro ", self.item))
 
         self.chave = self.autores  # chave de comparação entre os objetos
@@ -75,7 +75,9 @@ class Patente:
         print((self.__str__()))
 
     def compararCom(self, objeto):
-        if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(self.titulo, objeto.titulo):
+        if self.idMembro.isdisjoint(
+                objeto.idMembro) and similaridade_entre_cadeias(
+                self.titulo, objeto.titulo):
             # Os IDs dos membros são agrupados.
             # Essa parte é importante para a criação do GRAFO de colaborações
             self.idMembro.update(objeto.idMembro)
@@ -96,7 +98,7 @@ class Patente:
             s += str(self.ano) + '. ' + str(self.pais) + '. '
             s += str(self.numeroRegistro) + '. ' + str(self.dataDeposito) + '.'
             s += menuHTMLdeBuscaPT(self.titulo)
-        except:
+        except BaseException:
             s = ""
         return s
 

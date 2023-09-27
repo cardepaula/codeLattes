@@ -79,7 +79,7 @@ class ResumoExpandidoEmCongresso:
                 self.volume = partes[2].rstrip(".").rstrip(",")
                 partes = partes[0]
 
-            aux = re.findall(', ((?:19|20)\d\d)\\b', partes)
+            aux = re.findall(', ((?:19|20)\\d\\d)\\b', partes)
 
             if len(aux) > 0:
                 partes = partes.rpartition(",")
@@ -89,9 +89,9 @@ class ResumoExpandidoEmCongresso:
             else:
                 self.ano = ''
 
-    ###		partes = partes.rpartition(". ")
-    ###		self.tituloDosAnais = partes[2].strip().rstrip('.').rstrip(",")
-    ###		partes = partes[0]
+            # partes = partes.rpartition(". ")
+            # self.tituloDosAnais = partes[2].strip().rstrip('.').rstrip(",")
+            # partes = partes[0]
 
             partes = partes.rpartition(" In: ")
             if partes[1] == '':  # se nao existe nome do evento
@@ -115,7 +115,9 @@ class ResumoExpandidoEmCongresso:
             self.paginas = ''
 
     def compararCom(self, objeto):
-        if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(self.titulo, objeto.titulo):
+        if self.idMembro.isdisjoint(
+                objeto.idMembro) and similaridade_entre_cadeias(
+                self.titulo, objeto.titulo):
             # Os IDs dos membros são agrupados.
             # Essa parte é importante para a criação do GRAFO de colaborações
             self.idMembro.update(objeto.idMembro)
@@ -150,7 +152,7 @@ class ResumoExpandidoEmCongresso:
         s += str(self.ano) + '. ' if str(self.ano).isdigit() else '. '
 
         if not self.doi == '':
-            s += '<a href="'+self.doi + \
+            s += '<a href="' + self.doi + \
                 '" target="_blank" style="PADDING-RIGHT:4px;"><img border=0 src="doi.png"></a>'
 
         s += menuHTMLdeBuscaPB(self.titulo)
@@ -167,21 +169,21 @@ class ResumoExpandidoEmCongresso:
             p2 = paginas[1]
         s = '\n'
         s += '\nTY  - CONF'
-        s += '\nAU  - '+self.autores
-        s += '\nT1  - '+self.titulo
-        s += '\nTI  - '+self.nomeDoEvento
-        s += '\nVL  - '+self.volume
-        s += '\nSP  - '+p1
-        s += '\nEP  - '+p2
-        s += '\nPY  - '+str(self.ano)
-        s += '\nL2  - '+self.doi
+        s += '\nAU  - ' + self.autores
+        s += '\nT1  - ' + self.titulo
+        s += '\nTI  - ' + self.nomeDoEvento
+        s += '\nVL  - ' + self.volume
+        s += '\nSP  - ' + p1
+        s += '\nEP  - ' + p2
+        s += '\nPY  - ' + str(self.ano)
+        s += '\nL2  - ' + self.doi
         s += '\nER  - '
         return s
 
     def csv(self, nomeCompleto=""):
-        if self.qualis == None:
+        if self.qualis is None:
             self.qualis = ''
-        if self.qualissimilar == None:
+        if self.qualissimilar is None:
             self.qualissimilar = ''
         s = "resumoExpandidoEmCongresso\t"
         if nomeCompleto == "":  # tratamento grupal

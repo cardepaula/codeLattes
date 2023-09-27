@@ -14,7 +14,7 @@ class parser101590(HTMLParser):
 
     def handle_starttag(self, tag, attrs):
         if tag == 'p':
-            self.count = self.count+1
+            self.count = self.count + 1
             self.recording = 1
 
     def handle_endtag(self, tag):

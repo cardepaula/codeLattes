@@ -37,7 +37,7 @@ class TrabalhoCompletoEmCongresso:
     autores = None
     titulo = None
     nomeDoEvento = None
-    ###	tituloDosAnais = None
+    # tituloDosAnais = None
     ano = None
     volume = None
     paginas = None
@@ -64,7 +64,8 @@ class TrabalhoCompletoEmCongresso:
                 partes = self.item.partition(".. ")
 
             # Verificar quando há um numero de autores > que 25
-            # muitos autores (mais de 25) e o lattes insere etal. termina lista com ;
+            # muitos autores (mais de 25) e o lattes insere etal. termina lista
+            # com ;
             if partes[1] == '':
                 partes = self.item.partition(" ; ")
                 a = partes[0].partition(", et al.")  # remocao do et al.
@@ -95,7 +96,7 @@ class TrabalhoCompletoEmCongresso:
                 self.volume = partes[2].rstrip(".").rstrip(",")
                 partes = partes[0]
 
-            aux = re.findall(', ((?:19|20)\d\d)\\b', partes)
+            aux = re.findall(', ((?:19|20)\\d\\d)\\b', partes)
 
             if len(aux) > 0:
                 partes = partes.rpartition(",")
@@ -104,9 +105,9 @@ class TrabalhoCompletoEmCongresso:
             else:
                 self.ano = ''
 
-                ###		partes = partes.rpartition(". ")
-                ###		self.tituloDosAnais = partes[2].strip().rstrip('.').rstrip(",")
-                ###		partes = partes[0]
+                # partes = partes.rpartition(". ")
+                # self.tituloDosAnais = partes[2].strip().rstrip('.').rstrip(",")
+                # partes = partes[0]
 
             partes = partes.rpartition(" In: ")
             if partes[1] == '':  # se nao existe nome do evento
@@ -114,7 +115,7 @@ class TrabalhoCompletoEmCongresso:
                 partes = partes[2]
             else:
                 # Qualis - Eh preciso separa o titulo da conferencia em partes[2] do restante
-                #				self.nomeDoEvento = partes[2].strip().rstrip(".")
+                # self.nomeDoEvento = partes[2].strip().rstrip(".")
                 partesV = partes[2].split(", ")
                 self.nomeDoEvento = ''
                 self.sigla = ''
@@ -124,7 +125,8 @@ class TrabalhoCompletoEmCongresso:
                 if len(partesV) == 2:
                     partesV = partesV[1].split(")")
                     self.sigla = partesV[0].strip('\'-0123456789 ')
-                # Qualis - Verificar se todas as informacoes estao sendo armazenadas!
+                # Qualis - Verificar se todas as informacoes estao sendo
+                # armazenadas!
                 partes = partes[0]
 
             self.titulo = partes.strip().rstrip(".")
@@ -141,7 +143,9 @@ class TrabalhoCompletoEmCongresso:
             self.paginas = ''
 
     def compararCom(self, objeto):
-        if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(self.titulo, objeto.titulo):
+        if self.idMembro.isdisjoint(
+                objeto.idMembro) and similaridade_entre_cadeias(
+                self.titulo, objeto.titulo):
             # Os IDs dos membros são agrupados.
             # Essa parte é importante para a criação do GRAFO de colaborações
             self.idMembro.update(objeto.idMembro)
@@ -182,7 +186,9 @@ class TrabalhoCompletoEmCongresso:
                 '" target="_blank" style="PADDING-RIGHT:4px;"><img border=0 src="doi.png"></a>'
 
         s += menuHTMLdeBuscaPB(self.titulo)
-        # TODO: a lógica para qualis de conferencias é outra (provavelmente precisará recair na lógica antiga do scriptLattes, ou seja, exigir um CSV)
+        # TODO: a lógica para qualis de conferencias é outra (provavelmente
+        # precisará recair na lógica antiga do scriptLattes, ou seja, exigir um
+        # CSV)
 
         s += formata_qualis(self.qualis, self.qualissimilar)
         return s
@@ -209,19 +215,25 @@ class TrabalhoCompletoEmCongresso:
         return s
 
     def csv(self, nomeCompleto=""):
-        if self.qualis == None:
+        if self.qualis is None:
             self.qualis = ''
-        if self.qualissimilar == None:
+        if self.qualissimilar is None:
             self.qualissimilar = ''
         s = "trabalhoCompletoEmCongresso\t"
         if nomeCompleto == "":  # tratamento grupal
-            s += str(
-                self.ano) + "\t" + self.doi + "\t" + self.titulo + "\t" + self.nomeDoEvento + "\t" + self.autores + "\t" + self.qualis + "\t" + self.qualissimilar
+            s += str(self.ano) + "\t" + self.doi + "\t" + self.titulo + "\t" + self.nomeDoEvento + \
+                "\t" + self.autores + "\t" + self.qualis + "\t" + self.qualissimilar
         else:  # tratamento individual
             try:
-                s += "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}".format(nomeCompleto, self.ano, self.doi,
-                                                                     self.titulo, self.nomeDoEvento, self.autores,
-                                                                     self.qualis, self.qualissimilar)
+                s += "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}".format(
+                    nomeCompleto,
+                    self.ano,
+                    self.doi,
+                    self.titulo,
+                    self.nomeDoEvento,
+                    self.autores,
+                    self.qualis,
+                    self.qualissimilar)
             except UnicodeDecodeError as err:
                 print(nomeCompleto)
                 print((str(self.ano)))
@@ -244,7 +256,7 @@ class TrabalhoCompletoEmCongresso:
         s += "+TITULO      : " + self.titulo + "\n"
         s += "+NOME EVENTO : " + \
             self.nomeDoEvento + "\n"
-        ###		s += "+ANAIS       : " + self.tituloDosAnais.encode('utf8','replace') + "\n"
+        # s += "+ANAIS       : " + self.tituloDosAnais.encode('utf8','replace') + "\n"
         s += "+ANO         : " + str(self.ano) + "\n"
         s += "+VOLUME      : " + self.volume + "\n"
         s += "+PAGINAS     : " + self.paginas + "\n"

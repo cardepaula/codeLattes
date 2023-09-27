@@ -64,7 +64,7 @@ class DepuradorDOIhtml(HTMLParser):
 
 
 def stripBlanks(s):
-    return re.sub('\s+', ' ', s).strip()
+    return re.sub('\\s+', ' ', s).strip()
 
 
 def htmlentitydecode(s):

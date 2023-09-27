@@ -51,10 +51,10 @@ class OutputStream:
         #             pass
         try:
             self.output.write(text)
-        except:
+        except BaseException:
             try:
                 self.output.write(str(text))
-            except:
+            except BaseException:
                 self.output.write('ERRO na impressao')
 
 
@@ -66,7 +66,8 @@ def buscarArquivo(filepath, arquivoConfiguracao=None):
         # vamos tentar mudar o diretorio para o atual do arquivo
         os.chdir(os.path.abspath(os.path.join(arquivoConfiguracao, os.pardir)))
     if not os.path.isfile(filepath):
-        # se ainda nao existe, tentemos ver se o arquivo não está junto com o config
+        # se ainda nao existe, tentemos ver se o arquivo não está junto com o
+        # config
         filepath = os.path.abspath(os.path.basename(filepath))
     else:
         # se encontramos, definimos então caminho absoluto
@@ -137,7 +138,8 @@ def similaridade_entre_cadeias(str1, str2, qualis=False):
     str2 = str2.strip().lower()
 
     # caso especial
-    if ('apresentação' == str1 or 'apresentação' == str2 or 'apresentacao' == str1 or 'apresentacao' == str2):
+    if ('apresentação' == str1 or 'apresentação' ==
+            str2 or 'apresentacao' == str1 or 'apresentacao' == str2):
         return 0
 
     if len(str1) == 0 or len(str2) == 0:
@@ -153,7 +155,8 @@ def similaridade_entre_cadeias(str1, str2, qualis=False):
             return dist
 
     else:
-        if len(str1) >= 10 and len(str2) >= 10 and Levenshtein.distance(str1, str2) <= 5:
+        if len(str1) >= 10 and len(
+                str2) >= 10 and Levenshtein.distance(str1, str2) <= 5:
             return 1
     return 0
 
@@ -163,19 +166,22 @@ def criarDiretorio(dir):
         try:
             os.makedirs(dir)
         # except OSError as exc:
-        except:
-            print(("\n[ERRO] Não foi possível criar ou atualizar o diretório: " + dir))
+        except BaseException:
+            print(
+                ("\n[ERRO] Não foi possível criar ou atualizar o diretório: " + dir))
             print("[ERRO] Você conta com as permissões de escrita? \n")
             return 0
     return 1
 
 # Combining Dictionaries Of Lists
+
+
 def merge_dols(dol1, dol2):
     result = {}
     if len(dol1) > 0 and len(dol2) > 0:
         result = dol1 | dol2
         result.update((k, dol1[k] + dol2[k])
-                         for k in set(dol1).intersection(dol2))
+                      for k in set(dol1).intersection(dol2))
     elif len(dol1) > 0:
         result = dol1
     elif len(dol2) > 0:

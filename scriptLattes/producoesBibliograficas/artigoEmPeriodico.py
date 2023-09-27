@@ -47,7 +47,13 @@ class ArtigoEmPeriodico:
     chave = None
     # issn = None
 
-    def __init__(self, idMembro, partesDoItem='', doi='', relevante='', complemento=''):
+    def __init__(
+            self,
+            idMembro,
+            partesDoItem='',
+            doi='',
+            relevante='',
+            complemento=''):
         self.idMembro = set([])
         self.idMembro.add(idMembro)
 
@@ -78,7 +84,8 @@ class ArtigoEmPeriodico:
                 partes = self.item.partition(".. ")
 
             # Verificar quando há um numero de autores > que 25
-            # muitos autores (mais de 25) e o lattes insere etal. termina lista com ;
+            # muitos autores (mais de 25) e o lattes insere etal. termina lista
+            # com ;
             if partes[1] == '':
                 partes = self.item.partition(" ; ")
                 a = partes[0].partition(", et al.")  # remocao do et al.
@@ -152,7 +159,9 @@ class ArtigoEmPeriodico:
                 # if parametroNome=="nomePeriodico": self.revista = parametroValor
 
     def compararCom(self, objeto):
-        if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(self.titulo, objeto.titulo):
+        if self.idMembro.isdisjoint(
+                objeto.idMembro) and similaridade_entre_cadeias(
+                self.titulo, objeto.titulo):
             # Os IDs dos membros são agrupados.
             # Essa parte é importante para a criação do GRAFO de colaborações
             self.idMembro.update(objeto.idMembro)
@@ -211,7 +220,7 @@ class ArtigoEmPeriodico:
         s += str(self.ano) + '.' if str(self.ano).isdigit() else '.'
 
         if not self.doi == '':
-            s += ' <a href="'+self.doi + \
+            s += ' <a href="' + self.doi + \
                 '" target="_blank" style="PADDING-RIGHT:4px;"><img border=0 src="doi.png"></a>'
 
         s += menuHTMLdeBuscaPB(self.titulo)
@@ -228,27 +237,28 @@ class ArtigoEmPeriodico:
             p2 = paginas[1]
         s = '\n'
         s += '\nTY  - JOUR'
-        s += '\nAU  - '+self.autores
-        s += '\nTI  - '+self.titulo
-        s += '\nJO  - '+self.revista
-        s += '\nVL  - '+self.volume
-        s += '\nIS  - '+self.numero
-        s += '\nSP  - '+p1
-        s += '\nEP  - '+p2
-        s += '\nPY  - '+str(self.ano)
-        s += '\nL2  - '+self.doi
+        s += '\nAU  - ' + self.autores
+        s += '\nTI  - ' + self.titulo
+        s += '\nJO  - ' + self.revista
+        s += '\nVL  - ' + self.volume
+        s += '\nIS  - ' + self.numero
+        s += '\nSP  - ' + p1
+        s += '\nEP  - ' + p2
+        s += '\nPY  - ' + str(self.ano)
+        s += '\nL2  - ' + self.doi
         s += '\nL3  - ' + self.issn
         s += '\nER  - '
         return s
 
     def csv(self, nomeCompleto=""):
-        if self.qualis == None:
+        if self.qualis is None:
             self.qualis = ''
-        if self.qualissimilar == None:
+        if self.qualissimilar is None:
             self.qualissimilar = ''
         s = "artigoEmPeriodico\t"
 
-        # FIXME: self.qualis estava dando erro de conversão; remediado temporariamente usando str(); verificar se comportamento está correto
+        # FIXME: self.qualis estava dando erro de conversão; remediado
+        # temporariamente usando str(); verificar se comportamento está correto
         if nomeCompleto == "":  # tratamento grupal
             s += str(self.ano) + "\t" + self.doi + "\t" + self.titulo + "\t" + self.revista + \
                 "\t" + self.autores + "\t" + \

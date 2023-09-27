@@ -196,7 +196,7 @@ class ParserLattesXML(HTMLParser):
                     self.atualizacaoCV = value
                 if name == 'numero-identificador':
                     self.idLattes = value
-                    self.url = 'http://lattes.cnpq.br/'+value
+                    self.url = 'http://lattes.cnpq.br/' + value
                     self.url = self.url.encode('utf-8')
 
         if tag == 'dados-gerais':
@@ -217,23 +217,23 @@ class ParserLattesXML(HTMLParser):
         # por implementar
 
         # if tag=='FORMACAO-ACADEMICA-TITULACAO':
-        #	for name, value in attributes:
-        #		if name=='':
-        #			= value
+        # for name, value in attributes:
+        # if name=='':
+        # = value
 
         # if tag=='AREAS-DE-ATUACAO':
-        #	for name, value in attributes:
-        #		if name=='':
-        #			= value
+        # for name, value in attributes:
+        # if name=='':
+        # = value
 
         # if tag=='IDIOMAS
-        #	for name, value in attributes:
-        #		if name=='':
-        #			= value
+        # for name, value in attributes:
+        # if name=='':
+        # = value
 
         if tag == 'artigo-publicado':
             self.achouArtigoEmPeriodico = 1
-            self.autoresLista = list(['']*150)
+            self.autoresLista = list([''] * 150)
             self.autores = ''
             self.titulo = ''
             self.ano = ''
@@ -245,7 +245,7 @@ class ParserLattesXML(HTMLParser):
 
         if tag == 'livro-publicado-ou-organizado':
             self.achouLivroPublicado = 1
-            self.autoresLista = list(['']*150)
+            self.autoresLista = list([''] * 150)
             self.autores = ''
             self.titulo = ''
             self.edicao = ''
@@ -255,7 +255,7 @@ class ParserLattesXML(HTMLParser):
 
         if tag == 'capitulo-de-livro-publicado':
             self.achouCapituloDeLivroPublicado = 1
-            self.autoresLista = list(['']*150)
+            self.autoresLista = list([''] * 150)
             self.autores = ''
             self.titulo = ''
             self.livro = ''
@@ -267,7 +267,7 @@ class ParserLattesXML(HTMLParser):
 
         if tag == 'texto-em-jornal-ou-revista':
             self.achouTextoEmJornalDeNoticia = 1
-            self.autoresLista = list(['']*150)
+            self.autoresLista = list([''] * 150)
             self.autores = ''
             self.titulo = ''
             self.nomeJornal = ''
@@ -278,7 +278,7 @@ class ParserLattesXML(HTMLParser):
 
         if tag == 'trabalho-em-eventos':
             self.achouTrabalhoEmEvento = 1
-            self.autoresLista = list(['']*150)
+            self.autoresLista = list([''] * 150)
             self.autores = ''
             self.titulo = ''
             self.nomeDoEvento = ''
@@ -290,7 +290,7 @@ class ParserLattesXML(HTMLParser):
 
         if tag == 'artigo-aceito-para-publicacao':
             self.achouArtigoAceito = 1
-            self.autoresLista = list(['']*150)
+            self.autoresLista = list([''] * 150)
             self.autores = ''
             self.titulo = ''
             self.revista = ''
@@ -302,7 +302,7 @@ class ParserLattesXML(HTMLParser):
 
         if tag == 'apresentacao-de-trabalho':
             self.achouApresentacaoDeTrabalho = 1
-            self.autoresLista = list(['']*150)
+            self.autoresLista = list([''] * 150)
             self.autores = ''
             self.titulo = ''
             self.ano = ''
@@ -310,7 +310,7 @@ class ParserLattesXML(HTMLParser):
 
         if tag == 'outra-producao-bibliografica':
             self.achouOutroTipoDeProducaoBibliografica = 1
-            self.autoresLista = list(['']*150)
+            self.autoresLista = list([''] * 150)
             self.autores = ''
             self.titulo = ''
             self.ano = ''
@@ -364,8 +364,8 @@ class ParserLattesXML(HTMLParser):
                     uf = value
                 if name == 'cep':
                     cep = value
-            self.enderecoProfissional = nomeIntituicao+". "+nomeUnidade+". " + \
-                orgao+". "+logradouro+" CEP "+cep+" - "+cidade+", "+uf+" - "+pais
+            self.enderecoProfissional = nomeIntituicao + ". " + nomeUnidade + ". " + orgao + \
+                ". " + logradouro + " CEP " + cep + " - " + cidade + ", " + uf + " - " + pais
 
         # ----------------------------------------------------------------------
         if self.achouArtigoEmPeriodico:
@@ -398,7 +398,7 @@ class ParserLattesXML(HTMLParser):
                         pagina1 = value
                     if name == 'pagina-final':
                         pagina2 = value
-                self.paginas = pagina1+'-'+pagina2
+                self.paginas = pagina1 + '-' + pagina2
 
         # ----------------------------------------------------------------------
         if self.achouLivroPublicado:
@@ -457,7 +457,7 @@ class ParserLattesXML(HTMLParser):
                         pagina1 = value
                     if name == 'pagina-final':
                         pagina2 = value
-                self.paginas = pagina1+'-'+pagina2
+                self.paginas = pagina1 + '-' + pagina2
 
         # ----------------------------------------------------------------------
         if self.achouTextoEmJornalDeNoticia:
@@ -488,7 +488,7 @@ class ParserLattesXML(HTMLParser):
                         pagina1 = value
                     if name == 'pagina-final':
                         pagina2 = value
-                self.paginas = pagina1+'-'+pagina2
+                self.paginas = pagina1 + '-' + pagina2
 
         # ----------------------------------------------------------------------
         if self.achouTrabalhoEmEvento:
@@ -527,7 +527,7 @@ class ParserLattesXML(HTMLParser):
                         pagina1 = value
                     if name == 'pagina-final':
                         pagina2 = value
-                self.paginas = pagina1+'-'+pagina2
+                self.paginas = pagina1 + '-' + pagina2
 
         # ----------------------------------------------------------------------
         if self.achouArtigoAceito:
@@ -560,7 +560,7 @@ class ParserLattesXML(HTMLParser):
                         pagina1 = value
                     if name == 'pagina-final':
                         pagina2 = value
-                self.paginas = pagina1+'-'+pagina2
+                self.paginas = pagina1 + '-' + pagina2
 
         # ----------------------------------------------------------------------
         if self.achouApresentacaoDeTrabalho:
@@ -688,7 +688,7 @@ class ParserLattesXML(HTMLParser):
             pub.numero = self.numero
             pub.ano = self.ano
             pub.chave = self.autores
-            pub.doi = 'http://dx.doi.org/'+self.doi if not self.doi == 0 else ''
+            pub.doi = 'http://dx.doi.org/' + self.doi if not self.doi == 0 else ''
             self.listaArtigoEmPeriodico.append(pub)
 
         # ----------------------------------------------------------------------
@@ -771,7 +771,7 @@ class ParserLattesXML(HTMLParser):
                 pub.numero = self.numero
                 pub.paginas = self.paginas
                 pub.chave = self.autores
-                pub.doi = 'http://dx.doi.org/'+self.doi if not self.doi == 0 else ''
+                pub.doi = 'http://dx.doi.org/' + self.doi if not self.doi == 0 else ''
                 self.listaResumoEmCongresso.append(pub)
                 return
 
@@ -785,7 +785,7 @@ class ParserLattesXML(HTMLParser):
                 pub.volume = self.volume
                 pub.paginas = self.paginas
                 pub.chave = self.autores
-                pub.doi = 'http://dx.doi.org/'+self.doi if not self.doi == 0 else ''
+                pub.doi = 'http://dx.doi.org/' + self.doi if not self.doi == 0 else ''
                 self.listaResumoExpandidoEmCongresso.append(pub)
                 return
 
@@ -820,7 +820,7 @@ class ParserLattesXML(HTMLParser):
             pub.numero = self.numero
             pub.ano = self.ano
             pub.chave = self.autores
-            pub.doi = 'http://dx.doi.org/'+self.doi if not self.doi == 0 else ''
+            pub.doi = 'http://dx.doi.org/' + self.doi if not self.doi == 0 else ''
             self.listaArtigoAceito.append(pub)
 
         # ----------------------------------------------------------------------
@@ -836,7 +836,7 @@ class ParserLattesXML(HTMLParser):
             pub.autores = self.autores
             pub.titulo = stripBlanks(self.titulo)
             pub.ano = self.ano
-            pub.natureza = self.nomeEvento+'. ('+self.natureza+')'
+            pub.natureza = self.nomeEvento + '. (' + self.natureza + ')'
             pub.chave = self.autores
             self.listaApresentacaoDeTrabalho.append(pub)
 
@@ -853,7 +853,7 @@ class ParserLattesXML(HTMLParser):
             pub.autores = self.autores
             pub.titulo = stripBlanks(self.titulo)
             pub.ano = self.ano
-            pub.natureza = self.editora+'. ('+self.natureza+')'
+            pub.natureza = self.editora + '. (' + self.natureza + ')'
             pub.chave = self.autores
             self.listaOutroTipoDeProducaoBibliografica.append(pub)
 
@@ -904,7 +904,7 @@ class ParserLattesXML(HTMLParser):
 
 
 def stripBlanks(s):
-    return re.sub('\s+', ' ', s).strip()
+    return re.sub('\\s+', ' ', s).strip()
 
 
 def htmlentitydecode(s):

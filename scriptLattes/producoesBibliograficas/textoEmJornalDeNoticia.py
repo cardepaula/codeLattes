@@ -41,7 +41,7 @@ class TextoEmJornalDeNoticia:
     paginas = None
     chave = None
 
-    def __init__(self, idMembro, partesDoItem='',  relevante=''):
+    def __init__(self, idMembro, partesDoItem='', relevante=''):
         self.idMembro = set([])
         self.idMembro.add(idMembro)
 
@@ -60,14 +60,14 @@ class TextoEmJornalDeNoticia:
             self.autores = partes[0].strip()
             partes = partes[2]
 
-            if len(re.findall('\d\d \w+. (?:19|20)\d\d', partes)) > 0:
+            if len(re.findall('\\d\\d \\w+. (?:19|20)\\d\\d', partes)) > 0:
                 partes = partes.rpartition(",")
                 self.data = partes[2].strip().rstrip(".").rstrip(",")
                 partes = partes[0]
             else:
                 self.data = ''
 
-            aux = re.findall(' ((?:19|20)\d\d)\\b', self.data)
+            aux = re.findall(' ((?:19|20)\\d\\d)\\b', self.data)
             if len(aux) > 0:
                 self.ano = aux[-1]
             else:
@@ -109,7 +109,9 @@ class TextoEmJornalDeNoticia:
             self.ano = ''
 
     def compararCom(self, objeto):
-        if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(self.titulo, objeto.titulo):
+        if self.idMembro.isdisjoint(
+                objeto.idMembro) and similaridade_entre_cadeias(
+                self.titulo, objeto.titulo):
             # Os IDs dos membros são agrupados.
             # Essa parte é importante para a criação do GRAFO de colaborações
             self.idMembro.update(objeto.idMembro)
@@ -157,14 +159,14 @@ class TextoEmJornalDeNoticia:
             p2 = paginas[1]
         s = '\n'
         s += '\nTY  - MGZN'
-        s += '\nAU  - '+self.autores
-        s += '\nT1  - '+self.titulo
-        s += '\nTI  - '+self.nomeJornal
-        s += '\nPY  - '+str(self.ano)
-        s += '\nVL  - '+self.volume
-        s += '\nSP  - '+p1
-        s += '\nEP  - '+p2
-        s += '\nM1  - '+self.data
+        s += '\nAU  - ' + self.autores
+        s += '\nT1  - ' + self.titulo
+        s += '\nTI  - ' + self.nomeJornal
+        s += '\nPY  - ' + str(self.ano)
+        s += '\nVL  - ' + self.volume
+        s += '\nSP  - ' + p1
+        s += '\nEP  - ' + p2
+        s += '\nM1  - ' + self.data
         s += '\nER  - '
         return s
 

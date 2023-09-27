@@ -42,7 +42,7 @@ class CapituloDeLivroPublicado:
     paginas = None
     chave = None
 
-    def __init__(self, idMembro, partesDoItem='',  relevante=''):
+    def __init__(self, idMembro, partesDoItem='', relevante=''):
         self.idMembro = set([])
         self.idMembro.add(idMembro)
 
@@ -124,7 +124,9 @@ class CapituloDeLivroPublicado:
             self.chave = ''
 
     def compararCom(self, objeto):
-        if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(self.titulo, objeto.titulo):
+        if self.idMembro.isdisjoint(
+                objeto.idMembro) and similaridade_entre_cadeias(
+                self.titulo, objeto.titulo):
             # Os IDs dos membros são agrupados.
             # Essa parte é importante para a criação do GRAFO de colaborações
             self.idMembro.update(objeto.idMembro)
@@ -176,15 +178,15 @@ class CapituloDeLivroPublicado:
             p2 = paginas[1]
         s = '\n'
         s += '\nTY  - CHAP'
-        s += '\nAU  - '+self.autores
-        s += '\nT1  - '+self.titulo
-        s += '\nTI  - '+self.livro
-        s += '\nIS  - '+self.edicao
-        s += '\nPB  - '+self.editora
-        s += '\nPY  - '+str(self.ano)
-        s += '\nVL  - '+self.volume
-        s += '\nSP  - '+p1
-        s += '\nEP  - '+p2
+        s += '\nAU  - ' + self.autores
+        s += '\nT1  - ' + self.titulo
+        s += '\nTI  - ' + self.livro
+        s += '\nIS  - ' + self.edicao
+        s += '\nPB  - ' + self.editora
+        s += '\nPY  - ' + str(self.ano)
+        s += '\nVL  - ' + self.volume
+        s += '\nSP  - ' + p1
+        s += '\nEP  - ' + p2
         s += '\nER  - '
         return s
 

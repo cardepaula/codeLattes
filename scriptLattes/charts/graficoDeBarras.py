@@ -71,24 +71,41 @@ class GraficoDeBarras:
             rects = plt.bar(ind, vetorDeQuantidades,
                             color='#006600', edgecolor='#006600')
 
-            plt.ylabel(self.titulo, fontsize=10, color='#000099')  # , family='sans-serif')
+            plt.ylabel(self.titulo, fontsize=10, color='#000099')
             plt.yticks([])
 
-            plt.xticks(ind+2*bar_width, vetorDeAnos, rotation=90,
+            plt.xticks(ind + 2 * bar_width, vetorDeAnos, rotation=90,
                        fontsize=8, color='#000099')  # , family='sans-serif')
             # plt.axis('tight')
             old_axis = plt.axis()
             plt.axis([old_axis[0], old_axis[1], 0,
-                     max(vetorDeQuantidades)*1.15])
+                     max(vetorDeQuantidades) * 1.15])
 
             # rotulos sobre as barras
             for rect in rects:
                 height = rect.get_height()
-                plt.text(rect.get_x()+rect.get_width()/2., 1.05*height, '%d' %
-                         int(height), ha='center', va='bottom', fontsize=6, color='#001100')
+                plt.text(
+                    rect.get_x() +
+                    rect.get_width() /
+                    2.,
+                    1.05 *
+                    height,
+                    '%d' %
+                    int(height),
+                    ha='center',
+                    va='bottom',
+                    fontsize=6,
+                    color='#001100')
 
-            plt.savefig(self.diretorioDeSaida+"/"+self.prefixo+'.png', format='png',
-                        transparent=False, pad_inches=0.1, bbox_inches='tight')
+            plt.savefig(
+                self.diretorioDeSaida +
+                "/" +
+                self.prefixo +
+                '.png',
+                format='png',
+                transparent=False,
+                pad_inches=0.1,
+                bbox_inches='tight')
 
             self.vetorDeProducoes.append(
                 (prefixo, vetorDeAnos, vetorDeQuantidades))

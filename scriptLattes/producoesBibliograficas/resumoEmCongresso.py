@@ -63,11 +63,11 @@ class ResumoEmCongresso:
             partes = partes[2]
 
             # -------------------------
-            aux = re.findall(', ((?:19|20)\d\d)\\b', partes)
+            aux = re.findall(', ((?:19|20)\\d\\d)\\b', partes)
             if len(aux) > 0:
-                #			partes = partes.rpartition(",")
+                # partes = partes.rpartition(",")
                 self.ano = aux[-1].strip().rstrip(".").rstrip(",")
-    #			partes = partes[0]
+                # partes = partes[0]
             else:
                 self.ano = ''
             # ------------------------
@@ -96,17 +96,17 @@ class ResumoEmCongresso:
                 self.volume = partes[2].rstrip(".").rstrip(",")
                 partes = partes[0]
 
-            aux = re.findall(', ((?:19|20)\d\d)\\b', partes)
+            aux = re.findall(', ((?:19|20)\\d\\d)\\b', partes)
             if len(aux) > 0:
                 partes = partes.rpartition(",")
                 self.ano = aux[-1].strip().rstrip(".").rstrip(",")
                 partes = partes[0]
-    #		else:
-    #			self.ano = ''
+            # else:
+            # self.ano = ''
 
-    ###		partes = partes.rpartition(". ")
-    ###		self.tituloDosAnais = partes[2].strip().rstrip('.').rstrip(",")
-    ###		partes = partes[0]
+            # partes = partes.rpartition(". ")
+            # self.tituloDosAnais = partes[2].strip().rstrip('.').rstrip(",")
+            # partes = partes[0]
 
             partes = partes.rpartition(" In: ")
             if partes[1] == '':  # se nao existe nome do evento
@@ -132,7 +132,9 @@ class ResumoEmCongresso:
             self.paginas = ''
 
     def compararCom(self, objeto):
-        if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(self.titulo, objeto.titulo):
+        if self.idMembro.isdisjoint(
+                objeto.idMembro) and similaridade_entre_cadeias(
+                self.titulo, objeto.titulo):
             # Os IDs dos membros são agrupados.
             # Essa parte é importante para a criação do GRAFO de colaborações
             self.idMembro.update(objeto.idMembro)
@@ -171,7 +173,7 @@ class ResumoEmCongresso:
         s += str(self.ano) + '. ' if str(self.ano).isdigit() else '. '
 
         if not self.doi == '':
-            s += '<a href="'+self.doi + \
+            s += '<a href="' + self.doi + \
                 '" target="_blank" style="PADDING-RIGHT:4px;"><img border=0 src="doi.png"></a>'
 
         s += menuHTMLdeBuscaPB(self.titulo)
@@ -187,15 +189,15 @@ class ResumoEmCongresso:
             p2 = paginas[1]
         s = '\n'
         s += '\nTY  - CONF'
-        s += '\nAU  - '+self.autores
-        s += '\nT1  - '+self.titulo
-        s += '\nTI  - '+self.nomeDoEvento
-        s += '\nVL  - '+self.volume
-        s += '\nIS  - '+self.numero
-        s += '\nSP  - '+p1
-        s += '\nEP  - '+p2
-        s += '\nPY  - '+str(self.ano)
-        s += '\nL2  - '+self.doi
+        s += '\nAU  - ' + self.autores
+        s += '\nT1  - ' + self.titulo
+        s += '\nTI  - ' + self.nomeDoEvento
+        s += '\nVL  - ' + self.volume
+        s += '\nIS  - ' + self.numero
+        s += '\nSP  - ' + p1
+        s += '\nEP  - ' + p2
+        s += '\nPY  - ' + str(self.ano)
+        s += '\nL2  - ' + self.doi
         s += '\nER  - '
         return s
 
@@ -210,7 +212,7 @@ class ResumoEmCongresso:
         s += "+TITULO      : " + self.titulo + "\n"
         s += "+NOME EVENTO : " + \
             self.nomeDoEvento + "\n"
-###		s += "+ANAIS       : " + self.tituloDosAnais.encode('utf8','replace') + "\n"
+        # s += "+ANAIS       : " + self.tituloDosAnais.encode('utf8','replace') + "\n"
         s += "+ANO         : " + str(self.ano) + "\n"
         s += "+VOLUME      : " + self.volume + "\n"
         s += "+NUMERO      : " + self.numero + "\n"

@@ -45,7 +45,7 @@ class ParticipacaoEmEvento:
             self.item = partesDoItem[1]
 
             partes = self.item
-            aux = re.findall('\. ((?:19|20)\d\d)\\b', partes)
+            aux = re.findall('\\. ((?:19|20)\\d\\d)\\b', partes)
             if len(aux) > 0:
                 self.ano = aux[0]
             else:
@@ -57,7 +57,9 @@ class ParticipacaoEmEvento:
             self.ano = ''
 
     def compararCom(self, objeto):
-        if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(self.item, objeto.item):
+        if self.idMembro.isdisjoint(
+                objeto.idMembro) and similaridade_entre_cadeias(
+                self.item, objeto.item):
             # Os IDs dos membros são agrupados.
             # Essa parte é importante para a criação do GRAFO de colaborações
             self.idMembro.update(objeto.idMembro)

@@ -34,7 +34,7 @@ class FormacaoAcademica:
         # partesDoItem[0]: Periodo da formacao Profissional
         # partesDoItem[1]: Descricao da formacao Profissional
 
-        if partesDoItem != None:  # Caso deseja-se usar setters
+        if partesDoItem is not None:  # Caso deseja-se usar setters
 
             anos = partesDoItem[0].partition(" - ")
             self.anoInicio = anos[0]
@@ -69,8 +69,8 @@ class FormacaoAcademica:
 
     # private
     def format_descricao(self, desc):
-        linesbreaks = ["\n"]*len(desc)
-        return "".join([a+b for a, b in zip(desc, linesbreaks)])
+        linesbreaks = ["\n"] * len(desc)
+        return "".join([a + b for a, b in zip(desc, linesbreaks)])
 
     def set_descricao(self, desc):
         self.descricao = self.format_descricao(desc)

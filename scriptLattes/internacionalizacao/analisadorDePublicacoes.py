@@ -307,7 +307,8 @@ class AnalisadorDePublicacoes:
                         publicacaoEinternacionalizacao.atribuirListaDeIndicesDePaises(
                             listaDePaisesIdentificados)
 
-                        if self.listaDePublicacoesEinternacionalizacao.get(pub.ano) is None:
+                        if self.listaDePublicacoesEinternacionalizacao.get(
+                                pub.ano) is None:
                             self.listaDePublicacoesEinternacionalizacao[pub.ano] = [
                             ]
                         self.listaDePublicacoesEinternacionalizacao[pub.ano].append(
@@ -326,14 +327,15 @@ class AnalisadorDePublicacoes:
             for key in list(self.paises.keys()):
                 nomeDePais = key
                 # Procuramos o nome em ingles (nome original)
-                totalInternacionais = 0
+                # totalInternacionais = 0
                 if self.procurarPais(dataDoi, nomeDePais, urlDOI):
                     listaDePaisesIdentificados.append(nomeDePais)
                 else:
                     if len(self.paises[nomeDePais]) > 0:
                         # Procuramos os nomes alternativos dos países
                         for nomeAlternativoDePais in self.paises[nomeDePais]:
-                            if self.procurarPais(dataDoi, nomeAlternativoDePais, urlDOI):
+                            if self.procurarPais(
+                                    dataDoi, nomeAlternativoDePais, urlDOI):
                                 listaDePaisesIdentificados.append(nomeDePais)
                                 break
 
@@ -369,8 +371,9 @@ class AnalisadorDePublicacoes:
             prefixo = dataDoi[1][4]
             posfixo = dataDoi[1][5]
             idDoi = dataDoi[1][0]
-            if re.search((prefixo, '')[prefixo is None] + re.escape(nomeDePais) + (posfixo, '')[posfixo is None],
-                         doihtml):
+            if re.search((prefixo, '')[prefixo is None] +
+                         re.escape(nomeDePais) +
+                         (posfixo, '')[posfixo is None], doihtml):
                 return True
             else:
                 return False
@@ -378,7 +381,7 @@ class AnalisadorDePublicacoes:
             doihtml = dataDoi[0]
             doihtml = doihtml
             doihtml = doihtml.lower()
-            prefixo = ",.*,\s*"
+            prefixo = ",.*,\\s*"
             if re.search(prefixo + re.escape(nomeDePais) + r"\s*\n", doihtml):
                 return True
             if re.search(prefixo + re.escape(nomeDePais) + r"\W*\n", doihtml):
@@ -428,7 +431,8 @@ class AnalisadorDePublicacoes:
                     # rawDOIhtml = HTMLParser.HTMLParser().unescape(rawDOIhtml.decode("utf8", "ignore"))
                     rawDOIhtml = HTMLParser().unescape(rawDOIhtml.decode("utf8", "ignore"))
                     rawDOIhtml = unicodedata.normalize(
-                        'NFKD', str(rawDOIhtml)).encode('ASCII', 'ignore').decode()
+                        'NFKD', str(rawDOIhtml)).encode(
+                        'ASCII', 'ignore').decode()
 
                     if not self.grupo.diretorioDoi == '':
                         print(("- Armazenando DOI armazenado no cache: " + doiPath))
@@ -437,7 +441,7 @@ class AnalisadorDePublicacoes:
                         f.write(rawDOIhtml)
                         f.close()
                     break
-                except:
+                except BaseException:
                     print(('[AVISO] Tentativa ' + str(tentativa) +
                           ': DOI não está disponível na internet: ', urlDOI))
                     time.sleep(10)
@@ -454,7 +458,7 @@ class AnalisadorDePublicacoes:
                     caso = genericParser(parserData)
                     try:
                         caso.feed(rawDOIhtml)
-                    except:
+                    except BaseException:
                         caso.data = ""
                     doihtml = str(caso.data)
                     dataDoi.append(doihtml)
@@ -465,42 +469,42 @@ class AnalisadorDePublicacoes:
                 casoUrl = parser101007()
                 try:
                     casoUrl.feed(rawDOIhtml)
-                except:
+                except BaseException:
                     casoUrl.data = ""
                 doihtml = str(casoUrl.data)
                 parserData = ["10.1134", '', '', '',
-                              'authoraddress=.*\+', '.*&contentid']
+                              'authoraddress=.*\\+', '.*&contentid']
                 dataDoi.append(doihtml)
                 dataDoi.append(parserData)
 
-                #	elif urlDOI.find("10.1007")>-1:
-                #		print "**caso - 10.1007"
-                #		casoUrl = parser101007()
-                #		casoUrl.feed(rawDOIhtml)
-                #		doihtml = str(casoUrl.data)
-                #		parserData = ["10.1007",'','','','authoraddress=.*\+','.*&contentid']
-                #		dataDoi.append(doihtml)
-                #		dataDoi.append(parserData)
+                # elif urlDOI.find("10.1007")>-1:
+                # print "**caso - 10.1007"
+                # casoUrl = parser101007()
+                # casoUrl.feed(rawDOIhtml)
+                # doihtml = str(casoUrl.data)
+                # parserData = ["10.1007",'','','','authoraddress=.*\+','.*&contentid']
+                # dataDoi.append(doihtml)
+                # dataDoi.append(parserData)
 
-                #	elif urlDOI.find("10.1021")>-1:
-                #		# print "**caso -- 10.1021"
-                #		caso=parser101021()
-                #		caso.feed(rawDOIhtml)
-                #		doihtml= str(caso.data)
-                #		parserData=["10.1021",'','','',',.*,\s*','[\s*|,|;|-|\.|\'|\"]']
-                #		dataDoi.append(doihtml)
-                #		dataDoi.append(parserData)
+                # elif urlDOI.find("10.1021")>-1:
+                # # print "**caso -- 10.1021"
+                # caso=parser101021()
+                # caso.feed(rawDOIhtml)
+                # doihtml= str(caso.data)
+                # parserData=["10.1021",'','','',',.*,\s*','[\s*|,|;|-|\.|\'|\"]']
+                # dataDoi.append(doihtml)
+                # dataDoi.append(parserData)
 
             elif urlDOI.find("10.1590") > -1:
                 print("**caso -- 10.1590")
                 caso = parser101590()
                 try:
                     caso.feed(rawDOIhtml)
-                except:
+                except BaseException:
                     caso.data = ""
                 doihtml = str(caso.data)
                 parserData = ["10.1590", '', '', '',
-                              ',.*,\s*', '[\s*|,|;|-|\.|\'|\"]']
+                              ',.*,\\s*', '[\\s*|,|;|-|\\.|\'|\"]']
                 dataDoi.append(doihtml)
                 dataDoi.append(parserData)
             else:
@@ -532,9 +536,9 @@ class AnalisadorDePublicacoes:
         # Next we can remove the remaining tags:
         cleaned = re.sub(r"(?s)<.*?>", " ", cleaned)
         # Finally, we deal with whitespace
-        ##cleaned = re.sub(r"&nbsp;", " ", cleaned)
-        ##cleaned = re.sub(r"  ", " ", cleaned)
-        ##cleaned = re.sub(r"  ", " ", cleaned)
+        # cleaned = re.sub(r"&nbsp;", " ", cleaned)
+        # cleaned = re.sub(r"  ", " ", cleaned)
+        # cleaned = re.sub(r"  ", " ", cleaned)
 
         cleaned = re.sub(r"\s+\n", "\n", cleaned)
         return cleaned.strip()
@@ -544,7 +548,8 @@ class AnalisadorDePublicacoes:
         x = self.parserFile
         nos = x.documentElement
         fields = []
-        filhos1 = [no for no in nos.childNodes if no.nodeType == x.ELEMENT_NODE]
+        filhos1 = [
+            no for no in nos.childNodes if no.nodeType == x.ELEMENT_NODE]
         for pai in filhos1:
             if pai.hasAttribute('idDoi'):
                 atr = pai.getAttributeNode('idDoi')

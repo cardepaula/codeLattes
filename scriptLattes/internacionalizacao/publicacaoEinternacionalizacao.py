@@ -39,7 +39,7 @@ class PublicacaoEinternacionalizacao:
         self.listaDePaises = listaDePaisesIdentificados
 
     def html(self):
-        s = ' <a href="'+self.publicacao.doi + \
+        s = ' <a href="' + self.publicacao.doi + \
             '" target="_blank" style="PADDING-RIGHT:4px;"><img border=0 src="doi.png"></a>'
         s += self.publicacao.titulo + '. <br>'
 

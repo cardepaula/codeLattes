@@ -62,7 +62,8 @@ class ArtigoAceito:
                 partes = self.item.partition(".. ")
 
             # Verificar quando há um numero de autores > que 25
-            # muitos autores (mais de 25) e o lattes insere etal. termina lista com ;
+            # muitos autores (mais de 25) e o lattes insere etal. termina lista
+            # com ;
             if partes[1] == '':
                 partes = self.item.partition(" ; ")
                 a = partes[0].partition(", et al.")  # remocao do et al.
@@ -120,7 +121,9 @@ class ArtigoAceito:
             self.ano = ''
 
     def compararCom(self, objeto):
-        if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(self.titulo, objeto.titulo):
+        if self.idMembro.isdisjoint(
+                objeto.idMembro) and similaridade_entre_cadeias(
+                self.titulo, objeto.titulo):
             # Os IDs dos membros são agrupados.
             # Essa parte é importante para a criação do GRAFO de colaborações
             self.idMembro.update(objeto.idMembro)
@@ -158,7 +161,7 @@ class ArtigoAceito:
         s += str(self.ano) + '. ' if str(self.ano).isdigit() else '. '
 
         if not self.doi == '':
-            s += '<a href="'+self.doi + \
+            s += '<a href="' + self.doi + \
                 '" target="_blank" style="PADDING-RIGHT:4px;"><img border=0 src="doi.png"></a>'
 
         s += menuHTMLdeBuscaPB(self.titulo)

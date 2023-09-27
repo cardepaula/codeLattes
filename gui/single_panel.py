@@ -42,33 +42,35 @@ class SingleProcessingTabPanel(BasePanel):
         if last_file:
             self.ui.input.setPlainText(last_file)
 
-            #self.output_folder = '/tmp/teste-01/'
-            #self.output_folder = u'C:\\a paça\\exemplo\\teste-01\\'
-            #self.ui.resultsWidget.setDisabled(False)
+            # self.output_folder = '/tmp/teste-01/'
+            # self.output_folder = u'C:\\a paça\\exemplo\\teste-01\\'
+            # self.ui.resultsWidget.setDisabled(False)
 
     def print_text(self):
         try:
             s = str(self.process.readAllStandardOutput())
-        except:
+        except BaseException:
             s = ""
         try:
             self.ui.out.insertPlainText(s)
-        except:
+        except BaseException:
             self.print_error("(String não capturada)")
 
     def print_error(self):
         s = str(self.process.readAllStandardError())
-        msg = "<br><p style='color: red; font-weight: bold'>%s</p>" % s.replace('\n', '<br>')
+        msg = "<br><p style='color: red; font-weight: bold'>%s</p>" % s.replace(
+            '\n', '<br>')
         self.ui.errors.insertHtml(msg)
 
     def clearOutputs(self):
-        self.ui.out.setPlainText('');
-        self.ui.errors.setPlainText('');
+        self.ui.out.setPlainText('')
+        self.ui.errors.setPlainText('')
         self.ui.statusbar.clearMessage()
 
     def open_link(self):
         path = self.get_output_folder() + 'index.html'
-        QtGui.QDesktopServices.openUrl(QtCore.QUrl(path, QtCore.QUrl.TolerantMode))
+        QtGui.QDesktopServices.openUrl(
+            QtCore.QUrl(path, QtCore.QUrl.TolerantMode))
 
     def open_folder(self):
         path = self.get_output_folder()
@@ -110,13 +112,12 @@ class SingleProcessingTabPanel(BasePanel):
             folder = os.path.abspath(os.path.join(last_file, os.pardir))
         else:
             folder = '.'
-        filename = QtGui.QFileDialog.getOpenFileName(self.parent,
-                                                     "Abrir arquivo config", folder, "Text files (*.config)")
+        filename = QtGui.QFileDialog.getOpenFileName(
+            self.parent, "Abrir arquivo config", folder, "Text files (*.config)")
         if filename[0]:
             path = filename[0]
             self.settings.setValue('lastFile', path)
             self.ui.input.setPlainText(path)
-
 
     def finished(self):
         self.disable_running()

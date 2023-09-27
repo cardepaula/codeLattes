@@ -366,7 +366,11 @@ class highchart(dict):
         self['series'] = series
 
     def html(self):
-        return self.htmldata.replace('@jsondata@', format_json(self)).replace('@theme@', theme)
+        return self.htmldata.replace(
+            '@jsondata@',
+            format_json(self)).replace(
+            '@theme@',
+            theme)
 
     def json(self):
         return format_json(self)

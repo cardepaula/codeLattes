@@ -76,11 +76,11 @@ class OrientacaoConcluida:
                 self.agenciaDeFomento = ''
 
             partes = partes1[0]
-            aux = re.findall('((?:19|20)\d\d)\\b', partes)
+            aux = re.findall('((?:19|20)\\d\\d)\\b', partes)
             if len(aux) > 0:
                 self.ano = aux[0]  # .strip().rstrip(".").rstrip(",")
 
-                aux = re.findall('(.*). (?:19|20)\d\d\\b', partes)
+                aux = re.findall('(.*). (?:19|20)\\d\\d\\b', partes)
                 partes = aux[0]
             else:
                 self.ano = ''
@@ -106,7 +106,9 @@ class OrientacaoConcluida:
             self.tipoDeOrientacao = ''
 
     def compararCom(self, objeto):
-        if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(self.nome, objeto.nome):
+        if self.idMembro.isdisjoint(
+                objeto.idMembro) and similaridade_entre_cadeias(
+                self.nome, objeto.nome):
             # Os IDs dos membros são agrupados.
             # Essa parte é importante para a criação do GRAFO de colaborações
             self.idMembro.update(objeto.idMembro)
@@ -125,8 +127,8 @@ class OrientacaoConcluida:
             return None
 
     def html(self, listaDeMembros):
-        s = '<a href="http://lattes.cnpq.br/'+self.idOrientando+'">' + \
-            self.nome+'</a>' if len(self.idOrientando) == 16 else self.nome
+        s = '<a href="http://lattes.cnpq.br/' + self.idOrientando + '">' + \
+            self.nome + '</a>' if len(self.idOrientando) == 16 else self.nome
         s += '. <b>' + self.tituloDoTrabalho + '</b>. '
         s += self.instituicao + ', ' if not self.instituicao == '' else ''
         s += self.agenciaDeFomento + '. ' if not self.agenciaDeFomento == '' else '. '
@@ -136,14 +138,14 @@ class OrientacaoConcluida:
         lista = list(self.idMembro)
         if len(lista) == 1:
             m = listaDeMembros[lista[0]]
-            s += '<br><i><font size=-1>'+self.tipoDeOrientacao + \
-                ': <a href="'+m.url+'">'+m.nomeCompleto+'</a>.</font>'
+            s += '<br><i><font size=-1>' + self.tipoDeOrientacao + \
+                ': <a href="' + m.url + '">' + m.nomeCompleto + '</a>.</font>'
         else:
             s += '<br><i><font size=-1>Orientadores: '
             for i in lista:
                 m = listaDeMembros[i]
-                s += '<a href="'+m.url+'">'+m.nomeCompleto+'</a>, '
-            s = s.rstrip(', ')+'.</font></i>'
+                s += '<a href="' + m.url + '">' + m.nomeCompleto + '</a>, '
+            s = s.rstrip(', ') + '.</font></i>'
 
         return s
 
@@ -163,6 +165,6 @@ class OrientacaoConcluida:
             self.agenciaDeFomento + "\n"
         s += "+TIPO ORIENTA.: " + \
             self.tipoDeOrientacao + "\n"
-#		s += "+item         : @@" + self.item.encode('utf8','replace') + "@@\n"
+        # s += "+item         : @@" + self.item.encode('utf8','replace') + "@@\n"
 
         return s

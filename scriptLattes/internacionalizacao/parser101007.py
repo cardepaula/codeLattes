@@ -1,5 +1,6 @@
 #!/usr/bin/python
-# caso 4 http://www.springerlink.com/ procura tag a e o title Permissions & Reprints
+# caso 4 http://www.springerlink.com/ procura tag a e o title Permissions
+# & Reprints
 from .HTMLParserNew import HTMLParser
 
 

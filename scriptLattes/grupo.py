@@ -161,11 +161,20 @@ class Grupo:
 
                 # atribuicao dos valores iniciais para cada membro
                 # if 'xml' in identificador.lower():
-                ###### self.listaDeMembros.append(Membro(idSequencial, '', nome, periodo, rotulo, self.itemsDesdeOAno, self.itemsAteOAno, xml=identificador))
-                ###	self.listaDeMembros.append(Membro(idSequencial, identificador, nome, periodo, rotulo, self.itemsDesdeOAno, self.itemsAteOAno, diretorioCache))
+                # self.listaDeMembros.append(Membro(idSequencial, '', nome, periodo, rotulo, self.itemsDesdeOAno, self.itemsAteOAno, xml=identificador))
+                # self.listaDeMembros.append(Membro(idSequencial, identificador, nome, periodo, rotulo, self.itemsDesdeOAno, self.itemsAteOAno, diretorioCache))
                 # else:
-                self.listaDeMembros.append(Membro(idSequencial, identificador, nome, periodo, rotulo,
-                                           self.itemsDesdeOAno, self.itemsAteOAno, self.diretorioCache, self.dicionarioDeGeolocalizacao))
+                self.listaDeMembros.append(
+                    Membro(
+                        idSequencial,
+                        identificador,
+                        nome,
+                        periodo,
+                        rotulo,
+                        self.itemsDesdeOAno,
+                        self.itemsAteOAno,
+                        self.diretorioCache,
+                        self.dicionarioDeGeolocalizacao))
 
                 self.listaDeRotulos.append(rotulo)
                 idSequencial += 1
@@ -176,7 +185,8 @@ class Grupo:
         self.listaDeRotulosCores = [''] * len(self.listaDeRotulos)
 
         if self.obterParametro('global-identificar_publicacoes_com_qualis'):
-            # carregamos Qualis a partir de arquivos definidos no arquivo de configuração
+            # carregamos Qualis a partir de arquivos definidos no arquivo de
+            # configuração
             self.qualis = Qualis(self)
 
     def gerarXMLdeGrupo(self):
@@ -202,8 +212,8 @@ class Grupo:
                                                 membro.listaArtigoEmPeriodico)
             s += self.imprimeCSVListaIndividual(nomeCompleto,
                                                 membro.listaTrabalhoCompletoEmCongresso)
-            s += self.imprimeCSVListaIndividual(nomeCompleto,
-                                                membro.listaResumoExpandidoEmCongresso)
+            s += self.imprimeCSVListaIndividual(
+                nomeCompleto, membro.listaResumoExpandidoEmCongresso)
         self.salvarArquivoGenerico(s, prefix + 'publicacoesPorMembro.csv')
 
         # Salvamos a lista total (publicações do grupo)
@@ -251,7 +261,7 @@ class Grupo:
             rawIDsMembros.append(membro.idLattes)
         for membro in self.listaDeMembros:
             for idColaborador in membro.listaIDLattesColaboradoresUnica:
-                if not idColaborador in rawIDsMembros:
+                if idColaborador not in rawIDsMembros:
                     rawIDsColaboradores.append(idColaborador)
         rawIDsColaboradores = list(set(rawIDsColaboradores))
         self.salvarListaTXT(rawIDsColaboradores, prefix + "colaboradores.txt")
@@ -313,8 +323,9 @@ class Grupo:
         for membro in self.listaDeMembros:
             nomeCompleto = unicodedata.normalize(
                 'NFKD', membro.nomeCompleto).encode('ASCII', 'ignore').decode()
-            string += "\n" + str(
-                i) + "," + membro.idLattes + "," + nomeCompleto + "," + membro.rotulo + "," + membro.enderecoProfissionalLat + "," + membro.enderecoProfissionalLon + ","
+            string += "\n" + str(i) + "," + membro.idLattes + "," + nomeCompleto + "," + membro.rotulo + \
+                "," + membro.enderecoProfissionalLat + "," + \
+                membro.enderecoProfissionalLon + ","
             string += str(self.vectorRank[i]) + ","
             string += str(len(membro.listaArtigoEmPeriodico) + len(membro.listaLivroPublicado) + len(
                 membro.listaCapituloDeLivroPublicado) + len(membro.listaTrabalhoCompletoEmCongresso) + len(
@@ -412,7 +423,8 @@ class Grupo:
 
         [self.matrizDeAdjacencia, self.matrizDeFrequencia,
             self.listaDeColaboracoes] = self.compilador.uniaoDeMatrizesDeColaboracao()
-        # suma das linhas = num. de items feitos em co-autoria (parceria) com outro membro do grupo
+        # suma das linhas = num. de items feitos em co-autoria (parceria) com
+        # outro membro do grupo
         self.vetorDeCoAutoria = self.matrizDeFrequencia.sum(axis=1)
         self.matrizDeFrequenciaNormalizada = self.matrizDeFrequencia.copy()
 
@@ -443,8 +455,8 @@ class Grupo:
             self.qualis.calcularTotaisDosQualis(self)
 
             # if self.diretorioCache:
-            ###filename = (self.diretorioCache or '/tmp') + '/qualis.data'
-            #### self.qualis.qextractor.save_data(self.diretorioCache + '/' + filename)
+            # filename = (self.diretorioCache or '/tmp') + '/qualis.data'
+            # self.qualis.qextractor.save_data(self.diretorioCache + '/' + filename)
             # self.qualis.qextractor.save_data(filename)
 
             # self.qualis.calcular_totais_dos_qualis(self.compilador.listaCompletaArtigoEmPeriodico, self.compilador.listaCompletaTrabalhoCompletoEmCongresso,
@@ -456,7 +468,7 @@ class Grupo:
 
         for i in range(0, len(lista)):
             elemento = lista[i]
-            if type(elemento) == type(str()):
+            if isinstance(elemento, type(str())):
                 elemento = elemento
             else:
                 elemento = str(elemento)
@@ -535,7 +547,7 @@ class Grupo:
         arquivo = open(dir + "/" + nomeArquivo, 'w')
         for i in range(0, len(listaDoiValido)):
             elemento = listaDoiValido[i]
-            if type(elemento) == type(str()):
+            if isinstance(elemento, type(str())):
                 elemento = elemento.encode("utf8")
             else:
                 elemento = str(elemento)
@@ -548,25 +560,45 @@ class Grupo:
             self.obterParametro('global-diretorio_de_saida'))
 
         gBarra.criarGrafico(
-            self.compilador.listaCompletaArtigoEmPeriodico, 'PB0', 'Numero de publicacoes')
+            self.compilador.listaCompletaArtigoEmPeriodico,
+            'PB0',
+            'Numero de publicacoes')
         gBarra.criarGrafico(
-            self.compilador.listaCompletaLivroPublicado, 'PB1', 'Numero de publicacoes')
+            self.compilador.listaCompletaLivroPublicado,
+            'PB1',
+            'Numero de publicacoes')
         gBarra.criarGrafico(
-            self.compilador.listaCompletaCapituloDeLivroPublicado, 'PB2', 'Numero de publicacoes')
+            self.compilador.listaCompletaCapituloDeLivroPublicado,
+            'PB2',
+            'Numero de publicacoes')
         gBarra.criarGrafico(
-            self.compilador.listaCompletaTextoEmJornalDeNoticia, 'PB3', 'Numero de publicacoes')
+            self.compilador.listaCompletaTextoEmJornalDeNoticia,
+            'PB3',
+            'Numero de publicacoes')
         gBarra.criarGrafico(
-            self.compilador.listaCompletaTrabalhoCompletoEmCongresso, 'PB4', 'Numero de publicacoes')
+            self.compilador.listaCompletaTrabalhoCompletoEmCongresso,
+            'PB4',
+            'Numero de publicacoes')
         gBarra.criarGrafico(
-            self.compilador.listaCompletaResumoExpandidoEmCongresso, 'PB5', 'Numero de publicacoes')
+            self.compilador.listaCompletaResumoExpandidoEmCongresso,
+            'PB5',
+            'Numero de publicacoes')
         gBarra.criarGrafico(
-            self.compilador.listaCompletaResumoEmCongresso, 'PB6', 'Numero de publicacoes')
+            self.compilador.listaCompletaResumoEmCongresso,
+            'PB6',
+            'Numero de publicacoes')
         gBarra.criarGrafico(
-            self.compilador.listaCompletaArtigoAceito, 'PB7', 'Numero de publicacoes')
+            self.compilador.listaCompletaArtigoAceito,
+            'PB7',
+            'Numero de publicacoes')
         gBarra.criarGrafico(
-            self.compilador.listaCompletaApresentacaoDeTrabalho, 'PB8', 'Numero de publicacoes')
-        gBarra.criarGrafico(self.compilador.listaCompletaOutroTipoDeProducaoBibliografica, 'PB9',
-                            'Numero de publicacoes')
+            self.compilador.listaCompletaApresentacaoDeTrabalho,
+            'PB8',
+            'Numero de publicacoes')
+        gBarra.criarGrafico(
+            self.compilador.listaCompletaOutroTipoDeProducaoBibliografica,
+            'PB9',
+            'Numero de publicacoes')
 
         gBarra.criarGrafico(self.compilador.listaCompletaSoftwareComPatente,
                             'PT0', 'Numero de producoes tecnicas')
@@ -578,8 +610,10 @@ class Grupo:
                             'PT3', 'Numero de producoes tecnicas')
         gBarra.criarGrafico(self.compilador.listaCompletaTrabalhoTecnico,
                             'PT4', 'Numero de producoes tecnicas')
-        gBarra.criarGrafico(self.compilador.listaCompletaOutroTipoDeProducaoTecnica, 'PT5',
-                            'Numero de producoes tecnicas')
+        gBarra.criarGrafico(
+            self.compilador.listaCompletaOutroTipoDeProducaoTecnica,
+            'PT5',
+            'Numero de producoes tecnicas')
 
         gBarra.criarGrafico(
             self.compilador.listaCompletaPatente, 'PR0', 'Numero de patentes')
@@ -592,39 +626,67 @@ class Grupo:
                             'PA0', 'Numero de producoes artisticas')
 
         gBarra.criarGrafico(
-            self.compilador.listaCompletaOASupervisaoDePosDoutorado, 'OA0', 'Numero de orientacoes')
+            self.compilador.listaCompletaOASupervisaoDePosDoutorado,
+            'OA0',
+            'Numero de orientacoes')
         gBarra.criarGrafico(
-            self.compilador.listaCompletaOATeseDeDoutorado, 'OA1', 'Numero de orientacoes')
+            self.compilador.listaCompletaOATeseDeDoutorado,
+            'OA1',
+            'Numero de orientacoes')
         gBarra.criarGrafico(
-            self.compilador.listaCompletaOADissertacaoDeMestrado, 'OA2', 'Numero de orientacoes')
+            self.compilador.listaCompletaOADissertacaoDeMestrado,
+            'OA2',
+            'Numero de orientacoes')
         gBarra.criarGrafico(
-            self.compilador.listaCompletaOAMonografiaDeEspecializacao, 'OA3', 'Numero de orientacoes')
+            self.compilador.listaCompletaOAMonografiaDeEspecializacao,
+            'OA3',
+            'Numero de orientacoes')
         gBarra.criarGrafico(self.compilador.listaCompletaOATCC,
                             'OA4', 'Numero de orientacoes')
         gBarra.criarGrafico(
-            self.compilador.listaCompletaOAIniciacaoCientifica, 'OA5', 'Numero de orientacoes')
+            self.compilador.listaCompletaOAIniciacaoCientifica,
+            'OA5',
+            'Numero de orientacoes')
         gBarra.criarGrafico(
-            self.compilador.listaCompletaOAOutroTipoDeOrientacao, 'OA6', 'Numero de orientacoes')
+            self.compilador.listaCompletaOAOutroTipoDeOrientacao,
+            'OA6',
+            'Numero de orientacoes')
 
         gBarra.criarGrafico(
-            self.compilador.listaCompletaOCSupervisaoDePosDoutorado, 'OC0', 'Numero de orientacoes')
+            self.compilador.listaCompletaOCSupervisaoDePosDoutorado,
+            'OC0',
+            'Numero de orientacoes')
         gBarra.criarGrafico(
-            self.compilador.listaCompletaOCTeseDeDoutorado, 'OC1', 'Numero de orientacoes')
+            self.compilador.listaCompletaOCTeseDeDoutorado,
+            'OC1',
+            'Numero de orientacoes')
         gBarra.criarGrafico(
-            self.compilador.listaCompletaOCDissertacaoDeMestrado, 'OC2', 'Numero de orientacoes')
+            self.compilador.listaCompletaOCDissertacaoDeMestrado,
+            'OC2',
+            'Numero de orientacoes')
         gBarra.criarGrafico(
-            self.compilador.listaCompletaOCMonografiaDeEspecializacao, 'OC3', 'Numero de orientacoes')
+            self.compilador.listaCompletaOCMonografiaDeEspecializacao,
+            'OC3',
+            'Numero de orientacoes')
         gBarra.criarGrafico(self.compilador.listaCompletaOCTCC,
                             'OC4', 'Numero de orientacoes')
         gBarra.criarGrafico(
-            self.compilador.listaCompletaOCIniciacaoCientifica, 'OC5', 'Numero de orientacoes')
+            self.compilador.listaCompletaOCIniciacaoCientifica,
+            'OC5',
+            'Numero de orientacoes')
         gBarra.criarGrafico(
-            self.compilador.listaCompletaOCOutroTipoDeOrientacao, 'OC6', 'Numero de orientacoes')
+            self.compilador.listaCompletaOCOutroTipoDeOrientacao,
+            'OC6',
+            'Numero de orientacoes')
 
         gBarra.criarGrafico(
-            self.compilador.listaCompletaPremioOuTitulo, 'Pm', 'Numero de premios')
+            self.compilador.listaCompletaPremioOuTitulo,
+            'Pm',
+            'Numero de premios')
         gBarra.criarGrafico(
-            self.compilador.listaCompletaProjetoDePesquisa, 'Pj', 'Numero de projetos')
+            self.compilador.listaCompletaProjetoDePesquisa,
+            'Pj',
+            'Numero de projetos')
 
         gBarra.criarGrafico(self.compilador.listaCompletaPB,
                             'PB', 'Numero de producoes bibliograficas')
@@ -638,9 +700,13 @@ class Grupo:
                             'OC', 'Numero de orientacoes concluidas')
 
         gBarra.criarGrafico(
-            self.compilador.listaCompletaParticipacaoEmEvento, 'Ep', 'Numero de Eventos')
+            self.compilador.listaCompletaParticipacaoEmEvento,
+            'Ep',
+            'Numero de Eventos')
         gBarra.criarGrafico(
-            self.compilador.listaCompletaOrganizacaoDeEvento, 'Eo', 'Numero de Eventos')
+            self.compilador.listaCompletaOrganizacaoDeEvento,
+            'Eo',
+            'Numero de Eventos')
 
         prefix = self.obterParametro(
             'global-prefixo') + '-' if not self.obterParametro('global-prefixo') == '' else ''
@@ -657,8 +723,10 @@ class Grupo:
         print(("- " + str(self.listaDeRotulos)))
         print(("- " + str(self.listaDeRotulosCores)))
 
+    # TODO verificar se gProporcoes está sendo usado
     def gerarGraficoDeProporcoes(self):
-        if self.obterParametro('relatorio-incluir_grafico_de_proporcoes_bibliograficas'):
+        if self.obterParametro(
+                'relatorio-incluir_grafico_de_proporcoes_bibliograficas'):
             gProporcoes = GraficoDeProporcoes(
                 self, self.obterParametro('global-diretorio_de_saida'))
 
@@ -670,8 +738,9 @@ class Grupo:
             if self.analisadorDePublicacoes.listaDoiValido is not None:
                 prefix = self.obterParametro('global-prefixo') + '-' if not self.obterParametro(
                     'global-prefixo') == '' else ''
-                self.salvarListaInternalizacaoTXT(self.analisadorDePublicacoes.listaDoiValido,
-                                                  prefix + 'internacionalizacao.txt')
+                self.salvarListaInternalizacaoTXT(
+                    self.analisadorDePublicacoes.listaDoiValido,
+                    prefix + 'internacionalizacao.txt')
 
     def imprimirListasCompletas(self):
         self.compilador.imprimirListasCompletas()
@@ -719,7 +788,8 @@ class Grupo:
             if parametro == self.listaDeParametros[i][0]:
                 if self.listaDeParametros[i][1].lower() == 'sim':
                     return 1
-                if self.listaDeParametros[i][1].lower() == 'nao' or self.listaDeParametros[i][1].lower() == 'não':
+                if self.listaDeParametros[i][1].lower(
+                ) == 'nao' or self.listaDeParametros[i][1].lower() == 'não':
                     return 0
 
                 return self.listaDeParametros[i][1]
@@ -748,8 +818,8 @@ class Grupo:
 
         self.listaDeParametros.append(
             ['global-identificar_publicacoes_com_qualis', 'nao'])
-        ###self.listaDeParametros.append(['global-usar_cache_qualis', 'sim'])
-        ###self.listaDeParametros.append(['global-arquivo_areas_qualis', ''])
+        # self.listaDeParametros.append(['global-usar_cache_qualis', 'sim'])
+        # self.listaDeParametros.append(['global-arquivo_areas_qualis', ''])
         self.listaDeParametros.append(
             ['global-arquivo_qualis_de_congressos', ''])
         self.listaDeParametros.append(
