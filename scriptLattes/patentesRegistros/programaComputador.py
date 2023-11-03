@@ -55,7 +55,6 @@ class ProgramaComputador:
         partes = self.item.partition(" . ")
         self.autores = partes[0].strip()
         try:
-
             partes = partes[2]
             partes = partes.partition(".")
             self.titulo = partes[0].strip()
@@ -79,9 +78,9 @@ class ProgramaComputador:
         print((self.__str__()))
 
     def compararCom(self, objeto):
-        if self.idMembro.isdisjoint(
-                objeto.idMembro) and similaridade_entre_cadeias(
-                self.titulo, objeto.titulo):
+        if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(
+            self.titulo, objeto.titulo
+        ):
             # Os IDs dos membros são agrupados.
             # Essa parte é importante para a criação do GRAFO de colaborações
             self.idMembro.update(objeto.idMembro)
@@ -98,9 +97,9 @@ class ProgramaComputador:
 
     def html(self, listaDeMembros):
         try:
-            s = self.autores + '. <b>' + self.titulo + '</b>. '
-            s += str(self.ano) + '. ' + str(self.pais) + '. '
-            s += str(self.numeroRegistro) + '. ' + str(self.dataDeposito) + '.'
+            s = self.autores + ". <b>" + self.titulo + "</b>. "
+            s += str(self.ano) + ". " + str(self.pais) + ". "
+            s += str(self.numeroRegistro) + ". " + str(self.dataDeposito) + "."
             s += menuHTMLdeBuscaPT(self.titulo)
         except BaseException:
             return ""

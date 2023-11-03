@@ -47,16 +47,16 @@ from .orientacoes.orientacaoConcluida import *
 
 class ParserLattesXML(HTMLParser):
     item = None
-    nomeCompleto = ''
-    bolsaProdutividade = ''
-    enderecoProfissional = ''
-    sexo = ''
-    nomeEmCitacoesBibliograficas = ''
-    atualizacaoCV = ''
-    foto = ''
-    textoResumo = ''
-    idLattes = ''
-    url = ''
+    nomeCompleto = ""
+    bolsaProdutividade = ""
+    enderecoProfissional = ""
+    sexo = ""
+    nomeEmCitacoesBibliograficas = ""
+    atualizacaoCV = ""
+    foto = ""
+    textoResumo = ""
+    idLattes = ""
+    url = ""
 
     listaIDLattesColaboradores = []
     listaFormacaoAcademica = []
@@ -136,7 +136,7 @@ class ParserLattesXML(HTMLParser):
         # inicializacao obrigatoria
         self.idMembro = idMembro
 
-        self.item = ''
+        self.item = ""
         self.listaIDLattesColaboradores = []
         self.listaFormacaoAcademica = []
         self.listaProjetoDePesquisa = []
@@ -180,38 +180,37 @@ class ParserLattesXML(HTMLParser):
         self.listaOCOutroTipoDeOrientacao = []
 
         # inicializacao
-        self.idLattes = ''
-        self.url = ''
-        self.foto = ''
+        self.idLattes = ""
+        self.url = ""
+        self.foto = ""
 
         # feed it!
         self.feed(cvLattesXML)
 
     # ------------------------------------------------------------------------ #
     def handle_starttag(self, tag, attributes):
-
-        if tag == 'curriculo-vitae':
+        if tag == "curriculo-vitae":
             for name, value in attributes:
-                if name == 'data-atualizacao':
+                if name == "data-atualizacao":
                     self.atualizacaoCV = value
-                if name == 'numero-identificador':
+                if name == "numero-identificador":
                     self.idLattes = value
-                    self.url = 'http://lattes.cnpq.br/' + value
-                    self.url = self.url.encode('utf-8')
+                    self.url = "http://lattes.cnpq.br/" + value
+                    self.url = self.url.encode("utf-8")
 
-        if tag == 'dados-gerais':
+        if tag == "dados-gerais":
             for name, value in attributes:
-                if name == 'nome-completo':
+                if name == "nome-completo":
                     self.nomeCompleto = value
-                if name == 'nome-em-citacoes-bibliograficas':
+                if name == "nome-em-citacoes-bibliograficas":
                     self.nomeEmCitacoesBibliograficas = value
-                if name == 'sexo':
+                if name == "sexo":
                     self.sexo = value.capitalize()
-                    self.foto = 'usuaria.png' if self.sexo[0] == 'F' else 'usuario.png'
+                    self.foto = "usuaria.png" if self.sexo[0] == "F" else "usuario.png"
 
-        if tag == 'resumo-cv':
+        if tag == "resumo-cv":
             for name, value in attributes:
-                if name == 'texto-resumo-cv-rh':
+                if name == "texto-resumo-cv-rh":
                     self.textoResumo = value
 
         # por implementar
@@ -231,451 +230,466 @@ class ParserLattesXML(HTMLParser):
         # if name=='':
         # = value
 
-        if tag == 'artigo-publicado':
+        if tag == "artigo-publicado":
             self.achouArtigoEmPeriodico = 1
-            self.autoresLista = list([''] * 150)
-            self.autores = ''
-            self.titulo = ''
-            self.ano = ''
-            self.revista = ''
-            self.volume = ''
-            self.numero = ''
-            self.paginas = ''
-            self.doi = ''
+            self.autoresLista = list([""] * 150)
+            self.autores = ""
+            self.titulo = ""
+            self.ano = ""
+            self.revista = ""
+            self.volume = ""
+            self.numero = ""
+            self.paginas = ""
+            self.doi = ""
 
-        if tag == 'livro-publicado-ou-organizado':
+        if tag == "livro-publicado-ou-organizado":
             self.achouLivroPublicado = 1
-            self.autoresLista = list([''] * 150)
-            self.autores = ''
-            self.titulo = ''
-            self.edicao = ''
-            self.ano = ''
-            self.volume = ''
-            self.paginas = ''
+            self.autoresLista = list([""] * 150)
+            self.autores = ""
+            self.titulo = ""
+            self.edicao = ""
+            self.ano = ""
+            self.volume = ""
+            self.paginas = ""
 
-        if tag == 'capitulo-de-livro-publicado':
+        if tag == "capitulo-de-livro-publicado":
             self.achouCapituloDeLivroPublicado = 1
-            self.autoresLista = list([''] * 150)
-            self.autores = ''
-            self.titulo = ''
-            self.livro = ''
-            self.edicao = ''
-            self.editora = ''
-            self.ano = ''
-            self.volume = ''
-            self.paginas = ''
+            self.autoresLista = list([""] * 150)
+            self.autores = ""
+            self.titulo = ""
+            self.livro = ""
+            self.edicao = ""
+            self.editora = ""
+            self.ano = ""
+            self.volume = ""
+            self.paginas = ""
 
-        if tag == 'texto-em-jornal-ou-revista':
+        if tag == "texto-em-jornal-ou-revista":
             self.achouTextoEmJornalDeNoticia = 1
-            self.autoresLista = list([''] * 150)
-            self.autores = ''
-            self.titulo = ''
-            self.nomeJornal = ''
-            self.data = ''
-            self.volume = ''
-            self.paginas = ''
-            self.ano = ''
+            self.autoresLista = list([""] * 150)
+            self.autores = ""
+            self.titulo = ""
+            self.nomeJornal = ""
+            self.data = ""
+            self.volume = ""
+            self.paginas = ""
+            self.ano = ""
 
-        if tag == 'trabalho-em-eventos':
+        if tag == "trabalho-em-eventos":
             self.achouTrabalhoEmEvento = 1
-            self.autoresLista = list([''] * 150)
-            self.autores = ''
-            self.titulo = ''
-            self.nomeDoEvento = ''
-            self.ano = ''
-            self.volume = ''
-            self.numero = ''
-            self.paginas = ''
-            self.doi = ''
+            self.autoresLista = list([""] * 150)
+            self.autores = ""
+            self.titulo = ""
+            self.nomeDoEvento = ""
+            self.ano = ""
+            self.volume = ""
+            self.numero = ""
+            self.paginas = ""
+            self.doi = ""
 
-        if tag == 'artigo-aceito-para-publicacao':
+        if tag == "artigo-aceito-para-publicacao":
             self.achouArtigoAceito = 1
-            self.autoresLista = list([''] * 150)
-            self.autores = ''
-            self.titulo = ''
-            self.revista = ''
-            self.ano = ''
-            self.volume = ''
-            self.numero = ''
-            self.paginas = ''
-            self.doi = ''
+            self.autoresLista = list([""] * 150)
+            self.autores = ""
+            self.titulo = ""
+            self.revista = ""
+            self.ano = ""
+            self.volume = ""
+            self.numero = ""
+            self.paginas = ""
+            self.doi = ""
 
-        if tag == 'apresentacao-de-trabalho':
+        if tag == "apresentacao-de-trabalho":
             self.achouApresentacaoDeTrabalho = 1
-            self.autoresLista = list([''] * 150)
-            self.autores = ''
-            self.titulo = ''
-            self.ano = ''
-            self.natureza = ''
+            self.autoresLista = list([""] * 150)
+            self.autores = ""
+            self.titulo = ""
+            self.ano = ""
+            self.natureza = ""
 
-        if tag == 'outra-producao-bibliografica':
+        if tag == "outra-producao-bibliografica":
             self.achouOutroTipoDeProducaoBibliografica = 1
-            self.autoresLista = list([''] * 150)
-            self.autores = ''
-            self.titulo = ''
-            self.ano = ''
-            self.natureza = ''
+            self.autoresLista = list([""] * 150)
+            self.autores = ""
+            self.titulo = ""
+            self.ano = ""
+            self.natureza = ""
 
         # ----------------------------------------------------------------------
         # ----------------------------------------------------------------------
-        if tag == 'orientacoes-concluidas-para-pos-doutorado':
+        if tag == "orientacoes-concluidas-para-pos-doutorado":
             self.achouOCSupervisaoDePosDoutorado = 1
-            self.nome = ''
-            self.tituloDoTrabalho = ''
-            self.ano = ''
-            self.instituicao = ''
-            self.agenciaDeFomento = ''
-            self.tipoDeOrientacao = ''
+            self.nome = ""
+            self.tituloDoTrabalho = ""
+            self.ano = ""
+            self.instituicao = ""
+            self.agenciaDeFomento = ""
+            self.tipoDeOrientacao = ""
 
-        if tag == 'orientacoes-concluidas-para-doutorado':
+        if tag == "orientacoes-concluidas-para-doutorado":
             self.achouOCTeseDeDoutorado = 1
-            self.nome = ''
-            self.tituloDoTrabalho = ''
-            self.ano = ''
-            self.instituicao = ''
-            self.agenciaDeFomento = ''
-            self.tipoDeOrientacao = ''
+            self.nome = ""
+            self.tituloDoTrabalho = ""
+            self.ano = ""
+            self.instituicao = ""
+            self.agenciaDeFomento = ""
+            self.tipoDeOrientacao = ""
 
-        if tag == 'orientacoes-concluidas-para-mestrado':
+        if tag == "orientacoes-concluidas-para-mestrado":
             self.achouOCDissertacaoDeMestrado = 1
-            self.nome = ''
-            self.tituloDoTrabalho = ''
-            self.ano = ''
-            self.instituicao = ''
-            self.agenciaDeFomento = ''
-            self.tipoDeOrientacao = ''
+            self.nome = ""
+            self.tituloDoTrabalho = ""
+            self.ano = ""
+            self.instituicao = ""
+            self.agenciaDeFomento = ""
+            self.tipoDeOrientacao = ""
 
         # ----------------------------------------------------------------------
-        if tag == 'endereco-profissional':
+        if tag == "endereco-profissional":
             for name, value in attributes:
-                if name == 'nome-instituicao-empresa':
+                if name == "nome-instituicao-empresa":
                     nomeIntituicao = value
-                if name == 'nome-unidade':
+                if name == "nome-unidade":
                     nomeUnidade = value
-                if name == 'nome-orgao':
+                if name == "nome-orgao":
                     orgao = value
-                if name == 'logradouro-complemento':
+                if name == "logradouro-complemento":
                     logradouro = value
-                if name == 'cidade':
+                if name == "cidade":
                     cidade = value
-                if name == 'pais':
+                if name == "pais":
                     pais = value
-                if name == 'uf':
+                if name == "uf":
                     uf = value
-                if name == 'cep':
+                if name == "cep":
                     cep = value
-            self.enderecoProfissional = nomeIntituicao + ". " + nomeUnidade + ". " + orgao + \
-                ". " + logradouro + " CEP " + cep + " - " + cidade + ", " + uf + " - " + pais
+            self.enderecoProfissional = (
+                nomeIntituicao
+                + ". "
+                + nomeUnidade
+                + ". "
+                + orgao
+                + ". "
+                + logradouro
+                + " CEP "
+                + cep
+                + " - "
+                + cidade
+                + ", "
+                + uf
+                + " - "
+                + pais
+            )
 
         # ----------------------------------------------------------------------
         if self.achouArtigoEmPeriodico:
-            if tag == 'autores':
+            if tag == "autores":
                 for name, value in attributes:
-                    if name == 'nome-para-citacao':
-                        autorNome = value.split(';')[0]
-                    if name == 'ordem-de-autoria':
+                    if name == "nome-para-citacao":
+                        autorNome = value.split(";")[0]
+                    if name == "ordem-de-autoria":
                         autorOrdem = value
                 self.autoresLista[int(autorOrdem)] = autorNome
 
-            if tag == 'dados-basicos-do-artigo':
+            if tag == "dados-basicos-do-artigo":
                 for name, value in attributes:
-                    if name == 'titulo-do-artigo':
+                    if name == "titulo-do-artigo":
                         self.titulo = value
-                    if name == 'ano-do-artigo':
+                    if name == "ano-do-artigo":
                         self.ano = value
-                    if name == 'doi':
+                    if name == "doi":
                         self.doi = value
 
-            if tag == 'detalhamento-do-artigo':
+            if tag == "detalhamento-do-artigo":
                 for name, value in attributes:
-                    if name == 'titulo-do-periodico-ou-revista':
+                    if name == "titulo-do-periodico-ou-revista":
                         self.revista = value
-                    if name == 'volume':
+                    if name == "volume":
                         self.volume = value
-                    if name == 'fasciculo':
+                    if name == "fasciculo":
                         self.numero = value
-                    if name == 'pagina-inicial':
+                    if name == "pagina-inicial":
                         pagina1 = value
-                    if name == 'pagina-final':
+                    if name == "pagina-final":
                         pagina2 = value
-                self.paginas = pagina1 + '-' + pagina2
+                self.paginas = pagina1 + "-" + pagina2
 
         # ----------------------------------------------------------------------
         if self.achouLivroPublicado:
-            if tag == 'autores':
+            if tag == "autores":
                 for name, value in attributes:
-                    if name == 'nome-para-citacao':
-                        autorNome = value.split(';')[0]
-                    if name == 'ordem-de-autoria':
+                    if name == "nome-para-citacao":
+                        autorNome = value.split(";")[0]
+                    if name == "ordem-de-autoria":
                         autorOrdem = value
                 self.autoresLista[int(autorOrdem)] = autorNome
 
-            if tag == 'dados-basicos-do-livro':
+            if tag == "dados-basicos-do-livro":
                 for name, value in attributes:
-                    if name == 'titulo-do-livro':
+                    if name == "titulo-do-livro":
                         self.titulo = value
-                    if name == 'ano':
+                    if name == "ano":
                         self.ano = value
 
-            if tag == 'detalhamento-do-livro':
+            if tag == "detalhamento-do-livro":
                 for name, value in attributes:
-                    if name == 'numero-da-edicao-revisao':
+                    if name == "numero-da-edicao-revisao":
                         self.edicao = value
-                    if name == 'numero-da-serie':
+                    if name == "numero-da-serie":
                         self.volume = value
-                    if name == 'numero-de-paginas':
+                    if name == "numero-de-paginas":
                         self.paginas = value
 
         # ----------------------------------------------------------------------
         if self.achouCapituloDeLivroPublicado:
-            if tag == 'autores':
+            if tag == "autores":
                 for name, value in attributes:
-                    if name == 'nome-para-citacao':
-                        autorNome = value.split(';')[0]
-                    if name == 'ordem-de-autoria':
+                    if name == "nome-para-citacao":
+                        autorNome = value.split(";")[0]
+                    if name == "ordem-de-autoria":
                         autorOrdem = value
                 self.autoresLista[int(autorOrdem)] = autorNome
 
-            if tag == 'dados-basicos-do-capitulo':
+            if tag == "dados-basicos-do-capitulo":
                 for name, value in attributes:
-                    if name == 'titulo-do-capitulo-do-livro':
+                    if name == "titulo-do-capitulo-do-livro":
                         self.titulo = value
-                    if name == 'ano':
+                    if name == "ano":
                         self.ano = value
 
-            if tag == 'detalhamento-do-capitulo':
+            if tag == "detalhamento-do-capitulo":
                 for name, value in attributes:
-                    if name == 'titulo-do-livro':
+                    if name == "titulo-do-livro":
                         self.livro = value
-                    if name == 'numero-da-edicao-revisao':
+                    if name == "numero-da-edicao-revisao":
                         self.edicao = value
-                    if name == 'nome-da-editora':
+                    if name == "nome-da-editora":
                         self.editora = value
-                    if name == 'numero-da-serie':
+                    if name == "numero-da-serie":
                         self.volume = value
-                    if name == 'pagina-inicial':
+                    if name == "pagina-inicial":
                         pagina1 = value
-                    if name == 'pagina-final':
+                    if name == "pagina-final":
                         pagina2 = value
-                self.paginas = pagina1 + '-' + pagina2
+                self.paginas = pagina1 + "-" + pagina2
 
         # ----------------------------------------------------------------------
         if self.achouTextoEmJornalDeNoticia:
-            if tag == 'autores':
+            if tag == "autores":
                 for name, value in attributes:
-                    if name == 'nome-para-citacao':
-                        autorNome = value.split(';')[0]
-                    if name == 'ordem-de-autoria':
+                    if name == "nome-para-citacao":
+                        autorNome = value.split(";")[0]
+                    if name == "ordem-de-autoria":
                         autorOrdem = value
                 self.autoresLista[int(autorOrdem)] = autorNome
 
-            if tag == 'dados-basicos-do-texto':
+            if tag == "dados-basicos-do-texto":
                 for name, value in attributes:
-                    if name == 'titulo-do-texto':
+                    if name == "titulo-do-texto":
                         self.titulo = value
-                    if name == 'ano-do-texto':
+                    if name == "ano-do-texto":
                         self.ano = value
 
-            if tag == 'detalhamento-do-texto':
+            if tag == "detalhamento-do-texto":
                 for name, value in attributes:
-                    if name == 'titulo-do-jornal-ou-revista':
+                    if name == "titulo-do-jornal-ou-revista":
                         self.nomeJornal = value
-                    if name == 'data-de-publicacao':
+                    if name == "data-de-publicacao":
                         self.data = value
-                    if name == 'volume':
+                    if name == "volume":
                         self.volume = value
-                    if name == 'pagina-inicial':
+                    if name == "pagina-inicial":
                         pagina1 = value
-                    if name == 'pagina-final':
+                    if name == "pagina-final":
                         pagina2 = value
-                self.paginas = pagina1 + '-' + pagina2
+                self.paginas = pagina1 + "-" + pagina2
 
         # ----------------------------------------------------------------------
         if self.achouTrabalhoEmEvento:
-            if tag == 'autores':
+            if tag == "autores":
                 for name, value in attributes:
-                    if name == 'nome-para-citacao':
-                        autorNome = value.split(';')[0]
-                    if name == 'ordem-de-autoria':
+                    if name == "nome-para-citacao":
+                        autorNome = value.split(";")[0]
+                    if name == "ordem-de-autoria":
                         autorOrdem = value
                 self.autoresLista[int(autorOrdem)] = autorNome
 
-            if tag == 'dados-basicos-do-trabalho':
+            if tag == "dados-basicos-do-trabalho":
                 for name, value in attributes:
-                    if name == 'natureza' and value.lower() == 'completo':
+                    if name == "natureza" and value.lower() == "completo":
                         self.achouTrabalhoCompletoEmCongresso = 1
-                    if name == 'natureza' and value.lower() == 'resumo':
+                    if name == "natureza" and value.lower() == "resumo":
                         self.achouResumoEmCongresso = 1
-                    if name == 'natureza' and value.lower() == 'resumo_expandido':
+                    if name == "natureza" and value.lower() == "resumo_expandido":
                         self.achouResumoExpandidoEmCongresso = 1
 
-                    if name == 'titulo-do-trabalho':
+                    if name == "titulo-do-trabalho":
                         self.titulo = value
-                    if name == 'ano-do-trabalho':
+                    if name == "ano-do-trabalho":
                         self.ano = value
-                    if name == 'doi':
+                    if name == "doi":
                         self.doi = value
-            if tag == 'detalhamento-do-trabalho':
+            if tag == "detalhamento-do-trabalho":
                 for name, value in attributes:
-                    if name == 'nome-do-evento':
+                    if name == "nome-do-evento":
                         self.nomeDoEvento = value
-                    if name == 'volume':
+                    if name == "volume":
                         self.volume = value
-                    if name == 'fasciculo':
+                    if name == "fasciculo":
                         self.numero = value
-                    if name == 'pagina-inicial':
+                    if name == "pagina-inicial":
                         pagina1 = value
-                    if name == 'pagina-final':
+                    if name == "pagina-final":
                         pagina2 = value
-                self.paginas = pagina1 + '-' + pagina2
+                self.paginas = pagina1 + "-" + pagina2
 
         # ----------------------------------------------------------------------
         if self.achouArtigoAceito:
-            if tag == 'autores':
+            if tag == "autores":
                 for name, value in attributes:
-                    if name == 'nome-para-citacao':
-                        autorNome = value.split(';')[0]
-                    if name == 'ordem-de-autoria':
+                    if name == "nome-para-citacao":
+                        autorNome = value.split(";")[0]
+                    if name == "ordem-de-autoria":
                         autorOrdem = value
                 self.autoresLista[int(autorOrdem)] = autorNome
 
-            if tag == 'dados-basicos-do-artigo':
+            if tag == "dados-basicos-do-artigo":
                 for name, value in attributes:
-                    if name == 'titulo-do-artigo':
+                    if name == "titulo-do-artigo":
                         self.titulo = value
-                    if name == 'ano-do-artigo':
+                    if name == "ano-do-artigo":
                         self.ano = value
-                    if name == 'doi':
+                    if name == "doi":
                         self.doi = value
 
-            if tag == 'detalhamento-do-artigo':
+            if tag == "detalhamento-do-artigo":
                 for name, value in attributes:
-                    if name == 'titulo-do-periodico-ou-revista':
+                    if name == "titulo-do-periodico-ou-revista":
                         self.revista = value
-                    if name == 'volume':
+                    if name == "volume":
                         self.volume = value
-                    if name == 'fasciculo':
+                    if name == "fasciculo":
                         self.numero = value
-                    if name == 'pagina-inicial':
+                    if name == "pagina-inicial":
                         pagina1 = value
-                    if name == 'pagina-final':
+                    if name == "pagina-final":
                         pagina2 = value
-                self.paginas = pagina1 + '-' + pagina2
+                self.paginas = pagina1 + "-" + pagina2
 
         # ----------------------------------------------------------------------
         if self.achouApresentacaoDeTrabalho:
-            if tag == 'autores':
+            if tag == "autores":
                 for name, value in attributes:
-                    if name == 'nome-para-citacao':
-                        autorNome = value.split(';')[0]
-                    if name == 'ordem-de-autoria':
+                    if name == "nome-para-citacao":
+                        autorNome = value.split(";")[0]
+                    if name == "ordem-de-autoria":
                         autorOrdem = value
                 self.autoresLista[int(autorOrdem)] = autorNome
 
-            if tag == 'dados-basicos-da-apresentacao-de-trabalho':
+            if tag == "dados-basicos-da-apresentacao-de-trabalho":
                 for name, value in attributes:
-                    if name == 'titulo':
+                    if name == "titulo":
                         self.titulo = value
-                    if name == 'ano':
+                    if name == "ano":
                         self.ano = value
-                    if name == 'natureza':
+                    if name == "natureza":
                         self.natureza = value.capitalize()
 
-            if tag == 'detalhamento-da-apresentacao-de-trabalho':
+            if tag == "detalhamento-da-apresentacao-de-trabalho":
                 for name, value in attributes:
-                    if name == 'nome-do-evento':
+                    if name == "nome-do-evento":
                         self.nomeEvento = value
 
         # ----------------------------------------------------------------------
         if self.achouOutroTipoDeProducaoBibliografica:
-            if tag == 'autores':
+            if tag == "autores":
                 for name, value in attributes:
-                    if name == 'nome-para-citacao':
-                        autorNome = value.split(';')[0]
-                    if name == 'ordem-de-autoria':
+                    if name == "nome-para-citacao":
+                        autorNome = value.split(";")[0]
+                    if name == "ordem-de-autoria":
                         autorOrdem = value
                 self.autoresLista[int(autorOrdem)] = autorNome
 
-            if tag == 'dados-basicos-de-outra-producao':
+            if tag == "dados-basicos-de-outra-producao":
                 for name, value in attributes:
-                    if name == 'titulo':
+                    if name == "titulo":
                         self.titulo = value
-                    if name == 'ano':
+                    if name == "ano":
                         self.ano = value
-                    if name == 'natureza':
+                    if name == "natureza":
                         self.natureza = value.capitalize()
 
-            if tag == 'detalhamento-de-outra-producao':
+            if tag == "detalhamento-de-outra-producao":
                 for name, value in attributes:
-                    if name == 'editora':
+                    if name == "editora":
                         self.editora = value
 
         # ----------------------------------------------------------------------
         # ----------------------------------------------------------------------
         # ----------------------------------------------------------------------
         if self.achouOCSupervisaoDePosDoutorado:
-            if tag == 'dados-basicos-de-orientacoes-concluidas-para-pos-doutorado':
+            if tag == "dados-basicos-de-orientacoes-concluidas-para-pos-doutorado":
                 for name, value in attributes:
-                    if name == 'titulo':
+                    if name == "titulo":
                         self.tituloDoTrabalho = value
-                    if name == 'ano':
+                    if name == "ano":
                         self.ano = value
-                    if name == 'natureza':
+                    if name == "natureza":
                         self.tipoDeOrientacao = value.capitalize()
-            if tag == 'detalhamento-de-orientacoes-concluidas-para-pos-doutorado':
+            if tag == "detalhamento-de-orientacoes-concluidas-para-pos-doutorado":
                 for name, value in attributes:
-                    if name == 'nome-do-orientado':
+                    if name == "nome-do-orientado":
                         self.nome = value
-                    if name == 'nome-da-instituicao':
+                    if name == "nome-da-instituicao":
                         self.instituicao = value
-                    if name == 'nome-da-agencia':
+                    if name == "nome-da-agencia":
                         self.agenciaDeFomento = value
 
         # ----------------------------------------------------------------------
         if self.achouOCTeseDeDoutorado:
-            if tag == 'dados-basicos-de-orientacoes-concluidas-para-doutorado':
+            if tag == "dados-basicos-de-orientacoes-concluidas-para-doutorado":
                 for name, value in attributes:
-                    if name == 'titulo':
+                    if name == "titulo":
                         self.tituloDoTrabalho = value
-                    if name == 'ano':
+                    if name == "ano":
                         self.ano = value
-                    if name == 'natureza':
+                    if name == "natureza":
                         self.tipoDeOrientacao = value.capitalize()
-            if tag == 'detalhamento-de-orientacoes-concluidas-para-doutorado':
+            if tag == "detalhamento-de-orientacoes-concluidas-para-doutorado":
                 for name, value in attributes:
-                    if name == 'nome-do-orientado':
+                    if name == "nome-do-orientado":
                         self.nome = value
-                    if name == 'nome-da-instituicao':
+                    if name == "nome-da-instituicao":
                         self.instituicao = value
-                    if name == 'nome-da-agencia':
+                    if name == "nome-da-agencia":
                         self.agenciaDeFomento = value
 
         # ----------------------------------------------------------------------
         if self.achouOCDissertacaoDeMestrado:
-            if tag == 'dados-basicos-de-orientacoes-concluidas-para-mestrado':
+            if tag == "dados-basicos-de-orientacoes-concluidas-para-mestrado":
                 for name, value in attributes:
-                    if name == 'titulo':
+                    if name == "titulo":
                         self.tituloDoTrabalho = value
-                    if name == 'ano':
+                    if name == "ano":
                         self.ano = value
-                    if name == 'natureza':
+                    if name == "natureza":
                         self.tipoDeOrientacao = value.capitalize()
-            if tag == 'detalhamento-de-orientacoes-concluidas-para-mestrado':
+            if tag == "detalhamento-de-orientacoes-concluidas-para-mestrado":
                 for name, value in attributes:
-                    if name == 'nome-do-orientado':
+                    if name == "nome-do-orientado":
                         self.nome = value
-                    if name == 'nome-da-instituicao':
+                    if name == "nome-da-instituicao":
                         self.instituicao = value
-                    if name == 'nome-da-agencia':
+                    if name == "nome-da-agencia":
                         self.agenciaDeFomento = value
 
     def handle_endtag(self, tag):
         # ----------------------------------------------------------------------
-        if tag == 'artigo-publicado':
+        if tag == "artigo-publicado":
             self.achouArtigoEmPeriodico = 0
 
             for aut in self.autoresLista:
-                if not aut == '':
+                if not aut == "":
                     self.autores += aut + "; "
             self.autores = self.autores.strip("; ")
 
@@ -688,15 +702,15 @@ class ParserLattesXML(HTMLParser):
             pub.numero = self.numero
             pub.ano = self.ano
             pub.chave = self.autores
-            pub.doi = 'http://dx.doi.org/' + self.doi if not self.doi == 0 else ''
+            pub.doi = "http://dx.doi.org/" + self.doi if not self.doi == 0 else ""
             self.listaArtigoEmPeriodico.append(pub)
 
         # ----------------------------------------------------------------------
-        if tag == 'livro-publicado-ou-organizado':
+        if tag == "livro-publicado-ou-organizado":
             self.achouLivroPublicado = 0
 
             for aut in self.autoresLista:
-                if not aut == '':
+                if not aut == "":
                     self.autores += aut + "; "
             self.autores = self.autores.strip("; ")
 
@@ -711,11 +725,11 @@ class ParserLattesXML(HTMLParser):
             self.listaLivroPublicado.append(pub)
 
         # ----------------------------------------------------------------------
-        if tag == 'capitulo-de-livro-publicado':
+        if tag == "capitulo-de-livro-publicado":
             self.achouCapituloDeLivroPublicado = 0
 
             for aut in self.autoresLista:
-                if not aut == '':
+                if not aut == "":
                     self.autores += aut + "; "
             self.autores = self.autores.strip("; ")
 
@@ -732,11 +746,11 @@ class ParserLattesXML(HTMLParser):
             self.listaCapituloDeLivroPublicado.append(pub)
 
         # ----------------------------------------------------------------------
-        if tag == 'texto-em-jornal-ou-revista':
+        if tag == "texto-em-jornal-ou-revista":
             self.achouTextoEmJornalDeNoticia = 0
 
             for aut in self.autoresLista:
-                if not aut == '':
+                if not aut == "":
                     self.autores += aut + "; "
             self.autores = self.autores.strip("; ")
 
@@ -752,11 +766,11 @@ class ParserLattesXML(HTMLParser):
             self.listaTextoEmJornalDeNoticia.append(pub)
 
         # ----------------------------------------------------------------------
-        if tag == 'trabalho-em-eventos':
+        if tag == "trabalho-em-eventos":
             self.achouTrabalhoEmEvento = 0
 
             for aut in self.autoresLista:
-                if not aut == '':
+                if not aut == "":
                     self.autores += aut + "; "
             self.autores = self.autores.strip("; ")
 
@@ -771,7 +785,7 @@ class ParserLattesXML(HTMLParser):
                 pub.numero = self.numero
                 pub.paginas = self.paginas
                 pub.chave = self.autores
-                pub.doi = 'http://dx.doi.org/' + self.doi if not self.doi == 0 else ''
+                pub.doi = "http://dx.doi.org/" + self.doi if not self.doi == 0 else ""
                 self.listaResumoEmCongresso.append(pub)
                 return
 
@@ -785,7 +799,7 @@ class ParserLattesXML(HTMLParser):
                 pub.volume = self.volume
                 pub.paginas = self.paginas
                 pub.chave = self.autores
-                pub.doi = 'http://dx.doi.org/' + self.doi if not self.doi == 0 else ''
+                pub.doi = "http://dx.doi.org/" + self.doi if not self.doi == 0 else ""
                 self.listaResumoExpandidoEmCongresso.append(pub)
                 return
 
@@ -803,11 +817,11 @@ class ParserLattesXML(HTMLParser):
                 return
 
         # ----------------------------------------------------------------------
-        if tag == 'artigo-aceito-para-publicacao':
+        if tag == "artigo-aceito-para-publicacao":
             self.achouArtigoAceito = 0
 
             for aut in self.autoresLista:
-                if not aut == '':
+                if not aut == "":
                     self.autores += aut + "; "
             self.autores = self.autores.strip("; ")
 
@@ -820,15 +834,15 @@ class ParserLattesXML(HTMLParser):
             pub.numero = self.numero
             pub.ano = self.ano
             pub.chave = self.autores
-            pub.doi = 'http://dx.doi.org/' + self.doi if not self.doi == 0 else ''
+            pub.doi = "http://dx.doi.org/" + self.doi if not self.doi == 0 else ""
             self.listaArtigoAceito.append(pub)
 
         # ----------------------------------------------------------------------
-        if tag == 'apresentacao-de-trabalho':
+        if tag == "apresentacao-de-trabalho":
             self.achouApresentacaoDeTrabalho = 0
 
             for aut in self.autoresLista:
-                if not aut == '':
+                if not aut == "":
                     self.autores += aut + "; "
             self.autores = self.autores.strip("; ")
 
@@ -836,16 +850,16 @@ class ParserLattesXML(HTMLParser):
             pub.autores = self.autores
             pub.titulo = stripBlanks(self.titulo)
             pub.ano = self.ano
-            pub.natureza = self.nomeEvento + '. (' + self.natureza + ')'
+            pub.natureza = self.nomeEvento + ". (" + self.natureza + ")"
             pub.chave = self.autores
             self.listaApresentacaoDeTrabalho.append(pub)
 
         # ----------------------------------------------------------------------
-        if tag == 'outra-producao-bibliografica':
+        if tag == "outra-producao-bibliografica":
             self.achouOutroTipoDeProducaoBibliografica = 0
 
             for aut in self.autoresLista:
-                if not aut == '':
+                if not aut == "":
                     self.autores += aut + "; "
             self.autores = self.autores.strip("; ")
 
@@ -853,12 +867,12 @@ class ParserLattesXML(HTMLParser):
             pub.autores = self.autores
             pub.titulo = stripBlanks(self.titulo)
             pub.ano = self.ano
-            pub.natureza = self.editora + '. (' + self.natureza + ')'
+            pub.natureza = self.editora + ". (" + self.natureza + ")"
             pub.chave = self.autores
             self.listaOutroTipoDeProducaoBibliografica.append(pub)
 
         # ----------------------------------------------------------------------
-        if tag == 'orientacoes-concluidas-para-pos-doutorado':
+        if tag == "orientacoes-concluidas-para-pos-doutorado":
             self.achouOCSupervisaoDePosDoutorado = 0
 
             ori = OrientacaoConcluida(self.idMembro)
@@ -871,7 +885,7 @@ class ParserLattesXML(HTMLParser):
             ori.chave = self.nome
             self.listaOCSupervisaoDePosDoutorado.append(ori)
 
-        if tag == 'orientacoes-concluidas-para-doutorado':
+        if tag == "orientacoes-concluidas-para-doutorado":
             self.achouOCTeseDeDoutorado = 0
 
             ori = OrientacaoConcluida(self.idMembro)
@@ -884,7 +898,7 @@ class ParserLattesXML(HTMLParser):
             ori.chave = self.nome
             self.listaOCTeseDeDoutorado.append(ori)
 
-        if tag == 'orientacoes-concluidas-para-mestrado':
+        if tag == "orientacoes-concluidas-para-mestrado":
             self.achouOCDissertacaoDeMestrado = 0
 
             ori = OrientacaoConcluida(self.idMembro)
@@ -900,13 +914,17 @@ class ParserLattesXML(HTMLParser):
     # ------------------------------------------------------------------------ #
     # def handle_data(self, dado):
 
+
 # ---------------------------------------------------------------------------- #
 
 
 def stripBlanks(s):
-    return re.sub('\\s+', ' ', s).strip()
+    return re.sub("\\s+", " ", s).strip()
 
 
 def htmlentitydecode(s):
-    return re.sub('&(%s);' % '|'.join(name2codepoint),
-                  lambda m: chr(name2codepoint[m.group(1)]), s)
+    return re.sub(
+        "&(%s);" % "|".join(name2codepoint),
+        lambda m: chr(name2codepoint[m.group(1)]),
+        s,
+    )

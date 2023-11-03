@@ -30,11 +30,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_6.addWidget(self.label)
         self.file_holder = QtGui.QWidget(self.singleTab)
         sizePolicy = QtGui.QSizePolicy(
-            QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
+            QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(
-            self.file_holder.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(self.file_holder.sizePolicy().hasHeightForWidth())
         self.file_holder.setSizePolicy(sizePolicy)
         self.file_holder.setObjectName("file_holder")
         self.horizontalLayout_4 = QtGui.QHBoxLayout(self.file_holder)
@@ -52,11 +52,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_6.addWidget(self.file_holder)
         self.runner = QtGui.QPushButton(self.singleTab)
         sizePolicy = QtGui.QSizePolicy(
-            QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
+            QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(
-            self.runner.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(self.runner.sizePolicy().hasHeightForWidth())
         self.runner.setSizePolicy(sizePolicy)
         self.runner.setObjectName("runner")
         self.verticalLayout_6.addWidget(self.runner)
@@ -64,11 +64,11 @@ class Ui_MainWindow(object):
         self.tabs.setObjectName("tabs")
         self.output_tab = QtGui.QWidget()
         sizePolicy = QtGui.QSizePolicy(
-            QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+            QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(
-            self.output_tab.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(self.output_tab.sizePolicy().hasHeightForWidth())
         self.output_tab.setSizePolicy(sizePolicy)
         self.output_tab.setAcceptDrops(False)
         self.output_tab.setObjectName("output_tab")
@@ -81,15 +81,16 @@ class Ui_MainWindow(object):
         self.scrollAreaWidgetContents = QtGui.QWidget()
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 758, 496))
         sizePolicy = QtGui.QSizePolicy(
-            QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+            QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(
-            self.scrollAreaWidgetContents.sizePolicy().hasHeightForWidth())
+            self.scrollAreaWidgetContents.sizePolicy().hasHeightForWidth()
+        )
         self.scrollAreaWidgetContents.setSizePolicy(sizePolicy)
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
-        self.verticalLayout_3 = QtGui.QVBoxLayout(
-            self.scrollAreaWidgetContents)
+        self.verticalLayout_3 = QtGui.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.out = QtGui.QTextBrowser(self.scrollAreaWidgetContents)
@@ -107,12 +108,9 @@ class Ui_MainWindow(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollArea_2.setObjectName("scrollArea_2")
         self.scrollAreaWidgetContents_2 = QtGui.QWidget()
-        self.scrollAreaWidgetContents_2.setGeometry(
-            QtCore.QRect(0, 0, 758, 496))
-        self.scrollAreaWidgetContents_2.setObjectName(
-            "scrollAreaWidgetContents_2")
-        self.verticalLayout_5 = QtGui.QVBoxLayout(
-            self.scrollAreaWidgetContents_2)
+        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 758, 496))
+        self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
+        self.verticalLayout_5 = QtGui.QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_5.setObjectName("verticalLayout_5")
         self.errors = QtGui.QTextBrowser(self.scrollAreaWidgetContents_2)
@@ -144,21 +142,23 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.label_2 = QtGui.QLabel(self.multipleTab)
         sizePolicy = QtGui.QSizePolicy(
-            QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
+            QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(
-            self.label_2.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
         self.label_2.setSizePolicy(sizePolicy)
         self.label_2.setObjectName("label_2")
         self.verticalLayout_2.addWidget(self.label_2)
         self.folder_holder = QtGui.QWidget(self.multipleTab)
         sizePolicy = QtGui.QSizePolicy(
-            QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
+            QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(
-            self.folder_holder.sizePolicy().hasHeightForWidth())
+            self.folder_holder.sizePolicy().hasHeightForWidth()
+        )
         self.folder_holder.setSizePolicy(sizePolicy)
         self.folder_holder.setObjectName("folder_holder")
         self.horizontalLayout_5 = QtGui.QHBoxLayout(self.folder_holder)
@@ -196,79 +196,82 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(
             QtGui.QApplication.translate(
-                "MainWindow",
-                "ScriptLattes",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                "MainWindow", "ScriptLattes", None, QtGui.QApplication.UnicodeUTF8
+            )
+        )
         self.label.setText(
             QtGui.QApplication.translate(
                 "MainWindow",
                 "Escolha um arquivo de configuração",
                 None,
-                QtGui.QApplication.UnicodeUTF8))
+                QtGui.QApplication.UnicodeUTF8,
+            )
+        )
         self.filechooser.setText(
             QtGui.QApplication.translate(
-                "MainWindow",
-                "Escolher",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                "MainWindow", "Escolher", None, QtGui.QApplication.UnicodeUTF8
+            )
+        )
         self.runner.setText(
             QtGui.QApplication.translate(
-                "MainWindow",
-                "Executar",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                "MainWindow", "Executar", None, QtGui.QApplication.UnicodeUTF8
+            )
+        )
         self.tabs.setTabText(
-            self.tabs.indexOf(
-                self.output_tab), QtGui.QApplication.translate(
-                "MainWindow", "Saída", None, QtGui.QApplication.UnicodeUTF8))
+            self.tabs.indexOf(self.output_tab),
+            QtGui.QApplication.translate(
+                "MainWindow", "Saída", None, QtGui.QApplication.UnicodeUTF8
+            ),
+        )
         self.tabs.setTabText(
-            self.tabs.indexOf(
-                self.error_tab), QtGui.QApplication.translate(
-                "MainWindow", "Erros", None, QtGui.QApplication.UnicodeUTF8))
+            self.tabs.indexOf(self.error_tab),
+            QtGui.QApplication.translate(
+                "MainWindow", "Erros", None, QtGui.QApplication.UnicodeUTF8
+            ),
+        )
         self.openLink.setText(
             QtGui.QApplication.translate(
                 "MainWindow",
                 "Abrir resultados no navegador",
                 None,
-                QtGui.QApplication.UnicodeUTF8))
+                QtGui.QApplication.UnicodeUTF8,
+            )
+        )
         self.openFolder.setText(
             QtGui.QApplication.translate(
                 "MainWindow",
                 "Abrir pasta de saída",
                 None,
-                QtGui.QApplication.UnicodeUTF8))
+                QtGui.QApplication.UnicodeUTF8,
+            )
+        )
         self.mainTabs.setTabText(
-            self.mainTabs.indexOf(
-                self.singleTab),
+            self.mainTabs.indexOf(self.singleTab),
             QtGui.QApplication.translate(
-                "MainWindow",
-                "Arquivo único",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                "MainWindow", "Arquivo único", None, QtGui.QApplication.UnicodeUTF8
+            ),
+        )
         self.label_2.setText(
             QtGui.QApplication.translate(
                 "MainWindow",
                 "Escolha uma pasta com arquivos de configuração (*.config). Os arquivos podem estar em sub-pastas.",
                 None,
-                QtGui.QApplication.UnicodeUTF8))
+                QtGui.QApplication.UnicodeUTF8,
+            )
+        )
         self.folderchooser.setText(
             QtGui.QApplication.translate(
-                "MainWindow",
-                "Escolher",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                "MainWindow", "Escolher", None, QtGui.QApplication.UnicodeUTF8
+            )
+        )
         self.multipleExecute.setText(
             QtGui.QApplication.translate(
-                "MainWindow",
-                "Executar lote",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                "MainWindow", "Executar lote", None, QtGui.QApplication.UnicodeUTF8
+            )
+        )
         self.mainTabs.setTabText(
-            self.mainTabs.indexOf(
-                self.multipleTab),
+            self.mainTabs.indexOf(self.multipleTab),
             QtGui.QApplication.translate(
-                "MainWindow",
-                "Múltiplos arquivos",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                "MainWindow", "Múltiplos arquivos", None, QtGui.QApplication.UnicodeUTF8
+            ),
+        )

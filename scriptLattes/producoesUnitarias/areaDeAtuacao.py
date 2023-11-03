@@ -24,7 +24,7 @@
 
 
 class AreaDeAtuacao:
-    descricao = ''
+    descricao = ""
 
     def __init__(self, partesDoItem):
         # partesDoItem[0]: Número do item (NAO usado)
@@ -34,6 +34,5 @@ class AreaDeAtuacao:
     # ------------------------------------------------------------------------ #
     def __str__(self):
         s = "[AREAS DE ATUACAO] \n"
-        s += "+DESCRICAO   : " + \
-            self.descricao + "\n"
+        s += "+DESCRICAO   : " + self.descricao + "\n"
         return s

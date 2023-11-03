@@ -23,6 +23,7 @@
 
 import time
 import os
+
 # from htmlentitydefs import name2codepoint
 import pandas
 from lxml import etree
@@ -36,30 +37,30 @@ from .charts.geolocalizador import *
 class Membro:
     idLattes = None  # ID Lattes
     idMembro = None
-    rotulo = ''
+    rotulo = ""
 
-    nomeInicial = ''
-    nomeCompleto = ''
-    sexo = ''
-    nomeEmCitacoesBibliograficas = ''
-    periodo = ''
+    nomeInicial = ""
+    nomeCompleto = ""
+    sexo = ""
+    nomeEmCitacoesBibliograficas = ""
+    periodo = ""
     listaPeriodo = []
-    bolsaProdutividade = ''
-    enderecoProfissional = ''
-    enderecoProfissionalLat = ''
-    enderecoProfissionalLon = ''
+    bolsaProdutividade = ""
+    enderecoProfissional = ""
+    enderecoProfissionalLat = ""
+    enderecoProfissionalLon = ""
 
-    identificador10 = ''
-    url = ''
-    atualizacaoCV = ''
-    foto = ''
-    textoResumo = ''
+    identificador10 = ""
+    url = ""
+    atualizacaoCV = ""
+    foto = ""
+    textoResumo = ""
     # xml = None
 
-    itemsDesdeOAno = ''  # periodo global
-    itemsAteOAno = ''  # periodo global
+    itemsDesdeOAno = ""  # periodo global
+    itemsAteOAno = ""  # periodo global
     # diretorio de armazento de CVs (útil para extensas listas de CVs)
-    diretorioCache = ''
+    diretorioCache = ""
 
     listaFormacaoAcademica = []
     listaProjetoDePesquisa = []
@@ -125,15 +126,14 @@ class Membro:
     listaParticipacaoEmEvento = []
     listaOrganizacaoDeEvento = []
 
-    rotuloCorFG = ''
-    rotuloCorBG = ''
+    rotuloCorFG = ""
+    rotuloCorBG = ""
 
-    tabela_qualis = pandas.DataFrame(
-        columns=['ano', 'area', 'estrato', 'freq'])
+    tabela_qualis = pandas.DataFrame(columns=["ano", "area", "estrato", "freq"])
 
-    nomePrimeiraGrandeArea = ''
-    nomePrimeiraArea = ''
-    instituicao = ''
+    nomePrimeiraGrandeArea = ""
+    nomePrimeiraArea = ""
+    instituicao = ""
 
     dicionarioDeGeolocalizacao = None
 
@@ -141,32 +141,36 @@ class Membro:
     # itemsDesdeOAno, itemsAteOAno, xml=''):
 
     def __init__(
-            self,
-            idMembro,
-            identificador,
-            nome,
-            periodo,
-            rotulo,
-            itemsDesdeOAno,
-            itemsAteOAno,
-            diretorioCache,
-            dicionarioDeGeolocalizacao=None):
+        self,
+        idMembro,
+        identificador,
+        nome,
+        periodo,
+        rotulo,
+        itemsDesdeOAno,
+        itemsAteOAno,
+        diretorioCache,
+        dicionarioDeGeolocalizacao=None,
+    ):
         self.idMembro = idMembro
         self.idLattes = identificador
         self.nomeInicial = nome
         self.nomeCompleto = nome.split(";")[0].strip()
         self.periodo = periodo
         self.rotulo = rotulo
-        self.rotuloCorFG = '#000000'
-        self.rotuloCorBG = '#FFFFFF'
+        self.rotuloCorFG = "#000000"
+        self.rotuloCorBG = "#FFFFFF"
         self.dicionarioDeGeolocalizacao = dicionarioDeGeolocalizacao
 
-        p = re.compile('[a-zA-Z]+')
+        p = re.compile("[a-zA-Z]+")
 
         if p.match(identificador):
-            self.url = 'http://buscatextual.cnpq.br/buscatextual/visualizacv.do?id=' + identificador
+            self.url = (
+                "http://buscatextual.cnpq.br/buscatextual/visualizacv.do?id="
+                + identificador
+            )
         else:
-            self.url = 'http://lattes.cnpq.br/' + identificador
+            self.url = "http://lattes.cnpq.br/" + identificador
 
         self.itemsDesdeOAno = itemsDesdeOAno
         self.itemsAteOAno = itemsAteOAno
@@ -175,48 +179,64 @@ class Membro:
 
     def criarListaDePeriodos(self, periodoDoMembro):
         self.listaPeriodo = []
-        periodoDoMembro = re.sub('\\s+', '', periodoDoMembro)
+        periodoDoMembro = re.sub("\\s+", "", periodoDoMembro)
 
-        if not periodoDoMembro:  # se nao especificado o periodo, entao aceitamos todos os items do CV Lattes
+        if (
+            not periodoDoMembro
+        ):  # se nao especificado o periodo, entao aceitamos todos os items do CV Lattes
             self.listaPeriodo = [[0, 10000]]
         else:
             lista = periodoDoMembro.split("&")
             for periodo in lista:
                 ano1, _, ano2 = periodo.partition("-")
 
-                if ano1.lower() == 'hoje':
+                if ano1.lower() == "hoje":
                     ano1 = str(datetime.datetime.now().year)
-                if ano2.lower() == 'hoje' or ano2 == '':
+                if ano2.lower() == "hoje" or ano2 == "":
                     ano2 = str(datetime.datetime.now().year)
 
                 if ano1.isdigit() and ano2.isdigit():
                     self.listaPeriodo.append([int(ano1), int(ano2)])
                 else:
-                    print((
-                        "\n[AVISO IMPORTANTE] Periodo nao válido: {}. (periodo desconsiderado na lista)".format(periodo)))
-                    print(("[AVISO IMPORTANTE] CV Lattes: {}. Membro: {}\n".format(
-                        self.idLattes, self.nomeInicial)))
+                    print(
+                        (
+                            "\n[AVISO IMPORTANTE] Periodo nao válido: {}. (periodo desconsiderado na lista)".format(
+                                periodo
+                            )
+                        )
+                    )
+                    print(
+                        (
+                            "[AVISO IMPORTANTE] CV Lattes: {}. Membro: {}\n".format(
+                                self.idLattes, self.nomeInicial
+                            )
+                        )
+                    )
 
     def carregarDadosCVLattes(self):
-        cvPath = self.diretorioCache + '/' + self.idLattes
+        cvPath = self.diretorioCache + "/" + self.idLattes
 
-        if 'xml' in cvPath:
+        if "xml" in cvPath:
             arquivoX = open(cvPath)
             cvLattesXML = arquivoX.read()
             arquivoX.close()
 
-            extended_chars = ''.join(chr(c) for c in range(
-                127, 65536, 1))  # srange(r"[\0x80-\0x7FF]")
-            special_chars = ' -'''
-            cvLattesXML = cvLattesXML.decode(
-                'iso-8859-1', 'replace') + extended_chars + special_chars
+            extended_chars = "".join(
+                chr(c) for c in range(127, 65536, 1)
+            )  # srange(r"[\0x80-\0x7FF]")
+            special_chars = " -" ""
+            cvLattesXML = (
+                cvLattesXML.decode("iso-8859-1", "replace")
+                + extended_chars
+                + special_chars
+            )
             parser = ParserLattesXML(self.idMembro, cvLattesXML)
 
             self.idLattes = parser.idLattes
             self.url = parser.url
             print(("(*) Utilizando CV armazenado no cache: " + cvPath))
 
-        elif '0000000000000000' == self.idLattes:
+        elif "0000000000000000" == self.idLattes:
             # se o codigo for '0000000000000000' então serao considerados dados de pessoa estrangeira - sem Lattes.
             # sera procurada a coautoria endogena com os outros membro.
             # para isso é necessario indicar o nome abreviado no arquivo .list
@@ -227,32 +247,31 @@ class Membro:
                 arquivoH = open(cvPath)
                 cvLattesHTML = arquivoH.read()
 
-                if self.idMembro != '':
+                if self.idMembro != "":
                     print(("(*) Utilizando CV armazenado no cache: " + cvPath))
             else:
                 cvLattesHTML = baixaCVLattes(self.idLattes)
-                if not self.diretorioCache == '':
-                    file = open(cvPath, 'w')
+                if not self.diretorioCache == "":
+                    file = open(cvPath, "w")
                     file.write(cvLattesHTML)
                     file.close()
                     print(" (*) O CV está sendo armazenado no Cache")
-            if cvLattesHTML == '   ':
+            if cvLattesHTML == "   ":
                 ##########################################
                 # TODO verificar se o cache está vazio #
                 ##########################################
                 raise Exception("CV Lattes vazio")
 
-            extended_chars = ''.join(chr(c) for c in range(
-                127, 65536, 1))  # srange(r"[\0x80-\0x7FF]")
-            special_chars = ' -'''
+            extended_chars = "".join(
+                chr(c) for c in range(127, 65536, 1)
+            )  # srange(r"[\0x80-\0x7FF]")
+            special_chars = " -" ""
             # cvLattesHTML  =
             # cvLattesHTML.decode('ascii','replace')+extended_chars+special_chars
             # # Wed Jul 25 16:47:39 BRT 2012
-            extended_chars = extended_chars.encode(
-                'utf-8',
-                'surrogatepass').decode(
-                'utf-8',
-                'replace')
+            extended_chars = extended_chars.encode("utf-8", "surrogatepass").decode(
+                "utf-8", "replace"
+            )
             cvLattesHTML = cvLattesHTML + extended_chars + special_chars
             # reference:
             # https://stackoverflow.com/questions/38147259/how-can-i-convert-surrogate-pairs-to-normal-string-in-python
@@ -260,11 +279,11 @@ class Membro:
             # b'C\xc3N'.decode('utf8','replace')
             parser = ParserLattes(self.idMembro, cvLattesHTML)
 
-            p = re.compile('[a-zA-Z]+')
+            p = re.compile("[a-zA-Z]+")
             if p.match(self.idLattes):
                 self.identificador10 = self.idLattes
                 self.idLattes = parser.identificador16
-                self.url = 'http://lattes.cnpq.br/' + self.idLattes
+                self.url = "http://lattes.cnpq.br/" + self.idLattes
 
         # -----------------------------------------------------------------------------------------
         # Obtemos todos os dados do CV Lattes
@@ -283,8 +302,7 @@ class Membro:
         self.listaAreaDeAtuacao = parser.listaAreaDeAtuacao
         self.listaIdioma = parser.listaIdioma
         self.listaPremioOuTitulo = parser.listaPremioOuTitulo
-        self.listaIDLattesColaboradoresUnica = set(
-            self.listaIDLattesColaboradores)
+        self.listaIDLattesColaboradoresUnica = set(self.listaIDLattesColaboradores)
 
         # Produção bibliográfica
         self.listaArtigoEmPeriodico = parser.listaArtigoEmPeriodico
@@ -296,7 +314,9 @@ class Membro:
         self.listaResumoEmCongresso = parser.listaResumoEmCongresso
         self.listaArtigoAceito = parser.listaArtigoAceito
         self.listaApresentacaoDeTrabalho = parser.listaApresentacaoDeTrabalho
-        self.listaOutroTipoDeProducaoBibliografica = parser.listaOutroTipoDeProducaoBibliografica
+        self.listaOutroTipoDeProducaoBibliografica = (
+            parser.listaOutroTipoDeProducaoBibliografica
+        )
 
         # Produção técnica
         self.listaSoftwareComPatente = parser.listaSoftwareComPatente
@@ -318,7 +338,9 @@ class Membro:
         self.listaOASupervisaoDePosDoutorado = parser.listaOASupervisaoDePosDoutorado
         self.listaOATeseDeDoutorado = parser.listaOATeseDeDoutorado
         self.listaOADissertacaoDeMestrado = parser.listaOADissertacaoDeMestrado
-        self.listaOAMonografiaDeEspecializacao = parser.listaOAMonografiaDeEspecializacao
+        self.listaOAMonografiaDeEspecializacao = (
+            parser.listaOAMonografiaDeEspecializacao
+        )
         self.listaOATCC = parser.listaOATCC
         self.listaOAIniciacaoCientifica = parser.listaOAIniciacaoCientifica
         self.listaOAOutroTipoDeOrientacao = parser.listaOAOutroTipoDeOrientacao
@@ -327,7 +349,9 @@ class Membro:
         self.listaOCSupervisaoDePosDoutorado = parser.listaOCSupervisaoDePosDoutorado
         self.listaOCTeseDeDoutorado = parser.listaOCTeseDeDoutorado
         self.listaOCDissertacaoDeMestrado = parser.listaOCDissertacaoDeMestrado
-        self.listaOCMonografiaDeEspecializacao = parser.listaOCMonografiaDeEspecializacao
+        self.listaOCMonografiaDeEspecializacao = (
+            parser.listaOCMonografiaDeEspecializacao
+        )
         self.listaOCTCC = parser.listaOCTCC
         self.listaOCIniciacaoCientifica = parser.listaOCIniciacaoCientifica
         self.listaOCOutroTipoDeOrientacao = parser.listaOCOutroTipoDeOrientacao
@@ -342,18 +366,18 @@ class Membro:
 
         if len(self.listaAreaDeAtuacao) > 0:
             descricao = self.listaAreaDeAtuacao[0].descricao
-            partes = descricao.split('/')
+            partes = descricao.split("/")
             nomePrimeiraGrandeArea = partes[0]
             nomePrimeiraGrandeArea = nomePrimeiraGrandeArea.replace(
-                "Grande área:", '').strip()
+                "Grande área:", ""
+            ).strip()
 
             if len(partes) > 1:
                 partes = partes[1].split(":")
                 partes = partes[1].strip()
                 nomePrimeiraArea = partes
                 nomePrimeiraArea = nomePrimeiraArea.strip(".")
-                nomePrimeiraArea = nomePrimeiraArea.replace(
-                    "Especialidade", "")
+                nomePrimeiraArea = nomePrimeiraArea.replace("Especialidade", "")
         else:
             nomePrimeiraGrandeArea = "[sem-grandeArea]"
             nomePrimeiraArea = "[sem-area]"
@@ -366,83 +390,87 @@ class Membro:
             self.instituicao = instituicao.replace("'", "")
 
     def filtrarItemsPorPeriodo(self):
-        self.listaArtigoEmPeriodico = self.filtrarItems(
-            self.listaArtigoEmPeriodico)
+        self.listaArtigoEmPeriodico = self.filtrarItems(self.listaArtigoEmPeriodico)
         self.listaLivroPublicado = self.filtrarItems(self.listaLivroPublicado)
         self.listaCapituloDeLivroPublicado = self.filtrarItems(
-            self.listaCapituloDeLivroPublicado)
+            self.listaCapituloDeLivroPublicado
+        )
         self.listaTextoEmJornalDeNoticia = self.filtrarItems(
-            self.listaTextoEmJornalDeNoticia)
+            self.listaTextoEmJornalDeNoticia
+        )
         self.listaTrabalhoCompletoEmCongresso = self.filtrarItems(
-            self.listaTrabalhoCompletoEmCongresso)
+            self.listaTrabalhoCompletoEmCongresso
+        )
         self.listaResumoExpandidoEmCongresso = self.filtrarItems(
-            self.listaResumoExpandidoEmCongresso)
-        self.listaResumoEmCongresso = self.filtrarItems(
-            self.listaResumoEmCongresso)
+            self.listaResumoExpandidoEmCongresso
+        )
+        self.listaResumoEmCongresso = self.filtrarItems(self.listaResumoEmCongresso)
         self.listaArtigoAceito = self.filtrarItems(self.listaArtigoAceito)
         self.listaApresentacaoDeTrabalho = self.filtrarItems(
-            self.listaApresentacaoDeTrabalho)
+            self.listaApresentacaoDeTrabalho
+        )
         self.listaOutroTipoDeProducaoBibliografica = self.filtrarItems(
-            self.listaOutroTipoDeProducaoBibliografica)
+            self.listaOutroTipoDeProducaoBibliografica
+        )
 
-        self.listaSoftwareComPatente = self.filtrarItems(
-            self.listaSoftwareComPatente)
-        self.listaSoftwareSemPatente = self.filtrarItems(
-            self.listaSoftwareSemPatente)
-        self.listaProdutoTecnologico = self.filtrarItems(
-            self.listaProdutoTecnologico)
-        self.listaProcessoOuTecnica = self.filtrarItems(
-            self.listaProcessoOuTecnica)
-        self.listaTrabalhoTecnico = self.filtrarItems(
-            self.listaTrabalhoTecnico)
+        self.listaSoftwareComPatente = self.filtrarItems(self.listaSoftwareComPatente)
+        self.listaSoftwareSemPatente = self.filtrarItems(self.listaSoftwareSemPatente)
+        self.listaProdutoTecnologico = self.filtrarItems(self.listaProdutoTecnologico)
+        self.listaProcessoOuTecnica = self.filtrarItems(self.listaProcessoOuTecnica)
+        self.listaTrabalhoTecnico = self.filtrarItems(self.listaTrabalhoTecnico)
         self.listaOutroTipoDeProducaoTecnica = self.filtrarItems(
-            self.listaOutroTipoDeProducaoTecnica)
+            self.listaOutroTipoDeProducaoTecnica
+        )
 
         self.listaPatente = self.filtrarItems(self.listaPatente)
-        self.listaProgramaComputador = self.filtrarItems(
-            self.listaProgramaComputador)
-        self.listaDesenhoIndustrial = self.filtrarItems(
-            self.listaDesenhoIndustrial)
+        self.listaProgramaComputador = self.filtrarItems(self.listaProgramaComputador)
+        self.listaDesenhoIndustrial = self.filtrarItems(self.listaDesenhoIndustrial)
 
-        self.listaProducaoArtistica = self.filtrarItems(
-            self.listaProducaoArtistica)
+        self.listaProducaoArtistica = self.filtrarItems(self.listaProducaoArtistica)
 
         self.listaOASupervisaoDePosDoutorado = self.filtrarItems(
-            self.listaOASupervisaoDePosDoutorado)
-        self.listaOATeseDeDoutorado = self.filtrarItems(
-            self.listaOATeseDeDoutorado)
+            self.listaOASupervisaoDePosDoutorado
+        )
+        self.listaOATeseDeDoutorado = self.filtrarItems(self.listaOATeseDeDoutorado)
         self.listaOADissertacaoDeMestrado = self.filtrarItems(
-            self.listaOADissertacaoDeMestrado)
+            self.listaOADissertacaoDeMestrado
+        )
         self.listaOAMonografiaDeEspecializacao = self.filtrarItems(
-            self.listaOAMonografiaDeEspecializacao)
+            self.listaOAMonografiaDeEspecializacao
+        )
         self.listaOATCC = self.filtrarItems(self.listaOATCC)
         self.listaOAIniciacaoCientifica = self.filtrarItems(
-            self.listaOAIniciacaoCientifica)
+            self.listaOAIniciacaoCientifica
+        )
         self.listaOAOutroTipoDeOrientacao = self.filtrarItems(
-            self.listaOAOutroTipoDeOrientacao)
+            self.listaOAOutroTipoDeOrientacao
+        )
 
         self.listaOCSupervisaoDePosDoutorado = self.filtrarItems(
-            self.listaOCSupervisaoDePosDoutorado)
-        self.listaOCTeseDeDoutorado = self.filtrarItems(
-            self.listaOCTeseDeDoutorado)
+            self.listaOCSupervisaoDePosDoutorado
+        )
+        self.listaOCTeseDeDoutorado = self.filtrarItems(self.listaOCTeseDeDoutorado)
         self.listaOCDissertacaoDeMestrado = self.filtrarItems(
-            self.listaOCDissertacaoDeMestrado)
+            self.listaOCDissertacaoDeMestrado
+        )
         self.listaOCMonografiaDeEspecializacao = self.filtrarItems(
-            self.listaOCMonografiaDeEspecializacao)
+            self.listaOCMonografiaDeEspecializacao
+        )
         self.listaOCTCC = self.filtrarItems(self.listaOCTCC)
         self.listaOCIniciacaoCientifica = self.filtrarItems(
-            self.listaOCIniciacaoCientifica)
+            self.listaOCIniciacaoCientifica
+        )
         self.listaOCOutroTipoDeOrientacao = self.filtrarItems(
-            self.listaOCOutroTipoDeOrientacao)
+            self.listaOCOutroTipoDeOrientacao
+        )
 
         self.listaPremioOuTitulo = self.filtrarItems(self.listaPremioOuTitulo)
-        self.listaProjetoDePesquisa = self.filtrarItems(
-            self.listaProjetoDePesquisa)
+        self.listaProjetoDePesquisa = self.filtrarItems(self.listaProjetoDePesquisa)
 
         self.listaParticipacaoEmEvento = self.filtrarItems(
-            self.listaParticipacaoEmEvento)
-        self.listaOrganizacaoDeEvento = self.filtrarItems(
-            self.listaOrganizacaoDeEvento)
+            self.listaParticipacaoEmEvento
+        )
+        self.listaOrganizacaoDeEvento = self.filtrarItems(self.listaOrganizacaoDeEvento)
 
     def filtrarItems(self, lista):
         return list(filter(self.estaDentroDoPeriodo, lista))
@@ -457,35 +485,44 @@ class Membro:
         # return lista
 
     def estaDentroDoPeriodo(self, objeto):
-        if objeto.__module__ == 'orientacaoEmAndamento':
+        if objeto.__module__ == "orientacaoEmAndamento":
             objeto.ano = int(objeto.ano) if objeto.ano else 0  # Caso
             if objeto.ano > self.itemsAteOAno:
                 return 0
             else:
                 return 1
 
-        elif objeto.__module__ == 'projetoDePesquisa':
-            if objeto.anoConclusao.lower() == 'atual':
+        elif objeto.__module__ == "projetoDePesquisa":
+            if objeto.anoConclusao.lower() == "atual":
                 objeto.anoConclusao = str(datetime.datetime.now().year)
 
             # Para projetos de pesquisa sem anos! (sim... tem gente que não
             # coloca os anos!)
-            if objeto.anoInicio == '':
-                objeto.anoInicio = '0'
-            if objeto.anoConclusao == '':
-                objeto.anoConclusao = '0'
+            if objeto.anoInicio == "":
+                objeto.anoInicio = "0"
+            if objeto.anoConclusao == "":
+                objeto.anoConclusao = "0"
 
             objeto.anoInicio = int(objeto.anoInicio)
             objeto.anoConclusao = int(objeto.anoConclusao)
             objeto.ano = objeto.anoInicio  # Para comparação entre projetos
 
-            if objeto.anoInicio > self.itemsAteOAno and objeto.anoConclusao > self.itemsAteOAno or objeto.anoInicio < self.itemsDesdeOAno and objeto.anoConclusao < self.itemsDesdeOAno:
+            if (
+                objeto.anoInicio > self.itemsAteOAno
+                and objeto.anoConclusao > self.itemsAteOAno
+                or objeto.anoInicio < self.itemsDesdeOAno
+                and objeto.anoConclusao < self.itemsDesdeOAno
+            ):
                 return 0
             else:
                 fora = 0
                 for per in self.listaPeriodo:
-                    if objeto.anoInicio > per[1] and objeto.anoConclusao > per[
-                            1] or objeto.anoInicio < per[0] and objeto.anoConclusao < per[0]:
+                    if (
+                        objeto.anoInicio > per[1]
+                        and objeto.anoConclusao > per[1]
+                        or objeto.anoInicio < per[0]
+                        and objeto.anoConclusao < per[0]
+                    ):
                         fora += 1
                 if fora == len(self.listaPeriodo):
                     return 0
@@ -493,7 +530,9 @@ class Membro:
                     return 1
 
         else:
-            if not objeto.ano.isdigit():  # se nao for identificado o ano sempre o mostramos na lista
+            if (
+                not objeto.ano.isdigit()
+            ):  # se nao for identificado o ano sempre o mostramos na lista
                 objeto.ano = 0
                 return 1
             else:
@@ -509,39 +548,38 @@ class Membro:
                     return retorno
 
     def obterCoordenadasDeGeolocalizacao(self):
-        geo = Geolocalizador(self.enderecoProfissional,
-                             self.dicionarioDeGeolocalizacao)
+        geo = Geolocalizador(self.enderecoProfissional, self.dicionarioDeGeolocalizacao)
         self.enderecoProfissionalLat = geo.lat
         self.enderecoProfissionalLon = geo.lon
 
     def ris(self):
-        s = ''
-        s += '\nTY  - MEMBRO'
-        s += '\nNOME  - ' + self.nomeCompleto
+        s = ""
+        s += "\nTY  - MEMBRO"
+        s += "\nNOME  - " + self.nomeCompleto
         # s+= '\nSEXO  - '+self.sexo
-        s += '\nCITA  - ' + self.nomeEmCitacoesBibliograficas
-        s += '\nBOLS  - ' + self.bolsaProdutividade
-        s += '\nENDE  - ' + self.enderecoProfissional
-        s += '\nURLC  - ' + self.url
-        s += '\nDATA  - ' + self.atualizacaoCV
-        s += '\nRESU  - ' + self.textoResumo
+        s += "\nCITA  - " + self.nomeEmCitacoesBibliograficas
+        s += "\nBOLS  - " + self.bolsaProdutividade
+        s += "\nENDE  - " + self.enderecoProfissional
+        s += "\nURLC  - " + self.url
+        s += "\nDATA  - " + self.atualizacaoCV
+        s += "\nRESU  - " + self.textoResumo
 
         for i in range(0, len(self.listaFormacaoAcademica)):
             formacao = self.listaFormacaoAcademica[i]
-            s += '\nFO' + str(i + 1) + 'a  - ' + formacao.anoInicio
-            s += '\nFO' + str(i + 1) + 'b  - ' + formacao.anoConclusao
-            s += '\nFO' + str(i + 1) + 'c  - ' + formacao.tipo
-            s += '\nFO' + str(i + 1) + 'd  - ' + formacao.nomeInstituicao
-            s += '\nFO' + str(i + 1) + 'e  - ' + formacao.descricao
+            s += "\nFO" + str(i + 1) + "a  - " + formacao.anoInicio
+            s += "\nFO" + str(i + 1) + "b  - " + formacao.anoConclusao
+            s += "\nFO" + str(i + 1) + "c  - " + formacao.tipo
+            s += "\nFO" + str(i + 1) + "d  - " + formacao.nomeInstituicao
+            s += "\nFO" + str(i + 1) + "e  - " + formacao.descricao
 
         for i in range(0, len(self.listaAreaDeAtuacao)):
             area = self.listaAreaDeAtuacao[i]
-            s += '\nARE' + str(i + 1) + '  - ' + area.descricao
+            s += "\nARE" + str(i + 1) + "  - " + area.descricao
 
         for i in range(0, len(self.listaIdioma)):
             idioma = self.listaIdioma[i]
-            s += '\nID' + str(i + 1) + 'a  - ' + idioma.nome
-            s += '\nID' + str(i + 1) + 'b  - ' + idioma.proficiencia
+            s += "\nID" + str(i + 1) + "a  - " + idioma.nome
+            s += "\nID" + str(i + 1) + "b  - " + idioma.proficiencia
 
         return s
 
@@ -570,85 +608,124 @@ class Membro:
 
         else:
             s += "\n- Numero de colaboradores (identificado)      : " + str(
-                len(self.listaIDLattesColaboradoresUnica))
-            s += "\n- Artigos completos publicados em periódicos  : " + \
-                str(len(self.listaArtigoEmPeriodico))
-            s += "\n- Livros publicados/organizados ou edições    : " + \
-                str(len(self.listaLivroPublicado))
-            s += "\n- Capítulos de livros publicados              : " + \
-                str(len(self.listaCapituloDeLivroPublicado))
-            s += "\n- Textos em jornais de notícias/revistas      : " + \
-                str(len(self.listaTextoEmJornalDeNoticia))
-            s += "\n- Trabalhos completos publicados em congressos: " + \
-                str(len(self.listaTrabalhoCompletoEmCongresso))
-            s += "\n- Resumos expandidos publicados em congressos : " + \
-                str(len(self.listaResumoExpandidoEmCongresso))
-            s += "\n- Resumos publicados em anais de congressos   : " + \
-                str(len(self.listaResumoEmCongresso))
-            s += "\n- Artigos aceitos para publicação             : " + \
-                str(len(self.listaArtigoAceito))
-            s += "\n- Apresentações de Trabalho                   : " + \
-                str(len(self.listaApresentacaoDeTrabalho))
-            s += "\n- Demais tipos de produção bibliográfica      : " + \
-                str(len(self.listaOutroTipoDeProducaoBibliografica))
-            s += "\n- Softwares com registro de patente           : " + \
-                str(len(self.listaSoftwareComPatente))
-            s += "\n- Softwares sem registro de patente           : " + \
-                str(len(self.listaSoftwareSemPatente))
-            s += "\n- Produtos tecnológicos                       : " + \
-                str(len(self.listaProdutoTecnologico))
-            s += "\n- Processos ou técnicas                       : " + \
-                str(len(self.listaProcessoOuTecnica))
-            s += "\n- Trabalhos técnicos                          : " + \
-                str(len(self.listaTrabalhoTecnico))
-            s += "\n- Demais tipos de produção técnica            : " + \
-                str(len(self.listaOutroTipoDeProducaoTecnica))
-            s += "\n- Patente                                     : " + \
-                str(len(self.listaPatente))
-            s += "\n- Programa de computador                      : " + \
-                str(len(self.listaProgramaComputador))
-            s += "\n- Desenho industrial                          : " + \
-                str(len(self.listaDesenhoIndustrial))
-            s += "\n- Produção artística/cultural                 : " + \
-                str(len(self.listaProducaoArtistica))
+                len(self.listaIDLattesColaboradoresUnica)
+            )
+            s += "\n- Artigos completos publicados em periódicos  : " + str(
+                len(self.listaArtigoEmPeriodico)
+            )
+            s += "\n- Livros publicados/organizados ou edições    : " + str(
+                len(self.listaLivroPublicado)
+            )
+            s += "\n- Capítulos de livros publicados              : " + str(
+                len(self.listaCapituloDeLivroPublicado)
+            )
+            s += "\n- Textos em jornais de notícias/revistas      : " + str(
+                len(self.listaTextoEmJornalDeNoticia)
+            )
+            s += "\n- Trabalhos completos publicados em congressos: " + str(
+                len(self.listaTrabalhoCompletoEmCongresso)
+            )
+            s += "\n- Resumos expandidos publicados em congressos : " + str(
+                len(self.listaResumoExpandidoEmCongresso)
+            )
+            s += "\n- Resumos publicados em anais de congressos   : " + str(
+                len(self.listaResumoEmCongresso)
+            )
+            s += "\n- Artigos aceitos para publicação             : " + str(
+                len(self.listaArtigoAceito)
+            )
+            s += "\n- Apresentações de Trabalho                   : " + str(
+                len(self.listaApresentacaoDeTrabalho)
+            )
+            s += "\n- Demais tipos de produção bibliográfica      : " + str(
+                len(self.listaOutroTipoDeProducaoBibliografica)
+            )
+            s += "\n- Softwares com registro de patente           : " + str(
+                len(self.listaSoftwareComPatente)
+            )
+            s += "\n- Softwares sem registro de patente           : " + str(
+                len(self.listaSoftwareSemPatente)
+            )
+            s += "\n- Produtos tecnológicos                       : " + str(
+                len(self.listaProdutoTecnologico)
+            )
+            s += "\n- Processos ou técnicas                       : " + str(
+                len(self.listaProcessoOuTecnica)
+            )
+            s += "\n- Trabalhos técnicos                          : " + str(
+                len(self.listaTrabalhoTecnico)
+            )
+            s += "\n- Demais tipos de produção técnica            : " + str(
+                len(self.listaOutroTipoDeProducaoTecnica)
+            )
+            s += "\n- Patente                                     : " + str(
+                len(self.listaPatente)
+            )
+            s += "\n- Programa de computador                      : " + str(
+                len(self.listaProgramaComputador)
+            )
+            s += "\n- Desenho industrial                          : " + str(
+                len(self.listaDesenhoIndustrial)
+            )
+            s += "\n- Produção artística/cultural                 : " + str(
+                len(self.listaProducaoArtistica)
+            )
             s += "\n- Orientações em andamento"
-            s += "\n  . Supervições de pos doutorado              : " + \
-                str(len(self.listaOASupervisaoDePosDoutorado))
-            s += "\n  . Tese de doutorado                         : " + \
-                str(len(self.listaOATeseDeDoutorado))
-            s += "\n  . Dissertações de mestrado                  : " + \
-                str(len(self.listaOADissertacaoDeMestrado))
-            s += "\n  . Monografías de especialização             : " + \
-                str(len(self.listaOAMonografiaDeEspecializacao))
-            s += "\n  . TCC                                       : " + \
-                str(len(self.listaOATCC))
-            s += "\n  . Iniciação científica                      : " + \
-                str(len(self.listaOAIniciacaoCientifica))
-            s += "\n  . Orientações de outra natureza             : " + \
-                str(len(self.listaOAOutroTipoDeOrientacao))
+            s += "\n  . Supervições de pos doutorado              : " + str(
+                len(self.listaOASupervisaoDePosDoutorado)
+            )
+            s += "\n  . Tese de doutorado                         : " + str(
+                len(self.listaOATeseDeDoutorado)
+            )
+            s += "\n  . Dissertações de mestrado                  : " + str(
+                len(self.listaOADissertacaoDeMestrado)
+            )
+            s += "\n  . Monografías de especialização             : " + str(
+                len(self.listaOAMonografiaDeEspecializacao)
+            )
+            s += "\n  . TCC                                       : " + str(
+                len(self.listaOATCC)
+            )
+            s += "\n  . Iniciação científica                      : " + str(
+                len(self.listaOAIniciacaoCientifica)
+            )
+            s += "\n  . Orientações de outra natureza             : " + str(
+                len(self.listaOAOutroTipoDeOrientacao)
+            )
             s += "\n- Orientações concluídas"
-            s += "\n  . Supervições de pos doutorado              : " + \
-                str(len(self.listaOCSupervisaoDePosDoutorado))
-            s += "\n  . Tese de doutorado                         : " + \
-                str(len(self.listaOCTeseDeDoutorado))
-            s += "\n  . Dissertações de mestrado                  : " + \
-                str(len(self.listaOCDissertacaoDeMestrado))
-            s += "\n  . Monografías de especialização             : " + \
-                str(len(self.listaOCMonografiaDeEspecializacao))
-            s += "\n  . TCC                                       : " + \
-                str(len(self.listaOCTCC))
-            s += "\n  . Iniciação científica                      : " + \
-                str(len(self.listaOCIniciacaoCientifica))
-            s += "\n  . Orientações de outra natureza             : " + \
-                str(len(self.listaOCOutroTipoDeOrientacao))
-            s += "\n- Projetos de pesquisa                        : " + \
-                str(len(self.listaProjetoDePesquisa))
-            s += "\n- Prêmios e títulos                           : " + \
-                str(len(self.listaPremioOuTitulo))
-            s += "\n- Participação em eventos                     : " + \
-                str(len(self.listaParticipacaoEmEvento))
-            s += "\n- Organização de eventos                      : " + \
-                str(len(self.listaOrganizacaoDeEvento))
+            s += "\n  . Supervições de pos doutorado              : " + str(
+                len(self.listaOCSupervisaoDePosDoutorado)
+            )
+            s += "\n  . Tese de doutorado                         : " + str(
+                len(self.listaOCTeseDeDoutorado)
+            )
+            s += "\n  . Dissertações de mestrado                  : " + str(
+                len(self.listaOCDissertacaoDeMestrado)
+            )
+            s += "\n  . Monografías de especialização             : " + str(
+                len(self.listaOCMonografiaDeEspecializacao)
+            )
+            s += "\n  . TCC                                       : " + str(
+                len(self.listaOCTCC)
+            )
+            s += "\n  . Iniciação científica                      : " + str(
+                len(self.listaOCIniciacaoCientifica)
+            )
+            s += "\n  . Orientações de outra natureza             : " + str(
+                len(self.listaOCOutroTipoDeOrientacao)
+            )
+            s += "\n- Projetos de pesquisa                        : " + str(
+                len(self.listaProjetoDePesquisa)
+            )
+            s += "\n- Prêmios e títulos                           : " + str(
+                len(self.listaPremioOuTitulo)
+            )
+            s += "\n- Participação em eventos                     : " + str(
+                len(self.listaParticipacaoEmEvento)
+            )
+            s += "\n- Organização de eventos                      : " + str(
+                len(self.listaOrganizacaoDeEvento)
+            )
             s += "\n\n"
         return s
 
@@ -656,5 +733,8 @@ class Membro:
 # ---------------------------------------------------------------------------- #
 # http://wiki.python.org/moin/EscapingHtml
 def htmlentitydecode(s):
-    return re.sub('&(%s);' % '|'.join(name2codepoint),
-                  lambda m: chr(name2codepoint[m.group(1)]), s)
+    return re.sub(
+        "&(%s);" % "|".join(name2codepoint),
+        lambda m: chr(name2codepoint[m.group(1)]),
+        s,
+    )

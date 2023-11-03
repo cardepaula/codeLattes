@@ -35,31 +35,31 @@ class ParticipacaoEmEvento:
     ano = None
     chave = None
 
-    def __init__(self, idMembro, partesDoItem=''):
+    def __init__(self, idMembro, partesDoItem=""):
         self.idMembro = set([])
         self.idMembro.add(idMembro)
 
-        if not partesDoItem == '':
+        if not partesDoItem == "":
             # partesDoItem[0]: Numero (NAO USADO)
             # partesDoItem[1]: Descricao
             self.item = partesDoItem[1]
 
             partes = self.item
-            aux = re.findall('\\. ((?:19|20)\\d\\d)\\b', partes)
+            aux = re.findall("\\. ((?:19|20)\\d\\d)\\b", partes)
             if len(aux) > 0:
                 self.ano = aux[0]
             else:
-                self.ano = ''
+                self.ano = ""
 
             self.chave = self.item  # chave de comparação entre os objetos
 
         else:
-            self.ano = ''
+            self.ano = ""
 
     def compararCom(self, objeto):
-        if self.idMembro.isdisjoint(
-                objeto.idMembro) and similaridade_entre_cadeias(
-                self.item, objeto.item):
+        if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(
+            self.item, objeto.item
+        ):
             # Os IDs dos membros são agrupados.
             # Essa parte é importante para a criação do GRAFO de colaborações
             self.idMembro.update(objeto.idMembro)
@@ -80,7 +80,6 @@ class ParticipacaoEmEvento:
     def __str__(self):
         s = "\n[PARTICIPACAO EM EVENTO] \n"
         s += "+ID-MEMBRO   : " + str(self.idMembro) + "\n"
-        s += "+item         : @@" + \
-            self.item + "@@\n"
+        s += "+item         : @@" + self.item + "@@\n"
 
         return s

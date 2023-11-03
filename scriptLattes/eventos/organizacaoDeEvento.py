@@ -38,11 +38,11 @@ class OrganizacaoDeEvento:
     ano = None
     chave = None
 
-    def __init__(self, idMembro, partesDoItem=''):
+    def __init__(self, idMembro, partesDoItem=""):
         self.idMembro = set([])
         self.idMembro.add(idMembro)
 
-        if not partesDoItem == '':
+        if not partesDoItem == "":
             # partesDoItem[0]: Numero (NAO USADO)
             # partesDoItem[1]: Descricao
             self.item = partesDoItem[1]
@@ -52,36 +52,35 @@ class OrganizacaoDeEvento:
             self.autores = partes[0].strip()
             partes = partes[2]
 
-            aux = re.findall(' \\((.*?)\\)', partes)
+            aux = re.findall(" \\((.*?)\\)", partes)
             if len(aux) > 0:
                 self.natureza = aux[-1]
                 partes = partes.rpartition(" (")
                 partes = partes[0]
             else:
-                self.natureza = ''
+                self.natureza = ""
 
-            aux = re.findall('\\. ((?:19|20)\\d\\d)\\b', partes)
+            aux = re.findall("\\. ((?:19|20)\\d\\d)\\b", partes)
             if len(aux) > 0:
                 self.ano = aux[-1]
                 partes = partes.rpartition(" ")
                 partes = partes[0]
             else:
-                self.ano = ''
+                self.ano = ""
 
             self.nomeDoEvento = partes.strip().rstrip(".").rstrip(",")
             self.chave = self.autores  # chave de comparação entre os objetos
 
         else:
-            self.autores = ''
-            self.nomeDoEvento = ''
-            self.natureza = ''
-            self.ano = ''
+            self.autores = ""
+            self.nomeDoEvento = ""
+            self.natureza = ""
+            self.ano = ""
 
     def compararCom(self, objeto):
-        if self.idMembro.isdisjoint(
-                objeto.idMembro) and similaridade_entre_cadeias(
-                self.nomeDoEvento,
-                objeto.nomeDoEvento):
+        if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(
+            self.nomeDoEvento, objeto.nomeDoEvento
+        ):
             # Os IDs dos membros são agrupados.
             # Essa parte é importante para a criação do GRAFO de colaborações
             self.idMembro.update(objeto.idMembro)
@@ -100,9 +99,9 @@ class OrganizacaoDeEvento:
             return None
 
     def html(self, listaDeMembros):
-        s = self.autores + '. <b>' + self.nomeDoEvento + '</b>. '
-        s += str(self.ano) + '. ' if str(self.ano).isdigit() else '. '
-        s += self.natureza if not self.natureza == '' else ''
+        s = self.autores + ". <b>" + self.nomeDoEvento + "</b>. "
+        s += str(self.ano) + ". " if str(self.ano).isdigit() else ". "
+        s += self.natureza if not self.natureza == "" else ""
         return s
 
     # ------------------------------------------------------------------------ #
@@ -110,9 +109,8 @@ class OrganizacaoDeEvento:
         s = "\n[ORGANIZACAO DE EVENTO]\n"
         s += "+ID-MEMBRO   : " + str(self.idMembro) + "\n"
         s += "+AUTORES     : " + self.autores + "\n"
-        s += "+EVENTO      : " + \
-            self.nomeDoEvento + "\n"
+        s += "+EVENTO      : " + self.nomeDoEvento + "\n"
         s += "+ANO         : " + str(self.ano) + "\n"
         s += "+NATUREZA    : " + self.natureza + "\n"
-# s += "+item         : @@" + self.item.encode('utf8','replace') + "@@\n"
+        # s += "+item         : @@" + self.item.encode('utf8','replace') + "@@\n"
         return s

@@ -27,8 +27,8 @@ import sys
 import Levenshtein
 
 SEP = os.path.sep
-BASE = 'scriptLattes' + SEP
-ABSBASE = os.path.abspath('.') + SEP
+BASE = "scriptLattes" + SEP
+ABSBASE = os.path.abspath(".") + SEP
 
 
 class OutputStream:
@@ -55,7 +55,7 @@ class OutputStream:
             try:
                 self.output.write(str(text))
             except BaseException:
-                self.output.write('ERRO na impressao')
+                self.output.write("ERRO na impressao")
 
 
 def buscarArquivo(filepath, arquivoConfiguracao=None):
@@ -79,10 +79,10 @@ def buscarArquivo(filepath, arquivoConfiguracao=None):
 def copiarArquivos(dir):
     base = ABSBASE
     try:
-        dst = os.path.join(dir, 'css')
+        dst = os.path.join(dir, "css")
         if os.path.exists(dst):
             shutil.rmtree(dst)
-        shutil.copytree(os.path.join(base, 'css'), dst)
+        shutil.copytree(os.path.join(base, "css"), dst)
     except OSError as e:
         pass  # provavelmente diretório já existe
         logging.warning(e)
@@ -90,27 +90,27 @@ def copiarArquivos(dir):
     # shutil.copy2(os.path.join(base, 'css', 'scriptLattes.css'), dir)
     # shutil.copy2(os.path.join(base, 'css', 'jquery.dataTables.css'), dir)
 
-    shutil.copy2(os.path.join(base, 'imagens', 'lattesPoint0.png'), dir)
-    shutil.copy2(os.path.join(base, 'imagens', 'lattesPoint1.png'), dir)
-    shutil.copy2(os.path.join(base, 'imagens', 'lattesPoint2.png'), dir)
-    shutil.copy2(os.path.join(base, 'imagens', 'lattesPoint3.png'), dir)
-    shutil.copy2(os.path.join(base, 'imagens', 'lattesPoint_shadow.png'), dir)
-    shutil.copy2(os.path.join(base, 'imagens', 'doi.png'), dir)
+    shutil.copy2(os.path.join(base, "imagens", "lattesPoint0.png"), dir)
+    shutil.copy2(os.path.join(base, "imagens", "lattesPoint1.png"), dir)
+    shutil.copy2(os.path.join(base, "imagens", "lattesPoint2.png"), dir)
+    shutil.copy2(os.path.join(base, "imagens", "lattesPoint3.png"), dir)
+    shutil.copy2(os.path.join(base, "imagens", "lattesPoint_shadow.png"), dir)
+    shutil.copy2(os.path.join(base, "imagens", "doi.png"), dir)
 
     try:
-        dst = os.path.join(dir, 'images')
+        dst = os.path.join(dir, "images")
         if os.path.exists(dst):
             shutil.rmtree(dst)
-        shutil.copytree(os.path.join(base, 'images'), dst)
+        shutil.copytree(os.path.join(base, "images"), dst)
     except OSError as e:
         pass  # provavelmente diretório já existe
         logging.warning(e)
 
     try:
-        dst = os.path.join(dir, 'js')
+        dst = os.path.join(dir, "js")
         if os.path.exists(dst):
             shutil.rmtree(dst)
-        shutil.copytree(os.path.join(base, 'js'), dst)
+        shutil.copytree(os.path.join(base, "js"), dst)
     except OSError as e:
         pass  # provavelmente diretório já existe
         logging.warning(e)
@@ -127,19 +127,23 @@ def copiarArquivos(dir):
 
 # ---------------------------------------------------------------------------- #
 def similaridade_entre_cadeias(str1, str2, qualis=False):
-    '''
+    """
     Compara duas cadeias de caracteres e retorna a medida de similaridade entre elas, entre 0 e 1, onde 1 significa que as cadeias são idênticas ou uma é contida na outra.
     :param str1:
     :param str2:
     :param qualis:
     :return: A medida de similaridade entre as cadeias, de 0 a 1.
-    '''
+    """
     str1 = str1.strip().lower()
     str2 = str2.strip().lower()
 
     # caso especial
-    if ('apresentação' == str1 or 'apresentação' ==
-            str2 or 'apresentacao' == str1 or 'apresentacao' == str2):
+    if (
+        "apresentação" == str1
+        or "apresentação" == str2
+        or "apresentacao" == str1
+        or "apresentacao" == str2
+    ):
         return 0
 
     if len(str1) == 0 or len(str2) == 0:
@@ -155,8 +159,11 @@ def similaridade_entre_cadeias(str1, str2, qualis=False):
             return dist
 
     else:
-        if len(str1) >= 10 and len(
-                str2) >= 10 and Levenshtein.distance(str1, str2) <= 5:
+        if (
+            len(str1) >= 10
+            and len(str2) >= 10
+            and Levenshtein.distance(str1, str2) <= 5
+        ):
             return 1
     return 0
 
@@ -167,11 +174,11 @@ def criarDiretorio(dir):
             os.makedirs(dir)
         # except OSError as exc:
         except BaseException:
-            print(
-                ("\n[ERRO] Não foi possível criar ou atualizar o diretório: " + dir))
+            print(("\n[ERRO] Não foi possível criar ou atualizar o diretório: " + dir))
             print("[ERRO] Você conta com as permissões de escrita? \n")
             return 0
     return 1
+
 
 # Combining Dictionaries Of Lists
 
@@ -180,8 +187,7 @@ def merge_dols(dol1, dol2):
     result = {}
     if len(dol1) > 0 and len(dol2) > 0:
         result = dol1 | dol2
-        result.update((k, dol1[k] + dol2[k])
-                      for k in set(dol1).intersection(dol2))
+        result.update((k, dol1[k] + dol2[k]) for k in set(dol1).intersection(dol2))
     elif len(dol1) > 0:
         result = dol1
     elif len(dol2) > 0:

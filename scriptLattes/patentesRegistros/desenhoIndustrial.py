@@ -57,8 +57,8 @@ class DesenhoIndustrial:
 
         partes = partes[2]
         partes = partes.partition(", ")
-        self.titulo = partes[0][0: len(partes[0]) - 5]
-        self.ano = partes[0][len(partes[0]) - 4: len(partes[0])]
+        self.titulo = partes[0][0 : len(partes[0]) - 5]
+        self.ano = partes[0][len(partes[0]) - 4 : len(partes[0])]
 
         partes = partes[2].split(".")
         self.pais = partes[0]
@@ -74,9 +74,9 @@ class DesenhoIndustrial:
         self.chave = self.autores  # chave de comparação entre os objetos
 
     def compararCom(self, objeto):
-        if self.idMembro.isdisjoint(
-                objeto.idMembro) and similaridade_entre_cadeias(
-                self.titulo, objeto.titulo):
+        if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(
+            self.titulo, objeto.titulo
+        ):
             # Os IDs dos membros são agrupados.
             # Essa parte é importante para a criação do GRAFO de colaborações
             self.idMembro.update(objeto.idMembro)
@@ -92,9 +92,9 @@ class DesenhoIndustrial:
             return None
 
     def html(self, listaDeMembros):
-        s = self.autores + '. <b>' + self.titulo + '</b>. '
-        s += str(self.ano) + '. ' + str(self.pais) + '. '
-        s += str(self.numeroRegistro) + '. ' + str(self.dataDeposito) + '.'
+        s = self.autores + ". <b>" + self.titulo + "</b>. "
+        s += str(self.ano) + ". " + str(self.pais) + ". "
+        s += str(self.numeroRegistro) + ". " + str(self.dataDeposito) + "."
         s += menuHTMLdeBuscaPT(self.titulo)
         return s
 

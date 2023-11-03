@@ -13,17 +13,22 @@ class parser101021(HTMLParser):
         self.count = 0
 
     def handle_starttag(self, tag, attrs):
-        if tag == 'div':
+        if tag == "div":
             for attr in attrs:
-                if 'class' == attr[0] and attr[1] == 'affiliations':
+                if "class" == attr[0] and attr[1] == "affiliations":
                     self.recording = 1
                     self.count = 0
-                if 'id' == attr[0] and attr[1] == 'citation':
+                if "id" == attr[0] and attr[1] == "citation":
                     if self.recording == 1:
                         self.recording -= 1
 
     def handle_data(self, data):
         if self.recording:
-            data = ''.join((c for c in unicodedata.normalize('NFD', str(
-                data.decode("utf-8"))) if unicodedata.category(c) != 'Mn'))
+            data = "".join(
+                (
+                    c
+                    for c in unicodedata.normalize("NFD", str(data.decode("utf-8")))
+                    if unicodedata.category(c) != "Mn"
+                )
+            )
             self.data.append(data)

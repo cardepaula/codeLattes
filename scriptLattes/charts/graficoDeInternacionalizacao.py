@@ -24,6 +24,7 @@
 import math
 import operator
 import matplotlib
+
 matplotlib.use("Agg")
 
 
@@ -49,27 +50,28 @@ class GraficoDeInternacionalizacao:
 
                 # publicações sem identificação de paises
                 if publicacaoEinternacionalizacao.listaDePaises is not None:
-                    if (len(publicacaoEinternacionalizacao.listaDePaises) == 0):
+                    if len(publicacaoEinternacionalizacao.listaDePaises) == 0:
                         self.publicacoesComParceriasNaoIdentificadas += 1
                     else:
                         soBrasil = True
 
                         for pais in publicacaoEinternacionalizacao.listaDePaises:
-                            if (not pais == 'Brazil'):
+                            if not pais == "Brazil":
                                 soBrasil = False
                             if listaDePaisesEquantidades.get(pais) is None:
                                 listaDePaisesEquantidades[pais] = 0
                             listaDePaisesEquantidades[pais] += 1
 
-                        if (soBrasil):
+                        if soBrasil:
                             self.publicacoesRealizadasSemParceirasComEstrangeiros += 1
                         else:
                             self.publicacoesRealizadasComParceirasComEstrangeiros += 1
 
         listaDePaisesEquantidadesOrd = sorted(
-            list(
-                listaDePaisesEquantidades.items()), key=operator.itemgetter(
-                1, 0), reverse=True)
+            list(listaDePaisesEquantidades.items()),
+            key=operator.itemgetter(1, 0),
+            reverse=True,
+        )
 
         self.vetorDePaises = []
         self.vetorDeQuantidades = []
@@ -111,8 +113,13 @@ class GraficoDeInternacionalizacao:
               data.addRows(["
 
             for index in range(0, len(self.vetorDePaises)):
-                script += "\n['" + self.vetorDePaises[index] + \
-                    "', " + str(self.vetorDeQuantidades[index]) + "], "
+                script += (
+                    "\n['"
+                    + self.vetorDePaises[index]
+                    + "', "
+                    + str(self.vetorDeQuantidades[index])
+                    + "], "
+                )
 
             script += "\
               ]);\
@@ -124,8 +131,7 @@ class GraficoDeInternacionalizacao:
 
             # ---------------------------------------------------------------- #
             # Barchart
-            height = str(
-                int((math.floor(len(self.vetorDePaises) / 2) + 1) * 40))
+            height = str(int((math.floor(len(self.vetorDePaises) / 2) + 1) * 40))
 
             script += " \
             <script type='text/javascript'>\
@@ -138,13 +144,21 @@ class GraficoDeInternacionalizacao:
               data.addRows(["
 
             for index in range(0, len(self.vetorDePaises)):
-                script += "\n['" + self.vetorDePaises[index] + \
-                    "', " + str(self.vetorDeQuantidades[index]) + "], "
+                script += (
+                    "\n['"
+                    + self.vetorDePaises[index]
+                    + "', "
+                    + str(self.vetorDeQuantidades[index])
+                    + "], "
+                )
 
-            script += " \
+            script += (
+                " \
               ]);\
               var options = {\
-                width: 500, height: " + str(height) + ",\
+                width: 500, height: "
+                + str(height)
+                + ",\
                 vAxis: {title: 'Pais',  titleTextStyle: {color: 'black'}},\
                 legend: 'none',\
                 chd: 's:underp',\
@@ -155,5 +169,6 @@ class GraficoDeInternacionalizacao:
               chart.draw(data, options);\
             }\
             </script>"
+            )
 
         return script

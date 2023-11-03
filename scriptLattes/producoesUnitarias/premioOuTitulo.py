@@ -26,8 +26,8 @@
 class PremioOuTitulo:
     idMembro = None
 
-    ano = ''
-    descricao = ''
+    ano = ""
+    descricao = ""
     chave = None
 
     def __init__(self, idMembro, partesDoItem):
@@ -56,12 +56,17 @@ class PremioOuTitulo:
         # return None
 
     def html(self, listaDeMembros):
-        s = self.descricao + '. '
-        s += str(self.ano) + '.' if str(self.ano).isdigit() else '.'
+        s = self.descricao + ". "
+        s += str(self.ano) + "." if str(self.ano).isdigit() else "."
 
         m = listaDeMembros[list(self.idMembro)[0]]
-        s += '<br><i><font size=-1>Membro: <a href="' + \
-            m.url + '">' + m.nomeCompleto + '</a>.</font>'
+        s += (
+            '<br><i><font size=-1>Membro: <a href="'
+            + m.url
+            + '">'
+            + m.nomeCompleto
+            + "</a>.</font>"
+        )
 
         return s
 
@@ -71,6 +76,5 @@ class PremioOuTitulo:
         s = "\n[PREMIO OU TITULO] \n"
         s += "+ID-MEMBROL  : " + str(self.idMembro) + "\n"
         s += "+ANO         : " + str(self.ano) + "\n"
-        s += "+DESCRICAO   : " + \
-            self.descricao + "\n"
+        s += "+DESCRICAO   : " + self.descricao + "\n"
         return s

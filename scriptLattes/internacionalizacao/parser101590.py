@@ -13,17 +13,22 @@ class parser101590(HTMLParser):
         self.count = 0
 
     def handle_starttag(self, tag, attrs):
-        if tag == 'p':
+        if tag == "p":
             self.count = self.count + 1
             self.recording = 1
 
     def handle_endtag(self, tag):
-        if tag == 'p':
+        if tag == "p":
             if self.recording == 1:
                 self.recording -= 1
 
     def handle_data(self, data):
         if self.recording and self.count > 4 and self.count < 11:
-            data = ''.join((c for c in unicodedata.normalize('NFD', str(
-                data.decode("utf-8"))) if unicodedata.category(c) != 'Mn'))
+            data = "".join(
+                (
+                    c
+                    for c in unicodedata.normalize("NFD", str(data.decode("utf-8")))
+                    if unicodedata.category(c) != "Mn"
+                )
+            )
             self.data.append(data)

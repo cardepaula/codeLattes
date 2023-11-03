@@ -32,8 +32,8 @@ class ProjetoDePesquisa:
     idMembro = None
     anoInicio = None
     anoConclusao = None
-    nome = ''
-    descricao = ''
+    nome = ""
+    descricao = ""
     chave = None
     ano = None
 
@@ -63,26 +63,36 @@ class ProjetoDePesquisa:
 
     def html(self, listaDeMembros):
         if self.anoConclusao == datetime.datetime.now().year:
-            self.anoConclusao = 'Atual'
+            self.anoConclusao = "Atual"
         if self.anoInicio == 0 and self.anoConclusao == 0:
             s = '<span class="projects"> (*) </span> '
         else:
-            s = '<span class="projects">' + \
-                str(self.anoInicio) + '-' + \
-                str(self.anoConclusao) + '</span>. '
-        s += '<b>' + self.nome + '</b>'
+            s = (
+                '<span class="projects">'
+                + str(self.anoInicio)
+                + "-"
+                + str(self.anoConclusao)
+                + "</span>. "
+            )
+        s += "<b>" + self.nome + "</b>"
 
         for i in range(0, len(self.idMembro)):
-            s += '<br><i><font size=-1>' + self.descricao[i] + '</font></i>'
+            s += "<br><i><font size=-1>" + self.descricao[i] + "</font></i>"
             m = listaDeMembros[self.idMembro[i]]
-            s += '<br><i><font size=-1>Membro: <a href="' + \
-                m.url + '">' + m.nomeCompleto + '</a>.</font>'
+            s += (
+                '<br><i><font size=-1>Membro: <a href="'
+                + m.url
+                + '">'
+                + m.nomeCompleto
+                + "</a>.</font>"
+            )
 
         return s
 
     def compararCom(self, objeto):
-        if set(self.idMembro).isdisjoint(set(objeto.idMembro)
-                                         ) and similaridade_entre_cadeias(self.nome, objeto.nome):
+        if set(self.idMembro).isdisjoint(
+            set(objeto.idMembro)
+        ) and similaridade_entre_cadeias(self.nome, objeto.nome):
             # Os IDs dos membros são agrupados.
             # Essa parte é importante para a geracao do relorio de projetos
             self.idMembro.extend(objeto.idMembro)
@@ -102,6 +112,5 @@ class ProjetoDePesquisa:
         s += "+ANO INICIO  : " + str(self.anoInicio) + "\n"
         s += "+ANO CONCLUS.: " + str(self.anoConclusao) + "\n"
         s += "+NOME        : " + self.nome + "\n"
-        s += "+DESCRICAO   : " + \
-            str(self.descricao) + "\n"
+        s += "+DESCRICAO   : " + str(self.descricao) + "\n"
         return s

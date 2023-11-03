@@ -39,11 +39,11 @@ class ApresentacaoDeTrabalho:
     natureza = None  # tipo de apresentacao
     chave = None
 
-    def __init__(self, idMembro, partesDoItem='', relevante=''):
+    def __init__(self, idMembro, partesDoItem="", relevante=""):
         self.idMembro = set([])
         self.idMembro.add(idMembro)
 
-        if not partesDoItem == '':
+        if not partesDoItem == "":
             # partesDoItem[0]: Numero (NAO USADO)
             # partesDoItem[1]: Descricao do livro (DADO BRUTO)
 
@@ -59,36 +59,36 @@ class ApresentacaoDeTrabalho:
             self.autores = partes[0].strip()
             partes = partes[2]
 
-            aux = re.findall(' \\((.*?)\\)', partes)
+            aux = re.findall(" \\((.*?)\\)", partes)
             if len(aux) > 0:
                 self.natureza = aux[-1]
                 partes = partes.rpartition(" (")
                 partes = partes[0]
             else:
-                self.natureza = ''
+                self.natureza = ""
 
-            aux = re.findall('. ((?:19|20)\\d\\d)\\b', partes)
+            aux = re.findall(". ((?:19|20)\\d\\d)\\b", partes)
             if len(aux) > 0:
                 self.ano = aux[-1]  # .strip().rstrip(".").rstrip(",")
                 partes = partes.rpartition(". ")
                 partes = partes[0]
             else:
-                self.ano = ''
+                self.ano = ""
 
             self.titulo = partes.strip().rstrip(".")
             self.chave = self.autores  # chave de comparação entre os objetos
 
         else:
-            self.relevante = ''
-            self.autores = ''
-            self.titulo = ''
-            self.ano = ''
-            self.natureza = ''
+            self.relevante = ""
+            self.autores = ""
+            self.titulo = ""
+            self.ano = ""
+            self.natureza = ""
 
     def compararCom(self, objeto):
-        if self.idMembro.isdisjoint(
-                objeto.idMembro) and similaridade_entre_cadeias(
-                self.titulo, objeto.titulo):
+        if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(
+            self.titulo, objeto.titulo
+        ):
             # Os IDs dos membros são agrupados.
             # Essa parte é importante para a criação do GRAFO de colaborações
             self.idMembro.update(objeto.idMembro)
@@ -107,9 +107,9 @@ class ApresentacaoDeTrabalho:
             return None
 
     def html(self, listaDeMembros):
-        s = self.autores + '. <b>' + self.titulo + '</b>. '
-        s += str(self.ano) + '. ' if str(self.ano).isdigit() else '. '
-        s += self.natureza if not self.natureza == '' else ''
+        s = self.autores + ". <b>" + self.titulo + "</b>. "
+        s += str(self.ano) + ". " if str(self.ano).isdigit() else ". "
+        s += self.natureza if not self.natureza == "" else ""
 
         # s+= menuHTMLdeBuscaPB(self.titulo)
         return s

@@ -34,29 +34,35 @@ logger = logging.getLogger(__name__)
 class Qualis:
     periodicos = {}
     congressos = {}
-    qtdPB0 = {}    # Total de artigos em periodicos por Qualis
-    qtdPB4 = {}    # Total de trabalhos completos em congressos por Qualis
-    qtdPB5 = {}    # Total de resumos expandidos em congressos por Qualis
-    qtdPB7 = {}    # Total de artigos aceitos para publicacao por Qualis
+    qtdPB0 = {}  # Total de artigos em periodicos por Qualis
+    qtdPB4 = {}  # Total de trabalhos completos em congressos por Qualis
+    qtdPB5 = {}  # Total de resumos expandidos em congressos por Qualis
+    qtdPB7 = {}  # Total de artigos aceitos para publicacao por Qualis
 
     def __init__(self, grupo):
-        if grupo.obterParametro('global-identificar_publicacoes_com_qualis'):
+        if grupo.obterParametro("global-identificar_publicacoes_com_qualis"):
             self.periodicos = self.carregarQualis(
-                grupo.obterParametro('global-arquivo_qualis_de_periodicos'))
+                grupo.obterParametro("global-arquivo_qualis_de_periodicos")
+            )
             self.congressos = self.carregarQualis(
-                grupo.obterParametro('global-arquivo_qualis_de_congressos'))
+                grupo.obterParametro("global-arquivo_qualis_de_congressos")
+            )
 
     def calcularTotaisDosQualis(self, grupo):
-        if (not grupo.obterParametro('global-arquivo_qualis_de_periodicos') == ''):
+        if not grupo.obterParametro("global-arquivo_qualis_de_periodicos") == "":
             self.qtdPB0 = self.calcularTotaisDosQualisPorTipo(
-                self.qtdPB0, grupo.compilador.listaCompletaArtigoEmPeriodico)
+                self.qtdPB0, grupo.compilador.listaCompletaArtigoEmPeriodico
+            )
             self.qtdPB7 = self.calcularTotaisDosQualisPorTipo(
-                self.qtdPB7, grupo.compilador.listaCompletaArtigoAceito)
-        if (not grupo.obterParametro('global-arquivo_qualis_de_congressos') == ''):
+                self.qtdPB7, grupo.compilador.listaCompletaArtigoAceito
+            )
+        if not grupo.obterParametro("global-arquivo_qualis_de_congressos") == "":
             self.qtdPB4 = self.calcularTotaisDosQualisPorTipo(
-                self.qtdPB4, grupo.compilador.listaCompletaTrabalhoCompletoEmCongresso)
+                self.qtdPB4, grupo.compilador.listaCompletaTrabalhoCompletoEmCongresso
+            )
             self.qtdPB5 = self.calcularTotaisDosQualisPorTipo(
-                self.qtdPB5, grupo.compilador.listaCompletaResumoExpandidoEmCongresso)
+                self.qtdPB5, grupo.compilador.listaCompletaResumoExpandidoEmCongresso
+            )
 
     def calcularTotaisDosQualisPorTipo(self, qtd, listaCompleta):
         self.inicializaListaQualis(qtd)
@@ -69,24 +75,23 @@ class Qualis:
                     qtd[pub.qualis] += 1
         return qtd
 
-    def buscaQualis(self, tipo, nome, sigla=''):
+    def buscaQualis(self, tipo, nome, sigla=""):
         dist = 0
         indice = 0
         # Percorrer lista de periodicos tentando casar com nome usando funcao
         # similaridade_entre_cadeias(str1, str2) de scriptLattes.py
-        if tipo == 'P':
+        if tipo == "P":
             if self.periodicos.get(sigla) is not None:
                 # Retorna Qualis do issn/sigla exato encontrado - Casamento
                 # perfeito
-                return self.periodicos.get(sigla), ''
+                return self.periodicos.get(sigla), ""
             elif self.periodicos.get(nome) is not None:
                 # Retorna Qualis do nome exato encontrado - Casamento perfeito
-                return self.periodicos.get(nome), ''
+                return self.periodicos.get(nome), ""
             else:
                 chaves = list(self.periodicos.keys())
                 for i in range(0, len(chaves)):
-                    distI = similaridade_entre_cadeias(
-                        nome, chaves[i], qualis=True)
+                    distI = similaridade_entre_cadeias(nome, chaves[i], qualis=True)
                     if distI > dist:  # comparamos: nome com cada nome de periodico
                         indice = i
                         dist = distI
@@ -96,12 +101,11 @@ class Qualis:
         else:
             if self.congressos.get(nome) is not None:
                 # Retorna Qualis do nome exato encontrado - Casamento perfeito
-                return self.congressos.get(nome), ''
+                return self.congressos.get(nome), ""
             else:
                 chaves = list(self.congressos.keys())
                 for i in range(0, len(chaves)):
-                    distI = similaridade_entre_cadeias(
-                        nome, chaves[i], qualis=True)
+                    distI = similaridade_entre_cadeias(nome, chaves[i], qualis=True)
                     if distI > dist:  # comparamos: nome com cada nome de evento
                         indice = i
                         dist = distI
@@ -109,65 +113,65 @@ class Qualis:
                     # Retorna Qualis de nome similar
                     return self.congressos.get(chaves[indice]), chaves[indice]
         # return 'Qualis nao identificado', ''
-        return 'Qualis nao identificado', nome
+        return "Qualis nao identificado", nome
 
     def analisarPublicacoes(self, membro, grupo):
         # Percorrer lista de publicacoes buscando e contabilizando os qualis
-        if (not grupo.obterParametro('global-arquivo_qualis_de_periodicos') == ''):
+        if not grupo.obterParametro("global-arquivo_qualis_de_periodicos") == "":
             for pub in membro.listaArtigoEmPeriodico:
-                qualis, similar = self.buscaQualis('P', pub.revista, pub.issn)
+                qualis, similar = self.buscaQualis("P", pub.revista, pub.issn)
                 pub.qualis = qualis
                 pub.qualissimilar = similar
             for pub in membro.listaArtigoAceito:
-                qualis, similar = self.buscaQualis('P', pub.revista, pub.issn)
+                qualis, similar = self.buscaQualis("P", pub.revista, pub.issn)
                 pub.qualis = qualis
                 pub.qualissimilar = similar
 
-        if (not grupo.obterParametro('global-arquivo_qualis_de_congressos') == ''):
+        if not grupo.obterParametro("global-arquivo_qualis_de_congressos") == "":
             for pub in membro.listaTrabalhoCompletoEmCongresso:
-                qualis, similar = self.buscaQualis('C', pub.nomeDoEvento)
-                if qualis == 'Qualis nao identificado':
+                qualis, similar = self.buscaQualis("C", pub.nomeDoEvento)
+                if qualis == "Qualis nao identificado":
                     if self.congressos.get(pub.sigla) is not None:
                         # Retorna Qualis da sigla com nome do evento
                         qualis = self.congressos.get(pub.sigla)
                         similar = pub.sigla
                     else:
-                        qualis = 'Qualis nao identificado'
+                        qualis = "Qualis nao identificado"
                         similar = pub.nomeDoEvento
                 pub.qualis = qualis
                 pub.qualissimilar = similar
 
             for pub in membro.listaResumoExpandidoEmCongresso:
-                qualis, similar = self.buscaQualis('C', pub.nomeDoEvento)
+                qualis, similar = self.buscaQualis("C", pub.nomeDoEvento)
                 pub.qualis = qualis
                 pub.qualissimilar = similar
 
     def inicializaListaQualis(self, lista):
-        lista['A1'] = 0
-        lista['A2'] = 0
-        lista['A3'] = 0
-        lista['A4'] = 0
-        lista['B1'] = 0
-        lista['B2'] = 0
-        lista['B3'] = 0
-        lista['B4'] = 0
-        lista['B5'] = 0
-        lista['C'] = 0
-        lista['Qualis nao identificado'] = 0
+        lista["A1"] = 0
+        lista["A2"] = 0
+        lista["A3"] = 0
+        lista["A4"] = 0
+        lista["B1"] = 0
+        lista["B2"] = 0
+        lista["B3"] = 0
+        lista["B4"] = 0
+        lista["B5"] = 0
+        lista["C"] = 0
+        lista["Qualis nao identificado"] = 0
 
     def carregarQualis(self, arquivo):
         lista = {}
-        if (not arquivo == ''):
+        if not arquivo == "":
             for linha in fileinput.input(arquivo):
                 linha = linha.replace("\r", "")
                 linha = linha.replace("\n", "")
 
-                campos = linha.split('\t')
+                campos = linha.split("\t")
                 # ISSN de periodicos ou SIGLA de congressos
                 sigla = campos[0].rstrip()
                 # Nome do periodico ou evento
                 nome = campos[1].rstrip()
-                qualis = campos[2].rstrip()    # Estrato Qualis
+                qualis = campos[2].rstrip()  # Estrato Qualis
 
                 # nome   = self.padronizarNome(nome)
                 # sigla  = self.padronizarNome(sigla)
@@ -176,8 +180,7 @@ class Qualis:
                 lista[nome] = qualis
                 # Armazena a sigla/issn do evento/periodico
                 lista[sigla] = qualis
-            print(("[QUALIS]: " + str(len(lista)) +
-                  " itens adicionados de " + arquivo))
+            print(("[QUALIS]: " + str(len(lista)) + " itens adicionados de " + arquivo))
         return lista
 
     def padronizarNome(self, nome):
@@ -191,6 +194,6 @@ class Qualis:
         # nome = re.sub(r"\(.*\)", " ", nome)
         # nome = re.sub(r"\(", " ", nome)
         # nome = re.sub(r"\)", " ", nome)
-        nome = re.sub("\\s+", ' ', nome)
+        nome = re.sub("\\s+", " ", nome)
         nome = nome.strip()
         return nome

@@ -12,7 +12,6 @@ class genericParser(HTMLParser):
         self.field = parserField
 
     def handle_starttag(self, tag, attrs):
-
         if tag == self.field[1]:
             for attr in attrs:
                 if self.field[2] == attr[0] and attr[1] == self.field[3]:
@@ -25,6 +24,11 @@ class genericParser(HTMLParser):
 
     def handle_data(self, data):
         if self.recording:
-            data = ''.join((c for c in unicodedata.normalize('NFD', str(
-                data.decode("utf-8"))) if unicodedata.category(c) != 'Mn'))
+            data = "".join(
+                (
+                    c
+                    for c in unicodedata.normalize("NFD", str(data.decode("utf-8")))
+                    if unicodedata.category(c) != "Mn"
+                )
+            )
             self.data.append(data)

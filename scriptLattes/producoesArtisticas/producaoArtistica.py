@@ -59,18 +59,18 @@ class ProducaoArtistica:
         self.titulo = partes[0].strip().rstrip(".").rstrip(",")
         partes = partes[2]
 
-        aux = re.findall('((?:19|20)\\d\\d)\\b', partes)
+        aux = re.findall("((?:19|20)\\d\\d)\\b", partes)
         if len(aux) > 0:
             self.ano = aux[-1].strip().rstrip(".").rstrip(",")
         else:
-            self.ano = ''
+            self.ano = ""
 
         self.chave = self.autores  # chave de comparação entre os objetos
 
     def compararCom(self, objeto):
-        if self.idMembro.isdisjoint(
-                objeto.idMembro) and similaridade_entre_cadeias(
-                self.titulo, objeto.titulo):
+        if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(
+            self.titulo, objeto.titulo
+        ):
             # Os IDs dos membros são agrupados.
             # Essa parte é importante para a criação do GRAFO de colaborações
             self.idMembro.update(objeto.idMembro)
@@ -86,8 +86,8 @@ class ProducaoArtistica:
             return None
 
     def html(self, listaDeMembros):
-        s = self.autores + '. <b>' + self.titulo + '</b>. '
-        s += str(self.ano) + '.' if str(self.ano).isdigit() else '.'
+        s = self.autores + ". <b>" + self.titulo + "</b>. "
+        s += str(self.ano) + "." if str(self.ano).isdigit() else "."
 
         s += menuHTMLdeBuscaPA(self.titulo)
         return s

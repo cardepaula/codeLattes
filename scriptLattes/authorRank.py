@@ -37,7 +37,7 @@ class AuthorRank:
         print("[CALCULANDO AUTHOR-RANK (PROCESSO ITERATIVO)]")
         for index in range(0, iteracoes):
             self.vectorRank = self.calcularRanks(self.vectorRank)
-            print(str(index) + " ", end=' ')
+            print(str(index) + " ", end=" ")
 
     def calcularRanks(self, vectorRank):
         vectorRankNovo = numpy.zeros(len(vectorRank), dtype=numpy.float32)

@@ -31,7 +31,7 @@ from scriptLattes.util import similaridade_entre_cadeias
 class OrientacaoConcluida:
     item = None  # dado bruto
     idMembro = []
-    idOrientando = ''
+    idOrientando = ""
 
     nome = None
     tituloDoTrabalho = None
@@ -41,11 +41,11 @@ class OrientacaoConcluida:
     tipoDeOrientacao = None
     chave = None
 
-    def __init__(self, idMembro, partesDoItem='', idOrientando=''):
+    def __init__(self, idMembro, partesDoItem="", idOrientando=""):
         self.idMembro = set([])
         self.idMembro.add(idMembro)
 
-        if not partesDoItem == '':
+        if not partesDoItem == "":
             # partesDoItem[0]: Numero (NAO USADO)
             # partesDoItem[1]: Descricao
             self.item = partesDoItem[1]
@@ -53,62 +53,62 @@ class OrientacaoConcluida:
 
             # Dividir o item na suas partes constituintes
             partes = self.item.partition(". Orientador: ")
-            if not partes[1] == '':
-                self.tipoDeOrientacao = 'Orientador'
+            if not partes[1] == "":
+                self.tipoDeOrientacao = "Orientador"
                 partes = partes[0]
             else:
                 partes = self.item.partition(". Co-Orientador: ")
-                if not partes[1] == '':
-                    self.tipoDeOrientacao = 'Co-orientador'
+                if not partes[1] == "":
+                    self.tipoDeOrientacao = "Co-orientador"
                     partes = partes[0]
                 else:
-                    self.tipoDeOrientacao = 'Supervisor'
-                    partes = partes[0].rpartition('. ')
+                    self.tipoDeOrientacao = "Supervisor"
+                    partes = partes[0].rpartition(". ")
                     partes = partes[0]
 
             partes1 = partes.rpartition(". ")
             partes = partes1[2].rpartition(", ")
-            if not partes[1] == '':
+            if not partes[1] == "":
                 self.instituicao = partes[0]
                 self.agenciaDeFomento = partes[2]
             else:
                 self.instituicao = partes[2]
-                self.agenciaDeFomento = ''
+                self.agenciaDeFomento = ""
 
             partes = partes1[0]
-            aux = re.findall('((?:19|20)\\d\\d)\\b', partes)
+            aux = re.findall("((?:19|20)\\d\\d)\\b", partes)
             if len(aux) > 0:
                 self.ano = aux[0]  # .strip().rstrip(".").rstrip(",")
 
-                aux = re.findall('(.*). (?:19|20)\\d\\d\\b', partes)
+                aux = re.findall("(.*). (?:19|20)\\d\\d\\b", partes)
                 partes = aux[0]
             else:
-                self.ano = ''
-                partes = partes.rpartition('. ')
+                self.ano = ""
+                partes = partes.rpartition(". ")
                 partes = partes[0]
 
-            partes = partes.rpartition('. ')
-            if not partes[1] == '':
+            partes = partes.rpartition(". ")
+            if not partes[1] == "":
                 self.nome = partes[0].strip(".").strip(",")
                 self.tituloDoTrabalho = partes[2]
             else:
                 self.nome = partes[2].strip(".").strip(",")
-                self.tituloDoTrabalho = ''
+                self.tituloDoTrabalho = ""
 
             self.chave = self.nome  # chave de comparação entre os objetos
 
         else:
-            self.nome = ''
-            self.tituloDoTrabalho = ''
-            self.ano = ''
-            self.instituicao = ''
-            self.agenciaDeFomento = ''
-            self.tipoDeOrientacao = ''
+            self.nome = ""
+            self.tituloDoTrabalho = ""
+            self.ano = ""
+            self.instituicao = ""
+            self.agenciaDeFomento = ""
+            self.tipoDeOrientacao = ""
 
     def compararCom(self, objeto):
-        if self.idMembro.isdisjoint(
-                objeto.idMembro) and similaridade_entre_cadeias(
-                self.nome, objeto.nome):
+        if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(
+            self.nome, objeto.nome
+        ):
             # Os IDs dos membros são agrupados.
             # Essa parte é importante para a criação do GRAFO de colaborações
             self.idMembro.update(objeto.idMembro)
@@ -127,25 +127,39 @@ class OrientacaoConcluida:
             return None
 
     def html(self, listaDeMembros):
-        s = '<a href="http://lattes.cnpq.br/' + self.idOrientando + '">' + \
-            self.nome + '</a>' if len(self.idOrientando) == 16 else self.nome
-        s += '. <b>' + self.tituloDoTrabalho + '</b>. '
-        s += self.instituicao + ', ' if not self.instituicao == '' else ''
-        s += self.agenciaDeFomento + '. ' if not self.agenciaDeFomento == '' else '. '
+        s = (
+            '<a href="http://lattes.cnpq.br/'
+            + self.idOrientando
+            + '">'
+            + self.nome
+            + "</a>"
+            if len(self.idOrientando) == 16
+            else self.nome
+        )
+        s += ". <b>" + self.tituloDoTrabalho + "</b>. "
+        s += self.instituicao + ", " if not self.instituicao == "" else ""
+        s += self.agenciaDeFomento + ". " if not self.agenciaDeFomento == "" else ". "
 
-        s += str(self.ano) + '.' if str(self.ano).isdigit() else '.'
+        s += str(self.ano) + "." if str(self.ano).isdigit() else "."
 
         lista = list(self.idMembro)
         if len(lista) == 1:
             m = listaDeMembros[lista[0]]
-            s += '<br><i><font size=-1>' + self.tipoDeOrientacao + \
-                ': <a href="' + m.url + '">' + m.nomeCompleto + '</a>.</font>'
+            s += (
+                "<br><i><font size=-1>"
+                + self.tipoDeOrientacao
+                + ': <a href="'
+                + m.url
+                + '">'
+                + m.nomeCompleto
+                + "</a>.</font>"
+            )
         else:
-            s += '<br><i><font size=-1>Orientadores: '
+            s += "<br><i><font size=-1>Orientadores: "
             for i in lista:
                 m = listaDeMembros[i]
-                s += '<a href="' + m.url + '">' + m.nomeCompleto + '</a>, '
-            s = s.rstrip(', ') + '.</font></i>'
+                s += '<a href="' + m.url + '">' + m.nomeCompleto + "</a>, "
+            s = s.rstrip(", ") + ".</font></i>"
 
         return s
 
@@ -153,18 +167,13 @@ class OrientacaoConcluida:
 
     def __str__(self):
         s = "\n[ORIENTANDO] \n"
-        s += "+ID-ALUNO     : " + \
-            self.idOrientando + "\n"
+        s += "+ID-ALUNO     : " + self.idOrientando + "\n"
         s += "+NOME         : " + self.nome + "\n"
-        s += "+TITULO TRAB. : " + \
-            self.tituloDoTrabalho + "\n"
+        s += "+TITULO TRAB. : " + self.tituloDoTrabalho + "\n"
         s += "+ANO CONCLUS. : " + str(self.ano) + "\n"
-        s += "+INSTITUICAO  : " + \
-            self.instituicao + "\n"
-        s += "+AGENCIA      : " + \
-            self.agenciaDeFomento + "\n"
-        s += "+TIPO ORIENTA.: " + \
-            self.tipoDeOrientacao + "\n"
+        s += "+INSTITUICAO  : " + self.instituicao + "\n"
+        s += "+AGENCIA      : " + self.agenciaDeFomento + "\n"
+        s += "+TIPO ORIENTA.: " + self.tipoDeOrientacao + "\n"
         # s += "+item         : @@" + self.item.encode('utf8','replace') + "@@\n"
 
         return s

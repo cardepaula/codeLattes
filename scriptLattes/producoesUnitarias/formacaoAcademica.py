@@ -26,16 +26,15 @@
 class FormacaoAcademica:
     anoInicio = None
     anoConclusao = None
-    tipo = ''
-    nomeInstituicao = ''
-    descricao = ''
+    tipo = ""
+    nomeInstituicao = ""
+    descricao = ""
 
     def __init__(self, partesDoItem=None):
         # partesDoItem[0]: Periodo da formacao Profissional
         # partesDoItem[1]: Descricao da formacao Profissional
 
         if partesDoItem is not None:  # Caso deseja-se usar setters
-
             anos = partesDoItem[0].partition(" - ")
             self.anoInicio = anos[0]
             self.anoConclusao = anos[2]
@@ -49,7 +48,7 @@ class FormacaoAcademica:
             self.descricao = detalhe[2].strip()
 
     def format_anos(self, anos):
-        if (anos.count("-")):
+        if anos.count("-"):
             return anos.split(" - ")
         return (anos, anos)
 
@@ -79,13 +78,9 @@ class FormacaoAcademica:
 
     def __str__(self):
         s = "\n[FORMACAO ACADEMICA] \n"
-        s += "+ANO INICIO  : " + \
-            self.anoInicio + "\n"
-        s += "+ANO CONCLUS.: " + \
-            self.anoConclusao + "\n"
+        s += "+ANO INICIO  : " + self.anoInicio + "\n"
+        s += "+ANO CONCLUS.: " + self.anoConclusao + "\n"
         s += "+TIPO        : " + self.tipo + "\n"
-        s += "+INSTITUICAO : " + \
-            self.nomeInstituicao + "\n"
-        s += "+DESCRICAO   : " + \
-            self.descricao + "\n"
+        s += "+INSTITUICAO : " + self.nomeInstituicao + "\n"
+        s += "+DESCRICAO   : " + self.descricao + "\n"
         return s

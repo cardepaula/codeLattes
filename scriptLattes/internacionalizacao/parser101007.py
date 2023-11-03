@@ -11,7 +11,7 @@ class parser101007(HTMLParser):
         self.data = []
 
     def handle_starttag(self, tag, attrs):
-        if tag == 'a':
+        if tag == "a":
             for attr in attrs:
-                if 'title' == attr[0] and attr[1] == 'Permissions & Reprints':
+                if "title" == attr[0] and attr[1] == "Permissions & Reprints":
                     self.data.append(attrs)

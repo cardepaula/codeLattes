@@ -39,20 +39,23 @@ class PublicacaoEinternacionalizacao:
         self.listaDePaises = listaDePaisesIdentificados
 
     def html(self):
-        s = ' <a href="' + self.publicacao.doi + \
-            '" target="_blank" style="PADDING-RIGHT:4px;"><img border=0 src="doi.png"></a>'
-        s += self.publicacao.titulo + '. <br>'
+        s = (
+            ' <a href="'
+            + self.publicacao.doi
+            + '" target="_blank" style="PADDING-RIGHT:4px;"><img border=0 src="doi.png"></a>'
+        )
+        s += self.publicacao.titulo + ". <br>"
 
         if self.listaDePaises is not None:
             if len(self.listaDePaises) > 0:
-                s += '<b>'
+                s += "<b>"
                 for index in range(0, len(self.listaDePaises)):
                     s += self.listaDePaises[index].title() + ", "
                 s = s.rstrip(", ")
-                s += '.</b>'
+                s += ".</b>"
             else:
-                s += '<i>[Pa&iacute;s n&atilde;o identificado]</i>'
+                s += "<i>[Pa&iacute;s n&atilde;o identificado]</i>"
         else:
-            s += '<i><font color=red>[N&atilde;o foi poss&iacute;vel obter dados do DOI]</font></i>'
+            s += "<i><font color=red>[N&atilde;o foi poss&iacute;vel obter dados do DOI]</font></i>"
 
         return s

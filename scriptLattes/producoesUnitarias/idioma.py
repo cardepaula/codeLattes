@@ -24,9 +24,9 @@
 
 
 class Idioma:
-    descricao = ''
-    nome = ''
-    proficiencia = ''
+    descricao = ""
+    nome = ""
+    proficiencia = ""
 
     def __init__(self, partesDoItem):
         # partesDoItem[0]: Nome do idioma
@@ -39,6 +39,5 @@ class Idioma:
     def __str__(self):
         s = "\n[IDIOMA] \n"
         s += "+NOME        : " + self.nome + "\n"
-        s += "+PROFICIENCIA: " + \
-            self.proficiencia + "\n"
+        s += "+PROFICIENCIA: " + self.proficiencia + "\n"
         return s

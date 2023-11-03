@@ -38,7 +38,7 @@ class SingleProcessingTabPanel(BasePanel):
         self.ui.openLink.clicked.connect(self.open_link)
         self.ui.openFolder.clicked.connect(self.open_folder)
 
-        last_file = self.settings.value('lastFile', None)
+        last_file = self.settings.value("lastFile", None)
         if last_file:
             self.ui.input.setPlainText(last_file)
 
@@ -59,18 +59,18 @@ class SingleProcessingTabPanel(BasePanel):
     def print_error(self):
         s = str(self.process.readAllStandardError())
         msg = "<br><p style='color: red; font-weight: bold'>%s</p>" % s.replace(
-            '\n', '<br>')
+            "\n", "<br>"
+        )
         self.ui.errors.insertHtml(msg)
 
     def clearOutputs(self):
-        self.ui.out.setPlainText('')
-        self.ui.errors.setPlainText('')
+        self.ui.out.setPlainText("")
+        self.ui.errors.setPlainText("")
         self.ui.statusbar.clearMessage()
 
     def open_link(self):
-        path = self.get_output_folder() + 'index.html'
-        QtGui.QDesktopServices.openUrl(
-            QtCore.QUrl(path, QtCore.QUrl.TolerantMode))
+        path = self.get_output_folder() + "index.html"
+        QtGui.QDesktopServices.openUrl(QtCore.QUrl(path, QtCore.QUrl.TolerantMode))
 
     def open_folder(self):
         path = self.get_output_folder()
@@ -80,16 +80,16 @@ class SingleProcessingTabPanel(BasePanel):
         self.running = True
         self.ui.runner.setDisabled(True)
         self.ui.file_holder.setDisabled(True)
-        self.ui.runner.setText('Aguarde, processando...')
-        self.ui.statusbar.showMessage('Aguarde, processando...')
+        self.ui.runner.setText("Aguarde, processando...")
+        self.ui.statusbar.showMessage("Aguarde, processando...")
         self.ui.mainTabs.setTabEnabled(1, False)
 
     def disable_running(self):
         self.running = False
         self.ui.runner.setDisabled(False)
         self.ui.file_holder.setDisabled(False)
-        self.ui.runner.setText('Executar')
-        self.ui.statusbar.showMessage('Processo finalizado!')
+        self.ui.runner.setText("Executar")
+        self.ui.statusbar.showMessage("Processo finalizado!")
         self.ui.mainTabs.setTabEnabled(1, True)
 
     def run(self):
@@ -107,16 +107,17 @@ class SingleProcessingTabPanel(BasePanel):
         self.process.start(self.parent.CMD, [self.current_file])
 
     def choose_file(self):
-        last_file = self.settings.value('lastFile', None)
+        last_file = self.settings.value("lastFile", None)
         if last_file:
             folder = os.path.abspath(os.path.join(last_file, os.pardir))
         else:
-            folder = '.'
+            folder = "."
         filename = QtGui.QFileDialog.getOpenFileName(
-            self.parent, "Abrir arquivo config", folder, "Text files (*.config)")
+            self.parent, "Abrir arquivo config", folder, "Text files (*.config)"
+        )
         if filename[0]:
             path = filename[0]
-            self.settings.setValue('lastFile', path)
+            self.settings.setValue("lastFile", path)
             self.ui.input.setPlainText(path)
 
     def finished(self):

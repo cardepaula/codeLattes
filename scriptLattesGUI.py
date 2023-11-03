@@ -35,15 +35,15 @@ class ControlMainWindow(QtGui.QMainWindow):
         super(ControlMainWindow, self).__init__(parent)
 
         # definir executavel do scriptLattes
-        if 'win' in sys.platform.lower():
-            self.CMD = 'scriptLattes.exe'
+        if "win" in sys.platform.lower():
+            self.CMD = "scriptLattes.exe"
         else:
-            self.CMD = './scriptLattes.py'
+            self.CMD = "./scriptLattes.py"
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.single = SingleProcessingTabPanel(self)
         self.multiple = MultipleProcessingTabPanel(self)
-        self.setWindowIcon(QtGui.QIcon('gui/logo.png'))
+        self.setWindowIcon(QtGui.QIcon("gui/logo.png"))
 
 
 if __name__ == "__main__":

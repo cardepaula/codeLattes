@@ -111,32 +111,33 @@ class Grupo:
                 self.atualizarParametro(linhaDiv[0], linhaDiv[1])
 
         # carregamos o periodo global
-        ano1 = self.obterParametro('global-itens_desde_o_ano')
-        ano2 = self.obterParametro('global-itens_ate_o_ano')
-        if ano1.lower() == 'hoje':
+        ano1 = self.obterParametro("global-itens_desde_o_ano")
+        ano2 = self.obterParametro("global-itens_ate_o_ano")
+        if ano1.lower() == "hoje":
             ano1 = str(datetime.datetime.now().year)
-        if ano2.lower() == 'hoje':
+        if ano2.lower() == "hoje":
             ano2 = str(datetime.datetime.now().year)
-        if ano1 == '':
-            ano1 = '0'
-        if ano2 == '':
-            ano2 = '10000'
+        if ano1 == "":
+            ano1 = "0"
+        if ano2 == "":
+            ano2 = "10000"
         self.itemsDesdeOAno = int(ano1)
         self.itemsAteOAno = int(ano2)
 
         self.diretorioCache = self.obterParametro(
-            'global-diretorio_de_armazenamento_de_cvs')
-        if not self.diretorioCache == '':
+            "global-diretorio_de_armazenamento_de_cvs"
+        )
+        if not self.diretorioCache == "":
             util.criarDiretorio(self.diretorioCache)
 
         self.diretorioDoi = self.obterParametro(
-            'global-diretorio_de_armazenamento_de_doi')
-        if not self.diretorioDoi == '':
+            "global-diretorio_de_armazenamento_de_doi"
+        )
+        if not self.diretorioDoi == "":
             util.criarDiretorio(self.diretorioDoi)
 
         # carregamos a lista de membros
-        entrada = buscarArquivo(
-            self.obterParametro('global-arquivo_de_entrada'))
+        entrada = buscarArquivo(self.obterParametro("global-arquivo_de_entrada"))
 
         idSequencial = 0
         for linha in fileinput.input(entrada):
@@ -145,18 +146,20 @@ class Grupo:
 
             linhaPart = linha.partition("#")  # eliminamos os comentários
             linhaDiv = linhaPart[0].split(",")
-            if ';' in linhaPart[0] and len(linhaDiv) < 2:
+            if ";" in linhaPart[0] and len(linhaDiv) < 2:
                 linhaDiv = linhaPart[0].split(";")
-            if '\t' in linhaPart[0] and len(linhaDiv) < 2:
+            if "\t" in linhaPart[0] and len(linhaDiv) < 2:
                 linhaDiv = linhaPart[0].split("\t")
 
             if linhaDiv[0].strip():
-                identificador = linhaDiv[0].strip() if len(
-                    linhaDiv) > 0 else ''
-                nome = linhaDiv[1].strip() if len(linhaDiv) > 1 else ''
-                periodo = linhaDiv[2].strip() if len(linhaDiv) > 2 else ''
-                rotulo = linhaDiv[3].strip() if len(
-                    linhaDiv) > 3 and linhaDiv[3].strip() else '[Sem rotulo]'
+                identificador = linhaDiv[0].strip() if len(linhaDiv) > 0 else ""
+                nome = linhaDiv[1].strip() if len(linhaDiv) > 1 else ""
+                periodo = linhaDiv[2].strip() if len(linhaDiv) > 2 else ""
+                rotulo = (
+                    linhaDiv[3].strip()
+                    if len(linhaDiv) > 3 and linhaDiv[3].strip()
+                    else "[Sem rotulo]"
+                )
                 # rotulo        = rotulo.capitalize()
 
                 # atribuicao dos valores iniciais para cada membro
@@ -174,7 +177,9 @@ class Grupo:
                         self.itemsDesdeOAno,
                         self.itemsAteOAno,
                         self.diretorioCache,
-                        self.dicionarioDeGeolocalizacao))
+                        self.dicionarioDeGeolocalizacao,
+                    )
+                )
 
                 self.listaDeRotulos.append(rotulo)
                 idSequencial += 1
@@ -182,15 +187,15 @@ class Grupo:
         # lista unica de rotulos
         self.listaDeRotulos = list(set(self.listaDeRotulos))
         self.listaDeRotulos.sort()
-        self.listaDeRotulosCores = [''] * len(self.listaDeRotulos)
+        self.listaDeRotulosCores = [""] * len(self.listaDeRotulos)
 
-        if self.obterParametro('global-identificar_publicacoes_com_qualis'):
+        if self.obterParametro("global-identificar_publicacoes_com_qualis"):
             # carregamos Qualis a partir de arquivos definidos no arquivo de
             # configuração
             self.qualis = Qualis(self)
 
     def gerarXMLdeGrupo(self):
-        if self.obterParametro('global-salvar_informacoes_em_formato_xml'):
+        if self.obterParametro("global-salvar_informacoes_em_formato_xml"):
             self.geradorDeXml = GeradorDeXML(self)
             self.geradorDeXml.gerarXmlParaGrupo()
 
@@ -200,31 +205,41 @@ class Grupo:
                     print(("- [ID Lattes: " + item + "]"))
 
     def gerarCSVdeQualisdeGrupo(self):
-        prefix = self.obterParametro(
-            'global-prefixo') + '-' if not self.obterParametro('global-prefixo') == '' else ''
+        prefix = (
+            self.obterParametro("global-prefixo") + "-"
+            if not self.obterParametro("global-prefixo") == ""
+            else ""
+        )
 
         # Salvamos a lista individual
-        s = ''
+        s = ""
         for membro in self.listaDeMembros:
-            nomeCompleto = unicodedata.normalize(
-                'NFKD', membro.nomeCompleto).encode('ASCII', 'ignore').decode()
-            s += self.imprimeCSVListaIndividual(nomeCompleto,
-                                                membro.listaArtigoEmPeriodico)
-            s += self.imprimeCSVListaIndividual(nomeCompleto,
-                                                membro.listaTrabalhoCompletoEmCongresso)
+            nomeCompleto = (
+                unicodedata.normalize("NFKD", membro.nomeCompleto)
+                .encode("ASCII", "ignore")
+                .decode()
+            )
             s += self.imprimeCSVListaIndividual(
-                nomeCompleto, membro.listaResumoExpandidoEmCongresso)
-        self.salvarArquivoGenerico(s, prefix + 'publicacoesPorMembro.csv')
+                nomeCompleto, membro.listaArtigoEmPeriodico
+            )
+            s += self.imprimeCSVListaIndividual(
+                nomeCompleto, membro.listaTrabalhoCompletoEmCongresso
+            )
+            s += self.imprimeCSVListaIndividual(
+                nomeCompleto, membro.listaResumoExpandidoEmCongresso
+            )
+        self.salvarArquivoGenerico(s, prefix + "publicacoesPorMembro.csv")
 
         # Salvamos a lista total (publicações do grupo)
-        s = ''
+        s = ""
+        s += self.imprimeCSVListaGrupal(self.compilador.listaCompletaArtigoEmPeriodico)
         s += self.imprimeCSVListaGrupal(
-            self.compilador.listaCompletaArtigoEmPeriodico)
+            self.compilador.listaCompletaTrabalhoCompletoEmCongresso
+        )
         s += self.imprimeCSVListaGrupal(
-            self.compilador.listaCompletaTrabalhoCompletoEmCongresso)
-        s += self.imprimeCSVListaGrupal(
-            self.compilador.listaCompletaResumoExpandidoEmCongresso)
-        self.salvarArquivoGenerico(s, prefix + 'publicacoesDoGrupo.csv')
+            self.compilador.listaCompletaResumoExpandidoEmCongresso
+        )
+        self.salvarArquivoGenerico(s, prefix + "publicacoesDoGrupo.csv")
 
     def gerarArquivosTemporarios(self):
         print("\n[CRIANDO ARQUIVOS TEMPORARIOS: CSV, RIS, TXT, GDF]")
@@ -234,16 +249,19 @@ class Grupo:
         self.gerarXMLdeGrupo()
 
         # Salvamos alguns dados para análise posterior (com outras ferramentas)
-        prefix = self.obterParametro(
-            'global-prefixo') + '-' if not self.obterParametro('global-prefixo') == '' else ''
+        prefix = (
+            self.obterParametro("global-prefixo") + "-"
+            if not self.obterParametro("global-prefixo") == ""
+            else ""
+        )
 
         # (1) matrizes
-        self.salvarMatrizTXT(self.matrizDeAdjacencia,
-                             prefix + "matrizDeAdjacencia.txt")
-        self.salvarMatrizTXT(self.matrizDeFrequencia,
-                             prefix + "matrizDeFrequencia.txt")
-        self.salvarMatrizTXT(self.matrizDeFrequenciaNormalizada,
-                             prefix + "matrizDeFrequenciaNormalizada.txt")
+        self.salvarMatrizTXT(self.matrizDeAdjacencia, prefix + "matrizDeAdjacencia.txt")
+        self.salvarMatrizTXT(self.matrizDeFrequencia, prefix + "matrizDeFrequencia.txt")
+        self.salvarMatrizTXT(
+            self.matrizDeFrequenciaNormalizada,
+            prefix + "matrizDeFrequenciaNormalizada.txt",
+        )
         # self.salvarMatrizXML(self.matrizDeAdjacencia, prefix+"matrizDeAdjacencia.xml")
 
         # (2) listas de nomes, rótulos, ids
@@ -270,17 +288,18 @@ class Grupo:
         self.geolocalizacoes = list([])
         for membro in self.listaDeMembros:
             self.geolocalizacoes.append(
-                str(membro.enderecoProfissionalLat) + "," + str(membro.enderecoProfissionalLon))
-        self.salvarListaTXT(self.geolocalizacoes, prefix +
-                            "listaDeGeolocalizacoes.txt")
+                str(membro.enderecoProfissionalLat)
+                + ","
+                + str(membro.enderecoProfissionalLon)
+            )
+        self.salvarListaTXT(self.geolocalizacoes, prefix + "listaDeGeolocalizacoes.txt")
 
         # (6) arquivo GDF
         self.gerarArquivoGDF(prefix + "rede.gdf")
 
         # (7) lista de membros + colaboradores : colaboracao exogena
         t = []
-        entrada = buscarArquivo(
-            self.obterParametro('global-arquivo_de_entrada'))
+        entrada = buscarArquivo(self.obterParametro("global-arquivo_de_entrada"))
         for linha in fileinput.input(entrada):
             linha = linha.replace("\r", "")
             linha = linha.replace("\n", "")
@@ -293,24 +312,30 @@ class Grupo:
         t = []
         for par in self.listaDeParametros:
             valor = par[1]
-            if par[0] == 'global-nome_do_grupo':
-                valor = self.obterParametro(
-                    'global-nome_do_grupo') + " + Colaboradores na Plataforma Lattes"
-            if par[0] == 'global-arquivo_de_entrada':
-                valor = self.obterParametro(
-                    'global-diretorio_de_saida') + "/producao-com-colaboradores.list"
-            if par[0] == 'global-diretorio_de_saida':
-                valor = self.obterParametro(
-                    'global-diretorio_de_saida') + "/producao-com-colaboradores/"
-            if par[0] == 'global-prefixo':
+            if par[0] == "global-nome_do_grupo":
+                valor = (
+                    self.obterParametro("global-nome_do_grupo")
+                    + " + Colaboradores na Plataforma Lattes"
+                )
+            if par[0] == "global-arquivo_de_entrada":
+                valor = (
+                    self.obterParametro("global-diretorio_de_saida")
+                    + "/producao-com-colaboradores.list"
+                )
+            if par[0] == "global-diretorio_de_saida":
+                valor = (
+                    self.obterParametro("global-diretorio_de_saida")
+                    + "/producao-com-colaboradores/"
+                )
+            if par[0] == "global-prefixo":
                 valor = ""
-            if par[0] == 'relatorio-incluir_producao_com_colaboradores':
+            if par[0] == "relatorio-incluir_producao_com_colaboradores":
                 valor = "nao"
-            if par[0] == 'grafo-mostrar_todos_os_nos_do_grafo':
+            if par[0] == "grafo-mostrar_todos_os_nos_do_grafo":
                 valor = "nao"
-            if par[0] == 'grafo-considerar_rotulos_dos_membros_do_grupo':
+            if par[0] == "grafo-considerar_rotulos_dos_membros_do_grupo":
                 valor = "sim"
-            if par[0] == 'mapa-mostrar_mapa_de_geolocalizacao':
+            if par[0] == "mapa-mostrar_mapa_de_geolocalizacao":
                 valor = "nao"
             t.append(par[0].ljust(60) + " = " + valor)
         self.salvarListaTXT(t, "producao-com-colaboradores.config")
@@ -321,15 +346,38 @@ class Grupo:
         string = "nodedef> name VARCHAR, idLattes VARCHAR, label VARCHAR, rotulo VARCHAR, lat DOUBLE, lon DOUBLE, collaborationRank DOUBLE, producaoBibliografica DOUBLE, artigoEmPeriodico DOUBLE, livro DOUBLE, capituloDeLivro DOUBLE, trabalhoEmCongresso DOUBLE, resumoExpandido DOUBLE, resumo DOUBLE, color VARCHAR"
         i = 0
         for membro in self.listaDeMembros:
-            nomeCompleto = unicodedata.normalize(
-                'NFKD', membro.nomeCompleto).encode('ASCII', 'ignore').decode()
-            string += "\n" + str(i) + "," + membro.idLattes + "," + nomeCompleto + "," + membro.rotulo + \
-                "," + membro.enderecoProfissionalLat + "," + \
-                membro.enderecoProfissionalLon + ","
+            nomeCompleto = (
+                unicodedata.normalize("NFKD", membro.nomeCompleto)
+                .encode("ASCII", "ignore")
+                .decode()
+            )
+            string += (
+                "\n"
+                + str(i)
+                + ","
+                + membro.idLattes
+                + ","
+                + nomeCompleto
+                + ","
+                + membro.rotulo
+                + ","
+                + membro.enderecoProfissionalLat
+                + ","
+                + membro.enderecoProfissionalLon
+                + ","
+            )
             string += str(self.vectorRank[i]) + ","
-            string += str(len(membro.listaArtigoEmPeriodico) + len(membro.listaLivroPublicado) + len(
-                membro.listaCapituloDeLivroPublicado) + len(membro.listaTrabalhoCompletoEmCongresso) + len(
-                membro.listaResumoExpandidoEmCongresso) + len(membro.listaResumoEmCongresso)) + ","
+            string += (
+                str(
+                    len(membro.listaArtigoEmPeriodico)
+                    + len(membro.listaLivroPublicado)
+                    + len(membro.listaCapituloDeLivroPublicado)
+                    + len(membro.listaTrabalhoCompletoEmCongresso)
+                    + len(membro.listaResumoExpandidoEmCongresso)
+                    + len(membro.listaResumoEmCongresso)
+                )
+                + ","
+            )
             string += str(len(membro.listaArtigoEmPeriodico)) + ","
             string += str(len(membro.listaLivroPublicado)) + ","
             string += str(len(membro.listaCapituloDeLivroPublicado)) + ","
@@ -346,18 +394,17 @@ class Grupo:
         for i in range(0, N):
             for j in range(i + 1, N):
                 if (i != j) and (matriz[i, j] > 0):
-                    string += '\n' + str(i) + ',' + str(j) + \
-                        ',' + str(matriz[i, j])
+                    string += "\n" + str(i) + "," + str(j) + "," + str(matriz[i, j])
 
         # gerando o arquivo GDF
-        dir = self.obterParametro('global-diretorio_de_saida')
-        arquivo = open(dir + "/" + nomeArquivo, 'w')
+        dir = self.obterParametro("global-diretorio_de_saida")
+        arquivo = open(dir + "/" + nomeArquivo, "w")
         arquivo.write(string)  # .encode("utf8","ignore"))
         arquivo.close()
 
     def HTMLColorToRGB(self, colorstring):
         colorstring = colorstring.strip()
-        if colorstring[0] == '#':
+        if colorstring[0] == "#":
             colorstring = colorstring[1:]
         r, g, b = colorstring[:2], colorstring[2:4], colorstring[4:]
         r, g, b = [int(n, 16) for n in (r, g, b)]
@@ -381,34 +428,37 @@ class Grupo:
                 elementos.sort(key=lambda x: x.chave.lower())
                 for index in range(0, len(elementos)):
                     pub = elementos[index]
-                    s += pub.csv(' ') + "\n"
+                    s += pub.csv(" ") + "\n"
         return s
 
     def gerarRISdeMembros(self):
-        prefix = self.obterParametro(
-            'global-prefixo') + '-' if not self.obterParametro('global-prefixo') == '' else ''
+        prefix = (
+            self.obterParametro("global-prefixo") + "-"
+            if not self.obterParametro("global-prefixo") == ""
+            else ""
+        )
         s = ""
         for membro in self.listaDeMembros:
             s += membro.ris() + "\n"
-        self.salvarArquivoGenerico(s, prefix + 'membros.ris')
+        self.salvarArquivoGenerico(s, prefix + "membros.ris")
 
     def salvarArquivoGenerico(self, conteudo, nomeArquivo):
-        dir = self.obterParametro('global-diretorio_de_saida')
-        arquivo = open(dir + "/" + nomeArquivo, 'w')
+        dir = self.obterParametro("global-diretorio_de_saida")
+        arquivo = open(dir + "/" + nomeArquivo, "w")
         arquivo.write(conteudo)
         arquivo.close()
 
     def carregarDadosCVLattes(self):
         indice = 1
         for membro in self.listaDeMembros:
-            print(('\n[LENDO REGISTRO LATTES: {0}o. DA LISTA]'.format(indice)))
+            print(("\n[LENDO REGISTRO LATTES: {0}o. DA LISTA]".format(indice)))
             indice += 1
             membro.carregarDadosCVLattes()
             membro.filtrarItemsPorPeriodo()
             print(membro)
 
     def gerarMapaDeGeolocalizacao(self):
-        if self.obterParametro('mapa-mostrar_mapa_de_geolocalizacao'):
+        if self.obterParametro("mapa-mostrar_mapa_de_geolocalizacao"):
             self.mapaDeGeolocalizacao = MapaDeGeolocalizacao(self)
 
     def gerarPaginasWeb(self):
@@ -421,8 +471,11 @@ class Grupo:
         # Grafos de coautoria
         self.compilador.criarMatrizesDeColaboracao()
 
-        [self.matrizDeAdjacencia, self.matrizDeFrequencia,
-            self.listaDeColaboracoes] = self.compilador.uniaoDeMatrizesDeColaboracao()
+        [
+            self.matrizDeAdjacencia,
+            self.matrizDeFrequencia,
+            self.listaDeColaboracoes,
+        ] = self.compilador.uniaoDeMatrizesDeColaboracao()
         # suma das linhas = num. de items feitos em co-autoria (parceria) com
         # outro membro do grupo
         self.vetorDeCoAutoria = self.matrizDeFrequencia.sum(axis=1)
@@ -430,8 +483,9 @@ class Grupo:
 
         for i in range(0, self.numeroDeMembros()):
             if not self.vetorDeCoAutoria[i] == 0:
-                self.matrizDeFrequenciaNormalizada[i,
-                                                   :] /= float(self.vetorDeCoAutoria[i])
+                self.matrizDeFrequenciaNormalizada[i, :] /= float(
+                    self.vetorDeCoAutoria[i]
+                )
 
         # AuthorRank
         authorRank = AuthorRank(self.matrizDeFrequenciaNormalizada, 20)  # 100
@@ -447,7 +501,7 @@ class Grupo:
             self.ids.append(membro.idLattes)
 
     def identificarQualisEmPublicacoes(self):
-        if self.obterParametro('global-identificar_publicacoes_com_qualis'):
+        if self.obterParametro("global-identificar_publicacoes_com_qualis"):
             print("\n[IDENTIFICANDO QUALIS EM PUBLICAÇÕES]")
             for membro in self.listaDeMembros:
                 # Qualis - Adiciona Qualis as publicacoes dos membros
@@ -463,8 +517,8 @@ class Grupo:
             # self.compilador.listaCompletaResumoExpandidoEmCongresso)
 
     def salvarListaTXT(self, lista, nomeArquivo):
-        dir = self.obterParametro('global-diretorio_de_saida')
-        arquivo = open(dir + "/" + nomeArquivo, 'w')
+        dir = self.obterParametro("global-diretorio_de_saida")
+        arquivo = open(dir + "/" + nomeArquivo, "w")
 
         for i in range(0, len(lista)):
             elemento = lista[i]
@@ -472,23 +526,23 @@ class Grupo:
                 elemento = elemento
             else:
                 elemento = str(elemento)
-            arquivo.write(elemento + '\n')
+            arquivo.write(elemento + "\n")
         arquivo.close()
 
     def salvarMatrizTXT(self, matriz, nomeArquivo):
-        dir = self.obterParametro('global-diretorio_de_saida')
-        arquivo = open(dir + "/" + nomeArquivo, 'w')
+        dir = self.obterParametro("global-diretorio_de_saida")
+        arquivo = open(dir + "/" + nomeArquivo, "w")
         N = matriz.shape[0]
 
         for i in range(0, N):
             for j in range(0, N):
-                arquivo.write(str(matriz[i, j]) + ' ')
-            arquivo.write('\n')
+                arquivo.write(str(matriz[i, j]) + " ")
+            arquivo.write("\n")
         arquivo.close()
 
     def salvarMatrizXML(self, matriz, nomeArquivo):
-        dir = self.obterParametro('global-diretorio_de_saida')
-        arquivo = open(dir + "/" + nomeArquivo, 'w')
+        dir = self.obterParametro("global-diretorio_de_saida")
+        arquivo = open(dir + "/" + nomeArquivo, "w")
 
         s = '<?xml version="1.0" encoding="UTF-8"?> \
             \n<!--  An excerpt of an egocentric social network  --> \
@@ -505,218 +559,293 @@ class Grupo:
 
         for i in range(0, self.numeroDeMembros()):
             membro = self.listaDeMembros[i]
-            s += '\n<!-- nodes --> \
-                \n<node id="' + str(membro.idMembro) + '"> \
-                \n<data key="name">' + membro.nomeCompleto + '</data> \
-                \n<data key="nickname">' + membro.nomeEmCitacoesBibliograficas + '</data> \
-                \n<data key="gender">' + membro.sexo[0].upper() + '</data> \
-                \n<data key="image">' + membro.foto + '</data> \
-                \n<data key="link">' + membro.url + '</data> \
-                \n<data key="pubs">' + str(int(self.vetorDeCoAutoria[i])) + '</data> \
-                \n</node>'
+            s += (
+                '\n<!-- nodes --> \
+                \n<node id="'
+                + str(membro.idMembro)
+                + '"> \
+                \n<data key="name">'
+                + membro.nomeCompleto
+                + '</data> \
+                \n<data key="nickname">'
+                + membro.nomeEmCitacoesBibliograficas
+                + '</data> \
+                \n<data key="gender">'
+                + membro.sexo[0].upper()
+                + '</data> \
+                \n<data key="image">'
+                + membro.foto
+                + '</data> \
+                \n<data key="link">'
+                + membro.url
+                + '</data> \
+                \n<data key="pubs">'
+                + str(int(self.vetorDeCoAutoria[i]))
+                + "</data> \
+                \n</node>"
+            )
 
         N = matriz.shape[0]
         for i in range(0, N):
             for j in range(0, N):
                 if matriz[i, j] > 0:
-                    s += '\n<!-- edges --> \
-                        \n<edge source="' + str(i) + '" target="' + str(j) + '"> \
-                        \n<data key="amount">' + str(matriz[i, j]) + '</data> \
-                        \n</edge>'
+                    s += (
+                        '\n<!-- edges --> \
+                        \n<edge source="'
+                        + str(i)
+                        + '" target="'
+                        + str(j)
+                        + '"> \
+                        \n<data key="amount">'
+                        + str(matriz[i, j])
+                        + "</data> \
+                        \n</edge>"
+                    )
 
-        s += '\n</graph>\
-            \n</graphml>'
+        s += "\n</graph>\
+            \n</graphml>"
 
         arquivo.write(s)
         arquivo.close()
 
     def salvarVetorDeProducoes(self, vetor, nomeArquivo):
-        dir = self.obterParametro('global-diretorio_de_saida')
-        arquivo = open(dir + "/" + nomeArquivo, 'w')
-        string = ''
+        dir = self.obterParametro("global-diretorio_de_saida")
+        arquivo = open(dir + "/" + nomeArquivo, "w")
+        string = ""
         for i in range(0, len(vetor)):
             (prefixo, pAnos, pQuantidades) = vetor[i]
             string += "\n" + prefixo + ":"
             for j in range(0, len(pAnos)):
-                string += str(pAnos[j]) + ',' + str(pQuantidades[j]) + ';'
+                string += str(pAnos[j]) + "," + str(pQuantidades[j]) + ";"
         arquivo.write(string)
         arquivo.close()
 
     def salvarListaInternalizacaoTXT(self, listaDoiValido, nomeArquivo):
-        dir = self.obterParametro('global-diretorio_de_saida')
-        arquivo = open(dir + "/" + nomeArquivo, 'w')
+        dir = self.obterParametro("global-diretorio_de_saida")
+        arquivo = open(dir + "/" + nomeArquivo, "w")
         for i in range(0, len(listaDoiValido)):
             elemento = listaDoiValido[i]
             if isinstance(elemento, type(str())):
                 elemento = elemento.encode("utf8")
             else:
                 elemento = str(elemento)
-            arquivo.write(elemento + '\n')
+            arquivo.write(elemento + "\n")
         arquivo.close()
 
     def gerarGraficosDeBarras(self):
         print("\n[CRIANDO GRAFICOS DE BARRAS]")
-        gBarra = GraficoDeBarras(
-            self.obterParametro('global-diretorio_de_saida'))
+        gBarra = GraficoDeBarras(self.obterParametro("global-diretorio_de_saida"))
 
         gBarra.criarGrafico(
             self.compilador.listaCompletaArtigoEmPeriodico,
-            'PB0',
-            'Numero de publicacoes')
+            "PB0",
+            "Numero de publicacoes",
+        )
         gBarra.criarGrafico(
-            self.compilador.listaCompletaLivroPublicado,
-            'PB1',
-            'Numero de publicacoes')
+            self.compilador.listaCompletaLivroPublicado, "PB1", "Numero de publicacoes"
+        )
         gBarra.criarGrafico(
             self.compilador.listaCompletaCapituloDeLivroPublicado,
-            'PB2',
-            'Numero de publicacoes')
+            "PB2",
+            "Numero de publicacoes",
+        )
         gBarra.criarGrafico(
             self.compilador.listaCompletaTextoEmJornalDeNoticia,
-            'PB3',
-            'Numero de publicacoes')
+            "PB3",
+            "Numero de publicacoes",
+        )
         gBarra.criarGrafico(
             self.compilador.listaCompletaTrabalhoCompletoEmCongresso,
-            'PB4',
-            'Numero de publicacoes')
+            "PB4",
+            "Numero de publicacoes",
+        )
         gBarra.criarGrafico(
             self.compilador.listaCompletaResumoExpandidoEmCongresso,
-            'PB5',
-            'Numero de publicacoes')
+            "PB5",
+            "Numero de publicacoes",
+        )
         gBarra.criarGrafico(
             self.compilador.listaCompletaResumoEmCongresso,
-            'PB6',
-            'Numero de publicacoes')
+            "PB6",
+            "Numero de publicacoes",
+        )
         gBarra.criarGrafico(
-            self.compilador.listaCompletaArtigoAceito,
-            'PB7',
-            'Numero de publicacoes')
+            self.compilador.listaCompletaArtigoAceito, "PB7", "Numero de publicacoes"
+        )
         gBarra.criarGrafico(
             self.compilador.listaCompletaApresentacaoDeTrabalho,
-            'PB8',
-            'Numero de publicacoes')
+            "PB8",
+            "Numero de publicacoes",
+        )
         gBarra.criarGrafico(
             self.compilador.listaCompletaOutroTipoDeProducaoBibliografica,
-            'PB9',
-            'Numero de publicacoes')
+            "PB9",
+            "Numero de publicacoes",
+        )
 
-        gBarra.criarGrafico(self.compilador.listaCompletaSoftwareComPatente,
-                            'PT0', 'Numero de producoes tecnicas')
-        gBarra.criarGrafico(self.compilador.listaCompletaSoftwareSemPatente,
-                            'PT1', 'Numero de producoes tecnicas')
-        gBarra.criarGrafico(self.compilador.listaCompletaProdutoTecnologico,
-                            'PT2', 'Numero de producoes tecnicas')
-        gBarra.criarGrafico(self.compilador.listaCompletaProcessoOuTecnica,
-                            'PT3', 'Numero de producoes tecnicas')
-        gBarra.criarGrafico(self.compilador.listaCompletaTrabalhoTecnico,
-                            'PT4', 'Numero de producoes tecnicas')
+        gBarra.criarGrafico(
+            self.compilador.listaCompletaSoftwareComPatente,
+            "PT0",
+            "Numero de producoes tecnicas",
+        )
+        gBarra.criarGrafico(
+            self.compilador.listaCompletaSoftwareSemPatente,
+            "PT1",
+            "Numero de producoes tecnicas",
+        )
+        gBarra.criarGrafico(
+            self.compilador.listaCompletaProdutoTecnologico,
+            "PT2",
+            "Numero de producoes tecnicas",
+        )
+        gBarra.criarGrafico(
+            self.compilador.listaCompletaProcessoOuTecnica,
+            "PT3",
+            "Numero de producoes tecnicas",
+        )
+        gBarra.criarGrafico(
+            self.compilador.listaCompletaTrabalhoTecnico,
+            "PT4",
+            "Numero de producoes tecnicas",
+        )
         gBarra.criarGrafico(
             self.compilador.listaCompletaOutroTipoDeProducaoTecnica,
-            'PT5',
-            'Numero de producoes tecnicas')
+            "PT5",
+            "Numero de producoes tecnicas",
+        )
 
         gBarra.criarGrafico(
-            self.compilador.listaCompletaPatente, 'PR0', 'Numero de patentes')
-        gBarra.criarGrafico(self.compilador.listaCompletaProgramaComputador,
-                            'PR1', 'Numero de programa de computador')
-        gBarra.criarGrafico(self.compilador.listaCompletaDesenhoIndustrial,
-                            'PR2', 'Numero de desenho industrial')
+            self.compilador.listaCompletaPatente, "PR0", "Numero de patentes"
+        )
+        gBarra.criarGrafico(
+            self.compilador.listaCompletaProgramaComputador,
+            "PR1",
+            "Numero de programa de computador",
+        )
+        gBarra.criarGrafico(
+            self.compilador.listaCompletaDesenhoIndustrial,
+            "PR2",
+            "Numero de desenho industrial",
+        )
 
-        gBarra.criarGrafico(self.compilador.listaCompletaProducaoArtistica,
-                            'PA0', 'Numero de producoes artisticas')
+        gBarra.criarGrafico(
+            self.compilador.listaCompletaProducaoArtistica,
+            "PA0",
+            "Numero de producoes artisticas",
+        )
 
         gBarra.criarGrafico(
             self.compilador.listaCompletaOASupervisaoDePosDoutorado,
-            'OA0',
-            'Numero de orientacoes')
+            "OA0",
+            "Numero de orientacoes",
+        )
         gBarra.criarGrafico(
             self.compilador.listaCompletaOATeseDeDoutorado,
-            'OA1',
-            'Numero de orientacoes')
+            "OA1",
+            "Numero de orientacoes",
+        )
         gBarra.criarGrafico(
             self.compilador.listaCompletaOADissertacaoDeMestrado,
-            'OA2',
-            'Numero de orientacoes')
+            "OA2",
+            "Numero de orientacoes",
+        )
         gBarra.criarGrafico(
             self.compilador.listaCompletaOAMonografiaDeEspecializacao,
-            'OA3',
-            'Numero de orientacoes')
-        gBarra.criarGrafico(self.compilador.listaCompletaOATCC,
-                            'OA4', 'Numero de orientacoes')
+            "OA3",
+            "Numero de orientacoes",
+        )
+        gBarra.criarGrafico(
+            self.compilador.listaCompletaOATCC, "OA4", "Numero de orientacoes"
+        )
         gBarra.criarGrafico(
             self.compilador.listaCompletaOAIniciacaoCientifica,
-            'OA5',
-            'Numero de orientacoes')
+            "OA5",
+            "Numero de orientacoes",
+        )
         gBarra.criarGrafico(
             self.compilador.listaCompletaOAOutroTipoDeOrientacao,
-            'OA6',
-            'Numero de orientacoes')
+            "OA6",
+            "Numero de orientacoes",
+        )
 
         gBarra.criarGrafico(
             self.compilador.listaCompletaOCSupervisaoDePosDoutorado,
-            'OC0',
-            'Numero de orientacoes')
+            "OC0",
+            "Numero de orientacoes",
+        )
         gBarra.criarGrafico(
             self.compilador.listaCompletaOCTeseDeDoutorado,
-            'OC1',
-            'Numero de orientacoes')
+            "OC1",
+            "Numero de orientacoes",
+        )
         gBarra.criarGrafico(
             self.compilador.listaCompletaOCDissertacaoDeMestrado,
-            'OC2',
-            'Numero de orientacoes')
+            "OC2",
+            "Numero de orientacoes",
+        )
         gBarra.criarGrafico(
             self.compilador.listaCompletaOCMonografiaDeEspecializacao,
-            'OC3',
-            'Numero de orientacoes')
-        gBarra.criarGrafico(self.compilador.listaCompletaOCTCC,
-                            'OC4', 'Numero de orientacoes')
+            "OC3",
+            "Numero de orientacoes",
+        )
+        gBarra.criarGrafico(
+            self.compilador.listaCompletaOCTCC, "OC4", "Numero de orientacoes"
+        )
         gBarra.criarGrafico(
             self.compilador.listaCompletaOCIniciacaoCientifica,
-            'OC5',
-            'Numero de orientacoes')
+            "OC5",
+            "Numero de orientacoes",
+        )
         gBarra.criarGrafico(
             self.compilador.listaCompletaOCOutroTipoDeOrientacao,
-            'OC6',
-            'Numero de orientacoes')
+            "OC6",
+            "Numero de orientacoes",
+        )
 
         gBarra.criarGrafico(
-            self.compilador.listaCompletaPremioOuTitulo,
-            'Pm',
-            'Numero de premios')
+            self.compilador.listaCompletaPremioOuTitulo, "Pm", "Numero de premios"
+        )
         gBarra.criarGrafico(
-            self.compilador.listaCompletaProjetoDePesquisa,
-            'Pj',
-            'Numero de projetos')
-
-        gBarra.criarGrafico(self.compilador.listaCompletaPB,
-                            'PB', 'Numero de producoes bibliograficas')
-        gBarra.criarGrafico(self.compilador.listaCompletaPT,
-                            'PT', 'Numero de producoes tecnicas')
-        gBarra.criarGrafico(self.compilador.listaCompletaPA,
-                            'PA', 'Numero de producoes artisticas')
-        gBarra.criarGrafico(self.compilador.listaCompletaOA,
-                            'OA', 'Numero de orientacoes em andamento')
-        gBarra.criarGrafico(self.compilador.listaCompletaOC,
-                            'OC', 'Numero de orientacoes concluidas')
+            self.compilador.listaCompletaProjetoDePesquisa, "Pj", "Numero de projetos"
+        )
 
         gBarra.criarGrafico(
-            self.compilador.listaCompletaParticipacaoEmEvento,
-            'Ep',
-            'Numero de Eventos')
+            self.compilador.listaCompletaPB, "PB", "Numero de producoes bibliograficas"
+        )
         gBarra.criarGrafico(
-            self.compilador.listaCompletaOrganizacaoDeEvento,
-            'Eo',
-            'Numero de Eventos')
+            self.compilador.listaCompletaPT, "PT", "Numero de producoes tecnicas"
+        )
+        gBarra.criarGrafico(
+            self.compilador.listaCompletaPA, "PA", "Numero de producoes artisticas"
+        )
+        gBarra.criarGrafico(
+            self.compilador.listaCompletaOA, "OA", "Numero de orientacoes em andamento"
+        )
+        gBarra.criarGrafico(
+            self.compilador.listaCompletaOC, "OC", "Numero de orientacoes concluidas"
+        )
 
-        prefix = self.obterParametro(
-            'global-prefixo') + '-' if not self.obterParametro('global-prefixo') == '' else ''
+        gBarra.criarGrafico(
+            self.compilador.listaCompletaParticipacaoEmEvento, "Ep", "Numero de Eventos"
+        )
+        gBarra.criarGrafico(
+            self.compilador.listaCompletaOrganizacaoDeEvento, "Eo", "Numero de Eventos"
+        )
+
+        prefix = (
+            self.obterParametro("global-prefixo") + "-"
+            if not self.obterParametro("global-prefixo") == ""
+            else ""
+        )
         self.salvarVetorDeProducoes(
-            gBarra.obterVetorDeProducoes(), prefix + 'vetorDeProducoes.txt')
+            gBarra.obterVetorDeProducoes(), prefix + "vetorDeProducoes.txt"
+        )
 
     def gerarGrafosDeColaboracoes(self):
-        if self.obterParametro('grafo-mostrar_grafo_de_colaboracoes'):
+        if self.obterParametro("grafo-mostrar_grafo_de_colaboracoes"):
             self.grafosDeColaboracoes = GrafoDeColaboracoes(
-                self, self.obterParametro('global-diretorio_de_saida'))
+                self, self.obterParametro("global-diretorio_de_saida")
+            )
             self.identificar_lista_de_colaboradores_endogenos()
 
         print("\n[ROTULOS]")
@@ -726,21 +855,29 @@ class Grupo:
     # TODO verificar se gProporcoes está sendo usado
     def gerarGraficoDeProporcoes(self):
         if self.obterParametro(
-                'relatorio-incluir_grafico_de_proporcoes_bibliograficas'):
+            "relatorio-incluir_grafico_de_proporcoes_bibliograficas"
+        ):
             gProporcoes = GraficoDeProporcoes(
-                self, self.obterParametro('global-diretorio_de_saida'))
+                self, self.obterParametro("global-diretorio_de_saida")
+            )
 
     def calcularInternacionalizacao(self):
-        if self.obterParametro('relatorio-incluir_internacionalizacao'):
+        if self.obterParametro("relatorio-incluir_internacionalizacao"):
             print("\n[ANALISANDO INTERNACIONALIZACAO]")
             self.analisadorDePublicacoes = AnalisadorDePublicacoes(self)
-            self.listaDePublicacoesEinternacionalizacao = self.analisadorDePublicacoes.analisarInternacionalizacaoNaCoautoria()
+            self.listaDePublicacoesEinternacionalizacao = (
+                self.analisadorDePublicacoes.analisarInternacionalizacaoNaCoautoria()
+            )
             if self.analisadorDePublicacoes.listaDoiValido is not None:
-                prefix = self.obterParametro('global-prefixo') + '-' if not self.obterParametro(
-                    'global-prefixo') == '' else ''
+                prefix = (
+                    self.obterParametro("global-prefixo") + "-"
+                    if not self.obterParametro("global-prefixo") == ""
+                    else ""
+                )
                 self.salvarListaInternalizacaoTXT(
                     self.analisadorDePublicacoes.listaDoiValido,
-                    prefix + 'internacionalizacao.txt')
+                    prefix + "internacionalizacao.txt",
+                )
 
     def imprimirListasCompletas(self):
         self.compilador.imprimirListasCompletas()
@@ -756,8 +893,7 @@ class Grupo:
         return len(self.listaDeMembros)
 
     def ordenarListaDeMembros(self, chave):
-        self.listaDeMembros.sort(
-            key=operator.attrgetter(chave))  # ordenamos por nome
+        self.listaDeMembros.sort(key=operator.attrgetter(chave))  # ordenamos por nome
 
     def imprimirListaDeParametros(self):
         for par in self.listaDeParametros:  # .keys():
@@ -786,10 +922,12 @@ class Grupo:
     def obterParametro(self, parametro):
         for i in range(0, len(self.listaDeParametros)):
             if parametro == self.listaDeParametros[i][0]:
-                if self.listaDeParametros[i][1].lower() == 'sim':
+                if self.listaDeParametros[i][1].lower() == "sim":
                     return 1
-                if self.listaDeParametros[i][1].lower(
-                ) == 'nao' or self.listaDeParametros[i][1].lower() == 'não':
+                if (
+                    self.listaDeParametros[i][1].lower() == "nao"
+                    or self.listaDeParametros[i][1].lower() == "não"
+                ):
                     return 0
 
                 return self.listaDeParametros[i][1]
@@ -798,217 +936,229 @@ class Grupo:
         self.listaDeRotulosCores[indice] = cor
 
     def carregarParametrosPadrao(self):
-        self.listaDeParametros.append(['global-nome_do_grupo', ''])
-        self.listaDeParametros.append(['global-arquivo_de_entrada', ''])
-        self.listaDeParametros.append(['global-diretorio_de_saida', ''])
-        self.listaDeParametros.append(['global-email_do_admin', ''])
-        self.listaDeParametros.append(['global-idioma', 'PT'])
-        self.listaDeParametros.append(['global-itens_desde_o_ano', ''])
-        self.listaDeParametros.append(['global-itens_ate_o_ano', ''])  # hoje
-        self.listaDeParametros.append(['global-itens_por_pagina', '1000'])
-        self.listaDeParametros.append(['global-criar_paginas_jsp', 'nao'])
-        self.listaDeParametros.append(['global-google_analytics_key', ''])
-        self.listaDeParametros.append(['global-prefixo', ''])
+        self.listaDeParametros.append(["global-nome_do_grupo", ""])
+        self.listaDeParametros.append(["global-arquivo_de_entrada", ""])
+        self.listaDeParametros.append(["global-diretorio_de_saida", ""])
+        self.listaDeParametros.append(["global-email_do_admin", ""])
+        self.listaDeParametros.append(["global-idioma", "PT"])
+        self.listaDeParametros.append(["global-itens_desde_o_ano", ""])
+        self.listaDeParametros.append(["global-itens_ate_o_ano", ""])  # hoje
+        self.listaDeParametros.append(["global-itens_por_pagina", "1000"])
+        self.listaDeParametros.append(["global-criar_paginas_jsp", "nao"])
+        self.listaDeParametros.append(["global-google_analytics_key", ""])
+        self.listaDeParametros.append(["global-prefixo", ""])
+        self.listaDeParametros.append(["global-diretorio_de_armazenamento_de_cvs", ""])
+        self.listaDeParametros.append(["global-diretorio_de_armazenamento_de_doi", ""])
         self.listaDeParametros.append(
-            ['global-diretorio_de_armazenamento_de_cvs', ''])
-        self.listaDeParametros.append(
-            ['global-diretorio_de_armazenamento_de_doi', ''])
-        self.listaDeParametros.append(
-            ['global-salvar_informacoes_em_formato_xml', 'nao'])
+            ["global-salvar_informacoes_em_formato_xml", "nao"]
+        )
 
         self.listaDeParametros.append(
-            ['global-identificar_publicacoes_com_qualis', 'nao'])
+            ["global-identificar_publicacoes_com_qualis", "nao"]
+        )
         # self.listaDeParametros.append(['global-usar_cache_qualis', 'sim'])
         # self.listaDeParametros.append(['global-arquivo_areas_qualis', ''])
-        self.listaDeParametros.append(
-            ['global-arquivo_qualis_de_congressos', ''])
-        self.listaDeParametros.append(
-            ['global-arquivo_qualis_de_periodicos', ''])
+        self.listaDeParametros.append(["global-arquivo_qualis_de_congressos", ""])
+        self.listaDeParametros.append(["global-arquivo_qualis_de_periodicos", ""])
 
         self.listaDeParametros.append(
-            ['relatorio-salvar_publicacoes_em_formato_ris', 'nao'])
+            ["relatorio-salvar_publicacoes_em_formato_ris", "nao"]
+        )
+        self.listaDeParametros.append(["relatorio-incluir_artigo_em_periodico", "sim"])
+        self.listaDeParametros.append(["relatorio-incluir_livro_publicado", "sim"])
         self.listaDeParametros.append(
-            ['relatorio-incluir_artigo_em_periodico', 'sim'])
+            ["relatorio-incluir_capitulo_de_livro_publicado", "sim"]
+        )
         self.listaDeParametros.append(
-            ['relatorio-incluir_livro_publicado', 'sim'])
+            ["relatorio-incluir_texto_em_jornal_de_noticia", "sim"]
+        )
         self.listaDeParametros.append(
-            ['relatorio-incluir_capitulo_de_livro_publicado', 'sim'])
+            ["relatorio-incluir_trabalho_completo_em_congresso", "sim"]
+        )
         self.listaDeParametros.append(
-            ['relatorio-incluir_texto_em_jornal_de_noticia', 'sim'])
+            ["relatorio-incluir_resumo_expandido_em_congresso", "sim"]
+        )
+        self.listaDeParametros.append(["relatorio-incluir_resumo_em_congresso", "sim"])
         self.listaDeParametros.append(
-            ['relatorio-incluir_trabalho_completo_em_congresso', 'sim'])
+            ["relatorio-incluir_artigo_aceito_para_publicacao", "sim"]
+        )
         self.listaDeParametros.append(
-            ['relatorio-incluir_resumo_expandido_em_congresso', 'sim'])
+            ["relatorio-incluir_apresentacao_de_trabalho", "sim"]
+        )
         self.listaDeParametros.append(
-            ['relatorio-incluir_resumo_em_congresso', 'sim'])
+            ["relatorio-incluir_outro_tipo_de_producao_bibliografica", "sim"]
+        )
+
+        self.listaDeParametros.append(["relatorio-incluir_software_com_patente", "sim"])
+        self.listaDeParametros.append(["relatorio-incluir_software_sem_patente", "sim"])
+        self.listaDeParametros.append(["relatorio-incluir_produto_tecnologico", "sim"])
+        self.listaDeParametros.append(["relatorio-incluir_processo_ou_tecnica", "sim"])
+        self.listaDeParametros.append(["relatorio-incluir_trabalho_tecnico", "sim"])
         self.listaDeParametros.append(
-            ['relatorio-incluir_artigo_aceito_para_publicacao', 'sim'])
+            ["relatorio-incluir_outro_tipo_de_producao_tecnica", "sim"]
+        )
+
+        self.listaDeParametros.append(["relatorio-incluir_patente", "sim"])
+        self.listaDeParametros.append(["relatorio-incluir_programa_computador", "sim"])
+        self.listaDeParametros.append(["relatorio-incluir_desenho_industrial", "sim"])
+
+        self.listaDeParametros.append(["relatorio-incluir_producao_artistica", "sim"])
+
+        self.listaDeParametros.append(["relatorio-mostrar_orientacoes", "sim"])
         self.listaDeParametros.append(
-            ['relatorio-incluir_apresentacao_de_trabalho', 'sim'])
+            ["relatorio-incluir_orientacao_em_andamento_pos_doutorado", "sim"]
+        )
         self.listaDeParametros.append(
-            ['relatorio-incluir_outro_tipo_de_producao_bibliografica', 'sim'])
+            ["relatorio-incluir_orientacao_em_andamento_doutorado", "sim"]
+        )
+        self.listaDeParametros.append(
+            ["relatorio-incluir_orientacao_em_andamento_mestrado", "sim"]
+        )
+        self.listaDeParametros.append(
+            [
+                "relatorio-incluir_orientacao_em_andamento_monografia_de_especializacao",
+                "sim",
+            ]
+        )
+        self.listaDeParametros.append(
+            ["relatorio-incluir_orientacao_em_andamento_tcc", "sim"]
+        )
+        self.listaDeParametros.append(
+            ["relatorio-incluir_orientacao_em_andamento_iniciacao_cientifica", "sim"]
+        )
+        self.listaDeParametros.append(
+            ["relatorio-incluir_orientacao_em_andamento_outro_tipo", "sim"]
+        )
 
         self.listaDeParametros.append(
-            ['relatorio-incluir_software_com_patente', 'sim'])
+            ["relatorio-incluir_orientacao_concluida_pos_doutorado", "sim"]
+        )
         self.listaDeParametros.append(
-            ['relatorio-incluir_software_sem_patente', 'sim'])
+            ["relatorio-incluir_orientacao_concluida_doutorado", "sim"]
+        )
         self.listaDeParametros.append(
-            ['relatorio-incluir_produto_tecnologico', 'sim'])
+            ["relatorio-incluir_orientacao_concluida_mestrado", "sim"]
+        )
         self.listaDeParametros.append(
-            ['relatorio-incluir_processo_ou_tecnica', 'sim'])
+            [
+                "relatorio-incluir_orientacao_concluida_monografia_de_especializacao",
+                "sim",
+            ]
+        )
         self.listaDeParametros.append(
-            ['relatorio-incluir_trabalho_tecnico', 'sim'])
+            ["relatorio-incluir_orientacao_concluida_tcc", "sim"]
+        )
         self.listaDeParametros.append(
-            ['relatorio-incluir_outro_tipo_de_producao_tecnica', 'sim'])
+            ["relatorio-incluir_orientacao_concluida_iniciacao_cientifica", "sim"]
+        )
+        self.listaDeParametros.append(
+            ["relatorio-incluir_orientacao_concluida_outro_tipo", "sim"]
+        )
 
-        self.listaDeParametros.append(['relatorio-incluir_patente', 'sim'])
+        self.listaDeParametros.append(["relatorio-incluir_projeto", "sim"])
+        self.listaDeParametros.append(["relatorio-incluir_premio", "sim"])
         self.listaDeParametros.append(
-            ['relatorio-incluir_programa_computador', 'sim'])
+            ["relatorio-incluir_participacao_em_evento", "sim"]
+        )
         self.listaDeParametros.append(
-            ['relatorio-incluir_desenho_industrial', 'sim'])
+            ["relatorio-incluir_organizacao_de_evento", "sim"]
+        )
+        self.listaDeParametros.append(["relatorio-incluir_internacionalizacao", "nao"])
 
+        self.listaDeParametros.append(["grafo-mostrar_grafo_de_colaboracoes", "sim"])
+        self.listaDeParametros.append(["grafo-mostrar_todos_os_nos_do_grafo", "sim"])
         self.listaDeParametros.append(
-            ['relatorio-incluir_producao_artistica', 'sim'])
+            ["grafo-considerar_rotulos_dos_membros_do_grupo", "sim"]
+        )
+        self.listaDeParametros.append(
+            ["grafo-mostrar_aresta_proporcional_ao_numero_de_colaboracoes", "sim"]
+        )
 
-        self.listaDeParametros.append(['relatorio-mostrar_orientacoes', 'sim'])
+        self.listaDeParametros.append(["grafo-incluir_artigo_em_periodico", "sim"])
+        self.listaDeParametros.append(["grafo-incluir_livro_publicado", "sim"])
         self.listaDeParametros.append(
-            ['relatorio-incluir_orientacao_em_andamento_pos_doutorado', 'sim'])
+            ["grafo-incluir_capitulo_de_livro_publicado", "sim"]
+        )
         self.listaDeParametros.append(
-            ['relatorio-incluir_orientacao_em_andamento_doutorado', 'sim'])
+            ["grafo-incluir_texto_em_jornal_de_noticia", "sim"]
+        )
         self.listaDeParametros.append(
-            ['relatorio-incluir_orientacao_em_andamento_mestrado', 'sim'])
+            ["grafo-incluir_trabalho_completo_em_congresso", "sim"]
+        )
         self.listaDeParametros.append(
-            ['relatorio-incluir_orientacao_em_andamento_monografia_de_especializacao', 'sim'])
+            ["grafo-incluir_resumo_expandido_em_congresso", "sim"]
+        )
+        self.listaDeParametros.append(["grafo-incluir_resumo_em_congresso", "sim"])
         self.listaDeParametros.append(
-            ['relatorio-incluir_orientacao_em_andamento_tcc', 'sim'])
+            ["grafo-incluir_artigo_aceito_para_publicacao", "sim"]
+        )
+        self.listaDeParametros.append(["grafo-incluir_apresentacao_de_trabalho", "sim"])
         self.listaDeParametros.append(
-            ['relatorio-incluir_orientacao_em_andamento_iniciacao_cientifica', 'sim'])
-        self.listaDeParametros.append(
-            ['relatorio-incluir_orientacao_em_andamento_outro_tipo', 'sim'])
+            ["grafo-incluir_outro_tipo_de_producao_bibliografica", "sim"]
+        )
 
+        self.listaDeParametros.append(["grafo-incluir_software_com_patente", "sim"])
+        self.listaDeParametros.append(["grafo-incluir_software_sem_patente", "sim"])
+        self.listaDeParametros.append(["grafo-incluir_produto_tecnologico", "sim"])
+        self.listaDeParametros.append(["grafo-incluir_processo_ou_tecnica", "sim"])
+        self.listaDeParametros.append(["grafo-incluir_trabalho_tecnico", "sim"])
         self.listaDeParametros.append(
-            ['relatorio-incluir_orientacao_concluida_pos_doutorado', 'sim'])
-        self.listaDeParametros.append(
-            ['relatorio-incluir_orientacao_concluida_doutorado', 'sim'])
-        self.listaDeParametros.append(
-            ['relatorio-incluir_orientacao_concluida_mestrado', 'sim'])
-        self.listaDeParametros.append(
-            ['relatorio-incluir_orientacao_concluida_monografia_de_especializacao', 'sim'])
-        self.listaDeParametros.append(
-            ['relatorio-incluir_orientacao_concluida_tcc', 'sim'])
-        self.listaDeParametros.append(
-            ['relatorio-incluir_orientacao_concluida_iniciacao_cientifica', 'sim'])
-        self.listaDeParametros.append(
-            ['relatorio-incluir_orientacao_concluida_outro_tipo', 'sim'])
+            ["grafo-incluir_outro_tipo_de_producao_tecnica", "sim"]
+        )
 
-        self.listaDeParametros.append(['relatorio-incluir_projeto', 'sim'])
-        self.listaDeParametros.append(['relatorio-incluir_premio', 'sim'])
-        self.listaDeParametros.append(
-            ['relatorio-incluir_participacao_em_evento', 'sim'])
-        self.listaDeParametros.append(
-            ['relatorio-incluir_organizacao_de_evento', 'sim'])
-        self.listaDeParametros.append(
-            ['relatorio-incluir_internacionalizacao', 'nao'])
+        self.listaDeParametros.append(["grafo-incluir_patente", "sim"])
+        self.listaDeParametros.append(["grafo-incluir_programa_computador", "sim"])
+        self.listaDeParametros.append(["grafo-incluir_desenho_industrial", "sim"])
 
-        self.listaDeParametros.append(
-            ['grafo-mostrar_grafo_de_colaboracoes', 'sim'])
-        self.listaDeParametros.append(
-            ['grafo-mostrar_todos_os_nos_do_grafo', 'sim'])
-        self.listaDeParametros.append(
-            ['grafo-considerar_rotulos_dos_membros_do_grupo', 'sim'])
-        self.listaDeParametros.append(
-            ['grafo-mostrar_aresta_proporcional_ao_numero_de_colaboracoes', 'sim'])
+        self.listaDeParametros.append(["grafo-incluir_producao_artistica", "sim"])
+        self.listaDeParametros.append(["grafo-incluir_grau_de_colaboracao", "nao"])
 
-        self.listaDeParametros.append(
-            ['grafo-incluir_artigo_em_periodico', 'sim'])
-        self.listaDeParametros.append(['grafo-incluir_livro_publicado', 'sim'])
-        self.listaDeParametros.append(
-            ['grafo-incluir_capitulo_de_livro_publicado', 'sim'])
-        self.listaDeParametros.append(
-            ['grafo-incluir_texto_em_jornal_de_noticia', 'sim'])
-        self.listaDeParametros.append(
-            ['grafo-incluir_trabalho_completo_em_congresso', 'sim'])
-        self.listaDeParametros.append(
-            ['grafo-incluir_resumo_expandido_em_congresso', 'sim'])
-        self.listaDeParametros.append(
-            ['grafo-incluir_resumo_em_congresso', 'sim'])
-        self.listaDeParametros.append(
-            ['grafo-incluir_artigo_aceito_para_publicacao', 'sim'])
-        self.listaDeParametros.append(
-            ['grafo-incluir_apresentacao_de_trabalho', 'sim'])
-        self.listaDeParametros.append(
-            ['grafo-incluir_outro_tipo_de_producao_bibliografica', 'sim'])
-
-        self.listaDeParametros.append(
-            ['grafo-incluir_software_com_patente', 'sim'])
-        self.listaDeParametros.append(
-            ['grafo-incluir_software_sem_patente', 'sim'])
-        self.listaDeParametros.append(
-            ['grafo-incluir_produto_tecnologico', 'sim'])
-        self.listaDeParametros.append(
-            ['grafo-incluir_processo_ou_tecnica', 'sim'])
-        self.listaDeParametros.append(
-            ['grafo-incluir_trabalho_tecnico', 'sim'])
-        self.listaDeParametros.append(
-            ['grafo-incluir_outro_tipo_de_producao_tecnica', 'sim'])
-
-        self.listaDeParametros.append(['grafo-incluir_patente', 'sim'])
-        self.listaDeParametros.append(
-            ['grafo-incluir_programa_computador', 'sim'])
-        self.listaDeParametros.append(
-            ['grafo-incluir_desenho_industrial', 'sim'])
-
-        self.listaDeParametros.append(
-            ['grafo-incluir_producao_artistica', 'sim'])
-        self.listaDeParametros.append(
-            ['grafo-incluir_grau_de_colaboracao', 'nao'])
-
-        self.listaDeParametros.append(
-            ['mapa-mostrar_mapa_de_geolocalizacao', 'sim'])
-        self.listaDeParametros.append(['mapa-incluir_membros_do_grupo', 'sim'])
-        self.listaDeParametros.append(
-            ['mapa-incluir_alunos_de_pos_doutorado', 'sim'])
-        self.listaDeParametros.append(
-            ['mapa-incluir_alunos_de_doutorado', 'sim'])
-        self.listaDeParametros.append(
-            ['mapa-incluir_alunos_de_mestrado', 'nao'])
+        self.listaDeParametros.append(["mapa-mostrar_mapa_de_geolocalizacao", "sim"])
+        self.listaDeParametros.append(["mapa-incluir_membros_do_grupo", "sim"])
+        self.listaDeParametros.append(["mapa-incluir_alunos_de_pos_doutorado", "sim"])
+        self.listaDeParametros.append(["mapa-incluir_alunos_de_doutorado", "sim"])
+        self.listaDeParametros.append(["mapa-incluir_alunos_de_mestrado", "nao"])
 
         # colaboracao exogena
         self.listaDeParametros.append(
-            ['relatorio-incluir_producao_com_colaboradores', 'nao'])
+            ["relatorio-incluir_producao_com_colaboradores", "nao"]
+        )
 
     def identificar_lista_de_colaboradores_endogenos(self):
-        self.colaboradores_endogenos = (list([]))
+        self.colaboradores_endogenos = list([])
         for i in range(0, self.numeroDeMembros()):
             self.colaboradores_endogenos.append(list([]))
         for i in range(0, self.numeroDeMembros()):
             for j in range(0, self.numeroDeMembros()):
                 if i != j and self.matrizDeAdjacencia[i, j] > 0:
                     self.colaboradores_endogenos[i].append(
-                        (j, self.matrizDeAdjacencia[i, j]))
+                        (j, self.matrizDeAdjacencia[i, j])
+                    )
 
         for i in range(0, self.numeroDeMembros()):
             print((self.colaboradores_endogenos[i]))
 
     def carregar_dados_temporarios_de_geolocalizacao(self):
         print("\n\n[CARREGANDO DADOS DE GEOLOCALIZACAO]: dados/geolocalizao.txt")
-        for linha in fileinput.input('dados/geolocalizao.txt'):
+        for linha in fileinput.input("dados/geolocalizao.txt"):
             linha = linha.replace("\r", "")
             linha = linha.replace("\n", "")
             linhaDiv = linha.split("\t")
             if len(linhaDiv) == 3:
                 self.dicionarioDeGeolocalizacao[linhaDiv[0]] = (
-                    linhaDiv[1], linhaDiv[2])
+                    linhaDiv[1],
+                    linhaDiv[2],
+                )
                 print(linha)
 
     def salvar_dados_temporarios_de_geolocalizacao(self):
         print("\n\n[SALVANDO DADOS DE GEOLOCALIZACAO]: dados/geolocalizao.txt")
-        s = ''
+        s = ""
         for chave in list(self.dicionarioDeGeolocalizacao.keys()):
             (lat, lon) = self.dicionarioDeGeolocalizacao[chave]
-            s += '{}\t{}\t{}\n'.format(chave, lat, lon)
-            print(('- {}\t{}\t{}'.format(chave, lat, lon)))
+            s += "{}\t{}\t{}\n".format(chave, lat, lon)
+            print(("- {}\t{}\t{}".format(chave, lat, lon)))
 
-        arquivo = open('dados/geolocalizao.txt', 'w')
+        arquivo = open("dados/geolocalizao.txt", "w")
         arquivo.write(s)
         arquivo.close()

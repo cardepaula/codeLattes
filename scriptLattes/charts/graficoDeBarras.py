@@ -53,7 +53,7 @@ class GraficoDeBarras:
         keys.sort(reverse=False)  # keys.sort(reverse=True)
         for k in keys:
             if k == 0:
-                vetorDeAnos.append('*itens sem ano')
+                vetorDeAnos.append("*itens sem ano")
             else:
                 vetorDeAnos.append(k)
 
@@ -68,47 +68,46 @@ class GraficoDeBarras:
             plt.clf()
             plt.figure(111, figsize=(8.5, 3), dpi=80)
 
-            rects = plt.bar(ind, vetorDeQuantidades,
-                            color='#006600', edgecolor='#006600')
+            rects = plt.bar(
+                ind, vetorDeQuantidades, color="#006600", edgecolor="#006600"
+            )
 
-            plt.ylabel(self.titulo, fontsize=10, color='#000099')
+            plt.ylabel(self.titulo, fontsize=10, color="#000099")
             plt.yticks([])
 
-            plt.xticks(ind + 2 * bar_width, vetorDeAnos, rotation=90,
-                       fontsize=8, color='#000099')  # , family='sans-serif')
+            plt.xticks(
+                ind + 2 * bar_width,
+                vetorDeAnos,
+                rotation=90,
+                fontsize=8,
+                color="#000099",
+            )  # , family='sans-serif')
             # plt.axis('tight')
             old_axis = plt.axis()
-            plt.axis([old_axis[0], old_axis[1], 0,
-                     max(vetorDeQuantidades) * 1.15])
+            plt.axis([old_axis[0], old_axis[1], 0, max(vetorDeQuantidades) * 1.15])
 
             # rotulos sobre as barras
             for rect in rects:
                 height = rect.get_height()
                 plt.text(
-                    rect.get_x() +
-                    rect.get_width() /
-                    2.,
-                    1.05 *
-                    height,
-                    '%d' %
-                    int(height),
-                    ha='center',
-                    va='bottom',
+                    rect.get_x() + rect.get_width() / 2.0,
+                    1.05 * height,
+                    "%d" % int(height),
+                    ha="center",
+                    va="bottom",
                     fontsize=6,
-                    color='#001100')
+                    color="#001100",
+                )
 
             plt.savefig(
-                self.diretorioDeSaida +
-                "/" +
-                self.prefixo +
-                '.png',
-                format='png',
+                self.diretorioDeSaida + "/" + self.prefixo + ".png",
+                format="png",
                 transparent=False,
                 pad_inches=0.1,
-                bbox_inches='tight')
+                bbox_inches="tight",
+            )
 
-            self.vetorDeProducoes.append(
-                (prefixo, vetorDeAnos, vetorDeQuantidades))
+            self.vetorDeProducoes.append((prefixo, vetorDeAnos, vetorDeQuantidades))
 
     def obterVetorDeProducoes(self):
         return self.vetorDeProducoes

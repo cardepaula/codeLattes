@@ -41,11 +41,11 @@ class TextoEmJornalDeNoticia:
     paginas = None
     chave = None
 
-    def __init__(self, idMembro, partesDoItem='', relevante=''):
+    def __init__(self, idMembro, partesDoItem="", relevante=""):
         self.idMembro = set([])
         self.idMembro.add(idMembro)
 
-        if not partesDoItem == '':
+        if not partesDoItem == "":
             # partesDoItem[0]: Numero (NAO USADO)
             # partesDoItem[1]: Descricao do livro (DADO BRUTO)
             self.item = partesDoItem[1]
@@ -60,38 +60,37 @@ class TextoEmJornalDeNoticia:
             self.autores = partes[0].strip()
             partes = partes[2]
 
-            if len(re.findall('\\d\\d \\w+. (?:19|20)\\d\\d', partes)) > 0:
+            if len(re.findall("\\d\\d \\w+. (?:19|20)\\d\\d", partes)) > 0:
                 partes = partes.rpartition(",")
                 self.data = partes[2].strip().rstrip(".").rstrip(",")
                 partes = partes[0]
             else:
-                self.data = ''
+                self.data = ""
 
-            aux = re.findall(' ((?:19|20)\\d\\d)\\b', self.data)
+            aux = re.findall(" ((?:19|20)\\d\\d)\\b", self.data)
             if len(aux) > 0:
                 self.ano = aux[-1]
             else:
-                self.ano = ''
+                self.ano = ""
 
             partes = partes.rpartition(" p. ")
-            if partes[1] == '':  # se nao existem paginas
-                self.paginas = ''
+            if partes[1] == "":  # se nao existem paginas
+                self.paginas = ""
                 partes = partes[2]
             else:
-                self.paginas = re.sub(
-                    r'\s', '', partes[2]).rstrip(".").rstrip(",")
+                self.paginas = re.sub(r"\s", "", partes[2]).rstrip(".").rstrip(",")
                 partes = partes[0]
 
             partes = partes.rpartition(" v. ")
-            if partes[1] == '':  # se nao existem informacao de volume
-                self.volume = ''
+            if partes[1] == "":  # se nao existem informacao de volume
+                self.volume = ""
                 partes = partes[2]
             else:
                 self.volume = partes[2].rstrip(".").rstrip(",")
                 partes = partes[0]
 
             partes = partes.rpartition(". ")
-            self.nomeJornal = partes[2].strip().rstrip('.').rstrip(",")
+            self.nomeJornal = partes[2].strip().rstrip(".").rstrip(",")
 
             partes = partes[0]
             self.titulo = partes.strip().rstrip(".")
@@ -99,19 +98,19 @@ class TextoEmJornalDeNoticia:
             self.chave = self.autores  # chave de comparação entre os objetos
 
         else:
-            self.relevante = ''
-            self.autores = ''
-            self.titulo = ''
-            self.nomeJornal = ''
-            self.data = ''
-            self.volume = ''
-            self.paginas = ''
-            self.ano = ''
+            self.relevante = ""
+            self.autores = ""
+            self.titulo = ""
+            self.nomeJornal = ""
+            self.data = ""
+            self.volume = ""
+            self.paginas = ""
+            self.ano = ""
 
     def compararCom(self, objeto):
-        if self.idMembro.isdisjoint(
-                objeto.idMembro) and similaridade_entre_cadeias(
-                self.titulo, objeto.titulo):
+        if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(
+            self.titulo, objeto.titulo
+        ):
             # Os IDs dos membros são agrupados.
             # Essa parte é importante para a criação do GRAFO de colaborações
             self.idMembro.update(objeto.idMembro)
@@ -139,35 +138,35 @@ class TextoEmJornalDeNoticia:
             return None
 
     def html(self, listaDeMembros):
-        s = self.autores + '. <b>' + self.titulo + '</b>. '
-        s += self.nomeJornal + ', ' if not self.nomeJornal == '' else ''
+        s = self.autores + ". <b>" + self.titulo + "</b>. "
+        s += self.nomeJornal + ", " if not self.nomeJornal == "" else ""
 
-        s += 'v. ' + self.volume + ', ' if not self.volume == '' else ''
-        s += 'p. ' + self.paginas + ', ' if not self.paginas == '' else ''
-        s += self.data + '. ' if not self.data == '' else '.'
+        s += "v. " + self.volume + ", " if not self.volume == "" else ""
+        s += "p. " + self.paginas + ", " if not self.paginas == "" else ""
+        s += self.data + ". " if not self.data == "" else "."
 
         s += menuHTMLdeBuscaPB(self.titulo)
         return s
 
     def ris(self):
-        paginas = self.paginas.split('-')
+        paginas = self.paginas.split("-")
         if len(paginas) < 2:
             p1 = self.paginas
-            p2 = ''
+            p2 = ""
         else:
             p1 = paginas[0]
             p2 = paginas[1]
-        s = '\n'
-        s += '\nTY  - MGZN'
-        s += '\nAU  - ' + self.autores
-        s += '\nT1  - ' + self.titulo
-        s += '\nTI  - ' + self.nomeJornal
-        s += '\nPY  - ' + str(self.ano)
-        s += '\nVL  - ' + self.volume
-        s += '\nSP  - ' + p1
-        s += '\nEP  - ' + p2
-        s += '\nM1  - ' + self.data
-        s += '\nER  - '
+        s = "\n"
+        s += "\nTY  - MGZN"
+        s += "\nAU  - " + self.autores
+        s += "\nT1  - " + self.titulo
+        s += "\nTI  - " + self.nomeJornal
+        s += "\nPY  - " + str(self.ano)
+        s += "\nVL  - " + self.volume
+        s += "\nSP  - " + p1
+        s += "\nEP  - " + p2
+        s += "\nM1  - " + self.data
+        s += "\nER  - "
         return s
 
     # ------------------------------------------------------------------------ #
@@ -178,8 +177,7 @@ class TextoEmJornalDeNoticia:
         s += "+RELEVANTE   : " + str(self.relevante) + "\n"
         s += "+AUTORES     : " + self.autores + "\n"
         s += "+TITULO      : " + self.titulo + "\n"
-        s += "+NOME MEDIO  : " + \
-            self.nomeJornal + "\n"
+        s += "+NOME MEDIO  : " + self.nomeJornal + "\n"
         s += "+DATA        : " + self.data + "\n"
         s += "+ANO (oculto): " + str(self.ano) + "\n"
         s += "+VOLUME      : " + self.volume + "\n"

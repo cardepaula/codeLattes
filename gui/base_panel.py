@@ -37,7 +37,7 @@ class BasePanel(object):
     def get_output_folder(self, output_folder=None):
         if not output_folder:
             output_folder = self.output_folder
-        if 'win' in sys.platform.lower():
-            return 'file:///' + output_folder.replace('\\', '/')
+        if "win" in sys.platform.lower():
+            return "file:///" + output_folder.replace("\\", "/")
         else:
-            return 'file://' + output_folder
+            return "file://" + output_folder

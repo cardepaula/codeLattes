@@ -22,8 +22,7 @@ class Ui_Dialog(object):
         self.scrollAreaWidgetContents = QtGui.QWidget()
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 767, 496))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
-        self.verticalLayout_2 = QtGui.QVBoxLayout(
-            self.scrollAreaWidgetContents)
+        self.verticalLayout_2 = QtGui.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.text = QtGui.QTextBrowser(self.scrollAreaWidgetContents)
         self.text.setObjectName("text")
@@ -33,21 +32,23 @@ class Ui_Dialog(object):
         self.buttonBox = QtGui.QDialogButtonBox(Dialog)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonBox.setStandardButtons(
-            QtGui.QDialogButtonBox.Cancel | QtGui.QDialogButtonBox.Ok)
+            QtGui.QDialogButtonBox.Cancel | QtGui.QDialogButtonBox.Ok
+        )
         self.buttonBox.setObjectName("buttonBox")
         self.verticalLayout.addWidget(self.buttonBox)
 
         self.retranslateUi(Dialog)
         QtCore.QObject.connect(
-            self.buttonBox, QtCore.SIGNAL("accepted()"), Dialog.accept)
+            self.buttonBox, QtCore.SIGNAL("accepted()"), Dialog.accept
+        )
         QtCore.QObject.connect(
-            self.buttonBox, QtCore.SIGNAL("rejected()"), Dialog.reject)
+            self.buttonBox, QtCore.SIGNAL("rejected()"), Dialog.reject
+        )
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(
             QtGui.QApplication.translate(
-                "Dialog",
-                "Exibir mensagem",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                "Dialog", "Exibir mensagem", None, QtGui.QApplication.UnicodeUTF8
+            )
+        )

@@ -78,125 +78,272 @@ class MapaDeGeolocalizacao:
 
         cvsProcessados = set([])
 
-        if self.grupo.obterParametro('mapa-incluir_membros_do_grupo'):
+        if self.grupo.obterParametro("mapa-incluir_membros_do_grupo"):
             for membro in self.grupo.listaDeMembros:
                 cvsProcessados.add(membro.idLattes)
                 membro.obterCoordenadasDeGeolocalizacao()
-                nomeCompleto = unicodedata.normalize(
-                    'NFKD', membro.nomeCompleto).encode(
-                    'ASCII', 'ignore').decode()
-                if not membro.enderecoProfissionalLat == '0' and not membro.enderecoProfissionalLon == '0':
-                    print(("-",
-                           nomeCompleto,
-                           membro.url,
-                           membro.enderecoProfissionalLat,
-                           membro.enderecoProfissionalLon))
-                    enderecoProfissional = unicodedata.normalize(
-                        'NFKD', membro.enderecoProfissional).encode(
-                        'ASCII', 'ignore').decode()
-                    self.mapa += '\n    setMarker0(map, ' + membro.enderecoProfissionalLat + '+0.001*Math.random(), ' + membro.enderecoProfissionalLon + \
-                        '+0.001*Math.random(), "' + nomeCompleto + '", "' + enderecoProfissional + \
-                        '", "' + membro.url + '", "' + membro.foto + '");'
+                nomeCompleto = (
+                    unicodedata.normalize("NFKD", membro.nomeCompleto)
+                    .encode("ASCII", "ignore")
+                    .decode()
+                )
+                if (
+                    not membro.enderecoProfissionalLat == "0"
+                    and not membro.enderecoProfissionalLon == "0"
+                ):
+                    print(
+                        (
+                            "-",
+                            nomeCompleto,
+                            membro.url,
+                            membro.enderecoProfissionalLat,
+                            membro.enderecoProfissionalLon,
+                        )
+                    )
+                    enderecoProfissional = (
+                        unicodedata.normalize("NFKD", membro.enderecoProfissional)
+                        .encode("ASCII", "ignore")
+                        .decode()
+                    )
+                    self.mapa += (
+                        "\n    setMarker0(map, "
+                        + membro.enderecoProfissionalLat
+                        + "+0.001*Math.random(), "
+                        + membro.enderecoProfissionalLon
+                        + '+0.001*Math.random(), "'
+                        + nomeCompleto
+                        + '", "'
+                        + enderecoProfissional
+                        + '", "'
+                        + membro.url
+                        + '", "'
+                        + membro.foto
+                        + '");'
+                    )
 
-        if self.grupo.obterParametro('mapa-incluir_alunos_de_pos_doutorado'):
+        if self.grupo.obterParametro("mapa-incluir_alunos_de_pos_doutorado"):
             keys = list(
-                self.grupo.compilador.listaCompletaOCSupervisaoDePosDoutorado.keys())
+                self.grupo.compilador.listaCompletaOCSupervisaoDePosDoutorado.keys()
+            )
             for ano in keys:
-                for aluno in self.grupo.compilador.listaCompletaOCSupervisaoDePosDoutorado[
-                        ano]:
+                for (
+                    aluno
+                ) in self.grupo.compilador.listaCompletaOCSupervisaoDePosDoutorado[ano]:
                     idOrientando = aluno.idOrientando
 
                     if len(idOrientando) == 16 and cvsProcessados.isdisjoint(
-                            [idOrientando]):
-                        membro = Membro('', idOrientando, '', '',
-                                        '', '', '', self.grupo.diretorioCache)
+                        [idOrientando]
+                    ):
+                        membro = Membro(
+                            "",
+                            idOrientando,
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            self.grupo.diretorioCache,
+                        )
                         membro.carregarDadosCVLattes()
                         membro.obterCoordenadasDeGeolocalizacao()
-                        nomeCompleto = unicodedata.normalize(
-                            'NFKD', membro.nomeCompleto).encode(
-                            'ASCII', 'ignore').decode()
-                        if not membro.enderecoProfissionalLat == '0' and not membro.enderecoProfissionalLon == '0':
-                            enderecoProfissional = unicodedata.normalize(
-                                'NFKD', membro.enderecoProfissional).encode(
-                                'ASCII', 'ignore').decode()
-                            self.mapa += '\n    setMarker1(map, ' + membro.enderecoProfissionalLat + '+0.001*Math.random(), ' + membro.enderecoProfissionalLon + '+0.001*Math.random(), "' + \
-                                nomeCompleto + '","' + enderecoProfissional + '","' + self.obterNomesDosOrientadores(
-                                    aluno, self.grupo.listaDeMembros) + '","' + membro.url + '","' + membro.foto + '");'
+                        nomeCompleto = (
+                            unicodedata.normalize("NFKD", membro.nomeCompleto)
+                            .encode("ASCII", "ignore")
+                            .decode()
+                        )
+                        if (
+                            not membro.enderecoProfissionalLat == "0"
+                            and not membro.enderecoProfissionalLon == "0"
+                        ):
+                            enderecoProfissional = (
+                                unicodedata.normalize(
+                                    "NFKD", membro.enderecoProfissional
+                                )
+                                .encode("ASCII", "ignore")
+                                .decode()
+                            )
+                            self.mapa += (
+                                "\n    setMarker1(map, "
+                                + membro.enderecoProfissionalLat
+                                + "+0.001*Math.random(), "
+                                + membro.enderecoProfissionalLon
+                                + '+0.001*Math.random(), "'
+                                + nomeCompleto
+                                + '","'
+                                + enderecoProfissional
+                                + '","'
+                                + self.obterNomesDosOrientadores(
+                                    aluno, self.grupo.listaDeMembros
+                                )
+                                + '","'
+                                + membro.url
+                                + '","'
+                                + membro.foto
+                                + '");'
+                            )
                         cvsProcessados.add(idOrientando)
-                        print(("-Processando o CV do ex-posdoc: " +
-                              idOrientando + " " + nomeCompleto))
+                        print(
+                            (
+                                "-Processando o CV do ex-posdoc: "
+                                + idOrientando
+                                + " "
+                                + nomeCompleto
+                            )
+                        )
 
-        if self.grupo.obterParametro('mapa-incluir_alunos_de_doutorado'):
-            keys = list(
-                self.grupo.compilador.listaCompletaOCTeseDeDoutorado.keys())
+        if self.grupo.obterParametro("mapa-incluir_alunos_de_doutorado"):
+            keys = list(self.grupo.compilador.listaCompletaOCTeseDeDoutorado.keys())
             for ano in keys:
                 for aluno in self.grupo.compilador.listaCompletaOCTeseDeDoutorado[ano]:
                     idOrientando = aluno.idOrientando
 
                     if len(idOrientando) == 16 and cvsProcessados.isdisjoint(
-                            [idOrientando]):
-                        membro = Membro('', idOrientando, '', '',
-                                        '', '', '', self.grupo.diretorioCache)
+                        [idOrientando]
+                    ):
+                        membro = Membro(
+                            "",
+                            idOrientando,
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            self.grupo.diretorioCache,
+                        )
                         membro.carregarDadosCVLattes()
                         membro.obterCoordenadasDeGeolocalizacao()
-                        nomeCompleto = unicodedata.normalize(
-                            'NFKD', membro.nomeCompleto).encode(
-                            'ASCII', 'ignore').decode()
-                        if not membro.enderecoProfissionalLat == '0' and not membro.enderecoProfissionalLon == '0':
-                            enderecoProfissional = unicodedata.normalize(
-                                'NFKD', membro.enderecoProfissional).encode(
-                                'ASCII', 'ignore').decode()
-                            self.mapa += '\n    setMarker2(map, ' + membro.enderecoProfissionalLat + '+0.001*Math.random(), ' + membro.enderecoProfissionalLon + '+0.001*Math.random(), "' + \
-                                nomeCompleto + '","' + enderecoProfissional + '","' + self.obterNomesDosOrientadores(
-                                    aluno, self.grupo.listaDeMembros) + '","' + membro.url + '","' + membro.foto + '");'
+                        nomeCompleto = (
+                            unicodedata.normalize("NFKD", membro.nomeCompleto)
+                            .encode("ASCII", "ignore")
+                            .decode()
+                        )
+                        if (
+                            not membro.enderecoProfissionalLat == "0"
+                            and not membro.enderecoProfissionalLon == "0"
+                        ):
+                            enderecoProfissional = (
+                                unicodedata.normalize(
+                                    "NFKD", membro.enderecoProfissional
+                                )
+                                .encode("ASCII", "ignore")
+                                .decode()
+                            )
+                            self.mapa += (
+                                "\n    setMarker2(map, "
+                                + membro.enderecoProfissionalLat
+                                + "+0.001*Math.random(), "
+                                + membro.enderecoProfissionalLon
+                                + '+0.001*Math.random(), "'
+                                + nomeCompleto
+                                + '","'
+                                + enderecoProfissional
+                                + '","'
+                                + self.obterNomesDosOrientadores(
+                                    aluno, self.grupo.listaDeMembros
+                                )
+                                + '","'
+                                + membro.url
+                                + '","'
+                                + membro.foto
+                                + '");'
+                            )
                         cvsProcessados.add(idOrientando)
-                        print(("-Processando o CV do ex-aluno de doutorado: " +
-                              idOrientando + " " + nomeCompleto))
+                        print(
+                            (
+                                "-Processando o CV do ex-aluno de doutorado: "
+                                + idOrientando
+                                + " "
+                                + nomeCompleto
+                            )
+                        )
 
-        if self.grupo.obterParametro('mapa-incluir_alunos_de_mestrado'):
+        if self.grupo.obterParametro("mapa-incluir_alunos_de_mestrado"):
             keys = list(
-                self.grupo.compilador.listaCompletaOCDissertacaoDeMestrado.keys())
+                self.grupo.compilador.listaCompletaOCDissertacaoDeMestrado.keys()
+            )
             for ano in keys:
-                for aluno in self.grupo.compilador.listaCompletaOCDissertacaoDeMestrado[ano]:
+                for aluno in self.grupo.compilador.listaCompletaOCDissertacaoDeMestrado[
+                    ano
+                ]:
                     idOrientando = aluno.idOrientando
 
                     if len(idOrientando) == 16 and cvsProcessados.isdisjoint(
-                            [idOrientando]):
-                        membro = Membro('', idOrientando, '', '',
-                                        '', '', '', self.grupo.diretorioCache)
+                        [idOrientando]
+                    ):
+                        membro = Membro(
+                            "",
+                            idOrientando,
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            self.grupo.diretorioCache,
+                        )
                         membro.carregarDadosCVLattes()
                         membro.obterCoordenadasDeGeolocalizacao()
-                        nomeCompleto = unicodedata.normalize(
-                            'NFKD', membro.nomeCompleto).encode(
-                            'ASCII', 'ignore').decode()
-                        if not membro.enderecoProfissionalLat == '0' and not membro.enderecoProfissionalLon == '0':
-                            enderecoProfissional = unicodedata.normalize(
-                                'NFKD', membro.enderecoProfissional).encode(
-                                'ASCII', 'ignore').decode()
-                            self.mapa += '\n    setMarker3(map, ' + membro.enderecoProfissionalLat + '+0.001*Math.random(), ' + membro.enderecoProfissionalLon + '+0.001*Math.random(), "' + \
-                                nomeCompleto + '","' + enderecoProfissional + '","' + self.obterNomesDosOrientadores(
-                                    aluno, self.grupo.listaDeMembros) + '","' + membro.url + '","' + membro.foto + '");'
+                        nomeCompleto = (
+                            unicodedata.normalize("NFKD", membro.nomeCompleto)
+                            .encode("ASCII", "ignore")
+                            .decode()
+                        )
+                        if (
+                            not membro.enderecoProfissionalLat == "0"
+                            and not membro.enderecoProfissionalLon == "0"
+                        ):
+                            enderecoProfissional = (
+                                unicodedata.normalize(
+                                    "NFKD", membro.enderecoProfissional
+                                )
+                                .encode("ASCII", "ignore")
+                                .decode()
+                            )
+                            self.mapa += (
+                                "\n    setMarker3(map, "
+                                + membro.enderecoProfissionalLat
+                                + "+0.001*Math.random(), "
+                                + membro.enderecoProfissionalLon
+                                + '+0.001*Math.random(), "'
+                                + nomeCompleto
+                                + '","'
+                                + enderecoProfissional
+                                + '","'
+                                + self.obterNomesDosOrientadores(
+                                    aluno, self.grupo.listaDeMembros
+                                )
+                                + '","'
+                                + membro.url
+                                + '","'
+                                + membro.foto
+                                + '");'
+                            )
                         cvsProcessados.add(idOrientando)
-                        print(("-Processando o CV do ex-aluno de mestrado: " +
-                              idOrientando + " " + nomeCompleto))
+                        print(
+                            (
+                                "-Processando o CV do ex-aluno de mestrado: "
+                                + idOrientando
+                                + " "
+                                + nomeCompleto
+                            )
+                        )
 
-        self.mapa += '\
+        self.mapa += "\
   } \n\
-</script>\n'
+</script>\n"
 
-        self.mapa = re.sub("\'", '', self.mapa)
+        self.mapa = re.sub("'", "", self.mapa)
         print("\n[MAPA DE GEOLOCALIZACAO CRIADO]")
 
     def obterNomesDosOrientadores(self, aluno, listaDeMembros):
         lista = list(aluno.idMembro)
         if len(lista) == 1:
             m = listaDeMembros[lista[0]]
-            s = aluno.tipoDeOrientacao + ': ' + m.nomeCompleto
+            s = aluno.tipoDeOrientacao + ": " + m.nomeCompleto
         else:
-            s = 'Orientadores: '
+            s = "Orientadores: "
             for i in lista:
                 m = listaDeMembros[i]
-                s += m.nomeCompleto + ', '
-            s = s.rstrip(', ') + '.'
+                s += m.nomeCompleto + ", "
+            s = s.rstrip(", ") + "."
 
         return s
