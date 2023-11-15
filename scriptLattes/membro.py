@@ -181,9 +181,8 @@ class Membro:
         self.listaPeriodo = []
         periodoDoMembro = re.sub("\\s+", "", periodoDoMembro)
 
-        if (
-            not periodoDoMembro
-        ):  # se nao especificado o periodo, entao aceitamos todos os items do CV Lattes
+        if not periodoDoMembro:
+            # se nao especificado o periodo, entao aceitamos todos os items do CV Lattes
             self.listaPeriodo = [[0, 10000]]
         else:
             lista = periodoDoMembro.split("&")
