@@ -31,33 +31,6 @@ BASE = "scriptLattes" + SEP
 ABSBASE = os.path.abspath(".") + SEP
 
 
-class OutputStream:
-    def __init__(self, output, encoding):
-        self.encoding = encoding
-        self.output = output
-
-    def write(self, text):
-        # TODO verificar a necessidade dessa validaçao
-        # try:
-        #     # text = text.decode(self.encoding)
-        #     text = text
-        # except:
-        #     try:
-        #         text = text.decode('utf8').encode('iso-8859-1')
-        #     except:
-        #         try:
-        #             text = text.encode('iso-8859-1')
-        #         except:
-        #             pass
-        try:
-            self.output.write(text)
-        except BaseException:
-            try:
-                self.output.write(str(text))
-            except BaseException:
-                self.output.write("ERRO na impressao")
-
-
 def buscarArquivo(filepath, arquivoConfiguracao=None):
     if not arquivoConfiguracao:
         arquivoConfiguracao = sys.argv[1]
