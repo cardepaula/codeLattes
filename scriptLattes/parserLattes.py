@@ -319,14 +319,9 @@ class ParserLattes(HTMLParser):
         cvLattesHTML = cvLattesHTML.replace("<X<", "&lt;X&lt;")
 
         # feed it!
-        # cvLattesHTML, errors = tidy_document(cvLattesHTML, options={'numeric-entities': 1})
         cvLattesHTML = BeautifulSoup(cvLattesHTML, "html.parser")
 
         self.convert_numeric_entities(cvLattesHTML)
-
-        # tentativa errada (não previsível)
-        # options = dict(output_xhtml=1, add_xml_decl=1, indent=1, tidy_mark=0)
-        # cvLattesHTML = str(tidy.parseString(cvLattesHTML, **options))
 
         self.feed(str(cvLattesHTML))
 
@@ -629,18 +624,6 @@ class ParserLattes(HTMLParser):
                         iessimoPremio = PremioOuTitulo(self.idMembro, self.partesDoItem)
                         # acrescentamos o objeto de PremioOuTitulo
                         self.listaPremioOuTitulo.append(iessimoPremio)
-
-                        # if self.achouPatenteRegistro:
-                    # #print "===>>>> PROCESSANDO PATENTE e REGISTRO"
-                    # if self.achouPatente:
-                    # iessimoItem = Patente(self.idMembro, self.partesDoItem, self.relevante)
-                    # self.listaPatente.append(iessimoItem)
-                    # if self.achouProgramaComputador:
-                    # iessimoItem = ProgramaComputador(self.idMembro, self.partesDoItem, self.relevante)
-                    # self.listaProgramaComputador.append(iessimoItem)
-                    # if self.achouDesenhoIndustrial:
-                    # iessimoItem = DesenhoIndustrial(self.idMembro, self.partesDoItem, self.relevante)
-                    # self.listaDesenhoIndustrial.append(iessimoItem)
 
                     if self.achouProducoes:
                         if self.achouProducaoEmCTA:
@@ -970,13 +953,8 @@ class ParserLattes(HTMLParser):
                 self.achouIdioma = 1
             if "Prêmios e títulos" == dado:
                 self.achouPremioOuTitulo = 1
-            if "Produções" == dado:  # !---
+            if "Produções" == dado:
                 self.achouProducoes = 1
-                # self.achouProducaoEmCTA = 1
-            # if u'Produção técnica'==dado:
-            # self.achouProducaoTecnica = 1
-            # if u'Produção artística/cultural'==dado:
-            # self.achouProducaoArtisticaCultural = 1
             if "Bancas" == dado:
                 self.achouBancas = 1
             if "Eventos" == dado:

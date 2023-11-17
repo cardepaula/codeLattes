@@ -60,9 +60,6 @@ def copiarArquivos(dir):
         pass  # provavelmente diretório já existe
         logging.warning(e)
 
-    # shutil.copy2(os.path.join(base, 'css', 'scriptLattes.css'), dir)
-    # shutil.copy2(os.path.join(base, 'css', 'jquery.dataTables.css'), dir)
-
     shutil.copy2(os.path.join(base, "imagens", "lattesPoint0.png"), dir)
     shutil.copy2(os.path.join(base, "imagens", "lattesPoint1.png"), dir)
     shutil.copy2(os.path.join(base, "imagens", "lattesPoint2.png"), dir)

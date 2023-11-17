@@ -542,15 +542,6 @@ class CompiladorDeListas:
                     listaCompleta[pub.ano].append(pub)
         return listaCompleta
 
-    # Para projetos não é feita a busca de projetos similares (NÃO MAIS
-    # UTILIZADA)
-    def compilarListaDeProjetos(self, listaDoMembro, listaCompleta):
-        for pub in listaDoMembro:  # adicionar 'pub'  em  'listaCompleta'
-            if listaCompleta.get(pub.anoInicio) is None:
-                listaCompleta[pub.anoInicio] = []
-            listaCompleta[pub.anoInicio].append(pub)
-        return listaCompleta
-
     def compilarListasCompletas(self, listaCompleta, listaTotal):
         keys = list(listaCompleta.keys())
         for ano in keys:
