@@ -684,7 +684,6 @@ class ParserLattesXML(HTMLParser):
                         self.agenciaDeFomento = value
 
     def handle_endtag(self, tag):
-        # ----------------------------------------------------------------------
         if tag == "artigo-publicado":
             self.achouArtigoEmPeriodico = 0
 
@@ -910,12 +909,6 @@ class ParserLattesXML(HTMLParser):
             ori.tipoDeOrientacao = self.tipoDeOrientacao
             ori.chave = self.nome
             self.listaOCDissertacaoDeMestrado.append(ori)
-
-    # ------------------------------------------------------------------------ #
-    # def handle_data(self, dado):
-
-
-# ---------------------------------------------------------------------------- #
 
 
 def stripBlanks(s):

@@ -115,13 +115,6 @@ def copiarArquivos(dir):
         pass  # provavelmente diretório já existe
         logging.warning(e)
 
-    # shutil.copy2(os.path.join(base, 'js', 'jquery.min.js'), dir)
-    # shutil.copy2(os.path.join(base, 'js', 'highcharts.js'), dir)
-    # shutil.copy2(os.path.join(base, 'js', 'exporting.js'), dir)
-    # shutil.copy2(os.path.join(base, 'js', 'drilldown.js'), dir)
-    # shutil.copy2(os.path.join(base, 'js', 'jquery.dataTables.min.js'), dir)
-    # shutil.copy2(os.path.join(base, 'js', 'jquery.dataTables.rowGrouping.js'), dir)
-
     print(("\n\nArquivos salvos em: >>{}<<".format(os.path.abspath(dir))))
 
 

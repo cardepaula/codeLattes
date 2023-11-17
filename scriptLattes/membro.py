@@ -504,7 +504,7 @@ class Membro:
 
             objeto.anoInicio = int(objeto.anoInicio)
             objeto.anoConclusao = int(objeto.anoConclusao)
-            objeto.ano = objeto.anoInicio  # Para comparação entre projetos
+            objeto.ano = objeto.anoInicio
 
             if (
                 objeto.anoInicio > self.itemsAteOAno

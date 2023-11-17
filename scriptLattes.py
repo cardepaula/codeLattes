@@ -54,13 +54,8 @@ def executar_scriptLattes(arquivoConfiguracao):
 
         novoGrupo.salvar_dados_temporarios_de_geolocalizacao()
 
-        # copiar imagens e css
         copiarArquivos(novoGrupo.obterParametro("global-diretorio_de_saida"))
 
-        # finalizando o processo
-        # print '[AVISO] Quem vê \'Lattes\', não vê coração! B-)'
-        # print '[AVISO] Por favor, cadastre-se na página:
-        # http://scriptlattes.sourceforge.net\n'
         print("\n\n[PARA REFERENCIAR/CITAR ESTE SOFTWARE USE]")
         print("    Jesus P. Mena-Chalco & Roberto M. Cesar-Jr.")
         print(

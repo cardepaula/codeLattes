@@ -29,23 +29,10 @@ from scriptLattes.util import similaridade_entre_cadeias
 
 
 class ArtigoEmPeriodico:
-    item = None  # dado bruto
+    item = None
     idMembro = None
-    # qualis = None
-    # qualissimilar = None
-
-    # doi = None
-    # relevante = None
-    # autores = None
-    # titulo = None
-    # revista = None
-    # volume = None
-    # paginas = None
-    # numero = None
-    # ano = None
     resto = None
     chave = None
-    # issn = None
 
     def __init__(self, idMembro, partesDoItem="", doi="", relevante="", complemento=""):
         self.idMembro = set([])

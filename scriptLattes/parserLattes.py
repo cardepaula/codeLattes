@@ -440,9 +440,6 @@ class ParserLattes(HTMLParser):
             self.achouIdioma = 0
             self.achouPremioOuTitulo = 0
             self.achouProducoes = 0
-            # self.achouProducaoEmCTA = 0
-            # self.achouProducaoTecnica = 0
-            # self.achouProducaoArtisticaCultural = 0
             self.achouBancas = 0
             self.achouEventos = 0
             self.achouOrientacoes = 0
@@ -567,9 +564,6 @@ class ParserLattes(HTMLParser):
                         iessimaFormacaoAcademica = FormacaoAcademica(self.partesDoItem)
                         # acrescentamos o objeto de FormacaoAcademica
                         self.listaFormacaoAcademica.append(iessimaFormacaoAcademica)
-
-                    # if self.achouAtuacaoProfissional:
-                    # print self.partesDoItem
 
                     if self.achouProjetoDePesquisa:
                         if not self.salvarParte3:
