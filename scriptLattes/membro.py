@@ -64,6 +64,7 @@ class Membro:
 
     listaFormacaoAcademica = []
     listaProjetoDePesquisa = []
+    listaProjetoDeExtensao = []
     listaAreaDeAtuacao = []
     listaIdioma = []
     listaPremioOuTitulo = []
@@ -298,6 +299,7 @@ class Membro:
         self.listaIDLattesColaboradores = parser.listaIDLattesColaboradores
         self.listaFormacaoAcademica = parser.listaFormacaoAcademica
         self.listaProjetoDePesquisa = parser.listaProjetoDePesquisa
+        self.listaProjetoDeExtensao = parser.listaProjetoDeExtensao
         self.listaAreaDeAtuacao = parser.listaAreaDeAtuacao
         self.listaIdioma = parser.listaIdioma
         self.listaPremioOuTitulo = parser.listaPremioOuTitulo
@@ -465,6 +467,7 @@ class Membro:
 
         self.listaPremioOuTitulo = self.filtrarItems(self.listaPremioOuTitulo)
         self.listaProjetoDePesquisa = self.filtrarItems(self.listaProjetoDePesquisa)
+        self.listaProjetoDeExtensao = self.filtrarItems(self.listaProjetoDeExtensao)
 
         self.listaParticipacaoEmEvento = self.filtrarItems(
             self.listaParticipacaoEmEvento
@@ -485,21 +488,16 @@ class Membro:
 
     def estaDentroDoPeriodo(self, objeto):
         if objeto.__module__ == "orientacaoEmAndamento":
-            objeto.ano = int(objeto.ano) if objeto.ano else 0  # Caso
-            if objeto.ano > self.itemsAteOAno:
-                return 0
-            else:
-                return 1
+            objeto.ano = int(objeto.ano) if objeto.ano else 0
+            return 1 if objeto.ano <= self.itemsAteOAno else 0
 
-        elif objeto.__module__ == "projetoDePesquisa":
+        elif objeto.__module__ in ["projetoDePesquisa", "projetoDeExtensao"]:
             if objeto.anoConclusao.lower() == "atual":
                 objeto.anoConclusao = str(datetime.datetime.now().year)
 
-            # Para projetos de pesquisa sem anos! (sim... tem gente que não
-            # coloca os anos!)
-            if objeto.anoInicio == "":
+            if not objeto.anoInicio:
                 objeto.anoInicio = "0"
-            if objeto.anoConclusao == "":
+            if not objeto.anoConclusao:
                 objeto.anoConclusao = "0"
 
             objeto.anoInicio = int(objeto.anoInicio)
@@ -513,25 +511,21 @@ class Membro:
                 and objeto.anoConclusao < self.itemsDesdeOAno
             ):
                 return 0
-            else:
-                fora = 0
-                for per in self.listaPeriodo:
-                    if (
-                        objeto.anoInicio > per[1]
-                        and objeto.anoConclusao > per[1]
-                        or objeto.anoInicio < per[0]
-                        and objeto.anoConclusao < per[0]
-                    ):
-                        fora += 1
-                if fora == len(self.listaPeriodo):
-                    return 0
+
+            for periodo in self.listaPeriodo:
+                if (
+                    objeto.anoInicio > periodo[1]
+                    and objeto.anoConclusao > periodo[1]
+                    or objeto.anoInicio < periodo[0]
+                    and objeto.anoConclusao < periodo[0]
+                ):
+                    continue
                 else:
                     return 1
+            return 0
 
         else:
-            if (
-                not objeto.ano.isdigit()
-            ):  # se nao for identificado o ano sempre o mostramos na lista
+            if not objeto.ano.isdigit():
                 objeto.ano = 0
                 return 1
             else:
@@ -539,12 +533,10 @@ class Membro:
                 if self.itemsDesdeOAno > objeto.ano or objeto.ano > self.itemsAteOAno:
                     return 0
                 else:
-                    retorno = 0
-                    for per in self.listaPeriodo:
-                        if per[0] <= objeto.ano and objeto.ano <= per[1]:
-                            retorno = 1
-                            break
-                    return retorno
+                    return any(
+                        periodo[0] <= objeto.ano <= periodo[1]
+                        for periodo in self.listaPeriodo
+                    )
 
     def obterCoordenadasDeGeolocalizacao(self):
         geo = Geolocalizador(self.enderecoProfissional, self.dicionarioDeGeolocalizacao)
@@ -715,6 +707,9 @@ class Membro:
             )
             s += "\n- Projetos de pesquisa                        : " + str(
                 len(self.listaProjetoDePesquisa)
+            )
+            s += "\n- Projetos de extensão                        : " + str(
+                len(self.listaProjetoDeExtensao)
             )
             s += "\n- Prêmios e títulos                           : " + str(
                 len(self.listaPremioOuTitulo)

@@ -26,6 +26,7 @@
 
 from scriptLattes.geradorDePaginasWeb import *
 from scriptLattes.util import similaridade_entre_cadeias
+import re
 
 
 class ArtigoEmPeriodico:
@@ -80,7 +81,11 @@ class ArtigoEmPeriodico:
 
             # Processando o resto (tudo menos autores)
             partes = partes[2].rpartition(", ")
-            self.ano = partes[2].strip().rstrip(".")
+            self.ano = (
+                re.search(r"(\d{4})\.", partes[2]).group(1)
+                if re.search(r"(\d{4})\.", partes[2])
+                else None
+            )
 
             partes = partes[0].rpartition("p. ")
             if partes[1] == "":  # se nao existe paginas

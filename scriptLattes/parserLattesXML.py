@@ -61,6 +61,7 @@ class ParserLattesXML(HTMLParser):
     listaIDLattesColaboradores = []
     listaFormacaoAcademica = []
     listaProjetoDePesquisa = []
+    listaProjetoDeExtensao = []
     listaAreaDeAtuacao = []
     listaIdioma = []
     listaPremioOuTitulo = []
@@ -140,6 +141,7 @@ class ParserLattesXML(HTMLParser):
         self.listaIDLattesColaboradores = []
         self.listaFormacaoAcademica = []
         self.listaProjetoDePesquisa = []
+        self.listaProjetoDeExtensao = []
         self.listaAreaDeAtuacao = []
         self.listaIdioma = []
         self.listaPremioOuTitulo = []
@@ -704,7 +706,6 @@ class ParserLattesXML(HTMLParser):
             pub.doi = "http://dx.doi.org/" + self.doi if not self.doi == 0 else ""
             self.listaArtigoEmPeriodico.append(pub)
 
-        # ----------------------------------------------------------------------
         if tag == "livro-publicado-ou-organizado":
             self.achouLivroPublicado = 0
 
@@ -723,7 +724,6 @@ class ParserLattesXML(HTMLParser):
             pub.chave = self.autores
             self.listaLivroPublicado.append(pub)
 
-        # ----------------------------------------------------------------------
         if tag == "capitulo-de-livro-publicado":
             self.achouCapituloDeLivroPublicado = 0
 
@@ -744,7 +744,6 @@ class ParserLattesXML(HTMLParser):
             pub.chave = self.autores
             self.listaCapituloDeLivroPublicado.append(pub)
 
-        # ----------------------------------------------------------------------
         if tag == "texto-em-jornal-ou-revista":
             self.achouTextoEmJornalDeNoticia = 0
 

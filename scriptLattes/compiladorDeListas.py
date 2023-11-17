@@ -104,6 +104,7 @@ class CompiladorDeListas:
 
         self.listaCompletaPremioOuTitulo = {}
         self.listaCompletaProjetoDePesquisa = {}
+        self.listaCompletaProjetoDeExtensao = {}
 
         self.listaCompletaParticipacaoEmEvento = {}
         self.listaCompletaOrganizacaoDeEvento = {}
@@ -238,9 +239,11 @@ class CompiladorDeListas:
             self.listaCompletaPremioOuTitulo = self.compilarLista(
                 membro.listaPremioOuTitulo, self.listaCompletaPremioOuTitulo
             )
-            # self.listaCompletaProjetoDePesquisa           = self.compilarListaDeProjetos(membro.listaProjetoDePesquisa, self.listaCompletaProjetoDePesquisa)
             self.listaCompletaProjetoDePesquisa = self.compilarLista(
                 membro.listaProjetoDePesquisa, self.listaCompletaProjetoDePesquisa
+            )
+            self.listaCompletaProjetoDeExtensao = self.compilarLista(
+                membro.listaProjetoDeExtensao, self.listaCompletaProjetoDeExtensao
             )
 
             self.listaCompletaParticipacaoEmEvento = self.compilarLista(
@@ -984,6 +987,7 @@ class CompiladorDeListas:
 
         print("\n[LISTA COMPILADA DE PROJETOS]")
         self.imprimirListaProjetos(self.listaCompletaProjetoDePesquisa)
+        self.imprimirListaProjetos(self.listaCompletaProjetoDeExtensao)
 
         print("\n[LISTA COMPILADA DE PREMIOS]")
         self.imprimirListaPremios(self.listaCompletaPremioOuTitulo)

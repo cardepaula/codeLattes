@@ -76,8 +76,11 @@ class GeradorDePaginasWeb:
         if self.grupo.obterParametro("relatorio-mostrar_orientacoes"):
             self.gerarPaginasDeOrientacoes()
 
-        if self.grupo.obterParametro("relatorio-incluir_projeto"):
-            self.gerarPaginasDeProjetos()
+        if self.grupo.obterParametro("relatorio-incluir_projeto_pesquisa"):
+            self.gerarPaginasDeProjetosDePesquisa()
+
+        if self.grupo.obterParametro("relatorio-incluir_projeto_extensao"):
+            self.gerarPaginasDeProjetosDeExtensao()
 
         if self.grupo.obterParametro("relatorio-incluir_premio"):
             self.gerarPaginasDePremios()
@@ -138,7 +141,7 @@ class GeradorDePaginasWeb:
         if self.grupo.obterParametro("relatorio-mostrar_orientacoes"):
             s += "| <a href=#orientacoes>Orientações</a> "
 
-        if self.grupo.obterParametro("relatorio-incluir_projeto"):
+        if self.grupo.obterParametro("relatorio-incluir_projeto_pesquisa"):
             s += "| <a href=#projetos>Projetos</a> "
 
         if self.grupo.obterParametro("relatorio-incluir_premio"):
@@ -518,7 +521,7 @@ class GeradorDePaginasWeb:
                 s += "<i>Nenhum item achado nos currículos Lattes</i>"
             s += "</ul>"
 
-        if self.grupo.obterParametro("relatorio-incluir_projeto"):
+        if self.grupo.obterParametro("relatorio-incluir_projeto_pesquisa"):
             s += '</ul> <h3 id="projetos">Projetos de pesquisa</h3> <ul>'
             if self.nPj > 0:
                 s += (
@@ -527,6 +530,21 @@ class GeradorDePaginasWeb:
                     + '">Total de projetos de pesquisa</a> '
                     + "("
                     + str(self.nPj)
+                    + ")"
+                )
+            else:
+                s += "<i>Nenhum item achado nos currículos Lattes</i>"
+            s += "</ul>"
+
+        if self.grupo.obterParametro("relatorio-incluir_projeto_extensao"):
+            s += '</ul> <h3 id="projetos">Projetos de Extensao</h3> <ul>'
+            if self.nPje > 0:
+                s += (
+                    '<li> <a href="Pj-0'
+                    + self.extensaoPagina
+                    + '">Total de projetos de Extensao</a> '
+                    + "("
+                    + str(self.nPje)
                     + ")"
                 )
             else:
@@ -931,12 +949,20 @@ class GeradorDePaginasWeb:
             "OC",
         )
 
-    def gerarPaginasDeProjetos(self):
+    def gerarPaginasDeProjetosDePesquisa(self):
         self.nPj = 0
         self.nPj = self.gerar_pagina_de_producoes(
             self.grupo.compilador.listaCompletaProjetoDePesquisa,
             "Total de projetos de pesquisa",
             "Pj",
+        )
+
+    def gerarPaginasDeProjetosDeExtensao(self):
+        self.nPje = 0
+        self.nPje = self.gerar_pagina_de_producoes(
+            self.grupo.compilador.listaCompletaProjetoDeExtensao,
+            "Total de projetos de extensao",
+            "Pje",
         )
 
     def gerarPaginasDePremios(self):
@@ -1828,6 +1854,9 @@ class GeradorDePaginasWeb:
         (nPj0, lista_Pj0, titulo_Pj0) = self.gerar_lista_de_producoes_de_membro(
             membro.listaProjetoDePesquisa, "Total de projetos de pesquisa"
         )
+        (nPje0, lista_Pje0, titulo_Pje0) = self.gerar_lista_de_producoes_de_membro(
+            membro.listaProjetoDeExtensao, "Total de projetos de extensao"
+        )
         (nPm0, lista_Pm0, titulo_Pm0) = self.gerar_lista_de_producoes_de_membro(
             membro.listaPremioOuTitulo, "Total de prêmios e títulos"
         )
@@ -1885,6 +1914,9 @@ class GeradorDePaginasWeb:
         s += "</ul>"
         s += "<h3>Projetos de pesquisa</h3> <ul>"
         s += '<li><a href="#{}">{}</a> ({}) </li>'.format("Pj0", titulo_Pj0, nPj0)
+        s += "</ul>"
+        s += "<h3>Projetos de extensao</h3> <ul>"
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("Pje0", titulo_Pje0, nPje0)
         s += "</ul>"
         s += "<h3>Prêmios e títulos</h3> <ul>"
         s += '<li><a href="#{}">{}</a> ({}) </li>'.format("Pm0", titulo_Pm0, nPm0)
@@ -2008,6 +2040,11 @@ class GeradorDePaginasWeb:
         s += "<h3>Projetos de pesquisa</h3> <ul>"
         s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
             "Pj0", titulo_Pj0, nPj0, lista_Pj0
+        )
+        s += "</ul>"
+        s += "<h3>Projetos de extensao</h3> <ul>"
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
+            "Pje0", titulo_Pje0, nPje0, lista_Pje0
         )
         s += "</ul>"
         s += "<h3>Prêmios e títulos</h3> <ul>"
