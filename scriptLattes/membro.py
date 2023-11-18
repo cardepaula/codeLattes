@@ -65,6 +65,7 @@ class Membro:
     listaFormacaoAcademica = []
     listaProjetoDePesquisa = []
     listaProjetoDeExtensao = []
+    listaProjetoDeDesenvolvimento = []
     listaAreaDeAtuacao = []
     listaIdioma = []
     listaPremioOuTitulo = []
@@ -300,6 +301,7 @@ class Membro:
         self.listaFormacaoAcademica = parser.listaFormacaoAcademica
         self.listaProjetoDePesquisa = parser.listaProjetoDePesquisa
         self.listaProjetoDeExtensao = parser.listaProjetoDeExtensao
+        self.listaProjetoDeDesenvolvimento = parser.listaProjetoDeDesenvolvimento
         self.listaAreaDeAtuacao = parser.listaAreaDeAtuacao
         self.listaIdioma = parser.listaIdioma
         self.listaPremioOuTitulo = parser.listaPremioOuTitulo
@@ -468,6 +470,9 @@ class Membro:
         self.listaPremioOuTitulo = self.filtrarItems(self.listaPremioOuTitulo)
         self.listaProjetoDePesquisa = self.filtrarItems(self.listaProjetoDePesquisa)
         self.listaProjetoDeExtensao = self.filtrarItems(self.listaProjetoDeExtensao)
+        self.listaProjetoDeDesenvolvimento = self.filtrarItems(
+            self.listaProjetoDeDesenvolvimento
+        )
 
         self.listaParticipacaoEmEvento = self.filtrarItems(
             self.listaParticipacaoEmEvento
@@ -491,7 +496,11 @@ class Membro:
             objeto.ano = int(objeto.ano) if objeto.ano else 0
             return 1 if objeto.ano <= self.itemsAteOAno else 0
 
-        elif objeto.__module__ in ["projetoDePesquisa", "projetoDeExtensao"]:
+        elif objeto.__module__ in [
+            "projetoDePesquisa",
+            "projetoDeExtensao",
+            "projetoDeDesenvolvimento",
+        ]:
             if objeto.anoConclusao.lower() == "atual":
                 objeto.anoConclusao = str(datetime.datetime.now().year)
 
@@ -710,6 +719,9 @@ class Membro:
             )
             s += "\n- Projetos de extensão                        : " + str(
                 len(self.listaProjetoDeExtensao)
+            )
+            s += "\n- Projetos de desenvolvimento                 : " + str(
+                len(self.listaProjetoDeDesenvolvimento)
             )
             s += "\n- Prêmios e títulos                           : " + str(
                 len(self.listaPremioOuTitulo)

@@ -82,6 +82,9 @@ class GeradorDePaginasWeb:
         if self.grupo.obterParametro("relatorio-incluir_projeto_extensao"):
             self.gerarPaginasDeProjetosDeExtensao()
 
+        if self.grupo.obterParametro("relatorio-incluir_projeto_desenvolvimento"):
+            self.gerarPaginasDeProjetosDeDesenvolvimento()
+
         if self.grupo.obterParametro("relatorio-incluir_premio"):
             self.gerarPaginasDePremios()
 
@@ -551,6 +554,21 @@ class GeradorDePaginasWeb:
                 s += "<i>Nenhum item achado nos currículos Lattes</i>"
             s += "</ul>"
 
+        if self.grupo.obterParametro("relatorio-incluir_projeto_desenvolvimento"):
+            s += '</ul> <h3 id="projetos">Projetos de Desenvolvimento</h3> <ul>'
+            if self.nPjd > 0:
+                s += (
+                    '<li> <a href="Pjd-0'
+                    + self.extensaoPagina
+                    + '">Total de projetos de Desenvolvimento</a> '
+                    + "("
+                    + str(self.nPjd)
+                    + ")"
+                )
+            else:
+                s += "<i>Nenhum item achado nos currículos Lattes</i>"
+            s += "</ul>"
+
         if self.grupo.obterParametro("relatorio-incluir_premio"):
             s += '</ul> <h3 id="premios">Prêmios e títulos</h3> <ul>'
             if self.nPm > 0:
@@ -963,6 +981,14 @@ class GeradorDePaginasWeb:
             self.grupo.compilador.listaCompletaProjetoDeExtensao,
             "Total de projetos de extensao",
             "Pje",
+        )
+
+    def gerarPaginasDeProjetosDeDesenvolvimento(self):
+        self.nPjd = 0
+        self.nPjd = self.gerar_pagina_de_producoes(
+            self.grupo.compilador.listaCompletaProjetoDeDesenvolvimento,
+            "Total de projetos de desenvolvimento",
+            "Pjd",
         )
 
     def gerarPaginasDePremios(self):
@@ -1857,6 +1883,9 @@ class GeradorDePaginasWeb:
         (nPje0, lista_Pje0, titulo_Pje0) = self.gerar_lista_de_producoes_de_membro(
             membro.listaProjetoDeExtensao, "Total de projetos de extensao"
         )
+        (nPjd0, lista_Pjd0, titulo_Pjd0) = self.gerar_lista_de_producoes_de_membro(
+            membro.listaProjetoDeDesenvolvimento, "Total de projetos de desenvolvimento"
+        )
         (nPm0, lista_Pm0, titulo_Pm0) = self.gerar_lista_de_producoes_de_membro(
             membro.listaPremioOuTitulo, "Total de prêmios e títulos"
         )
@@ -1917,6 +1946,9 @@ class GeradorDePaginasWeb:
         s += "</ul>"
         s += "<h3>Projetos de extensao</h3> <ul>"
         s += '<li><a href="#{}">{}</a> ({}) </li>'.format("Pje0", titulo_Pje0, nPje0)
+        s += "</ul>"
+        s += "<h3>Projetos de desenvolvimento</h3> <ul>"
+        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("Pjd0", titulo_Pjd0, nPjd0)
         s += "</ul>"
         s += "<h3>Prêmios e títulos</h3> <ul>"
         s += '<li><a href="#{}">{}</a> ({}) </li>'.format("Pm0", titulo_Pm0, nPm0)
@@ -2045,6 +2077,11 @@ class GeradorDePaginasWeb:
         s += "<h3>Projetos de extensao</h3> <ul>"
         s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
             "Pje0", titulo_Pje0, nPje0, lista_Pje0
+        )
+        s += "</ul>"
+        s += "<h3>Projetos de desenvolvimento</h3> <ul>"
+        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
+            "Pjd0", titulo_Pjd0, nPjd0, lista_Pjd0
         )
         s += "</ul>"
         s += "<h3>Prêmios e títulos</h3> <ul>"
