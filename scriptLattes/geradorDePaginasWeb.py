@@ -543,7 +543,7 @@ class GeradorDePaginasWeb:
             s += '</ul> <h3 id="projetos">Projetos de Extensao</h3> <ul>'
             if self.nPje > 0:
                 s += (
-                    '<li> <a href="Pj-0'
+                    '<li> <a href="Pje-0'
                     + self.extensaoPagina
                     + '">Total de projetos de Extensao</a> '
                     + "("
