@@ -818,6 +818,11 @@ class Grupo:
             "Pjd",
             "Numero de projetos de desenvolvimento",
         )
+        gBarra.criarGrafico(
+            self.compilador.listaCompletaOutrosProjetos,
+            "Opj",
+            "Numero de outros projetos",
+        )
 
         gBarra.criarGrafico(
             self.compilador.listaCompletaPB, "PB", "Numero de producoes bibliograficas"
@@ -1070,6 +1075,7 @@ class Grupo:
         self.listaDeParametros.append(
             ["relatorio-incluir_projeto_desenvolvimento", "sim"]
         )
+        self.listaDeParametros.append(["relatorio-incluir_outros_projetos", "sim"])
         self.listaDeParametros.append(["relatorio-incluir_premio", "sim"])
         self.listaDeParametros.append(
             ["relatorio-incluir_participacao_em_evento", "sim"]

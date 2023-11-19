@@ -41,6 +41,7 @@ from .producoesUnitarias.premioOuTitulo import *
 from .producoesUnitarias.projetoDePesquisa import *
 from .producoesUnitarias.projetoDeExtensao import *
 from .producoesUnitarias.projetoDeDesenvolvimento import *
+from .producoesUnitarias.outrosProjetos import *
 
 from .producoesBibliograficas.artigoEmPeriodico import *
 from .producoesBibliograficas.livroPublicado import *
@@ -95,6 +96,7 @@ class ParserLattes(HTMLParser):
     salvarProjetoDePesquisa = None
     salvarProjetoDeExtensao = None
     salvarProjetoDeDesenvolvimento = None
+    salvarOutrosProjetos = None
     salvarAreaDeAtuacao = None
     salvarIdioma = None
     salvarPremioOuTitulo = None
@@ -129,6 +131,7 @@ class ParserLattes(HTMLParser):
     achouProjetoDePesquisa = None
     achouProjetoDeExtensao = None
     achouProjetoDeDesenvolvimento = None
+    achouOutrosProjetos = None
     achouAreaDeAtuacao = None
     achouIdioma = None
     achouPremioOuTitulo = None
@@ -179,6 +182,7 @@ class ParserLattes(HTMLParser):
     listaProjetoDePesquisa = []
     listaProjetoDeExtensao = []
     listaProjetoDeDesenvolvimento = []
+    listaOutrosProjetos = []
     listaAreaDeAtuacao = []
     listaIdioma = []
     listaPremioOuTitulo = []
@@ -260,6 +264,7 @@ class ParserLattes(HTMLParser):
         self.listaProjetoDePesquisa = []
         self.listaProjetoDeExtensao = []
         self.listaProjetoDeDesenvolvimento = []
+        self.listaOutrosProjetos = []
         self.listaAreaDeAtuacao = []
         self.listaIdioma = []
         self.listaPremioOuTitulo = []
@@ -412,6 +417,7 @@ class ParserLattes(HTMLParser):
                         or self.achouProjetoDePesquisa
                         or self.achouProjetoDeExtensao
                         or self.achouProjetoDeDesenvolvimento
+                        or self.achouOutrosProjetos
                         or self.achouMembroDeCorpoEditorial
                         or self.achouRevisorDePeriodico
                         or self.achouAreaDeAtuacao
@@ -443,6 +449,7 @@ class ParserLattes(HTMLParser):
             self.achouProjetoDePesquisa = 0
             self.achouProjetoDeExtensao = 0
             self.achouProjetoDeDesenvolvimento = 0
+            self.achouOutrosProjetos = 0
             self.achouMembroDeCorpoEditorial = 0
             self.achouRevisorDePeriodico = 0
             self.achouAreaDeAtuacao = 0
@@ -623,6 +630,20 @@ class ParserLattes(HTMLParser):
                                 self.listaProjetoDeDesenvolvimento.append(
                                     iessimoProjetoDeDesenvolvimento
                                 )
+
+                    if self.achouOutrosProjetos:
+                        if not self.salvarParte3:
+                            self.salvarParte3 = 1
+                        else:
+                            self.salvarParte3 = 0
+                            if len(self.partesDoItem) >= 3:
+                                # criamos um objeto com a lista correspondentes
+                                # às celulas da linha
+                                iessimoOutrosProjetos = OutrosProjetos(
+                                    self.idMembro, self.partesDoItem
+                                )
+                                # acrescentamos o objeto de OutrosProjetos
+                                self.listaOutrosProjetos.append(iessimoOutrosProjetos)
 
                     # if self.achouMembroDeCorpoEditorial:
                     # print self.partesDoItem
@@ -971,6 +992,8 @@ class ParserLattes(HTMLParser):
                 self.achouProjetoDeExtensao = 1
             if "Projetos de desenvolvimento" == dado:
                 self.achouProjetoDeDesenvolvimento = 1
+            if "Outros Projetos" == dado:
+                self.achouOutrosProjetos = 1
             if "Membro de corpo editorial" == dado:
                 self.achouMembroDeCorpoEditorial = 1
             if "Revisor de periódico" == dado:
@@ -1349,6 +1372,14 @@ class ParserLattes(HTMLParser):
                 self.salvarParte3 = 0  # TODO Descobrir isso
 
         if self.achouProjetoDeDesenvolvimento:
+            if (
+                "Projeto certificado pelo(a) coordenador(a)" in dado
+                or "Projeto certificado pela empresa" in dado
+            ):
+                self.item = ""
+                self.salvarParte3 = 0  # TODO Descobrir isso
+
+        if self.achouOutrosProjetos:
             if (
                 "Projeto certificado pelo(a) coordenador(a)" in dado
                 or "Projeto certificado pela empresa" in dado

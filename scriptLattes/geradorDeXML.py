@@ -63,6 +63,7 @@ class GeradorDeXML:
                 xmlTemp += self.getProjetosPesquisa(registro)
                 xmlTemp += self.getProjetosExtensao(registro)
                 xmlTemp += self.getProjetosDesenvolvimento(registro)
+                xmlTemp += self.getOutrosProjetos(registro)
                 xmlTemp += self.getAreaDeAtuacao(registro)
                 xmlTemp += self.getPremioOuTitulo(registro)
                 xmlTemp += self.getListaColaborares(registro)
@@ -1134,6 +1135,31 @@ class GeradorDeXML:
                 xmlTemp += "          <descricao>" + descricaoTmp + "</descricao>\n"
                 xmlTemp += "        </projeto>\n"
             xmlTemp += "    </projetos_desenvolvimento>\n"
+        return xmlTemp
+    
+    def getOutrosProjetos(self, registro):
+        xmlTemp = ""
+        if registro.listaOutrosProjetos:
+            xmlTemp += "    <outros_projetos>\n"
+            for outroProjeto in registro.listaOutrosProjetos:
+                xmlTemp += "        <projeto>\n"
+                xmlTemp += (
+                    "          <ano_inicio>"
+                    + str(outroProjeto.anoInicio)
+                    + "</ano_inicio>\n"
+                )
+                xmlTemp += (
+                    "          <ano_conclusao>"
+                    + str(outroProjeto.anoConclusao)
+                    + "</ano_conclusao>\n"
+                )
+                xmlTemp += "          <nome>" + outroProjeto.nome + "</nome>\n"
+                descricaoTmp = ""
+                for item in outroProjeto.descricao:
+                    descricaoTmp += item
+                xmlTemp += "          <descricao>" + descricaoTmp + "</descricao>\n"
+                xmlTemp += "        </projeto>\n"
+            xmlTemp += "    </outros_projetos>\n"
         return xmlTemp
 
     def getAreaDeAtuacao(self, registro):

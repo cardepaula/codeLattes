@@ -66,6 +66,7 @@ class Membro:
     listaProjetoDePesquisa = []
     listaProjetoDeExtensao = []
     listaProjetoDeDesenvolvimento = []
+    listaOutrosProjetos = []
     listaAreaDeAtuacao = []
     listaIdioma = []
     listaPremioOuTitulo = []
@@ -302,6 +303,7 @@ class Membro:
         self.listaProjetoDePesquisa = parser.listaProjetoDePesquisa
         self.listaProjetoDeExtensao = parser.listaProjetoDeExtensao
         self.listaProjetoDeDesenvolvimento = parser.listaProjetoDeDesenvolvimento
+        self.listaOutrosProjetos = parser.listaOutrosProjetos
         self.listaAreaDeAtuacao = parser.listaAreaDeAtuacao
         self.listaIdioma = parser.listaIdioma
         self.listaPremioOuTitulo = parser.listaPremioOuTitulo
@@ -473,6 +475,7 @@ class Membro:
         self.listaProjetoDeDesenvolvimento = self.filtrarItems(
             self.listaProjetoDeDesenvolvimento
         )
+        self.listaOutrosProjetos = self.filtrarItems(self.listaOutrosProjetos)
 
         self.listaParticipacaoEmEvento = self.filtrarItems(
             self.listaParticipacaoEmEvento
@@ -500,6 +503,7 @@ class Membro:
             "projetoDePesquisa",
             "projetoDeExtensao",
             "projetoDeDesenvolvimento",
+            "outrosProjetos",
         ]:
             if objeto.anoConclusao.lower() == "atual":
                 objeto.anoConclusao = str(datetime.datetime.now().year)
@@ -722,6 +726,9 @@ class Membro:
             )
             s += "\n- Projetos de desenvolvimento                 : " + str(
                 len(self.listaProjetoDeDesenvolvimento)
+            )
+            s += "\n- Outros Projetos                             : " + str(
+                len(self.listaOutrosProjetos)
             )
             s += "\n- Prêmios e títulos                           : " + str(
                 len(self.listaPremioOuTitulo)
