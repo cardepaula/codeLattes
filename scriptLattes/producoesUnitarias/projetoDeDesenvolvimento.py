@@ -83,7 +83,7 @@ class ProjetoDeDesenvolvimento:
     # ------------------------------------------------------------------------ #
 
     def __str__(self):
-        s = "\n[PROJETO DE EXTENSÃO] \n"
+        s = "\n[PROJETO DE DESENVOLVIMENTO] \n"
         s += "+ID-MEMBRO   : " + str(self.idMembro) + "\n"
         s += "+ANO INICIO  : " + str(self.anoInicio) + "\n"
         s += "+ANO CONCLUS.: " + str(self.anoConclusao) + "\n"
