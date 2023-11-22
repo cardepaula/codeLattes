@@ -582,74 +582,22 @@ class ParserLattes(HTMLParser):
                         self.listaFormacaoAcademica.append(iessimaFormacaoAcademica)
 
                     if self.achouProjetoDePesquisa:
-                        if not self.salvarParte3:
-                            self.salvarParte3 = 1
-                        else:
-                            self.salvarParte3 = 0
-                            if len(self.partesDoItem) >= 3:
-                                # criamos um objeto com a lista correspondentes
-                                # às celulas da linha
-                                iessimoProjetoDePesquisa = ProjetoDePesquisa(
-                                    self.idMembro, self.partesDoItem
-                                )
-                                # acrescentamos o objeto de ProjetoDePesquisa
-                                self.listaProjetoDePesquisa.append(
-                                    iessimoProjetoDePesquisa
-                                )
+                        self.process_project(
+                            ProjetoDePesquisa, self.listaProjetoDePesquisa
+                        )
 
                     if self.achouProjetoDeExtensao:
-                        if not self.salvarParte3:
-                            self.salvarParte3 = 1
-                        else:
-                            self.salvarParte3 = 0
-                            if len(self.partesDoItem) >= 3:
-                                # criamos um objeto com a lista correspondentes
-                                # às celulas da linha
-                                iessimoProjetoDeExtensao = ProjetoDeExtensao(
-                                    self.idMembro, self.partesDoItem
-                                )
-                                # acrescentamos o objeto de ProjetoDeExtensao
-                                self.listaProjetoDeExtensao.append(
-                                    iessimoProjetoDeExtensao
-                                )
+                        self.process_project(
+                            ProjetoDeExtensao, self.listaProjetoDeExtensao
+                        )
 
                     if self.achouProjetoDeDesenvolvimento:
-                        if not self.salvarParte3:
-                            self.salvarParte3 = 1
-                        else:
-                            self.salvarParte3 = 0
-                            if len(self.partesDoItem) >= 3:
-                                # criamos um objeto com a lista correspondentes
-                                # às celulas da linha
-                                iessimoProjetoDeDesenvolvimento = (
-                                    ProjetoDeDesenvolvimento(
-                                        self.idMembro, self.partesDoItem
-                                    )
-                                )
-                                # acrescentamos o objeto de ProjetoDeDesenvolvimento
-                                self.listaProjetoDeDesenvolvimento.append(
-                                    iessimoProjetoDeDesenvolvimento
-                                )
+                        self.process_project(
+                            ProjetoDeDesenvolvimento, self.listaProjetoDeDesenvolvimento
+                        )
 
                     if self.achouOutrosProjetos:
-                        if not self.salvarParte3:
-                            self.salvarParte3 = 1
-                        else:
-                            self.salvarParte3 = 0
-                            if len(self.partesDoItem) >= 3:
-                                # criamos um objeto com a lista correspondentes
-                                # às celulas da linha
-                                iessimoOutrosProjetos = OutrosProjetos(
-                                    self.idMembro, self.partesDoItem
-                                )
-                                # acrescentamos o objeto de OutrosProjetos
-                                self.listaOutrosProjetos.append(iessimoOutrosProjetos)
-
-                    # if self.achouMembroDeCorpoEditorial:
-                    # print self.partesDoItem
-
-                    # if self.achouRevisorDePeriodico:
-                    # print self.partesDoItem
+                        self.process_project(OutrosProjetos, self.listaOutrosProjetos)
 
                     if self.achouAreaDeAtuacao and len(self.partesDoItem) >= 2:
                         # criamos um objeto com a lista correspondentes às
@@ -1387,8 +1335,16 @@ class ParserLattes(HTMLParser):
                 self.item = ""
                 self.salvarParte3 = 0  # TODO Descobrir isso
 
+    def process_project(self, tipo_projeto, lista_projeto):
+        if not self.salvarParte3:
+            self.salvarParte3 = 1
+        else:
+            self.salvarParte3 = 0
+            if len(self.partesDoItem) >= 3:
+                projeto = tipo_projeto(self.idMembro, self.partesDoItem)
+                lista_projeto.append(projeto)
 
-# ---------------------------------------------------------------------------- #
+
 def stripBlanks(s):
     return re.sub("\\s+", " ", s).strip()
 
