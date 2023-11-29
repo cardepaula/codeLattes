@@ -582,22 +582,22 @@ class ParserLattes(HTMLParser):
                         self.listaFormacaoAcademica.append(iessimaFormacaoAcademica)
 
                     if self.achouProjetoDePesquisa:
-                        self.process_project(
+                        self._process_project(
                             ProjetoDePesquisa, self.listaProjetoDePesquisa
                         )
 
                     if self.achouProjetoDeExtensao:
-                        self.process_project(
+                        self._process_project(
                             ProjetoDeExtensao, self.listaProjetoDeExtensao
                         )
 
                     if self.achouProjetoDeDesenvolvimento:
-                        self.process_project(
+                        self._process_project(
                             ProjetoDeDesenvolvimento, self.listaProjetoDeDesenvolvimento
                         )
 
                     if self.achouOutrosProjetos:
-                        self.process_project(OutrosProjetos, self.listaOutrosProjetos)
+                        self._process_project(OutrosProjetos, self.listaOutrosProjetos)
 
                     if self.achouAreaDeAtuacao and len(self.partesDoItem) >= 2:
                         # criamos um objeto com a lista correspondentes às
@@ -1335,7 +1335,7 @@ class ParserLattes(HTMLParser):
                 self.item = ""
                 self.salvarParte3 = 0  # TODO Descobrir isso
 
-    def process_project(self, tipo_projeto, lista_projeto):
+    def _process_project(self, tipo_projeto, lista_projeto):
         if not self.salvarParte3:
             self.salvarParte3 = 1
         else:
