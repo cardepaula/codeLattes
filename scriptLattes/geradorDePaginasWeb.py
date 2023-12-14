@@ -2471,6 +2471,10 @@ class GeradorDePaginasWeb:
             + str(qtd["A1"])
             + ", <b>A2</b>: "
             + str(qtd["A2"])
+            + ", <b>A3</b>: "
+            + str(qtd["A3"])
+            + ", <b>A4</b>: "
+            + str(qtd["A4"])
             + ", <b>B1</b>: "
             + str(qtd["B1"])
             + ", <b>B2</b>: "
