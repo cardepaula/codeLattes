@@ -112,8 +112,7 @@ class Qualis:
                 if indice > 0:
                     # Retorna Qualis de nome similar
                     return self.congressos.get(chaves[indice]), chaves[indice]
-        # return 'Qualis nao identificado', ''
-        return "Qualis nao identificado", nome
+        return "Qualis não identificado", nome
 
     def analisarPublicacoes(self, membro, grupo):
         # Percorrer lista de publicacoes buscando e contabilizando os qualis
@@ -130,13 +129,13 @@ class Qualis:
         if not grupo.obterParametro("global-arquivo_qualis_de_congressos") == "":
             for pub in membro.listaTrabalhoCompletoEmCongresso:
                 qualis, similar = self.buscaQualis("C", pub.nomeDoEvento)
-                if qualis == "Qualis nao identificado":
+                if qualis == "Qualis não identificado":
                     if self.congressos.get(pub.sigla) is not None:
                         # Retorna Qualis da sigla com nome do evento
                         qualis = self.congressos.get(pub.sigla)
                         similar = pub.sigla
                     else:
-                        qualis = "Qualis nao identificado"
+                        qualis = "Qualis não identificado"
                         similar = pub.nomeDoEvento
                 pub.qualis = qualis
                 pub.qualissimilar = similar
@@ -157,7 +156,7 @@ class Qualis:
         lista["B4"] = 0
         lista["B5"] = 0
         lista["C"] = 0
-        lista["Qualis nao identificado"] = 0
+        lista["Qualis não identificado"] = 0
 
     def carregarQualis(self, arquivo):
         lista = {}

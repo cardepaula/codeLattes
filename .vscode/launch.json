@@ -21,6 +21,15 @@
       "args": ["${workspaceFolder}/exemplo/teste-02.config"],
       "console": "integratedTerminal",
       "justMyCode": true
+    },
+    {
+      "name": "ScriptLattes - PPcom",
+      "type": "python",
+      "request": "launch",
+      "program": "./scriptLattes.py",
+      "args": ["/mnt/c/Users/carde/Documentos/PPcom-lattes/PPcomp.config"],
+      "console": "integratedTerminal",
+      "justMyCode": true
     }
   ]
 }

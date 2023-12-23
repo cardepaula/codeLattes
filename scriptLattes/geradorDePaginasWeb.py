@@ -1624,8 +1624,8 @@ class GeradorDePaginasWeb:
         #
         #     for tipo, frequencia in membro.tabelaQualisDosAnos[ano].items():
         #         # FIXME: terminar de refatorar
-        #         if tipo == "Qualis nao identificado":
-        #             tipo = '<span title="Qualis nao identificado">QNI</span>'
+        #         if tipo == "Qualis não identificado":
+        #             tipo = '<span title="Qualis não identificado">QNI</span>'
         #
         #         chaves += '<div style="float:left; width:70px; border:1px solid #000; margin-left:-1px; margin-top:-1px; background:#CCC; padding:4px 6px;"><b>' + str(
         #             tipo) + '</b></div>'
@@ -1642,7 +1642,7 @@ class GeradorDePaginasWeb:
         # valores = ''
         # for chave, valor in membro.tabelaQualisDosTipos.items():
         #
-        #     if (chave == "Qualis nao identificado"):
+        #     if (chave == "Qualis não identificado"):
         #         chave = "QNI"
         #
         #     chaves += '<div style="float:left; width:70px; border:1px solid #000; margin-left:-1px; margin-top:-1px; background:#CCC; padding:4px 6px;"><b>' + str(
@@ -2465,44 +2465,19 @@ class GeradorDePaginasWeb:
     def salvarPublicacaoEmFormatoRIS(self, pub):
         self.arquivoRis.write(pub.ris())
 
-    def formatarTotaisQualis(self, qtd):
-        st = (
-            "(<b>A1</b>: "
-            + str(qtd["A1"])
-            + ", <b>A2</b>: "
-            + str(qtd["A2"])
-            + ", <b>A3</b>: "
-            + str(qtd["A3"])
-            + ", <b>A4</b>: "
-            + str(qtd["A4"])
-            + ", <b>B1</b>: "
-            + str(qtd["B1"])
-            + ", <b>B2</b>: "
-            + str(qtd["B2"])
+    def formatarTotaisQualis(self, quantidade_qualis):
+        totais_qualis = ", ".join(
+            f"<b>{classificacao}</b>: {str(quantidade_qualis[classificacao])}"
+            for classificacao in quantidade_qualis
         )
-        st += (
-            ", <b>B3</b>: "
-            + str(qtd["B3"])
-            + ", <b>B4</b>: "
-            + str(qtd["B4"])
-            + ", <b>B5</b>: "
-            + str(qtd["B5"])
-            + ", <b>C</b>: "
-            + str(qtd["C"])
-        )
-        st += (
-            ", <b>Qualis n&atilde;o identificado</b>: "
-            + str(qtd["Qualis nao identificado"])
-            + ")"
-        )
-        st += "<br><p><b>Legenda Qualis:</b><ul>"
-        st += '<li> Publica&ccedil;&atilde;o para a qual o nome exato do Qualis foi identificado: <font color="#254117"><b>Qualis &lt;estrato&gt;</b></font>'
-        st += '<li> Publica&ccedil;&atilde;o para a qual um nome similar (n&atilde;o exato) do Qualis foi identificado: <font color="#F88017"><b>Qualis &lt;estrato&gt;</b></font> (nome similar)'
-        st += '<li> Publica&ccedil;&atilde;o para a qual nenhum nome do Qualis foi identificado: <font color="#FDD7E4"><b>Qualis n&atilde;o identificado</b></font> (nome usado na busca)'
-        st += "</ul>"
-        return st
 
-        # return 'Sem totais qualis ainda...'
+        legenda = "<br><p><b>Legenda Qualis:</b><ul>"
+        legenda += '<li> Publica&ccedil;&atilde;o para a qual o nome exato do Qualis foi identificado: <font color="#254117"><b>Qualis &lt;estrato&gt;</b></font>'
+        legenda += '<li> Publica&ccedil;&atilde;o para a qual um nome similar (n&atilde;o exato) do Qualis foi identificado: <font color="#F88017"><b>Qualis &lt;estrato&gt;</b></font> (nome similar)'
+        legenda += '<li> Publica&ccedil;&atilde;o para a qual nenhum nome do Qualis foi identificado: <font color="#FDD7E4"><b>Qualis n&atilde;o identificado</b></font> (nome usado na busca)'
+        legenda += "</ul>"
+
+        return "(" + totais_qualis + ")" + legenda
 
 
 def menuHTMLdeBuscaPB(titulo):
@@ -2563,10 +2538,10 @@ def formata_qualis(qualis, qualissimilar):
     s = ""
     if qualis is not None:
         if qualis == "":
-            qualis = "Qualis nao identificado"
+            qualis = "Qualis não identificado"
 
-        if qualis == "Qualis nao identificado":
-            # Qualis nao identificado - imprime em vermelho
+        if qualis == "Qualis não identificado":
+            # Qualis não identificado - imprime em vermelho
             s += (
                 '<font color="#FDD7E4"><b>Qualis: N&atilde;o identificado</b></font> ('
                 + qualissimilar
@@ -2586,22 +2561,3 @@ def formata_qualis(qualis, qualissimilar):
                     + ")"
                 )
     return s
-
-
-"""
-def formata_qualis(qualis, qualissimilar):
-    s = ''
-
-    if not qualis:
-        #s += '<font color="#FDD7E4"><b>Qualis: N&atilde;o identificado</b></font>'
-        s += ''
-    else:
-        s += '<font color="#254117"><b>Qualis: </b></font> '
-        if type(qualis) is str:
-            s += '<font class="area"><b>SEM_AREA</b></font> - <b>' + qualis + '</b>&nbsp'
-        else:
-            l = ['<font class="area"><b>' + area + '</b></font> - <b>' + q + '</b>' for area, q in
-                 sorted(qualis.items(), key=lambda x: x[0])]
-            s += '&nbsp|&nbsp'.join(l)
-    return s
-"""
