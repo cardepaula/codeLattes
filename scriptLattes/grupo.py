@@ -871,13 +871,13 @@ class Grupo:
         print(("- " + str(self.listaDeRotulosCores)))
 
     # TODO verificar se gProporcoes está sendo usado
-    def gerarGraficoDeProporcoes(self):
-        if self.obterParametro(
-            "relatorio-incluir_grafico_de_proporcoes_bibliograficas"
-        ):
-            gProporcoes = GraficoDeProporcoes(
-                self, self.obterParametro("global-diretorio_de_saida")
-            )
+    # def gerarGraficoDeProporcoes(self):
+    #     if self.obterParametro(
+    #         "relatorio-incluir_grafico_de_proporcoes_bibliograficas"
+    #     ):
+    #         gProporcoes = GraficoDeProporcoes(
+    #             self, self.obterParametro("global-diretorio_de_saida")
+    #         )
 
     def calcularInternacionalizacao(self):
         if self.obterParametro("relatorio-incluir_internacionalizacao"):
