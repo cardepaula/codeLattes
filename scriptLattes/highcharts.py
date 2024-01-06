@@ -313,8 +313,6 @@ class highchart(dict):
         </script>
         """
 
-    html = htmldata
-
     def __init__(self, type=chart_type.bar):
         dict.__init__(self, jsondata)
         self.set_chart_type(type)
