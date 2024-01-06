@@ -59,41 +59,40 @@ HEADERS = [
     ),
 ]
 
-
-def __self_update():
-    import inspect
-
-    try:
-        import simplejson
-    except BaseException:
-        print(
-            "Erro, voce precisa do Simplejson instalado no sistema, instale no Ubuntu com 'sudo apt-get install python-simplejson'"
-        )
-        sys.exit(1)
-    br = mechanize.Browser()
-    r = br.open(REMOTE_SCRIPT)
-    d = simplejson.loads(r.read())
-    if d["updated_on"][:13] != VERSION:
-        print("BaixaLattes desatualizado, atualizando...")
-        r = br.open(d["files"]["baixaLattes.py"]["links"]["self"]["href"])
-        content = r.read()
-        fpath = os.path.abspath(inspect.getfile(inspect.currentframe()))
-        try:
-            handler = open(fpath, "w")
-        except BaseException:
-            print(
-                (
-                    "Erro na escrita do novo arquivo, verifique se o arquivo '%s' tem permissao de escrita"
-                    % fpath
-                )
-            )
-            sys.exit(1)
-        handler.write(content)
-        handler.close()
-        print(
-            "BaixaLattes atualizado, reinicie o programa para utilizar a nova versão, encerrando o ScriptLattes"
-        )
-        sys.exit(0)
+## Aparentemente não está sendo usado
+# def __self_update():
+#     import inspect
+#     try:
+#         import simplejson
+#     except BaseException:
+#         print(
+#             "Erro, voce precisa do Simplejson instalado no sistema, instale no Ubuntu com 'sudo apt-get install python-simplejson'"
+#         )
+#         sys.exit(1)
+#     br = mechanize.Browser()
+#     r = br.open(REMOTE_SCRIPT) if br.open(REMOTE_SCRIPT) else None
+#     d = simplejson.loads(r.read())
+#     if d["updated_on"][:13] != VERSION:
+#         print("BaixaLattes desatualizado, atualizando...")
+#         r = br.open(d["files"]["baixaLattes.py"]["links"]["self"]["href"])
+#         content = r.read()
+#         fpath = os.path.abspath(inspect.getfile(inspect.currentframe()))
+#         try:
+#             handler = open(fpath, "w")
+#         except BaseException:
+#             print(
+#                 (
+#                     "Erro na escrita do novo arquivo, verifique se o arquivo '%s' tem permissao de escrita"
+#                     % fpath
+#                 )
+#             )
+#             sys.exit(1)
+#         handler.write(content)
+#         handler.close()
+#         print(
+#             "BaixaLattes atualizado, reinicie o programa para utilizar a nova versão, encerrando o ScriptLattes"
+#         )
+#         sys.exit(0)
 
 
 def __get_data(id_lattes):
