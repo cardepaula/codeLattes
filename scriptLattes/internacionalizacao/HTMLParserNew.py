@@ -445,7 +445,7 @@ class HTMLParser(_markupbase.ParserBase):
         pass
 
     # Internal -- helper to remove special character quoting
-    entitydefs = None
+    entitydefs = []
 
     def unescape(self, s):
         if "&" not in s:
