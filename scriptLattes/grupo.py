@@ -38,6 +38,9 @@ from .geradorDePaginasWeb import GeradorDePaginasWeb
 from .charts.grafoDeColaboracoes import *
 from .charts.mapaDeGeolocalizacao import *
 from .qualis.qualis import *
+from .charts.geolocalizador import *
+from .charts.graficoDeBarras import *
+from .internacionalizacao.analisadorDePublicacoes import *
 
 
 class Grupo:
