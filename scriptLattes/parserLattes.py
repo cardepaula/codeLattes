@@ -537,10 +537,12 @@ class ParserLattes(HTMLParser):
             self.salvarBolsaProdutividade = 0
 
         if tag == "span" and self.salvarIdentificador16 == 1:
-            self.identificador16 = re.findall(
-                "http://lattes.cnpq.br/(\\d{16})", value
-            )  # talvez substituir por self.item
-            self.salvarIdentificador16 = 0
+            # Aparentemente não está sendo usado
+            # self.identificador16 = re.findall(
+            #     "http://lattes.cnpq.br/(\\d{16})", value
+            # )  # talvez substituir por self.item
+            # self.salvarIdentificador16 = 0
+            raise Exception("Validar esse trecho de código")
 
         # Cabeçalhos
         if tag == "h1" and self.procurarCabecalho:
