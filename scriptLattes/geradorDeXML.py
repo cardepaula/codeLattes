@@ -23,8 +23,6 @@
 #
 import datetime
 
-from .grupo import *
-
 
 class GeradorDeXML:
     grupo = None
@@ -1136,7 +1134,7 @@ class GeradorDeXML:
                 xmlTemp += "        </projeto>\n"
             xmlTemp += "    </projetos_desenvolvimento>\n"
         return xmlTemp
-    
+
     def getOutrosProjetos(self, registro):
         xmlTemp = ""
         if registro.listaOutrosProjetos:

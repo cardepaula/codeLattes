@@ -25,8 +25,7 @@
 import logging
 import re
 import fileinput
-from scriptLattes import *
-from scriptLattes.util import similaridade_entre_cadeias, buscarArquivo
+from scriptLattes.util import similaridade_entre_cadeias
 
 logger = logging.getLogger(__name__)
 
