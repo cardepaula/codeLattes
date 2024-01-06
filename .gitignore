@@ -110,7 +110,7 @@ crashlytics-build.properties
 dados/
 cvs-downloaded
 venv
-pylint.out
+pylint.*
 exemplo/cache
 teste-01
 PPcomp*
