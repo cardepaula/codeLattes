@@ -23,12 +23,9 @@
 
 import time
 import os
-
-# from htmlentitydefs import name2codepoint
 import pandas
 from lxml import etree
 from .baixaLattes import baixaCVLattes
-
 from .parserLattes import *
 from .parserLattesXML import *
 from .charts.geolocalizador import *
@@ -741,13 +738,3 @@ class Membro:
             )
             s += "\n\n"
         return s
-
-
-# ---------------------------------------------------------------------------- #
-# http://wiki.python.org/moin/EscapingHtml
-def htmlentitydecode(s):
-    return re.sub(
-        "&(%s);" % "|".join(name2codepoint),
-        lambda m: chr(name2codepoint[m.group(1)]),
-        s,
-    )
