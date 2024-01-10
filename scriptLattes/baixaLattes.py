@@ -104,7 +104,7 @@ def __get_data(id_lattes):
         url = (
             "file://"
             + os.path.abspath(os.getcwd())
-            + "/cvs-downloaded/"
+            + "/cvs-cache/"
             + id_lattes
             + ".html"
         )
