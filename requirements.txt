@@ -11,3 +11,4 @@ Levenshtein>=0.22.0
 requests>= 2.31.0
 scipy>=1.7.2
 simplejson>=3.17.6
+selenium>=4.17.2
