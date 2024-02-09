@@ -176,7 +176,7 @@ class ParserLattes(HTMLParser):
 
     achouAtuacaoProfissional = None
     achouMembroDeCorpoEditorial = None
-    achouRevisorDePeriodico = None    
+    achouRevisorDePeriodico = None
 
     procurarCabecalho = None
     partesDoItem = []
