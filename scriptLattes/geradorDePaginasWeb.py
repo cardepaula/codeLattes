@@ -1148,38 +1148,7 @@ class GeradorDePaginasWeb:
             # for ano, pub in sorted(listaCompleta.items()):
             # series.append({'name': ano, 'data': [len(pub)]}) #, 'y':
             # [len(pub)]})
-        """
-        else:  # temos informações sobre qualis
-            chart.settitle(u'Publicações por ano agrupadas por área e estrato Qualis')
-            chart['chart']['type'] = 'bar'
-            chart['chart']['height'] = 1080
-            # chart['plotOptions']['column']['stacking'] = 'normal'
-            chart['plotOptions']['bar']['stacking'] = 'normal'
-            chart['legend']['title'] = {'text': 'Estrato Qualis'}
-            chart['legend']['enabled'] = jscmd('true')
-            chart['xAxis']['type'] = 'category'
-            # chart['yAxis']['stackLabels']['rotation'] = 90
-            # chart['yAxis']['stackLabels']['textAlign'] = 'right'
 
-            drilldown_series = []
-            for estrato, area_ano_freq in sorted(estrato_area_ano_freq.items()):
-                if not estrato:
-                    estrato = 'Sem Qualis'
-                data = []
-                # for area, ano_freq in area_ano_freq.items():
-                for area in sorted(areas_map.keys()):
-                    ano_freq = area_ano_freq[area]
-                    freq = [ano_freq[ano] for ano in categories]
-                    if not area:
-                        area = u'Sem área'
-                    data.append({'name': area, 'y': sum(freq), 'drilldown': area + estrato})
-
-                    drilldown_series.append(
-                        {'id': area + estrato, 'name': estrato, 'data': [[ano, ano_freq[ano]] for ano in categories]})
-                one_serie = {'name': estrato, 'data': data}  #, 'stack': area}
-                series.append(one_serie)
-            chart['drilldown'] = {'series': drilldown_series}
-        """
         chart.set_series(series)
 
         return chart
@@ -2473,22 +2442,3 @@ def formata_qualis(qualis, qualissimilar):
                     + ")"
                 )
     return s
-
-
-"""
-def formata_qualis(qualis, qualissimilar):
-    s = ''
-
-    if not qualis:
-        #s += '<font color="#FDD7E4"><b>Qualis: N&atilde;o identificado</b></font>'
-        s += ''
-    else:
-        s += '<font color="#254117"><b>Qualis: </b></font> '
-        if type(qualis) is str:
-            s += '<font class="area"><b>SEM_AREA</b></font> - <b>' + qualis + '</b>&nbsp'
-        else:
-            l = ['<font class="area"><b>' + area + '</b></font> - <b>' + q + '</b>' for area, q in
-                 sorted(qualis.items(), key=lambda x: x[0])]
-            s += '&nbsp|&nbsp'.join(l)
-    return s
-"""
