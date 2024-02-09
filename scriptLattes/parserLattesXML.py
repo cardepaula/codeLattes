@@ -58,6 +58,29 @@ class ParserLattesXML(HTMLParser):
     idLattes = ""
     url = ""
 
+    autoresLista = None
+    autores = ""
+    titulo = ""
+    ano = ""
+    revista = ""
+    volume = ""
+    numero = ""
+    paginas = ""
+    doi = ""
+    edicao = ""
+    livro = ""
+    editora = ""
+    nomeJornal = ""
+    data = ""
+    nomeDoEvento = ""
+    natureza = ""
+    nome = ""
+    tituloDoTrabalho = ""
+    instituicao = ""
+    agenciaDeFomento = ""
+    tipoDeOrientacao = ""
+    nomeEvento = ""
+
     listaIDLattesColaboradores = []
     listaFormacaoAcademica = []
     listaProjetoDePesquisa = []
@@ -140,6 +163,8 @@ class ParserLattesXML(HTMLParser):
         self.idMembro = idMembro
 
         self.item = ""
+        # TODO Revisar se precisa de todos esses atributos listados no __init__
+        # já que não sofrem nenhuma alteração do valor padrão
         self.listaIDLattesColaboradores = []
         self.listaFormacaoAcademica = []
         self.listaProjetoDePesquisa = []

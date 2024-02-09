@@ -52,6 +52,27 @@ class CompiladorDeListas:
     matrizProgramaComputador = None
     matrizDesenhoIndustrial = None
 
+    matrizesApresentacaoDeTrabalho = None
+    matrizesArtigoAceito = None
+    matrizesArtigoEmPeriodico = None
+    matrizesCapituloDeLivroPublicado = None
+    matrizesDesenhoIndustrial = None
+    matrizesLivroPublicado = None
+    matrizesOutroTipoDeProducaoBibliografica = None
+    matrizesOutroTipoDeProducaoTecnica = None
+    matrizesPatente = None
+    matrizesProcessoOuTecnica = None
+    matrizesProducaoArtistica = None
+    matrizesProdutoTecnologico = None
+    matrizesProgramaComputador = None
+    matrizesResumoEmCongresso = None
+    matrizesResumoExpandidoEmCongresso = None
+    matrizesSoftwareComPatente = None
+    matrizesSoftwareSemPatente = None
+    matrizesTextoEmJornalDeNoticia = None
+    matrizesTrabalhoCompletoEmCongresso = None
+    matrizesTrabalhoTecnico = None
+
     def __init__(self, grupo):
         self.grupo = grupo
 

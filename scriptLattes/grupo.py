@@ -96,6 +96,9 @@ class Grupo:
     colaboradores_endogenos = None
     listaDeColaboracoes = None
 
+    ids = None
+    analisadorDePublicacoes = None
+
     dicionarioDeGeolocalizacao = dict([])
 
     def __init__(self, arquivo):

@@ -95,6 +95,11 @@ class HTMLParser(_markupbase.ParserBase):
 
     CDATA_CONTENT_ELEMENTS = ("script", "style")
 
+    rawdata = ""
+    lasttag = "???"
+    interesting = interesting_normal
+    cdata_elem = None
+
     def __init__(self):
         """Initialize and reset this instance."""
         self.reset()

@@ -174,6 +174,10 @@ class ParserLattes(HTMLParser):
     achouParticipacaoEmEvento = None
     achouOrganizacaoDeEvento = None
 
+    achouAtuacaoProfissional = None
+    achouMembroDeCorpoEditorial = None
+    achouRevisorDePeriodico = None    
+
     procurarCabecalho = None
     partesDoItem = []
 
