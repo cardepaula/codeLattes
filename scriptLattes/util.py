@@ -85,7 +85,7 @@ def copiarArquivos(dir):
         pass  # provavelmente diretório já existe
         logging.warning(e)
 
-    print(("\n\nArquivos salvos em: >>{}<<".format(os.path.abspath(dir))))
+    print(f"\n\nArquivos salvos em: >>{os.path.abspath(dir)}<<")
 
 
 # ---------------------------------------------------------------------------- #

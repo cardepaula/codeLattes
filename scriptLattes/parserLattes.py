@@ -1357,7 +1357,7 @@ def stripBlanks(s):
 
 def htmlentitydecode(s):
     return re.sub(
-        "&(%s);" % "|".join(name2codepoint),
+        f"&({'|'.join(name2codepoint)});",
         lambda m: chr(name2codepoint[m.group(1)]),
         s,
     )

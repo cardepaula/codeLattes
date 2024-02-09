@@ -244,16 +244,7 @@ class TrabalhoCompletoEmCongresso:
             )
         else:  # tratamento individual
             try:
-                s += "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}".format(
-                    nomeCompleto,
-                    self.ano,
-                    self.doi,
-                    self.titulo,
-                    self.nomeDoEvento,
-                    self.autores,
-                    self.qualis,
-                    self.qualissimilar,
-                )
+                s += f"{nomeCompleto}\t{self.ano}\t{self.doi}\t{self.titulo}\t{self.nomeDoEvento}\t{self.autores}\t{self.qualis}\t{self.qualissimilar}"
             except UnicodeDecodeError as err:
                 print(nomeCompleto)
                 print((str(self.ano)))

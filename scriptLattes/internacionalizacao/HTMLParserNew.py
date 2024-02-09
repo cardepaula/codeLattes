@@ -67,9 +67,9 @@ class HTMLParseError(Exception):
     def __str__(self):
         result = self.msg
         if self.lineno is not None:
-            result = result + ", at line %d" % self.lineno
+            result = f"{result}, at line {self.lineno}"
         if self.offset is not None:
-            result = result + ", column %d" % (self.offset + 1)
+            result = f"{result}, column {self.offset + 1}"
         return result
 
 
@@ -136,7 +136,7 @@ class HTMLParser(_markupbase.ParserBase):
 
     def set_cdata_mode(self, elem):
         self.cdata_elem = elem.lower()
-        self.interesting = re.compile(r"</\s*%s\s*>" % self.cdata_elem, re.I)
+        self.interesting = re.compile(rf"</\s*{self.cdata_elem}\s*>", re.I)
 
     def clear_cdata_mode(self):
         self.interesting = interesting_normal

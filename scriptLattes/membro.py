@@ -198,18 +198,10 @@ class Membro:
                     self.listaPeriodo.append([int(ano1), int(ano2)])
                 else:
                     print(
-                        (
-                            "\n[AVISO IMPORTANTE] Periodo nao válido: {}. (periodo desconsiderado na lista)".format(
-                                periodo
-                            )
-                        )
+                        f"\n[AVISO IMPORTANTE] Periodo nao válido: {periodo}. (periodo desconsiderado na lista)"
                     )
                     print(
-                        (
-                            "[AVISO IMPORTANTE] CV Lattes: {}. Membro: {}\n".format(
-                                self.idLattes, self.nomeInicial
-                            )
-                        )
+                        f"[AVISO IMPORTANTE] CV Lattes: {self.idLattes}. Membro: {self.nomeInicial}\n"
                     )
 
     def carregarDadosCVLattes(self):

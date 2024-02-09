@@ -92,7 +92,7 @@ class GraficoDeBarras:
                 plt.text(
                     rect.get_x() + rect.get_width() / 2.0,
                     1.05 * height,
-                    "%d" % int(height),
+                    f"{int(height)}",
                     ha="center",
                     va="bottom",
                     fontsize=6,

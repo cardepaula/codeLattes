@@ -82,7 +82,7 @@ class Geolocalizador:
                 (cidade, pais) = aux[0]
 
         cep = self.corrigirCEP(cep)
-        chave = "{} {} {} {}".format(pais, uf, cidade, cep)
+        chave = f"{pais} {uf} {cidade} {cep}"
         chave = re.sub("\\s+", "+", chave)
         chave = unicodedata.normalize("NFKD", chave).encode("ASCII", "ignore").decode()
 

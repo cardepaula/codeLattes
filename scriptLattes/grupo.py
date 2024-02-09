@@ -457,7 +457,7 @@ class Grupo:
     def carregarDadosCVLattes(self):
         indice = 1
         for membro in self.listaDeMembros:
-            print(("\n[LENDO REGISTRO LATTES: {0}o. DA LISTA]".format(indice)))
+            print((f"\n[LENDO REGISTRO LATTES: {indice}o. DA LISTA]"))
             indice += 1
             membro.carregarDadosCVLattes()
             membro.filtrarItemsPorPeriodo()
@@ -1182,8 +1182,8 @@ class Grupo:
         s = ""
         for chave in list(self.dicionarioDeGeolocalizacao.keys()):
             (lat, lon) = self.dicionarioDeGeolocalizacao[chave]
-            s += "{}\t{}\t{}\n".format(chave, lat, lon)
-            print(("- {}\t{}\t{}".format(chave, lat, lon)))
+            s += f"{chave}\t{lat}\t{lon}\n"
+            print(f"- {chave}\t{lat}\t{lon}")
 
         arquivo = open("dados/geolocalizao.txt", "w")
         arquivo.write(s)

@@ -1228,9 +1228,7 @@ class GeradorDePaginasWeb:
                     if indice_na_pagina == 0 or indice_no_ano == 0:
                         if indice_na_pagina > 0:
                             producoes_html += "</table></div>"
-                        producoes_html += '<div id="dv-year-{0}"><h3 class="year">{0}</h3> <table>'.format(
-                            ano if ano else "*itens sem ano"
-                        )
+                        producoes_html += f'<div id="dv-year-{ano if ano else "*itens sem ano"}"><h3 class="year">{ano if ano else "*itens sem ano"}</h3> <table>'
 
                     producao_html = self.template_producao()
                     producao_html = producao_html.format(
@@ -1689,28 +1687,17 @@ class GeradorDePaginasWeb:
             # <td valign="center" height="40px">' + str(elemento) + '.</td> \
             # <td valign="top" height="40px"><img src="' + membro.foto + '" width="40px"></td> \
 
-            s += '\n<tr class="testetabela"> \
-                     <td valign="center">{0}.</td> \
-                     <td><a href="membro-{1}.html"> {2}</a></td> \
-                     <td><font size=-2>{3}</font></td> \
-                     <td><font size=-2>{4}</font></td> \
-                     <td><font size=-2>{5}</font></td> \
-                     <td><font size=-2>{6}</font></td> \
-                     <td><font size=-2>{7}</font></td> \
-                     <td><font size=-2>{8}</font></td> \
-                     <td><font size=-2>{9}</font></td> \
-                 </tr>'.format(
-                str(elemento),
-                membro.idLattes,
-                nomeCompleto,
-                rotulo,
-                bolsa,
-                membro.periodo,
-                membro.atualizacaoCV,
-                membro.nomePrimeiraGrandeArea,
-                membro.nomePrimeiraArea,
-                membro.instituicao,
-            )
+            s += f'\n<tr class="testetabela"> \
+                     <td valign="center">{str(elemento)}.</td> \
+                     <td><a href="membro-{membro.idLattes}.html"> {nomeCompleto}</a></td> \
+                     <td><font size=-2>{rotulo}</font></td> \
+                     <td><font size=-2>{bolsa}</font></td> \
+                     <td><font size=-2>{membro.periodo}</font></td> \
+                     <td><font size=-2>{membro.atualizacaoCV}</font></td> \
+                     <td><font size=-2>{membro.nomePrimeiraGrandeArea}</font></td> \
+                     <td><font size=-2>{membro.nomePrimeiraArea}</font></td> \
+                     <td><font size=-2>{membro.instituicao}</font></td> \
+                 </tr>'
 
             # <td class="centered"><font size=-1>' + u'Produção com Qualis' + '</font></td> \
 
@@ -1767,36 +1754,24 @@ class GeradorDePaginasWeb:
         )
 
         s = self.pagina_top()
-        s += '\n<h3>{0}</h3>\
-                {7}<br><p>\
+        s += f'\n<h3>{nomeCompleto}</h3>\
+                {membro.textoResumo}<br><p>\
                 <table border=0>\
                 <tr><td>\
-                    <img height=130px src={2}>\
+                    <img height=130px src={membro.foto}>\
                 </td><td>\
                     <ul>\
-                    <li> <a href="{1}">{1}</a> ({3}) </li>\
-                    <li> <b>Rótulo/Grupo:</b> {4}</li>\
-                    <li> <b>Bolsa CNPq:</b> {5}</li>\
-                    <li> <b>Período de análise:</b> {6}</li>\
-                    <li> <b>Endereço:</b> {8}</li>\
-                    <li> <b>Grande área:</b> {9}</li>\
-                    <li> <b>Área:</b> {10}</li>\
-                    <li> <b>Citações:</b> <a href="http://scholar.google.com.br/citations?view_op=search_authors&mauthors={0}">Google Acadêmico</a> </li>\
+                    <li> <a href="{membro.url}">{membro.url}</a> ({membro.atualizacaoCV}) </li>\
+                    <li> <b>Rótulo/Grupo:</b> {rotulo}</li>\
+                    <li> <b>Bolsa CNPq:</b> {bolsa}</li>\
+                    <li> <b>Período de análise:</b> {membro.periodo}</li>\
+                    <li> <b>Endereço:</b> {membro.enderecoProfissional}</li>\
+                    <li> <b>Grande área:</b> {membro.nomePrimeiraGrandeArea}</li>\
+                    <li> <b>Área:</b> {membro.nomePrimeiraArea}</li>\
+                    <li> <b>Citações:</b> <a href="http://scholar.google.com.br/citations?view_op=search_authors&mauthors={nomeCompleto}">Google Acadêmico</a> </li>\
                     </ul>\
                 </td><tr>\
-                </table><br>'.format(
-            nomeCompleto,
-            membro.url,
-            membro.foto,
-            membro.atualizacaoCV,
-            rotulo,
-            bolsa,
-            membro.periodo,
-            membro.textoResumo,
-            membro.enderecoProfissional,
-            membro.nomePrimeiraGrandeArea,
-            membro.nomePrimeiraArea,
-        )
+                </table><br>'
 
         (nPB0, lista_PB0, titulo_PB0) = self.gerar_lista_de_producoes_de_membro(
             membro.listaArtigoEmPeriodico, "Artigos completos publicados em periódicos"
@@ -1930,215 +1905,137 @@ class GeradorDePaginasWeb:
         )
 
         s += "<h3>Produção bibliográfica</h3> <ul>"
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("PB0", titulo_PB0, nPB0)
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("PB1", titulo_PB1, nPB1)
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("PB2", titulo_PB2, nPB2)
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("PB3", titulo_PB3, nPB3)
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("PB4", titulo_PB4, nPB4)
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("PB5", titulo_PB5, nPB5)
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("PB6", titulo_PB6, nPB6)
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("PB7", titulo_PB7, nPB7)
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("PB8", titulo_PB8, nPB8)
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("PB9", titulo_PB9, nPB9)
+        s += f'<li><a href="#PB0">{titulo_PB0}</a> ({nPB0}) </li>'
+        s += f'<li><a href="#PB1">{titulo_PB1}</a> ({nPB1}) </li>'
+        s += f'<li><a href="#PB2">{titulo_PB2}</a> ({nPB2}) </li>'
+        s += f'<li><a href="#PB3">{titulo_PB3}</a> ({nPB3}) </li>'
+        s += f'<li><a href="#PB4">{titulo_PB4}</a> ({nPB4}) </li>'
+        s += f'<li><a href="#PB5">{titulo_PB5}</a> ({nPB5}) </li>'
+        s += f'<li><a href="#PB6">{titulo_PB6}</a> ({nPB6}) </li>'
+        s += f'<li><a href="#PB7">{titulo_PB7}</a> ({nPB7}) </li>'
+        s += f'<li><a href="#PB8">{titulo_PB8}</a> ({nPB8}) </li>'
+        s += f'<li><a href="#PB9">{titulo_PB9}</a> ({nPB9}) </li>'
         s += "</ul>"
         s += "<h3>Produção técnica</h3> <ul>"
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("PT0", titulo_PT0, nPT0)
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("PT1", titulo_PT1, nPT1)
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("PT2", titulo_PT2, nPT2)
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("PT3", titulo_PT3, nPT3)
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("PT4", titulo_PT4, nPT4)
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("PT5", titulo_PT5, nPT5)
+        s += f'<li><a href="#PT0">{titulo_PT0}</a> ({nPT0}) </li>'
+        s += f'<li><a href="#PT1">{titulo_PT1}</a> ({nPT1}) </li>'
+        s += f'<li><a href="#PT2">{titulo_PT2}</a> ({nPT2}) </li>'
+        s += f'<li><a href="#PT3">{titulo_PT3}</a> ({nPT3}) </li>'
+        s += f'<li><a href="#PT4">{titulo_PT4}</a> ({nPT4}) </li>'
+        s += f'<li><a href="#PT5">{titulo_PT5}</a> ({nPT5}) </li>'
         s += "</ul>"
         s += "<h3>Produção artística</h3> <ul>"
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("PA0", titulo_PA0, nPA0)
+        s += f'<li><a href="#PA0">{titulo_PA0}</a> ({nPA0}) </li>'
         s += "</ul>"
         s += "<h3>Orientações em andamento</h3> <ul>"
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("OA0", titulo_OA0, nOA0)
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("OA1", titulo_OA1, nOA1)
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("OA2", titulo_OA2, nOA2)
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("OA3", titulo_OA3, nOA3)
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("OA4", titulo_OA4, nOA4)
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("OA5", titulo_OA5, nOA5)
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("OA6", titulo_OA6, nOA6)
+        s += f'<li><a href="#OA0">{titulo_OA0}</a> ({nOA0}) </li>'
+        s += f'<li><a href="#OA1">{titulo_OA1}</a> ({nOA1}) </li>'
+        s += f'<li><a href="#OA2">{titulo_OA2}</a> ({nOA2}) </li>'
+        s += f'<li><a href="#OA3">{titulo_OA3}</a> ({nOA3}) </li>'
+        s += f'<li><a href="#OA4">{titulo_OA4}</a> ({nOA4}) </li>'
+        s += f'<li><a href="#OA5">{titulo_OA5}</a> ({nOA5}) </li>'
+        s += f'<li><a href="#OA6">{titulo_OA6}</a> ({nOA6}) </li>'
         s += "</ul>"
         s += "<h3>Supervisões e orientações concluídas</h3> <ul>"
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("OC0", titulo_OC0, nOC0)
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("OC1", titulo_OC1, nOC1)
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("OC2", titulo_OC2, nOC2)
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("OC3", titulo_OC3, nOC3)
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("OC4", titulo_OC4, nOC4)
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("OC5", titulo_OC5, nOC5)
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("OC6", titulo_OC6, nOC6)
+        s += f'<li><a href="#OC0">{titulo_OC0}</a> ({nOC0}) </li>'
+        s += f'<li><a href="#OC1">{titulo_OC1}</a> ({nOC1}) </li>'
+        s += f'<li><a href="#OC2">{titulo_OC2}</a> ({nOC2}) </li>'
+        s += f'<li><a href="#OC3">{titulo_OC3}</a> ({nOC3}) </li>'
+        s += f'<li><a href="#OC4">{titulo_OC4}</a> ({nOC4}) </li>'
+        s += f'<li><a href="#OC5">{titulo_OC5}</a> ({nOC5}) </li>'
+        s += f'<li><a href="#OC6">{titulo_OC6}</a> ({nOC6}) </li>'
         s += "</ul>"
         s += "<h3>Projetos de pesquisa</h3> <ul>"
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("Pj0", titulo_Pj0, nPj0)
+        s += f'<li><a href="#Pj0">{titulo_Pj0}</a> ({nPj0}) </li>'
         s += "</ul>"
         s += "<h3>Projetos de extensao</h3> <ul>"
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("Pje0", titulo_Pje0, nPje0)
+        s += f'<li><a href="#Pje0">{titulo_Pje0}</a> ({nPje0}) </li>'
         s += "</ul>"
         s += "<h3>Projetos de desenvolvimento</h3> <ul>"
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("Pjd0", titulo_Pjd0, nPjd0)
+        s += f'<li><a href="#Pjd0">{titulo_Pjd0}</a> ({nPjd0}) </li>'
         s += "</ul>"
         s += "<h3>Outros Projetos</h3> <ul>"
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("Opj0", titulo_Opj0, nOpj0)
+        s += f'<li><a href="#Opj0">{titulo_Opj0}</a> ({nOpj0}) </li>'
         s += "</ul>"
         s += "<h3>Prêmios e títulos</h3> <ul>"
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("Pm0", titulo_Pm0, nPm0)
+        s += f'<li><a href="#Pm0">{titulo_Pm0}</a> ({nPm0}) </li>'
         s += "</ul>"
         s += "<h3>Participação em eventos</h3> <ul>"
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("Ep0", titulo_Ep0, nEp0)
+        s += f'<li><a href="#Ep0">{titulo_Ep0}</a> ({nEp0}) </li>'
         s += "</ul>"
         s += "<h3>Organização de eventos</h3> <ul>"
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("Eo0", titulo_Eo0, nEo0)
+        s += f'<li><a href="#Eo0">{titulo_Eo0}</a> ({nEo0}) </li>'
         s += "</ul>"
         # --------
         s += "<h3>Lista de colaborações</h3> <ul>"
-        s += '<li><a href="#{}">{}</a> ({}) </li>'.format("CE", titulo_CE, nCE)
-        s += "    <ul> {} </ul>".format(lista_CE)
+        s += f'<li><a href="#CE">{titulo_CE}</a> ({nCE}) </li>'
+        s += f"    <ul> {lista_CE} </ul>"
         s += "</ul>"
 
         s += "<hr>"
         s += "<h3>Produção bibliográfica</h3> <ul>"
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "PB0", titulo_PB0, nPB0, lista_PB0
-        )
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "PB1", titulo_PB1, nPB1, lista_PB1
-        )
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "PB2", titulo_PB2, nPB2, lista_PB2
-        )
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "PB3", titulo_PB3, nPB3, lista_PB3
-        )
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "PB4", titulo_PB4, nPB4, lista_PB4
-        )
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "PB5", titulo_PB5, nPB5, lista_PB5
-        )
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "PB6", titulo_PB6, nPB6, lista_PB6
-        )
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "PB7", titulo_PB7, nPB7, lista_PB7
-        )
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "PB8", titulo_PB8, nPB8, lista_PB8
-        )
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "PB9", titulo_PB9, nPB9, lista_PB9
-        )
+        s += f'<li id="PB0"> <b>{titulo_PB0}</b> ({nPB0}) <br> {lista_PB0} </li>'
+        s += f'<li id="PB1"> <b>{titulo_PB1}</b> ({nPB1}) <br> {lista_PB1} </li>'
+        s += f'<li id="PB2"> <b>{titulo_PB2}</b> ({nPB2}) <br> {lista_PB2} </li>'
+        s += f'<li id="PB3"> <b>{titulo_PB3}</b> ({nPB3}) <br> {lista_PB3} </li>'
+        s += f'<li id="PB4"> <b>{titulo_PB4}</b> ({nPB4}) <br> {lista_PB4} </li>'
+        s += f'<li id="PB5"> <b>{titulo_PB5}</b> ({nPB5}) <br> {lista_PB5} </li>'
+        s += f'<li id="PB6"> <b>{titulo_PB6}</b> ({nPB6}) <br> {lista_PB6} </li>'
+        s += f'<li id="PB7"> <b>{titulo_PB7}</b> ({nPB7}) <br> {lista_PB7} </li>'
+        s += f'<li id="PB8"> <b>{titulo_PB8}</b> ({nPB8}) <br> {lista_PB8} </li>'
+        s += f'<li id="PB9"> <b>{titulo_PB9}</b> ({nPB9}) <br> {lista_PB9} </li>'
         s += "</ul>"
         s += "<h3>Produção técnica</h3> <ul>"
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "PT0", titulo_PT0, nPT0, lista_PT0
-        )
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "PT1", titulo_PT1, nPT1, lista_PT1
-        )
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "PT2", titulo_PT2, nPT2, lista_PT2
-        )
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "PT3", titulo_PT3, nPT3, lista_PT3
-        )
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "PT4", titulo_PT4, nPT4, lista_PT4
-        )
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "PT5", titulo_PT5, nPT5, lista_PT5
-        )
+        s += f'<li id="PT0"> <b>{titulo_PT0}</b> ({nPT0}) <br> {lista_PT0} </li>'
+        s += f'<li id="PT1"> <b>{titulo_PT1}</b> ({nPT1}) <br> {lista_PT1} </li>'
+        s += f'<li id="PT2"> <b>{titulo_PT2}</b> ({nPT2}) <br> {lista_PT2} </li>'
+        s += f'<li id="PT3"> <b>{titulo_PT3}</b> ({nPT3}) <br> {lista_PT3} </li>'
+        s += f'<li id="PT4"> <b>{titulo_PT4}</b> ({nPT4}) <br> {lista_PT4} </li>'
+        s += f'<li id="PT5"> <b>{titulo_PT5}</b> ({nPT5}) <br> {lista_PT5} </li>'
         s += "</ul>"
         s += "<h3>Produção artística</h3> <ul>"
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "PA0", titulo_PA0, nPA0, lista_PA0
-        )
+        s += f'<li id="PA0"> <b>{titulo_PA0}</b> ({nPA0}) <br> {lista_PA0} </li>'
         s += "</ul>"
         s += "<h3>Orientações em andamento</h3> <ul>"
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "OA0", titulo_OA0, nOA0, lista_OA0
-        )
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "OA1", titulo_OA1, nOA1, lista_OA1
-        )
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "OA2", titulo_OA2, nOA2, lista_OA2
-        )
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "OA3", titulo_OA3, nOA3, lista_OA3
-        )
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "OA4", titulo_OA4, nOA4, lista_OA4
-        )
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "OA5", titulo_OA5, nOA5, lista_OA5
-        )
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "OA6", titulo_OA6, nOA6, lista_OA6
-        )
+        s += f'<li id="OA0"> <b>{titulo_OA0}</b> ({nOA0}) <br> {lista_OA0} </li>'
+        s += f'<li id="OA1"> <b>{titulo_OA1}</b> ({nOA1}) <br> {lista_OA1} </li>'
+        s += f'<li id="OA2"> <b>{titulo_OA2}</b> ({nOA2}) <br> {lista_OA2} </li>'
+        s += f'<li id="OA3"> <b>{titulo_OA3}</b> ({nOA3}) <br> {lista_OA3} </li>'
+        s += f'<li id="OA4"> <b>{titulo_OA4}</b> ({nOA4}) <br> {lista_OA4} </li>'
+        s += f'<li id="OA5"> <b>{titulo_OA5}</b> ({nOA5}) <br> {lista_OA5} </li>'
+        s += f'<li id="OA6"> <b>{titulo_OA6}</b> ({nOA6}) <br> {lista_OA6} </li>'
         s += "</ul>"
         s += "<h3>Supervisões e orientações concluídas</h3> <ul>"
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "OC0", titulo_OC0, nOC0, lista_OC0
-        )
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "OC1", titulo_OC1, nOC1, lista_OC1
-        )
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "OC2", titulo_OC2, nOC2, lista_OC2
-        )
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "OC3", titulo_OC3, nOC3, lista_OC3
-        )
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "OC4", titulo_OC4, nOC4, lista_OC4
-        )
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "OC5", titulo_OC5, nOC5, lista_OC5
-        )
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "OC6", titulo_OC6, nOC6, lista_OC6
-        )
+        s += f'<li id="OC0"> <b>{titulo_OC0}</b> ({nOC0}) <br> {lista_OC0} </li>'
+        s += f'<li id="OC1"> <b>{titulo_OC1}</b> ({nOC1}) <br> {lista_OC1} </li>'
+        s += f'<li id="OC2"> <b>{titulo_OC2}</b> ({nOC2}) <br> {lista_OC2} </li>'
+        s += f'<li id="OC3"> <b>{titulo_OC3}</b> ({nOC3}) <br> {lista_OC3} </li>'
+        s += f'<li id="OC4"> <b>{titulo_OC4}</b> ({nOC4}) <br> {lista_OC4} </li>'
+        s += f'<li id="OC5"> <b>{titulo_OC5}</b> ({nOC5}) <br> {lista_OC5} </li>'
+        s += f'<li id="OC6"> <b>{titulo_OC6}</b> ({nOC6}) <br> {lista_OC6} </li>'
         s += "</ul>"
         s += "<h3>Projetos de pesquisa</h3> <ul>"
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "Pj0", titulo_Pj0, nPj0, lista_Pj0
-        )
+        s += f'<li id="Pj0"> <b>{titulo_Pj0}</b> ({nPj0}) <br> {lista_Pj0} </li>'
         s += "</ul>"
         s += "<h3>Projetos de extensao</h3> <ul>"
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "Pje0", titulo_Pje0, nPje0, lista_Pje0
-        )
+        s += f'<li id="Pje0"> <b>{titulo_Pje0}</b> ({nPje0}) <br> {lista_Pje0} </li>'
         s += "</ul>"
         s += "<h3>Projetos de desenvolvimento</h3> <ul>"
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "Pjd0", titulo_Pjd0, nPjd0, lista_Pjd0
-        )
+        s += f'<li id="Pjd0"> <b>{titulo_Pjd0}</b> ({nPjd0}) <br> {lista_Pjd0} </li>'
         s += "<h3>Outros Projetos</h3> <ul>"
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "Opj0", titulo_Opj0, nOpj0, lista_Opj0
-        )
+        s += f'<li id="Opj0"> <b>{titulo_Opj0}</b> ({nOpj0}) <br> {lista_Opj0} </li>'
         s += "</ul>"
         s += "<h3>Prêmios e títulos</h3> <ul>"
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "Pm0", titulo_Pm0, nPm0, lista_Pm0
-        )
+        s += f'<li id="Pm0"> <b>{titulo_Pm0}</b> ({nPm0}) <br> {lista_Pm0} </li>'
         s += "</ul>"
         s += "<h3>Participação em eventos</h3> <ul>"
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "Ep0", titulo_Ep0, nEp0, lista_Ep0
-        )
+        s += f'<li id="Ep0"> <b>{titulo_Ep0}</b> ({nEp0}) <br> {lista_Ep0} </li>'
         s += "</ul>"
         s += "<h3>Organização de eventos</h3> <ul>"
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "Eo0", titulo_Eo0, nEo0, lista_Eo0
-        )
+        s += f'<li id="Eo0"> <b>{titulo_Eo0}</b> ({nEo0}) <br> {lista_Eo0} </li>'
         s += "</ul>"
         s += "<h3>Lista de colaborações</h3> <ul>"
-        s += '<li id="{}"> <b>{}</b> ({}) <br> {} </li>'.format(
-            "CE", titulo_CE, nCE, lista_CE_detalhe
-        )
+        s += f'<li id="CE"> <b>{titulo_CE}</b> ({nCE}) <br> {lista_CE_detalhe} </li>'
         s += "</ul>"
 
         s += self.paginaBottom()
@@ -2160,16 +2057,8 @@ class GeradorDePaginasWeb:
             colaboradores, key=lambda x: (-x[1], x[0])
         ):
             colaborador = self.grupo.listaDeMembros[idColaborador]
-            s += '<li><a href="#{0}">{1}</a> ({2})'.format(
-                colaborador.idLattes, colaborador.nomeCompleto, quantidade
-            )
-            detalhe += '<li id="{0}"> <b>{3} &hArr; <a href="membro-{0}{4}">{1}</a></b> ({2}) <ol>'.format(
-                colaborador.idLattes,
-                colaborador.nomeCompleto,
-                quantidade,
-                membro.nomeCompleto,
-                self.extensaoPagina,
-            )
+            s += f'<li><a href="#{colaborador.idLattes}">{colaborador.nomeCompleto}</a> ({quantidade})'
+            detalhe += f'<li id="{colaborador.idLattes}"> <b>{membro.nomeCompleto} &hArr; <a href="membro-{colaborador.idLattes}{self.extensaoPagina}">{colaborador.nomeCompleto}</a></b> ({quantidade}) <ol>'
 
             for publicacao in self.grupo.listaDeColaboracoes[membro.idMembro][
                 idColaborador
@@ -2362,9 +2251,7 @@ class GeradorDePaginasWeb:
         # Salvar em planilha
         xls_filename = os.path.join(self.dir, "producao_membros.xls")
         producao_por_membro.to_excel(os.path.abspath(xls_filename))
-        html += '<a href="{}">{}</a>'.format(
-            os.path.abspath(xls_filename), "Baixar planilha com os dados"
-        )
+        html += f'<a href="{os.path.abspath(xls_filename)}">{"Baixar planilha com os dados"}</a>'
 
         html += self.paginaBottom()
         self.salvarPagina("producao_membros" + self.extensaoPagina, html)
