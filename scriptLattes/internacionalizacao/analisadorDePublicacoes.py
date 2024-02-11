@@ -437,7 +437,7 @@ class AnalisadorDePublicacoes:
         doiPath = self.grupo.diretorioDoi + "/" + doiNumber
 
         if os.path.isfile(doiPath):
-            arquivoX = open(doiPath)
+            arquivoX = open(doiPath, encoding="utf-8")
             rawDOIhtml = arquivoX.read()
             arquivoX.close()
             print(("- Utilizando DOI armazenado no cache: " + doiPath))
@@ -471,7 +471,7 @@ class AnalisadorDePublicacoes:
                     if not self.grupo.diretorioDoi == "":
                         print(("- Armazenando DOI armazenado no cache: " + doiPath))
                         filename = doiPath
-                        f = open(filename, "w")
+                        f = open(filename, "w", encoding="utf-8")
                         f.write(rawDOIhtml)
                         f.close()
                     break

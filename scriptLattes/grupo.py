@@ -404,7 +404,7 @@ class Grupo:
 
         # gerando o arquivo GDF
         dir = self.obterParametro("global-diretorio_de_saida")
-        arquivo = open(dir + "/" + nomeArquivo, "w")
+        arquivo = open(dir + "/" + nomeArquivo, "w", encoding="utf-8")
         arquivo.write(string)  # .encode("utf8","ignore"))
         arquivo.close()
 
@@ -449,7 +449,7 @@ class Grupo:
 
     def salvarArquivoGenerico(self, conteudo, nomeArquivo):
         dir = self.obterParametro("global-diretorio_de_saida")
-        arquivo = open(dir + "/" + nomeArquivo, "w")
+        arquivo = open(dir + "/" + nomeArquivo, "w", encoding="utf-8")
         arquivo.write(conteudo)
         arquivo.close()
 
@@ -523,7 +523,7 @@ class Grupo:
 
     def salvarListaTXT(self, lista, nomeArquivo):
         dir = self.obterParametro("global-diretorio_de_saida")
-        arquivo = open(dir + "/" + nomeArquivo, "w")
+        arquivo = open(dir + "/" + nomeArquivo, "w", encoding="utf-8")
 
         for elemento in lista:
             if not isinstance(elemento, type(str())):
@@ -533,7 +533,7 @@ class Grupo:
 
     def salvarMatrizTXT(self, matriz, nomeArquivo):
         dir = self.obterParametro("global-diretorio_de_saida")
-        arquivo = open(dir + "/" + nomeArquivo, "w")
+        arquivo = open(dir + "/" + nomeArquivo, "w", encoding="utf-8")
         N = matriz.shape[0]
 
         for i in range(0, N):
@@ -544,7 +544,7 @@ class Grupo:
 
     def salvarMatrizXML(self, matriz, nomeArquivo):
         dir = self.obterParametro("global-diretorio_de_saida")
-        arquivo = open(dir + "/" + nomeArquivo, "w")
+        arquivo = open(dir + "/" + nomeArquivo, "w", encoding="utf-8")
 
         s = '<?xml version="1.0" encoding="UTF-8"?> \
             \n<!--  An excerpt of an egocentric social network  --> \
@@ -612,7 +612,7 @@ class Grupo:
 
     def salvarVetorDeProducoes(self, vetor, nomeArquivo):
         dir = self.obterParametro("global-diretorio_de_saida")
-        arquivo = open(dir + "/" + nomeArquivo, "w")
+        arquivo = open(dir + "/" + nomeArquivo, "w", encoding="utf-8")
         string = ""
         for v in vetor:
             (prefixo, pAnos, pQuantidades) = v
@@ -625,7 +625,7 @@ class Grupo:
     def salvarListaInternalizacaoTXT(self, listaDoiValido, nomeArquivo):
         dir = self.obterParametro("global-diretorio_de_saida")
         # TODO Verificar se o arquivo está codificado é UTF-8
-        arquivo = open(dir + "/" + nomeArquivo, "w")
+        arquivo = open(dir + "/" + nomeArquivo, "w", encoding="utf-8")
         for elemento in listaDoiValido:
             if isinstance(elemento, type(str())):
                 elemento = elemento.encode("utf8")
@@ -1178,6 +1178,6 @@ class Grupo:
             s += f"{chave}\t{lat}\t{lon}\n"
             print(f"- {chave}\t{lat}\t{lon}")
 
-        arquivo = open("dados/geolocalizao.txt", "w")
+        arquivo = open("dados/geolocalizao.txt", "w", encoding="utf-8")
         arquivo.write(s)
         arquivo.close()

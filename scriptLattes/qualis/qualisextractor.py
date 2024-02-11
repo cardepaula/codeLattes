@@ -223,7 +223,7 @@ class QualisExtractor(object):
     def load_data(self, filename="data"):
         try:
             logger.debug(f"Carregando dados Qualis do arquivo '{filename}'")
-            f = open(filename, "r")
+            f = open(filename, "r", encoding="utf-8")
             data = pickle.load(f)
             # self.issn = data[0]
             # self.publicacao = data[1]
@@ -239,7 +239,7 @@ class QualisExtractor(object):
 
     def save_data(self, filename="data"):
         logger.debug(f"Salvando dados Qualis no arquivo '{filename}'")
-        f = open(filename, "w")
+        f = open(filename, "w", encoding="utf-8")
         # data = (self.issn, self.publicacao, self.areas, self.areas_last_update)
         data = (self.qualis_data_frame, self.areas, self.areas_last_update)
         pickle.dump(data, f)

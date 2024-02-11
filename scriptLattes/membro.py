@@ -208,7 +208,7 @@ class Membro:
         cvPath = self.diretorioCache + "/" + self.idLattes
 
         if "xml" in cvPath:
-            arquivoX = open(cvPath)
+            arquivoX = open(cvPath, encoding="utf-8")
             cvLattesXML = arquivoX.read()
             arquivoX.close()
 
@@ -235,7 +235,7 @@ class Membro:
 
         else:
             if os.path.exists(cvPath):
-                arquivoH = open(cvPath)
+                arquivoH = open(cvPath, encoding="utf-8")
                 cvLattesHTML = arquivoH.read()
 
                 if self.idMembro != "":
@@ -243,7 +243,7 @@ class Membro:
             else:
                 cvLattesHTML = baixaCVLattes(self.idLattes)
                 if not self.diretorioCache == "":
-                    file = open(cvPath, "w")
+                    file = open(cvPath, "w", encoding="utf-8")
                     file.write(cvLattesHTML)
                     file.close()
                     print(" (*) O CV está sendo armazenado no Cache")

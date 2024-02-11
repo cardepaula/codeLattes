@@ -1193,6 +1193,6 @@ class GeradorDeXML:
             if not self.grupo.obterParametro("global-prefixo") == ""
             else ""
         )
-        file = open(self.dir + "/" + prefix + nome, "w")
+        file = open(self.dir + "/" + prefix + nome, "w", encoding="utf-8")
         file.write(conteudo)
         file.close()
