@@ -31,7 +31,7 @@ import pandas
 from pandas.core.indexing import IndexingError
 from .charts.graficoDeInternacionalizacao import *
 from .highcharts import *  # highcharts
-from . import membro
+from .membro import *
 
 logger = logging.getLogger("scriptLattes")
 
@@ -2041,7 +2041,7 @@ class GeradorDePaginasWeb:
         # FIXME: ver um local melhor para este método
 
         producao_por_membro = pandas.DataFrame(
-            columns=list(membro.Membro.tabela_qualis.columns) + ["membro"]
+            columns=list(Membro.tabela_qualis.columns) + ["membro"]
         )
 
         for m in lista_de_membros:
