@@ -474,15 +474,6 @@ class Membro:
     def filtrarItems(self, lista):
         return list(filter(self.estaDentroDoPeriodo, lista))
 
-        # Not pythonic
-        # for i in range(0, len(lista)):
-        #     if not self.estaDentroDoPeriodo(lista[i]):
-        #         lista[i] = None
-        # lista = [l for l in lista if l is not None] # Eliminamos os elementos' None'
-        #
-        # # ORDENAR A LISTA POR ANO? QUE TAL? rpta. Nao necessário!
-        # return lista
-
     def estaDentroDoPeriodo(self, objeto):
         if objeto.__module__ == "orientacaoEmAndamento":
             objeto.ano = int(objeto.ano) if objeto.ano else 0

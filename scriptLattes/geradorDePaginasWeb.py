@@ -1621,8 +1621,6 @@ class GeradorDePaginasWeb:
 
     def gerar_pagina_de_membros(self):
         s = self.pagina_top()
-        # s += u'\n<h3>Lista de membros</h3> <table id="membros"
-        # class="collapse-box" ><tr>\
         s += '\n<h3>Lista de membros</h3> <table id="membros" class="sortable" ><tr>\
                 <th></th>\
                 <th></th>\
