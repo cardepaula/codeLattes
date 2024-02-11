@@ -52,9 +52,9 @@ class ProjetoDeDesenvolvimento:
             )
         s += "<b>" + self.nome + "</b>"
 
-        for i in range(0, len(self.idMembro)):
+        for i, id in enumerate(self.idMembro):
             s += "<br><i><font size=-1>" + self.descricao[i] + "</font></i>"
-            m = listaDeMembros[self.idMembro[i]]
+            m = listaDeMembros[id]
             s += (
                 '<br><i><font size=-1>Membro: <a href="'
                 + m.url

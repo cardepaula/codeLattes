@@ -1280,8 +1280,7 @@ class GeradorDePaginasWeb:
                 # Ordenamos a lista em forma ascendente (hard to explain!)
                 elementos.sort(key=lambda x: x.chave.lower())
 
-                for index in range(0, len(elementos)):
-                    pub = elementos[index]
+                for index, pub in enumerate(elementos):
                     s += (
                         '<tr valign="top"><td>'
                         + str(index + 1)
@@ -1407,8 +1406,7 @@ class GeradorDePaginasWeb:
 
         if self.grupo.obterParametro("grafo-considerar_rotulos_dos_membros_do_grupo"):
             s += "As cores representam os seguintes rótulos: "
-            for i in range(0, len(self.grupo.listaDeRotulos)):
-                rot = self.grupo.listaDeRotulos[i]
+            for i, rot in enumerate(self.grupo.listaDeRotulos):
                 cor = self.grupo.listaDeRotulosCores[i]
                 if rot == "":
                     rot = "[Sem rótulo]"
@@ -1453,10 +1451,10 @@ class GeradorDePaginasWeb:
             )
 
             s += "<table border=1><tr> <td><i><b>Collaboration Rank</b></i></td> <td><b>Membro</b></td> </tr>"
-            for i in range(0, len(ranks)):
+            for i, rank in enumerate(ranks):
                 s += (
                     "<tr><td>"
-                    + str(round(ranks[i], 2))
+                    + str(round(rank, 2))
                     + "</td><td>"
                     + autores[i]
                     + "</td></tr>"
@@ -1466,30 +1464,28 @@ class GeradorDePaginasWeb:
             if self.grupo.obterParametro(
                 "grafo-considerar_rotulos_dos_membros_do_grupo"
             ):
-                for i in range(0, len(self.grupo.listaDeRotulos)):
+                for i, rotulo in enumerate(self.grupo.listaDeRotulos):
                     somaAuthorRank = 0
-
-                    rot = self.grupo.listaDeRotulos[i]
                     cor = self.grupo.listaDeRotulosCores[i]
                     s += (
                         '<b><span style="background-color:'
                         + cor
                         + '">&nbsp;&nbsp;&nbsp;&nbsp;</span>'
-                        + rot
+                        + rotulo
                         + "</b><br>"
                     )
 
                     s += "<table border=1><tr> <td><i><b>AuthorRank</b></i></td> <td><b>Membro</b></td> </tr>"
-                    for i in range(0, len(ranks)):
-                        if rotulos[i] == rot:
+                    for i, rank in enumerate(ranks):
+                        if rotulos[i] == rotulo:
                             s += (
                                 "<tr><td>"
-                                + str(round(ranks[i], 2))
+                                + str(round(rank, 2))
                                 + "</td><td>"
                                 + autores[i]
                                 + "</td></tr>"
                             )
-                            somaAuthorRank += ranks[i]
+                            somaAuthorRank += rank
                     s += (
                         "</table> <br> Total: "
                         + str(round(somaAuthorRank, 2))

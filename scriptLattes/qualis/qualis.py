@@ -69,8 +69,7 @@ class Qualis:
         if len(keys) > 0:
             for ano in keys:
                 elementos = listaCompleta[ano]
-                for index in range(0, len(elementos)):
-                    pub = elementos[index]
+                for pub in elementos:
                     qtd[pub.qualis] += 1
         return qtd
 
@@ -89,8 +88,8 @@ class Qualis:
                 return self.periodicos.get(nome), ""
             else:
                 chaves = list(self.periodicos.keys())
-                for i in range(0, len(chaves)):
-                    distI = similaridade_entre_cadeias(nome, chaves[i], qualis=True)
+                for i, chave in enumerate(chaves):
+                    distI = similaridade_entre_cadeias(nome, chave, qualis=True)
                     if distI > dist:  # comparamos: nome com cada nome de periodico
                         indice = i
                         dist = distI
@@ -103,8 +102,8 @@ class Qualis:
                 return self.congressos.get(nome), ""
             else:
                 chaves = list(self.congressos.keys())
-                for i in range(0, len(chaves)):
-                    distI = similaridade_entre_cadeias(nome, chaves[i], qualis=True)
+                for i, chave in enumerate(chaves):
+                    distI = similaridade_entre_cadeias(nome, chave, qualis=True)
                     if distI > dist:  # comparamos: nome com cada nome de evento
                         indice = i
                         dist = distI

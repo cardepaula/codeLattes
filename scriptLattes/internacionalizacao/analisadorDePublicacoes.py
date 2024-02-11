@@ -305,8 +305,7 @@ class AnalisadorDePublicacoes:
         keys = list(listaCompletaPB.keys())
         for ano in keys:
             elementos = listaCompletaPB[ano]
-            for index in range(0, len(elementos)):
-                pub = elementos[index]
+            for pub in elementos:
                 if hasattr(pub, "doi"):
                     if not pub.doi == "":
                         listaDePaisesIdentificados = self.identificarPaisesEmPublicacao(

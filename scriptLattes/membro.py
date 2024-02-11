@@ -557,20 +557,17 @@ class Membro:
         s += "\nDATA  - " + self.atualizacaoCV
         s += "\nRESU  - " + self.textoResumo
 
-        for i in range(0, len(self.listaFormacaoAcademica)):
-            formacao = self.listaFormacaoAcademica[i]
+        for i, formacao in enumerate(self.listaFormacaoAcademica):
             s += "\nFO" + str(i + 1) + "a  - " + formacao.anoInicio
             s += "\nFO" + str(i + 1) + "b  - " + formacao.anoConclusao
             s += "\nFO" + str(i + 1) + "c  - " + formacao.tipo
             s += "\nFO" + str(i + 1) + "d  - " + formacao.nomeInstituicao
             s += "\nFO" + str(i + 1) + "e  - " + formacao.descricao
 
-        for i in range(0, len(self.listaAreaDeAtuacao)):
-            area = self.listaAreaDeAtuacao[i]
+        for i, area in enumerate(self.listaAreaDeAtuacao):
             s += "\nARE" + str(i + 1) + "  - " + area.descricao
 
-        for i in range(0, len(self.listaIdioma)):
-            idioma = self.listaIdioma[i]
+        for i, idioma in enumerate(self.listaIdioma):
             s += "\nID" + str(i + 1) + "a  - " + idioma.nome
             s += "\nID" + str(i + 1) + "b  - " + idioma.proficiencia
 

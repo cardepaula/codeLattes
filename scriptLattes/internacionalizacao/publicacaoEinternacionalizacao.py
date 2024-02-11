@@ -49,8 +49,8 @@ class PublicacaoEinternacionalizacao:
         if self.listaDePaises is not None:
             if len(self.listaDePaises) > 0:
                 s += "<b>"
-                for index in range(0, len(self.listaDePaises)):
-                    s += self.listaDePaises[index].title() + ", "
+                for pais in self.listaDePaises:
+                    s += pais.title() + ", "
                 s = s.rstrip(", ")
                 s += ".</b>"
             else:

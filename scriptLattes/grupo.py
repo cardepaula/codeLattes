@@ -432,8 +432,7 @@ class Grupo:
             for ano in keys:
                 elementos = listaCompleta[ano]
                 elementos.sort(key=lambda x: x.chave.lower())
-                for index in range(0, len(elementos)):
-                    pub = elementos[index]
+                for pub in elementos:
                     s += pub.csv(" ") + "\n"
         return s
 
@@ -526,11 +525,8 @@ class Grupo:
         dir = self.obterParametro("global-diretorio_de_saida")
         arquivo = open(dir + "/" + nomeArquivo, "w")
 
-        for i in range(0, len(lista)):
-            elemento = lista[i]
-            if isinstance(elemento, type(str())):
-                elemento = elemento
-            else:
+        for elemento in lista:
+            if not isinstance(elemento, type(str())):
                 elemento = str(elemento)
             arquivo.write(elemento + "\n")
         arquivo.close()
@@ -618,19 +614,19 @@ class Grupo:
         dir = self.obterParametro("global-diretorio_de_saida")
         arquivo = open(dir + "/" + nomeArquivo, "w")
         string = ""
-        for i in range(0, len(vetor)):
-            (prefixo, pAnos, pQuantidades) = vetor[i]
+        for v in vetor:
+            (prefixo, pAnos, pQuantidades) = v
             string += "\n" + prefixo + ":"
-            for j in range(0, len(pAnos)):
-                string += str(pAnos[j]) + "," + str(pQuantidades[j]) + ";"
+            for j, pAno in enumerate(pAnos):
+                string += str(pAno) + "," + str(pQuantidades[j]) + ";"
         arquivo.write(string)
         arquivo.close()
 
     def salvarListaInternalizacaoTXT(self, listaDoiValido, nomeArquivo):
         dir = self.obterParametro("global-diretorio_de_saida")
+        # TODO Verificar se o arquivo está codificado é UTF-8
         arquivo = open(dir + "/" + nomeArquivo, "w")
-        for i in range(0, len(listaDoiValido)):
-            elemento = listaDoiValido[i]
+        for elemento in listaDoiValido:
             if isinstance(elemento, type(str())):
                 elemento = elemento.encode("utf8")
             else:
@@ -934,24 +930,21 @@ class Grupo:
         parametro = parametro.strip().lower()
         valor = valor.strip()
 
-        for i in range(0, len(self.listaDeParametros)):
-            if parametro == self.listaDeParametros[i][0]:
-                self.listaDeParametros[i][1] = valor
+        for p in self.listaDeParametros:
+            if parametro == p[0]:
+                p[1] = valor
                 return
         print(("[AVISO IMPORTANTE] Nome de parametro desconhecido: " + parametro))
 
     def obterParametro(self, parametro):
-        for i in range(0, len(self.listaDeParametros)):
-            if parametro == self.listaDeParametros[i][0]:
-                if self.listaDeParametros[i][1].lower() == "sim":
+        for p in self.listaDeParametros:
+            if parametro == p[0]:
+                if p[1].lower() == "sim":
                     return 1
-                if (
-                    self.listaDeParametros[i][1].lower() == "nao"
-                    or self.listaDeParametros[i][1].lower() == "não"
-                ):
+                if p[1].lower() == "nao" or p[1].lower() == "não":
                     return 0
 
-                return self.listaDeParametros[i][1]
+                return p[1]
 
     def atribuirCoNoRotulo(self, indice, cor):
         self.listaDeRotulosCores[indice] = cor

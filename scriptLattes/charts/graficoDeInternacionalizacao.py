@@ -45,9 +45,7 @@ class GraficoDeInternacionalizacao:
         keys = list(self.listaCompleta.keys())
         for ano in keys:
             elementos = self.listaCompleta[ano]
-            for index in range(0, len(elementos)):
-                publicacaoEinternacionalizacao = elementos[index]
-
+            for publicacaoEinternacionalizacao in elementos:
                 # publicações sem identificação de paises
                 if publicacaoEinternacionalizacao.listaDePaises is not None:
                     if len(publicacaoEinternacionalizacao.listaDePaises) == 0:
@@ -112,13 +110,9 @@ class GraficoDeInternacionalizacao:
               data.addColumn('number', 'Ocorrencias');\
               data.addRows(["
 
-            for index in range(0, len(self.vetorDePaises)):
+            for index, vetor in enumerate(self.vetorDePaises):
                 script += (
-                    "\n['"
-                    + self.vetorDePaises[index]
-                    + "', "
-                    + str(self.vetorDeQuantidades[index])
-                    + "], "
+                    "\n['" + vetor + "', " + str(self.vetorDeQuantidades[index]) + "], "
                 )
 
             script += "\
@@ -143,13 +137,9 @@ class GraficoDeInternacionalizacao:
               data.addColumn('number', 'Ocorrencias');\
               data.addRows(["
 
-            for index in range(0, len(self.vetorDePaises)):
+            for index, vetor in enumerate(self.vetorDePaises):
                 script += (
-                    "\n['"
-                    + self.vetorDePaises[index]
-                    + "', "
-                    + str(self.vetorDeQuantidades[index])
-                    + "], "
+                    "\n['" + vetor + "', " + str(self.vetorDeQuantidades[index]) + "], "
                 )
 
             script += (
