@@ -4,7 +4,7 @@
 
 import re
 
-paises = {
+paisesDict = {
     "Abkhazia": ["Apsny", "Abkhaziya"],
     "Afghanistan": ["Afghanestan"],
     "Albania": ["Shqipëria"],
@@ -290,4 +290,4 @@ texto = texto.lower()
 # procurar por apenas palavras completas e nao substring
 
 
-print((identificarPaisesEmPublicacao(texto, paises)))
+print((identificarPaisesEmPublicacao(texto, paisesDict)))
