@@ -4,6 +4,7 @@
 
 import re
 
+# TODO Verificar se esse arquivo está sendo utilizado
 paisesDict = {
     "Abkhazia": ["Apsny", "Abkhaziya"],
     "Afghanistan": ["Afghanestan"],
