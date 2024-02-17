@@ -87,11 +87,6 @@ class GrafoDeColaboracoes:
             format="cmapx"
         ).decode()
 
-        #        self.grafoDeCoAutoriaCompleta = self.criarGrafoDeCoAutoriaCompleta()
-        #        self.grafoDeCoAutoriaCompleta.draw(path='grafoDeColaboracoesCompleto.png', format='png')
-        #        self.grafoDeCoAutoriaCompleta.draw(path='grafoDeColaboracoesCompleto.dot', format='dot')
-        #        self.grafoDeCoAutoriaCompletaCMAPX = self.grafoDeCoAutoriaCompleta.draw(format='cmapx')
-
         # Criamos um thumbnail do grafo sem pesos
         im = Image.open(diretorioDeSaida + "/grafoDeColaboracoesSemPesos.png")
         im.thumbnail((400, 400))
@@ -367,8 +362,8 @@ class GrafoDeColaboracoes:
             return self.cores[-1]
 
     def abreviarNome(self, nome):
-        # No grafo de colaboracoes nomes cumpridos não ajudam na visualização da co-autoria.
-        # para tal, precisamos abreviar os nomes.
+        # No grafo de colaboracoes nomes cumpridos não ajudam na visualização da
+        # co-autoria. Para tal, precisamos abreviar os nomes.
         # Ex.
         #     'Jesus Pascual Mena Chalco'         -> 'Jesus P. Mena Chalco'
         #     'Aaaaaa BBBBBB da CCCCCCC e DDDDDD' -> 'Aaaaaa B. da CCCCCCC e DDDDDD'

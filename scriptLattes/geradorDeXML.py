@@ -40,7 +40,8 @@ class GeradorDeXML:
 
     def gerarXmlParaGrupo(self):
         print("\n\n[GERANDO XML PARA CADA UM DOS CVs LATTES]")
-        xmlTemp = ""  # variavel importante para continuar a varredura dos membros caso ocorra erros
+        # variavel importante para continuar a varredura dos membros caso ocorra erros
+        xmlTemp = ""
 
         xml = ""
         xml += '<?xml version="1.0" encoding="UTF-8" ?>\n'

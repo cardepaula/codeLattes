@@ -114,7 +114,8 @@ class TrabalhoCompletoEmCongresso:
                 self.nomeDoEvento = ""
                 partes = partes[2]
             else:
-                # Qualis - Eh preciso separa o titulo da conferencia em partes[2] do restante
+                # Qualis - Eh preciso separa o titulo da conferencia em partes[2] do
+                # restante
                 # self.nomeDoEvento = partes[2].strip().rstrip(".")
                 partesV = partes[2].split(", ")
                 self.nomeDoEvento = ""
@@ -186,9 +187,8 @@ class TrabalhoCompletoEmCongresso:
 
         if not self.doi == "":
             s += (
-                ' <a href="'
-                + self.doi
-                + '" target="_blank" style="PADDING-RIGHT:4px;"><img border=0 src="doi.png"></a>'
+                f' <a href="{self.doi}" target="_blank" style="PADDING-RIGHT:4px;">'
+                '<img border=0 src="doi.png"></a>'
             )
 
         s += menuHTMLdeBuscaPB(self.titulo)
@@ -244,7 +244,11 @@ class TrabalhoCompletoEmCongresso:
             )
         else:  # tratamento individual
             try:
-                s += f"{nomeCompleto}\t{self.ano}\t{self.doi}\t{self.titulo}\t{self.nomeDoEvento}\t{self.autores}\t{self.qualis}\t{self.qualissimilar}"
+                s += (
+                    f"{nomeCompleto}\t{self.ano}\t{self.doi}\t{self.titulo}"
+                    f"\t{self.nomeDoEvento}\t{self.autores}\t{self.qualis}"
+                    f"\t{self.qualissimilar}"
+                )
             except UnicodeDecodeError as err:
                 print(nomeCompleto)
                 print((str(self.ano)))

@@ -423,7 +423,8 @@ class AnalisadorDePublicacoes:
         print(("\nProcessando DOI: " + urlDOI))
         txdata = None
         txheaders = {
-            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:2.0) Gecko/20100101 Firefox/4.0",
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:2.0) "
+            + "Gecko/20100101 Firefox/4.0",
             "Accept-Language": "en-us,en;q=0.5",
             "Accept-Encoding": "deflate",
             "Keep-Alive": "115",
@@ -458,7 +459,6 @@ class AnalisadorDePublicacoes:
                     rawDOIhtml = response.read()
                     print(("- Baixando publicacao com DOI: " + urlDOI))
 
-                    # rawDOIhtml = HTMLParser.HTMLParser().unescape(rawDOIhtml.decode("utf8", "ignore"))
                     rawDOIhtml = HTMLParser().unescape(
                         rawDOIhtml.decode("utf8", "ignore")
                     )

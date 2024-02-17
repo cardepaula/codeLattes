@@ -174,9 +174,8 @@ class ResumoEmCongresso:
 
         if not self.doi == "":
             s += (
-                '<a href="'
-                + self.doi
-                + '" target="_blank" style="PADDING-RIGHT:4px;"><img border=0 src="doi.png"></a>'
+                f'<a href="{self.doi}" target="_blank" style="PADDING-RIGHT:4px;">'
+                f'<img border=0 src="doi.png"></a>'
             )
 
         s += menuHTMLdeBuscaPB(self.titulo)
@@ -203,8 +202,6 @@ class ResumoEmCongresso:
         s += "\nL2  - " + self.doi
         s += "\nER  - "
         return s
-
-    # ------------------------------------------------------------------------ #
 
     def __str__(self):
         s = "\n[RESUMO EM CONGRESSO] \n"

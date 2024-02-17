@@ -166,13 +166,7 @@ class Grupo:
                     if len(linhaDiv) > 3 and linhaDiv[3].strip()
                     else "[Sem rotulo]"
                 )
-                # rotulo        = rotulo.capitalize()
 
-                # atribuicao dos valores iniciais para cada membro
-                # if 'xml' in identificador.lower():
-                # self.listaDeMembros.append(Membro(idSequencial, '', nome, periodo, rotulo, self.itemsDesdeOAno, self.itemsAteOAno, xml=identificador))
-                # self.listaDeMembros.append(Membro(idSequencial, identificador, nome, periodo, rotulo, self.itemsDesdeOAno, self.itemsAteOAno, diretorioCache))
-                # else:
                 self.listaDeMembros.append(
                     Membro(
                         idSequencial,
@@ -278,7 +272,8 @@ class Grupo:
         # (3) medidas de authorRanks
         self.salvarListaTXT(self.vectorRank, prefix + "authorRank.txt")
 
-        # (4) lista unica de colaboradores (orientadores, ou qualquer outro tipo de parceiros...)
+        # (4) lista unica de colaboradores (orientadores, ou qualquer
+        # outro tipo de parceiros...)
         rawIDsColaboradores = list([])
         rawIDsMembros = list([])
         for membro in self.listaDeMembros:
@@ -349,7 +344,13 @@ class Grupo:
     def gerarArquivoGDF(self, nomeArquivo):
         # Vêrtices
         N = len(self.listaDeMembros)
-        string = "nodedef> name VARCHAR, idLattes VARCHAR, label VARCHAR, rotulo VARCHAR, lat DOUBLE, lon DOUBLE, collaborationRank DOUBLE, producaoBibliografica DOUBLE, artigoEmPeriodico DOUBLE, livro DOUBLE, capituloDeLivro DOUBLE, trabalhoEmCongresso DOUBLE, resumoExpandido DOUBLE, resumo DOUBLE, color VARCHAR"
+        string = (
+            "nodedef> name VARCHAR, idLattes VARCHAR, label VARCHAR, rotulo VARCHAR, "
+            "lat DOUBLE, lon DOUBLE, collaborationRank DOUBLE, producaoBibliografica "
+            "DOUBLE, artigoEmPeriodico DOUBLE, livro DOUBLE, capituloDeLivro DOUBLE, "
+            "trabalhoEmCongresso DOUBLE, resumoExpandido DOUBLE, resumo DOUBLE, "
+            "color VARCHAR"
+        )
         i = 0
         for membro in self.listaDeMembros:
             nomeCompleto = (
@@ -512,14 +513,6 @@ class Grupo:
                 # Qualis - Adiciona Qualis as publicacoes dos membros
                 self.qualis.analisarPublicacoes(membro, self)
             self.qualis.calcularTotaisDosQualis(self)
-
-            # if self.diretorioCache:
-            # filename = (self.diretorioCache or '/tmp') + '/qualis.data'
-            # self.qualis.qextractor.save_data(self.diretorioCache + '/' + filename)
-            # self.qualis.qextractor.save_data(filename)
-
-            # self.qualis.calcular_totais_dos_qualis(self.compilador.listaCompletaArtigoEmPeriodico, self.compilador.listaCompletaTrabalhoCompletoEmCongresso,
-            # self.compilador.listaCompletaResumoExpandidoEmCongresso)
 
     def salvarListaTXT(self, lista, nomeArquivo):
         dir = self.obterParametro("global-diretorio_de_saida")
@@ -1030,7 +1023,8 @@ class Grupo:
         )
         self.listaDeParametros.append(
             [
-                "relatorio-incluir_orientacao_em_andamento_monografia_de_especializacao",
+                "relatorio-incluir_orientacao_em_andamento_monografia_de_"
+                + "especializacao",
                 "sim",
             ]
         )

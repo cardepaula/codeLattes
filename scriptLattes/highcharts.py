@@ -27,7 +27,21 @@
 from string import Template
 
 theme = """{
-   colors: ["#118D95", "#8085e9", "#8d4654", "#7798BF", "#aaeeee", "#ff0066", "#eeaaee", "#2b908f", "#90ee7e", "#55BF3B", "#DF5353", "#7798BF", "#aaeeee"],
+   colors: [
+        "#118D95",
+        "#8085e9",
+        "#8d4654",
+        "#7798BF",
+        "#aaeeee",
+        "#ff0066",
+        "#eeaaee",
+        "#2b908f",
+        "#90ee7e",
+        "#55BF3B",
+        "#DF5353",
+        "#7798BF",
+        "#aaeeee"
+    ],
    chart: {
       backgroundColor: null,
       style: {
@@ -233,27 +247,19 @@ jsondata = {
         "enabled": true,
         "valueSuffix": "",
         "shared": false,
-        "headerFormat": '<span style="font-size: 10px">{point.key}{point.stack}{series.stack}</span><br/>',
-        "pointFormat": '<span style="color:{series.color}">\\u25CF</span> {series.name}: <b>{point.y}</b><br/>',
-        # 'footerFormat': 'verbatim',
-        # 'formatter': jscmd('''function() {
-        #     return '<span style="fill:{this.series.color}">\u25CF</span>' +
-        #         "<b>" + this.x + "</b><br/>" +
-        #         this.series.name + ":-- " + this.y + "<br/>" +
-        #         "Total: " + this.point.stackTotal;
-        #     }''')
+        "headerFormat": (
+            '<span style="font-size: 10px">{point.key}{point.stack}{series.stack}'
+            "</span><br/>"
+        ),
+        "pointFormat": (
+            '<span style="color:{series.color}">\\u25CF</span> '
+            "{series.name}: <b>{point.y}</b><br/>"
+        ),
     },
     "plotOptions": {
         "bar": {"dataLabels": {"enabled": false}},
         "column": {
             "stacking": None,
-            # 'dataLabels': {
-            # 'enabled': 'false',
-            # 'color': "(Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'",
-            # 'style': {
-            #     'textShadow': '0 0 3px black'
-            # }
-            # }
         },
         "series": {
             "shadow": "true",

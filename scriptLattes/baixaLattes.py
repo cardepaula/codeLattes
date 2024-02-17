@@ -42,107 +42,10 @@ HEADERS = [
     ("Origin", "http,//buscatextual.cnpq.br"),
     (
         "User-Agent",
-        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36",
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36",
     ),
 ]
-
-## Aparentemente não está sendo usado
-# VERSION = "2017-05-09"
-# REMOTE_SCRIPT = "https://api.bitbucket.org/2.0/snippets/scriptlattes/g5Bx"
-# def __self_update():
-#     import inspect
-#     try:
-#         import simplejson
-#     except BaseException:
-#         print(
-#             "Erro, voce precisa do Simplejson instalado no sistema, instale no Ubuntu com 'sudo apt-get install python-simplejson'"
-#         )
-#         sys.exit(1)
-#     br = mechanize.Browser()
-#     r = br.open(REMOTE_SCRIPT) if br.open(REMOTE_SCRIPT) else None
-#     d = simplejson.loads(r.read())
-#     if d["updated_on"][:13] != VERSION:
-#         print("BaixaLattes desatualizado, atualizando...")
-#         r = br.open(d["files"]["baixaLattes.py"]["links"]["self"]["href"])
-#         content = r.read()
-#         fpath = os.path.abspath(inspect.getfile(inspect.currentframe()))
-#         try:
-#             handler = open(fpath, "w")
-#         except BaseException:
-#             print(
-#                 (
-#                     "Erro na escrita do novo arquivo, verifique se o arquivo '%s' tem permissao de escrita"
-#                     % fpath
-#                 )
-#             )
-#             sys.exit(1)
-#         handler.write(content)
-#         handler.close()
-#         print(
-#             "BaixaLattes atualizado, reinicie o programa para utilizar a nova versão, encerrando o ScriptLattes"
-#         )
-#         sys.exit(0)
-
-
-# def __get_data(id_lattes):
-#     p = re.compile("[a-zA-Z]+")
-#     if p.match(id_lattes):
-#         url = "http://buscatextual.cnpq.br/buscatextual/visualizacv.do?id=" + id_lattes
-#     else:
-#         # url = 'http://lattes.cnpq.br/'+id_lattes
-#         url = (
-#             "file://"
-#             + os.path.abspath(os.getcwd())
-#             + "/cvs-cache/"
-#             + id_lattes
-#             + ".html"
-#         )
-#     br = mechanize.Browser()
-#     br.set_cookiejar(http.cookiejar.LWPCookieJar())
-
-#     br.set_handle_equiv(True)
-#     br.set_handle_gzip(True)
-#     br.set_handle_redirect(True)
-#     br.set_handle_referer(True)
-#     br.set_handle_robots(False)
-#     br.set_handle_refresh(mechanize._http.HTTPRefreshProcessor(), max_time=1)
-#     br.addheaders = HEADERS
-
-#     # Parte em que buscava o CVs (Obrigado Jorge Gustavo dos Santos Pinho!)
-#     # r = br.open(url)
-
-#     # Nova implementação
-#     # url_get_captcha = "http://buscatextual.cnpq.br/buscatextual/servlet/captcha?metodo=getImagemCaptcha&noCache=" + \
-#     #     str(int(time.time()))
-#     # resp = br.open(url)
-
-#     # print('baixaLattes.py - url_get_captcha: ', url_get_captcha)
-
-#     # m = re.search('(&id=).*', resp.geturl())
-#     # id = m.group(0)
-#     # id = id.replace('&id=', '')
-
-#     # resp = br.open(url_get_captcha)
-#     # file = io.StringIO(resp.read())
-#     # img = Image.open(file)
-#     # img.show(title='CAPTCHA')
-
-#     # captcha = str(eval(input('\nINSIRA AS LETRAS DO CAPTCHA: ')))
-#     # url_captha = "http://buscatextual.cnpq.br/buscatextual/servlet/captcha?informado=" + \
-#     #     captcha+"&id="+id+"&metodo=validaCaptcha"
-#     # resp = br.open(url_captha)
-#     resp = br.open(url)
-#     # Fim da implementação
-
-#     response = resp.read()
-#     if b"infpessoa" in response:
-#         return response.decode("windows-1252")
-
-#     br.select_form(nr=0)
-#     br.form.set_all_readonly(False)
-#     br.form["metodo"] = "visualizarCV"
-#     r = br.submit()
-#     return r.read()
 
 
 def __get_data(id_lattes):
@@ -155,7 +58,8 @@ def __get_data(id_lattes):
     recaptcha_element = driver.find_element(By.ID, "divCaptcha")
     if recaptcha_element:
         input(
-            "\n\n[AVISO] reCAPTCHA detectado. Pressione Enter aqui quando o reCAPTCHA for resolvido"
+            "\n\n[AVISO] reCAPTCHA detectado. Pressione Enter aqui quando o reCAPTCHA "
+            "for resolvido"
         )
 
     html = driver.page_source

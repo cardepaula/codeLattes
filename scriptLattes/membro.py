@@ -198,10 +198,12 @@ class Membro:
                     self.listaPeriodo.append([int(ano1), int(ano2)])
                 else:
                     print(
-                        f"\n[AVISO IMPORTANTE] Periodo nao válido: {periodo}. (periodo desconsiderado na lista)"
+                        "\n[AVISO IMPORTANTE] Periodo nao válido: "
+                        f"{periodo}. (periodo desconsiderado na lista)"
                     )
                     print(
-                        f"[AVISO IMPORTANTE] CV Lattes: {self.idLattes}. Membro: {self.nomeInicial}\n"
+                        "[AVISO IMPORTANTE] CV Lattes: "
+                        f"{self.idLattes}. Membro: {self.nomeInicial}\n"
                     )
 
     def carregarDadosCVLattes(self):
@@ -228,7 +230,8 @@ class Membro:
             print(("(*) Utilizando CV armazenado no cache: " + cvPath))
 
         elif "0000000000000000" == self.idLattes:
-            # se o codigo for '0000000000000000' então serao considerados dados de pessoa estrangeira - sem Lattes.
+            # se o codigo for '0000000000000000' então serao considerados dados de
+            # pessoa estrangeira - sem Lattes.
             # sera procurada a coautoria endogena com os outros membro.
             # para isso é necessario indicar o nome abreviado no arquivo .list
             return
@@ -276,7 +279,6 @@ class Membro:
                 self.idLattes = parser.identificador16
                 self.url = "http://lattes.cnpq.br/" + self.idLattes
 
-        # -----------------------------------------------------------------------------------------
         # Obtemos todos os dados do CV Lattes
         self.nomeCompleto = parser.nomeCompleto
         self.bolsaProdutividade = parser.bolsaProdutividade
@@ -354,7 +356,6 @@ class Membro:
         self.listaParticipacaoEmEvento = parser.listaParticipacaoEmEvento
         self.listaOrganizacaoDeEvento = parser.listaOrganizacaoDeEvento
 
-        # -----------------------------------------------------------------------------------------
         nomePrimeiraGrandeArea = ""
         nomePrimeiraArea = ""
 
@@ -569,18 +570,7 @@ class Membro:
 
         s = "+ ID-MEMBRO   : " + str(self.idMembro) + "\n"
         s += "+ ROTULO      : " + self.rotulo + "\n"
-        # s += "+ ALIAS       : " + self.nomeInicial.encode('utf8','replace') + "\n"
         s += "+ NOME REAL   : " + self.nomeCompleto + "\n"
-        # s += "+ SEXO        : " + self.sexo.encode('utf8','replace') + "\n"
-        # s += "+ NOME Cits.  : " + self.nomeEmCitacoesBibliograficas.encode('utf8','replace') + "\n"
-        # s += "+ PERIODO     : " + self.periodo.encode('utf8','replace') + "\n"
-        # s += "+ BOLSA Prod. : " + self.bolsaProdutividade.encode('utf8','replace') + "\n"
-        # s += "+ ENDERECO    : " + self.enderecoProfissional.encode('utf8','replace') +"\n"
-        # s += "+ URL         : " + self.url.encode('utf8','replace') +"\n"
-        # s += "+ ATUALIZACAO : " + self.atualizacaoCV.encode('utf8','replace') +"\n"
-        # s += "+ FOTO        : " + self.foto.encode('utf8','replace') +"\n"
-        # s += "+ RESUMO      : " + self.textoResumo.encode('utf8','replace') + "\n"
-        # s += "+ COLABORADs. : " + str(len(self.listaIDLattesColaboradoresUnica))
 
         if verbose:
             s += "\n[COLABORADORES]"

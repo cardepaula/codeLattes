@@ -50,7 +50,12 @@ class GeradorDePaginasWeb:
 
         if self.grupo.obterParametro("global-criar_paginas_jsp"):
             self.extensaoPagina = ".jsp"
-            self.html1 = '<%@ page language="java" contentType="text/html; charset=ISO8859-1" pageEncoding="ISO8859-1"%> <%@ taglib prefix="f" uri="http://java.sun.com/jsf/core"%> <f:verbatim>'
+            self.html1 = (
+                '<%@ page language="java" contentType="text/html; charset=ISO8859-1" '
+                'pageEncoding="ISO8859-1"%> '
+                '<%@ taglib prefix="f" uri="http://java.sun.com/jsf/core"%> '
+                "<f:verbatim>"
+            )
             self.html2 = "</f:verbatim>"
         else:
             self.extensaoPagina = ".html"
@@ -136,7 +141,6 @@ class GeradorDePaginasWeb:
             + "</h2>"
         )
 
-        # | <a href=producao_membros' + self.extensaoPagina + '>Produção qualificado por membro</a> \
         s += (
             "[ <a href=membros"
             + self.extensaoPagina
@@ -348,16 +352,6 @@ class GeradorDePaginasWeb:
         else:
             s += "<i>Nenhum item achado nos currículos Lattes</i>"
 
-            # s+='</ul> <h3 id="patenteRegistro">Patente e Registro</h3> <ul>'
-        # if self.nPR0>0:
-        # s+= '<li> <a href="PR0-0'+self.extensaoPagina+'">Patente</a> '+'('+str(self.nPR0)+')'
-        # if self.nPR1>0:
-        # s+= '<li> <a href="PR1-0'+self.extensaoPagina+'">Programa de computador</a> '+'('+str(self.nPR1)+')'
-        # if self.nPR2>0:
-        # s+= '<li> <a href="PR2-0'+self.extensaoPagina+'">Desenho industrial</a> '+'('+str(self.nPR2)+')'
-        # if self.nPR0 == 0 and self.nPR1 == 0 and self.nPR2 == 0:
-        # s+= '<i>Nenhum item achado nos currículos Lattes</i>'
-
         s += '</ul> <h3 id="producaoArtistica">Produção artística</h3> <ul>'
         if self.nPA > 0:
             s += (
@@ -404,12 +398,9 @@ class GeradorDePaginasWeb:
                 )
             if self.nOA3 > 0:
                 s += (
-                    '<li> <a href="OA3-0'
-                    + self.extensaoPagina
-                    + '">Monografia de conclusão de curso de aperfeiçoamento/especialização</a> '
-                    + "("
-                    + str(self.nOA3)
-                    + ")"
+                    f'<li> <a href="OA3-0{self.extensaoPagina}">'
+                    "Monografia de conclusão de curso de aperfeiçoamento/especialização"
+                    f"</a> ({str(self.nOA3)})"
                 )
             if self.nOA4 > 0:
                 s += (
@@ -482,12 +473,9 @@ class GeradorDePaginasWeb:
                 )
             if self.nOC3 > 0:
                 s += (
-                    '<li> <a href="OC3-0'
-                    + self.extensaoPagina
-                    + '">Monografia de conclusão de curso de aperfeiçoamento/especialização</a> '
-                    + "("
-                    + str(self.nOC3)
-                    + ")"
+                    f'<li> <a href="OC3-0{self.extensaoPagina}">'
+                    "Monografia de conclusão de curso de aperfeiçoamento/especialização"
+                    f"</a> ({str(self.nOC3)}"
                 )
             if self.nOC4 > 0:
                 s += (
@@ -644,16 +632,35 @@ class GeradorDePaginasWeb:
         s += "</ul>"
 
         if self.grupo.obterParametro("mapa-mostrar_mapa_de_geolocalizacao"):
-            s += '<h3 id="mapa">Mapa de geolocaliza&ccedil;&atilde;o</h3> <br> <div id="map_canvas" style="width: 800px; height: 600px"></div> <br>'
+            s += (
+                '<h3 id="mapa">Mapa de geolocaliza&ccedil;&atilde;o</h3> '
+                '<br> <div id="map_canvas" style="width: 800px; height: 600px">'
+                "</div> <br>"
+            )
             s += "<b>Legenda</b><table>"
             if self.grupo.obterParametro("mapa-incluir_membros_do_grupo"):
-                s += "<tr><td> <img src=lattesPoint0.png></td> <td> Membro (orientador) </td></tr>"
+                s += (
+                    "<tr><td> <img src=lattesPoint0.png></td> "
+                    "<td> Membro (orientador) </td></tr>"
+                )
             if self.grupo.obterParametro("mapa-incluir_alunos_de_pos_doutorado"):
-                s += "<tr><td> <img src=lattesPoint1.png></td> <td>  Pesquisador com pós-doutorado concluído e ID Lattes cadastrado no currículo do supervisor </td></tr>"
+                s += (
+                    "<tr><td> <img src=lattesPoint1.png></td> "
+                    "<td>  Pesquisador com pós-doutorado concluído e "
+                    "ID Lattes cadastrado no currículo do supervisor </td></tr>"
+                )
             if self.grupo.obterParametro("mapa-incluir_alunos_de_doutorado"):
-                s += "<tr><td> <img src=lattesPoint2.png></td> <td>  Aluno com doutorado concluído e ID Lattes cadastrado no currículo do orientador </td></tr>"
+                s += (
+                    "<tr><td> <img src=lattesPoint2.png></td> "
+                    "<td>  Aluno com doutorado concluído e ID Lattes cadastrado "
+                    "no currículo do orientador </td></tr>"
+                )
             if self.grupo.obterParametro("mapa-incluir_alunos_de_mestrado"):
-                s += "<tr><td> <img src=lattesPoint3.png></td> <td>  Aluno com mestrado e ID Lattes cadastrado no currículo do orientador </td></tr>"
+                s += (
+                    "<tr><td> <img src=lattesPoint3.png></td> "
+                    "<td>  Aluno com mestrado e ID Lattes cadastrado "
+                    "no currículo do orientador </td></tr>"
+                )
             s += "</table>"
 
         if self.grupo.obterParametro("relatorio-incluir_internacionalizacao"):
@@ -837,16 +844,6 @@ class GeradorDePaginasWeb:
         self.nPR1 = 0
         self.nPR2 = 0
         self.nPR = 0
-
-        # if self.grupo.obterParametro('relatorio-incluir_patente'):
-
-        # self.nPR0 = self.gerar_pagina_de_producoes(self.grupo.compilador.listaCompletaPatente, "Patente", "PR0")
-        # self.nPR1 = self.gerar_pagina_de_producoes(self.grupo.compilador.listaCompletaProgramaComputador, "Programa de computador", "PR1")
-        # self.nPR2 = self.gerar_pagina_de_producoes(self.grupo.compilador.listaCompletaDesenhoIndustrial, "Desenho industrial", "PR2")
-
-        # Total de produções técnicas
-
-    # self.nPR = self.gerar_pagina_de_producoes(self.grupo.compilador.listaCompletaPR, "Total de patentes e registros", "PR")
 
     def gerarPaginasDeOrientacoes(self):
         self.nOA0 = 0
@@ -1105,20 +1102,9 @@ class GeradorDePaginasWeb:
         for ano, publicacoes in sorted(listaCompleta.items()):
             if ano != 0:
                 categories.append(ano)
-                for pub in publicacoes:
+                for _ in range(len(publicacoes)):
                     try:
-                        # if not pub.qualis:
-                        #    logger.debug("qualis is None")
-                        # sem qualis
                         estrato_area_ano_freq[None][None][ano] += 1
-                        # else:
-                        #    if type(pub.qualis) is str:  # sem area
-                        #        logger.debug("publicação com qualis string (sem área): '{}'".format(pub.qualis))
-                        #    else:
-                        #        for area, estrato in sorted(pub.qualis.items()):
-                        #            estrato_area_ano_freq[estrato][area][ano] += 1
-                        #            if area not in areas_map:
-                        #                areas_map[area] = len(areas_map)
                     except AttributeError:
                         logger.debug("publicação sem atributo qualis")
                         # producao que nao tem qualis
@@ -1199,7 +1185,11 @@ class GeradorDePaginasWeb:
                     if indice_na_pagina == 0 or indice_no_ano == 0:
                         if indice_na_pagina > 0:
                             producoes_html += "</table></div>"
-                        producoes_html += f'<div id="dv-year-{ano if ano else "*itens sem ano"}"><h3 class="year">{ano if ano else "*itens sem ano"}</h3> <table>'
+                        ano_text = ano if ano else "*itens sem ano"
+                        producoes_html += (
+                            f'<div id="dv-year-{ano_text}">'
+                            f'<h3 class="year">{ano_text}</h3> <table>'
+                        )
 
                     producao_html = self.template_producao()
                     producao_html = producao_html.format(
@@ -1299,37 +1289,54 @@ class GeradorDePaginasWeb:
                         st += (
                             "\n<h3>"
                             + tituloPagina
-                            + '</h3> <br> <center> <table> <tr> <td valign="top"><div id="barchart_div"></div> </td> <td valign="top"><div id="geochart_div"></div> </td> </tr> </table> </center>'
+                            + (
+                                '</h3> <br> <center> <table> <tr> <td valign="top">'
+                                '<div id="barchart_div"></div> </td> <td valign="top">'
+                                '<div id="geochart_div"></div> </td> </tr> </table> '
+                                "</center>"
+                            )
                         )
                         st += "<table>"
                         st += (
-                            "<tr><td>Número total de publicações realizadas SEM parceria com estrangeiros:</td><td>"
+                            "<tr><td>Número total de publicações realizadas "
+                            "SEM parceria com estrangeiros:</td><td>"
                             + str(
                                 gInternacionalizacao.numeroDePublicacoesRealizadasSemParceirasComEstrangeiros()
                             )
-                            + "</td><td><i>(publicações realizadas só por pesquisadores brasileiros)</i></td></tr>"
+                            + "</td><td><i>(publicações realizadas só por "
+                            "pesquisadores brasileiros)</i></td></tr>"
                         )
                         st += (
-                            "<tr><td>Número total de publicações realizadas COM parceria com estrangeiros:</td><td>"
+                            "<tr><td>Número total de publicações realizadas "
+                            "COM parceria com estrangeiros:</td><td>"
                             + str(
                                 gInternacionalizacao.numeroDePublicacoesRealizadasComParceirasComEstrangeiros()
                             )
                             + "</td><td></td></tr>"
                         )
                         st += (
-                            "<tr><td>Número total de publicações com parcerias NÂO identificadas:</td><td>"
+                            "<tr><td>Número total de publicações com parcerias "
+                            "NÂO identificadas:</td><td>"
                             + str(
                                 gInternacionalizacao.numeroDePublicacoesComParceriasNaoIdentificadas()
                             )
                             + "</td><td></td></tr>"
                         )
                         st += (
-                            "<tr><td>Número total de publicações com DOI cadastrado:</td><td><b>"
+                            "<tr><td>Número total de publicações "
+                            "com DOI cadastrado:</td><td><b>"
                             + str(numeroTotalDeProducoes)
                             + "</b></td><td></td></tr>"
                         )
                         st += "</table>"
-                        st += '<br> <font color="red">(*) A estimativa de "coautoria e internacionalização" é baseada na análise automática dos DOIs das publicações cadastradas nos CVs Lattes. A identificação de países, para cada publicação, é feita através de buscas simples de nomes de países.</font><br><p>'
+                        st += (
+                            '<br> <font color="red">(*) A estimativa de "coautoria '
+                            'e internacionalização" é baseada na análise automática '
+                            "dos DOIs das publicações cadastradas nos CVs Lattes. "
+                            "A identificação de países, para cada publicação, é "
+                            "feita através de buscas simples de nomes de países."
+                            "</font><br><p>"
+                        )
 
                         st += self.gerarIndiceDePaginas(
                             numeroDePaginas, numeroDePaginaAtual, prefixo
@@ -1385,13 +1392,14 @@ class GeradorDePaginasWeb:
 
         s = self.pagina_top()
         s += (
-            "\n<h3>Grafo de colabora&ccedil;&otilde;es</h3> \
-        <a href=membros"
+            "\n<h3>Grafo de colabora&ccedil;&otilde;es</h3> "
+            "<a href=membros"
             + self.extensaoPagina
             + ">"
             + str(self.grupo.numeroDeMembros())
-            + " curriculos Lattes</a> foram considerados, \
-        gerando os seguintes grafos de colabora&ccedil;&otilde;es encontradas com base nas produ&ccedil;&otilde;es: <i>"
+            + " curriculos Lattes</a> foram considerados, "
+            "gerando os seguintes grafos de colabora&ccedil;&otilde;es "
+            "encontradas com base nas produ&ccedil;&otilde;es: <i>"
             + lista
             + "</i>. <br><p>"
         )
@@ -1401,10 +1409,13 @@ class GeradorDePaginasWeb:
             if not self.grupo.obterParametro("global-prefixo") == ""
             else ""
         )
-        # s+='Veja <a href="grafoDeColaboracoesInterativo'+self.extensaoPagina+'?entradaScriptLattes=./'+prefix+'matrizDeAdjacencia.xml">na seguinte página</a> uma versão interativa do grafo de colabora&ccedil;&otilde;es.<br><p><br><p>'
 
-        s += "\nClique no nome dentro do vértice para visualizar o currículo Lattes. Para cada nó: o valor entre colchetes indica o número \
-        de produ&ccedil;&otilde;es feitas em colabora&ccedil;&atilde;o apenas com os outros membros do próprio grupo. <br>"
+        s += (
+            "\nClique no nome dentro do vértice para visualizar o currículo Lattes. "
+            "Para cada nó: o valor entre colchetes indica o número de "
+            "produ&ccedil;&otilde;es feitas em colabora&ccedil;&atilde;o apenas "
+            "com os outros membros do próprio grupo. <br>"
+        )
 
         if self.grupo.obterParametro("grafo-considerar_rotulos_dos_membros_do_grupo"):
             s += "As cores representam os seguintes rótulos: "
@@ -1419,15 +1430,19 @@ class GeradorDePaginasWeb:
                     + rot
                     + " "
                 )
-        s += '\
-        <ul> \
-        <li><b>Grafo de colabora&ccedil;&otilde;es sem pesos</b><br> \
-            <img src=grafoDeColaboracoesSemPesos.png border=1 ISMAP USEMAP="#grafo1"> <br><p> \
-        <li><b>Grafo de colabora&ccedil;&otilde;es com pesos</b><br> \
-            <img src=grafoDeColaboracoesComPesos.png border=1 ISMAP USEMAP="#grafo2"> <br><p> \
-        <li><b>Grafo de colabora&ccedil;&otilde;es com pesos normalizados</b><br> \
-            <img src=grafoDeColaboracoesNormalizado.png border=1 ISMAP USEMAP="#grafo3"> \
-        </ul>'
+        s += (
+            "<ul> "
+            "<li><b>Grafo de colabora&ccedil;&otilde;es sem pesos</b><br> "
+            "    <img src=grafoDeColaboracoesSemPesos.png border=1 ISMAP "
+            'USEMAP="#grafo1"> <br><p> '
+            "<li><b>Grafo de colabora&ccedil;&otilde;es com pesos</b><br> "
+            "    <img src=grafoDeColaboracoesComPesos.png border=1 ISMAP "
+            'USEMAP="#grafo2"> <br><p> '
+            "<li><b>Grafo de colabora&ccedil;&otilde;es com pesos normalizados</b><br> "
+            "    <img src=grafoDeColaboracoesNormalizado.png border=1 ISMAP "
+            'USEMAP="#grafo3"> '
+            "</ul>"
+        )
 
         cmapx1 = self.grupo.grafosDeColaboracoes.grafoDeCoAutoriaSemPesosCMAPX
         cmapx2 = self.grupo.grafosDeColaboracoes.grafoDeCoAutoriaComPesosCMAPX
@@ -1437,9 +1452,13 @@ class GeradorDePaginasWeb:
         s += '<map id="grafo3" name="grafo3">' + cmapx3 + "\n</map>\n"
 
         if self.grupo.obterParametro("grafo-incluir_grau_de_colaboracao"):
-            s += "<br><p><h3>Grau de colaboração</h3> \
-                O grau de colaboração (<i>Collaboration Rank</i>) é um valor numérico que indica o impacto de um membro no grafo de colaborações.\
-                <br>Esta medida é similar ao <i>PageRank</i> para grafos direcionais (com pesos).<br><p>"
+            s += (
+                "<br><p><h3>Grau de colaboração</h3> O grau de colaboração "
+                "(<i>Collaboration Rank</i>) é um valor numérico que indica o "
+                "impacto de um membro no grafo de colaborações. <br>Esta medida é "
+                "similar ao <i>PageRank</i> para grafos direcionais (com pesos)."
+                "<br><p>"
+            )
 
             ranks, autores, rotulos = list(
                 zip(
@@ -1452,7 +1471,10 @@ class GeradorDePaginasWeb:
                 )
             )
 
-            s += "<table border=1><tr> <td><i><b>Collaboration Rank</b></i></td> <td><b>Membro</b></td> </tr>"
+            s += (
+                "<table border=1><tr> <td><i><b>Collaboration Rank</b></i></td> "
+                "<td><b>Membro</b></td> </tr>"
+            )
             for i, rank in enumerate(ranks):
                 s += (
                     "<tr><td>"
@@ -1477,7 +1499,10 @@ class GeradorDePaginasWeb:
                         + "</b><br>"
                     )
 
-                    s += "<table border=1><tr> <td><i><b>AuthorRank</b></i></td> <td><b>Membro</b></td> </tr>"
+                    s += (
+                        "<table border=1><tr> <td><i><b>AuthorRank</b></i></td> "
+                        "<td><b>Membro</b></td> </tr>"
+                    )
                     for i, rank in enumerate(ranks):
                         if rotulos[i] == rotulo:
                             s += (
@@ -1499,7 +1524,12 @@ class GeradorDePaginasWeb:
 
         # grafo interativo
         s = self.pagina_top()
-        s += '<applet code=MyGraph.class width=1280 height=800 archive="http://www.vision.ime.usp.br/creativision/graphview/graphview.jar,http://www.vision.ime.usp.br/creativision/graphview/prefuse.jar"></applet></body></html>'
+        s += (
+            "<applet code=MyGraph.class width=1280 height=800 archive="
+            '"http://www.vision.ime.usp.br/creativision/graphview/graphview.jar,'
+            'http://www.vision.ime.usp.br/creativision/graphview/prefuse.jar">'
+            "</applet></body></html>"
+        )
         s += self.paginaBottom()
         self.salvarPagina("grafoDeColaboracoesInterativo" + self.extensaoPagina, s)
 
@@ -1507,23 +1537,32 @@ class GeradorDePaginasWeb:
     def producao_qualis(elemento, membro):
         tabela_template = (
             '<table style="width: 100%; display: block; overflow-x: auto;"><tbody>'
-            '<br><span style="font-size:14px;"><b>Totais de publicações com Qualis:</b></span><br><br>'
+            '<br><span style="font-size:14px;"><b>Totais de publicações com '
+            "Qualis:</b></span><br><br>"
             '<div style="width:100%; overflow-x:scroll;">{body}</div>'
             "</tbody></table>"
         )
 
         first_column_template = (
-            '<div style="float:left; width:200px; height: auto; border: 1px solid black; border-collapse: collapse; margin-left:0px; margin-top:0px;'
-            ' background:#CCC; vertical-align: middle; padding: 4px 0; {extra_style}"><b>{header}</b></div>'
+            '<div style="float:left; width:200px; height: auto; '
+            "border: 1px solid black; border-collapse: collapse; margin-left:0px; "
+            "margin-top:0px; background:#CCC; vertical-align: middle; padding: 4px 0;"
+            ' {extra_style}"><b>{header}</b></div>'
         )
         header_template = (
-            '<div style="float:left; width:{width}px; height: auto; border-style: solid; border-color: black; border-width: 1 1 1 0; border-collapse: collapse; margin-left:0px; margin-top:0px;'
-            ' background:#CCC; text-align: center; vertical-align: middle; padding: 4px 0;"><b>{header}</b></div>'
+            '<div style="float:left; width:{width}px; height: auto; '
+            "border-style: solid; border-color: black; border-width: 1 1 1 0; "
+            "border-collapse: collapse; margin-left:0px; margin-top:0px;"
+            " background:#CCC; text-align: center; vertical-align: middle; "
+            'padding: 4px 0;"><b>{header}</b></div>'
         )
         line_template = (
-            '<div style="float:left; width:{width}px; height: auto; border-style: solid; border-color: black; border-width: 1 1 1 0; border-collapse: collapse; margin-left:0px; margin-top:0px;'
-            ' background:#EAEAEA; text-align: center; vertical-align: middle; padding: 4px 0;">{value}</div>'
-        )  # padding:4px 6px;
+            '<div style="float:left; width:{width}px; height: auto; '
+            "border-style: solid; border-color: black; border-width: 1 1 1 0; "
+            "border-collapse: collapse; margin-left:0px; margin-top:0px;"
+            " background:#EAEAEA; text-align: center; vertical-align: middle; "
+            'padding: 4px 0;">{value}</div>'
+        )
 
         cell_size = 40
         num_estratos = len(membro.tabela_qualis["estrato"].unique())
@@ -1569,56 +1608,6 @@ class GeradorDePaginasWeb:
 
         tabela = tabela_template.format(body=tabela_body)
 
-        # first = True
-        # # FIXME: considerar as áreas
-        # for ano in sorted(membro.tabela_qualis['ano'].unique()):
-        #     if first:
-        #         first = False
-        #         display = "block"
-        #     else:
-        #         display = "none"
-        #
-        #     # esquerda = '<a class="ano_esquerda" rel="{ano}" rev="{rev}" style="cursor:pointer; padding:2px; border:1px solid #C3FDB8;">«</a>'.format(
-        #     #     ano=ano, rev=str(elemento))
-        #     # direita = '<a class="ano_direita" rel="{ano}" rev="{rev}" style="cursor:pointer; padding:2px; border:1px solid #C3FDB8;">«</a>'.format(
-        #     #     ano=ano, rev=str(elemento))
-        #     # tabela += '<div id="ano_{ano}_{elemento}" style="display: {display}">{esquerda}<b>{ano}</b>{direita}<br/><br/>'.format(
-        #     #           ano=ano, elemento=elemento, display=display, esquerda=esquerda, direita=direita)
-        #     chaves = ''
-        #     valores = ''
-        #
-        #     for tipo, frequencia in membro.tabelaQualisDosAnos[ano].items():
-        #         # FIXME: terminar de refatorar
-        #         if tipo == "Qualis nao identificado":
-        #             tipo = '<span title="Qualis nao identificado">QNI</span>'
-        #
-        #         chaves += '<div style="float:left; width:70px; border:1px solid #000; margin-left:-1px; margin-top:-1px; background:#CCC; padding:4px 6px;"><b>' + str(
-        #             tipo) + '</b></div>'
-        #         valores += '<div style="float:left; width:70px; border:1px solid #000; margin-left:-1px; margin-top:-1px; background:#EAEAEA; padding:4px 6px;">' + str(
-        #             frequencia) + '</div>'
-        #
-        #     tabela += '<div>' + chaves + '</div>'
-        #     tabela += '<div style="clear:both"></div>'
-        #     tabela += '<div>' + valores + '</div>'
-        #     tabela += '<div style="clear:both"></div>'
-        #     tabela += "<br><br></div>"
-        # tabTipo += '<div>'
-        # chaves = ''
-        # valores = ''
-        # for chave, valor in membro.tabelaQualisDosTipos.items():
-        #
-        #     if (chave == "Qualis nao identificado"):
-        #         chave = "QNI"
-        #
-        #     chaves += '<div style="float:left; width:70px; border:1px solid #000; margin-left:-1px; margin-top:-1px; background:#CCC; padding:4px 6px;"><b>' + str(
-        #         chave) + '</b></div>'
-        #     valores += '<div style="float:left; width:70px; border:1px solid #000; margin-left:-1px; margin-top:-1px; background:#EAEAEA; padding:4px 6px;">' + str(
-        #         valor) + '</div>'
-        # tabTipo += '<div>' + chaves + '</div>'
-        # tabTipo += '<div style="clear:both"></div>'
-        # tabTipo += '<div>' + valores + '</div>'
-        # tabTipo += '<div style="clear:both"></div>'
-        # tabTipo += "<br><br></div><br><br>"
         return tabela
 
     def gerar_pagina_de_membros(self):
@@ -1648,10 +1637,6 @@ class GeradorDePaginasWeb:
 
             self.gerar_pagina_individual_de_membro(membro)
 
-            # html_qualis = self.producao_qualis(elemento, membro)
-            # <td valign="center" height="40px">' + str(elemento) + '.</td> \
-            # <td valign="top" height="40px"><img src="' + membro.foto + '" width="40px"></td> \
-
             s += f'\n<tr class="testetabela"> \
                      <td valign="center">{str(elemento)}.</td> \
                      <td><a href="membro-{membro.idLattes}.html"> {nomeCompleto}</a></td> \
@@ -1664,21 +1649,7 @@ class GeradorDePaginasWeb:
                      <td><font size=-2>{membro.instituicao}</font></td> \
                  </tr>'
 
-            # <td class="centered"><font size=-1>' + u'Produção com Qualis' + '</font></td> \
-
-            # s += '<tr><td colspan="9"> \
-            #      ' + html_qualis + ' \
-            #      </td></tr>'
-
         s += "\n</table>"
-
-        # add jquery and plugins
-        # s += '<script src="../../js/jexpand/jExpand.js"></script>' \
-        #      '<script>' \
-        #      '  $(document).ready(function(){' \
-        #      '    $(".collapse-box").jExpand();' \
-        #      '  });' \
-        #      '</script>'
 
         s += (
             "<script>"
@@ -1687,23 +1658,6 @@ class GeradorDePaginasWeb:
             "  });"
             "</script>"
         )
-
-        # $(".ano_esquerda").live("click", function(e){\
-        #     var anoAtual = parseInt($(this).attr("rel"));\
-        #     var contador = $(this).attr("rev");\
-        #     if(anoAtual > ' + str(anoInicio) + '){\
-        #         $("#ano_"+anoAtual+"_"+contador).css("display", "none");\
-        #         $("#ano_"+(anoAtual-1)+"_"+contador).css("display", "block");\
-        #     }\
-        # });\
-        # $(".ano_direita").live("click", function(e){\
-        #     var anoAtual = parseInt($(this).attr("rel"));\
-        #     var contador = $(this).attr("rev");\
-        #     if(anoAtual < ' + str(anoFim) + '){\
-        #         $("#ano_"+anoAtual+"_"+contador).css("display", "none");\
-        #         $("#ano_"+(anoAtual+1)+"_"+contador).css("display", "block");\
-        #     }\
-        # });\
 
         s += self.paginaBottom()
 
@@ -2022,8 +1976,15 @@ class GeradorDePaginasWeb:
             colaboradores, key=lambda x: (-x[1], x[0])
         ):
             colaborador = self.grupo.listaDeMembros[idColaborador]
-            s += f'<li><a href="#{colaborador.idLattes}">{colaborador.nomeCompleto}</a> ({quantidade})'
-            detalhe += f'<li id="{colaborador.idLattes}"> <b>{membro.nomeCompleto} &hArr; <a href="membro-{colaborador.idLattes}{self.extensaoPagina}">{colaborador.nomeCompleto}</a></b> ({quantidade}) <ol>'
+            s += (
+                f'<li><a href="#{colaborador.idLattes}">'
+                f"{colaborador.nomeCompleto}</a> ({quantidade})"
+            )
+            detalhe += (
+                f'<li id="{colaborador.idLattes}"> <b>{membro.nomeCompleto} &hArr; '
+                f'<a href="membro-{colaborador.idLattes}{self.extensaoPagina}">'
+                f"{colaborador.nomeCompleto}</a></b> ({quantidade}) <ol>"
+            )
 
             for publicacao in self.grupo.listaDeColaboracoes[membro.idMembro][
                 idColaborador
@@ -2087,20 +2048,10 @@ class GeradorDePaginasWeb:
         first_column_template = '<td style="{extra_style}">{header}</td>'
         header_template = '<th colspan="{colspan}" {extra_pars}>{header}</th>'
         cell_template = '<td class="dt-body-center">{value}</td>'
-        # first_column_template = u'<td style="border: 1px solid black; border-collapse: collapse; background:#CCC;' \
-        #                         u'vertical-align: middle; padding: 4px 0; {extra_style}">{header}</td>'
-        # header_template = u'<th colspan="{colspan}" style="border-style: solid; border-color: black;' \
-        #                   u'border-width: 1 1 1 0; border-collapse: collapse; margin-left:0px; margin-top:0px;' \
-        #                   u'background:#CCC; text-align: center; vertical-align: middle; padding: 4px 0;">{header}</th>'
-        # cell_template = u'<td style="border-style: solid; border-color: black;' \
-        #                 u'border-width: 1 1 1 0; border-collapse: collapse; margin-left:0px; margin-top:0px;' \
-        # u'background:#EAEAEA; text-align: center; vertical-align: middle;
-        # padding: 4px 0;">{value}</td>'
 
         header_area = header_template.format(
             header="Área", colspan=1, extra_pars='rowspan="2"'
         )
-        # header_membro = header_template.format(header=u'Membro', colspan=1)
         header_anos = header_template.format(header="Ano", colspan=1, extra_pars="")
         header_estratos = header_template.format(
             header="Membro \\ Estrato", colspan=1, extra_pars=""
@@ -2132,7 +2083,6 @@ class GeradorDePaginasWeb:
 
         first_row_header = table_line_template.format(line=header_area + header_anos)
         second_row_header = table_line_template.format(line=header_estratos)
-        # header = header_area + header_membro + header_estratos
         table_header = first_row_header + second_row_header
 
         table_footer = table_line_template.format(line=footer)
@@ -2206,17 +2156,14 @@ class GeradorDePaginasWeb:
                               } );
                   });
                 </script>"""
-        # '      .rowGrouping({' \
-        # '        iGroupingColumnIndex: 1,' \
-        # '        sGroupingColumnSortDirection: "asc",' \
-        # '        bExpandableGrouping: true,' \
-        # '        bExpandSingleGroup: true,' \
-        # '        });' \
 
         # Salvar em planilha
         xls_filename = os.path.join(self.dir, "producao_membros.xls")
         producao_por_membro.to_excel(os.path.abspath(xls_filename))
-        html += f'<a href="{os.path.abspath(xls_filename)}">{"Baixar planilha com os dados"}</a>'
+        html += (
+            f'<a href="{os.path.abspath(xls_filename)}">'
+            f'{"Baixar planilha com os dados"}</a>'
+        )
 
         html += self.paginaBottom()
         self.salvarPagina("producao_membros" + self.extensaoPagina, html)
@@ -2232,17 +2179,21 @@ class GeradorDePaginasWeb:
             "<title>{nome_grupo}</title>"
             '<link rel="stylesheet" href="css/scriptLattes.css" type="text/css">'
             '<link rel="stylesheet" type="text/css" href="css/jquery.dataTables.css">'
-            '<link rel="stylesheet" type="text/css" href="css/dataTables.colVis.min.css">'
-            '<script type="text/javascript" charset="utf8" src="js/jquery.min.js"></script>'
-            '<script type="text/javascript" charset="utf8" src="js/jquery.dataTables.min.js"></script>'
-            '<script type="text/javascript" charset="utf8" src="js/dataTables.colVis.min.js"></script>'
-            '<script src="http://professor.ufabc.edu.br/~jesus.mena/sorttable.js"></script>'
+            '<link rel="stylesheet" type="text/css" '
+            'href="css/dataTables.colVis.min.css">'
+            '<script type="text/javascript" charset="utf8" src="js/jquery.min.js">'
+            "</script>"
+            '<script type="text/javascript" charset="utf8" '
+            'src="js/jquery.dataTables.min.js"></script>'
+            '<script type="text/javascript" charset="utf8" '
+            'src="js/dataTables.colVis.min.js"></script>'
+            '<script src="http://professor.ufabc.edu.br/~jesus.mena/sorttable.js">'
+            "</script>"
             "{cabecalho}"
             "</head>"
             '<body><div id="header2"> <button onClick="history.go(-1)">Voltar</button>'
             "<h2>{nome_grupo}</h2></div>"
         )
-        # '<script type="text/javascript" charset="utf8" src="jquery.dataTables.rowGrouping.js"></script>' \
         s += template.format(nome_grupo=nome_grupo, cabecalho=cabecalho)
         return s
 
@@ -2275,35 +2226,41 @@ class GeradorDePaginasWeb:
             )
 
         s += (
-            "\n<br>Data de processamento: "
-            + data
-            + '<br> \
-        <div id="footer"> \
-        Este arquivo foi gerado automaticamente por <a href="http://scriptlattes.sourceforge.net/">scriptLattes '
+            "\n<br>Data de processamento: " + data + "<br>\n"
+            '<div id="footer">\n'
+            "Este arquivo foi gerado automaticamente por "
+            '<a href="http://scriptlattes.sourceforge.net/">scriptLattes '
             + self.version
-            + '</a>. \
-        Os resultados estão sujeitos a falhas devido a inconsistências no preenchimento dos currículos Lattes. Caso note alguma falha, por favor, contacte o responsável por esta página: <a href="mailto:'
+            + "</a>.\n"
+            "Os resultados estão sujeitos a falhas devido a inconsistências "
+            "no preenchimento dos currículos Lattes. "
+            "Caso note alguma falha, por favor, contacte o responsável "
+            "por esta página: "
+            '<a href="mailto:'
             + self.grupo.obterParametro("global-email_do_admin")
             + '">'
             + self.grupo.obterParametro("global-email_do_admin")
-            + "</a> \
-        </div> "
+            + "</a>\n"
+            "</div> "
         )
 
         if self.grupo.obterParametro("global-google_analytics_key"):
             s += (
-                '<script type="text/javascript">\
-            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");\
-            document.write(unescape("%3Cscript src=\'" + gaJsHost + "google-analytics.com/ga.js\' type=\'text/javascript\'%3E%3C/script%3E"));\
-            </script>\
-            <script type="text/javascript">\
-            try {\
-              var pageTracker = _gat._getTracker("'
+                '<script type="text/javascript">'
+                'var gaJsHost = (("https:" == document.location.protocol) ? '
+                '"https://ssl." : "http://www.");'
+                'document.write(unescape("%3Cscript src=\'" + gaJsHost '
+                "+ \"google-analytics.com/ga.js' "
+                "type='text/javascript'%3E%3C/script%3E\"));"
+                "</script>"
+                '<script type="text/javascript">'
+                "try {"
+                'var pageTracker = _gat._getTracker("'
                 + self.grupo.obterParametro("global-google_analytics_key")
-                + '");\
-              pageTracker._trackPageview();\
-            } catch(err) {}\
-            </script>'
+                + '");'
+                "pageTracker._trackPageview();"
+                "} catch(err) {}"
+                "</script>"
             )
         s += "</body>" + self.html2
 
@@ -2348,13 +2305,22 @@ class GeradorDePaginasWeb:
             + ")"
         )
         st += "<br><p><b>Legenda Qualis:</b><ul>"
-        st += '<li> Publica&ccedil;&atilde;o para a qual o nome exato do Qualis foi identificado: <font color="#254117"><b>Qualis &lt;estrato&gt;</b></font>'
-        st += '<li> Publica&ccedil;&atilde;o para a qual um nome similar (n&atilde;o exato) do Qualis foi identificado: <font color="#F88017"><b>Qualis &lt;estrato&gt;</b></font> (nome similar)'
-        st += '<li> Publica&ccedil;&atilde;o para a qual nenhum nome do Qualis foi identificado: <font color="#FDD7E4"><b>Qualis n&atilde;o identificado</b></font> (nome usado na busca)'
+        st += (
+            "<li> Publica&ccedil;&atilde;o para a qual o nome exato do Qualis foi "
+            'identificado: <font color="#254117"><b>Qualis &lt;estrato&gt;</b></font>'
+        )
+        st += (
+            "<li> Publica&ccedil;&atilde;o para a qual um nome similar "
+            "(n&atilde;o exato) do Qualis foi identificado: "
+            '<font color="#F88017"><b>Qualis &lt;estrato&gt;</b></font> (nome similar)'
+        )
+        st += (
+            "<li> Publica&ccedil;&atilde;o para a qual nenhum nome do Qualis foi "
+            'identificado: <font color="#FDD7E4"><b>Qualis n&atilde;o identificado</b>'
+            "</font> (nome usado na busca)"
+        )
         st += "</ul>"
         return st
-
-        # return 'Sem totais qualis ainda...'
 
 
 def menuHTMLdeBuscaPB(titulo):

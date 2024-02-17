@@ -115,24 +115,6 @@ class QualisExtractor(object):
 
         return self.url2
 
-        # "http://qualis.capes.gov.br/webqualis/publico/pesquisaPublicaClassificacao.seam"
-        # FIXME: verificar se este código ainda é útil
-        # if not self.online:
-        # req2 = urllib2.Request(self.url2,
-        # # 'AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Aissn=&javax.faces.ViewState=j_id2&consultaPublicaClassificacaoForm%3Aj_id192=consultaPublicaClassificacaoForm%3Aj_id192')
-        # 'AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Aissn=&javax.faces.ViewState=j_id2')
-        # # 'AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Aissn=&javax.faces.ViewState=j_id4&consultaPublicaClassificacaoForm%3Aj_id195=consultaPublicaClassificacaoForm%3Aj_id195')
-        # # "AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm"%"3Aissn=&javax.faces.ViewState=j_id6&consultaPublicaClassificacaoForm"%"3Aj_id195=consultaPublicaClassificacaoForm"%"3Aj_id195&"
-        # arq2 = urllib2.urlopen(req2)
-        #     # get all qualis areas
-        #     document = arq2.read()
-        #     self.get_areas(document)
-        #     req3 = urllib2.Request(self.url2,
-        #                            'consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3AsomAreaAvaliacao=0&consultaPublicaClassificacaoForm%3AsomEstrato=org.jboss.seam.ui.NoSelectionConverter.noSelectionValue&consultaPublicaClassificacaoForm%3AbtnPesquisarTituloPorArea=Pesquisar&javax.faces.ViewState=j_id2')
-        #     # 'consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3AsomAreaAvaliacao=23&consultaPublicaClassificacaoForm%3AsomEstrato=org.jboss.seam.ui.NoSelectionConverter.noSelectionValue&consultaPublicaClassificacaoForm%3AbtnPesquisarTituloPorArea=Pesquisar&javax.faces.ViewState=j_id4')
-        #     arq3 = urllib2.urlopen(req3)
-        #     a3 = arq3.read()
-
     def parse_areas_file(self, afile):
         """
         Formato do arquivo:
@@ -178,9 +160,14 @@ class QualisExtractor(object):
             # utilizar o código nas URLs abaixo.
             reqn = urllib.request.Request(
                 self.url2,
-                "consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3AsomAreaAvaliacao="
-                + str(area)
-                + "&consultaPublicaClassificacaoForm%3AsomEstrato=org.jboss.seam.ui.NoSelectionConverter.noSelectionValue&consultaPublicaClassificacaoForm%3AbtnPesquisarTituloPorArea=Pesquisar&javax.faces.ViewState=j_id2",
+                (
+                    "consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm"
+                    f"&consultaPublicaClassificacaoForm%3AsomAreaAvaliacao={str(area)}"
+                    "&consultaPublicaClassificacaoForm%3AsomEstrato=org.jboss.seam.ui."
+                    "NoSelectionConverter.noSelectionValue&consultaPublicaClassificacao"
+                    "Form%3AbtnPesquisarTituloPorArea=Pesquisar&javax.faces.ViewState="
+                    "j_id2"
+                ),
             )
 
             arqn = urllib.request.urlopen(reqn)
@@ -190,11 +177,16 @@ class QualisExtractor(object):
             while more == 1:
                 reqn = urllib.request.Request(
                     self.url2,
-                    "AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3AsomAreaAvaliacao="
-                    + str(area)
-                    + "&consultaPublicaClassificacaoForm%3AsomEstrato=org.jboss.seam.ui.NoSelectionConverter.noSelectionValue&javax.faces.ViewState=j_id3&ajaxSingle=consultaPublicaClassificacaoForm%3AscrollerArea&consultaPublicaClassificacaoForm%3AscrollerArea="
-                    + str(scroller)
-                    + "&AJAX%3AEVENTS_COUNT=1&",
+                    (
+                        "AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm="
+                        "consultaPublicaClassificacaoForm&consultaPublicaClassificacao"
+                        f"Form%3AsomAreaAvaliacao={str(area)}&consultaPublicaClassifica"
+                        "caoForm%3AsomEstrato=org.jboss.seam.ui.NoSelectionConverter."
+                        "noSelectionValue&javax.faces.ViewState=j_id3&ajaxSingle="
+                        "consultaPublicaClassificacaoForm%3AscrollerArea&consulta"
+                        f"PublicaClassificacaoForm%3AscrollerArea={str(scroller)}"
+                        "&AJAX%3AEVENTS_COUNT=1&"
+                    ),
                 )
 
                 # arqn = urllib2.urlopen (reqn)
@@ -205,14 +197,12 @@ class QualisExtractor(object):
                         break  # success
                     except urllib.error.URLError as err:
                         logger.warning("Erro extraindo qualis. Tentando novamente.")
-                        # continue
-                        # if not isinstance(err.reason, socket.timeout):
-                        # raise "Non timeout error occurried while loading page." # propagate non-timeout errors
-                        # else: # all ntries failed
-                        # raise err # re-raise the last timeout error
                     if i == tries:
                         logger.warning(
-                            f"Não foi possível extrair qualis mesmo após {tries} tentativas. Desistindo."
+                            (
+                                f"Não foi possível extrair qualis mesmo após {tries} "
+                                "tentativas. Desistindo."
+                            )
                         )
                         break
 
@@ -265,11 +255,17 @@ class QualisExtractor(object):
                 break  # success
             except urllib.error.URLError as err:
                 logger.warning(
-                    f"Erro extraindo Qualis do ISSN {issn}. Tentando novamente. Erro: {err}"
+                    (
+                        f"Erro extraindo Qualis do ISSN {issn}. Tentando novamente. "
+                        "Erro: {err}"
+                    )
                 )
             if i == tries - 1:
                 logger.warning(
-                    f"Não foi possível extrair Qualis do ISSN {issn} mesmo após {tries} tentativas. Desistindo."
+                    (
+                        f"Não foi possível extrair Qualis do ISSN {issn} mesmo após "
+                        f"{tries} tentativas. Desistindo."
+                    )
                 )
                 break
         html_document = arqn.read()
@@ -277,17 +273,19 @@ class QualisExtractor(object):
 
     def extract_online_qualis_by_issn(self, issn):
         """
-        Extrai a classificação Qualis do dado ISSN. O sistema webqualis da CAPES é acessado e os HTMLs retornados são
-        parseados.
+        Extrai a classificação Qualis do dado ISSN. O sistema webqualis da CAPES é
+        acessado e os HTMLs retornados são parseados.
 
-        Para poupar tempo no acesso, uma mesma sessão é aproveitada nas chamadas seguintes a este método (ver
-        self.init_session()). Entretanto, há um comportamento bizarro do sistema webqualis, que acontece mesmo
-        navegando-se por um browser: quando um novo ISSN é pesquisado, a tabela de resultados é iniciada na página
-        em que a tabela dos resultados anteriores estava. Por isso há um tratamento especial abaixo para lidar com
-        o caso de ISSNs com várias páginas de resultado.
+        Para poupar tempo no acesso, uma mesma sessão é aproveitada nas chamadas
+        seguintes a este método (ver self.init_session()). Entretanto, há um
+        comportamento bizarro do sistema webqualis, que acontece mesmo navegando-se por
+        um browser: quando um novo ISSN é pesquisado, a tabela de resultados é iniciada
+        na página em que a tabela dos resultados anteriores estava. Por isso há um
+        tratamento especial abaixo para lidar com o caso de ISSNs com várias páginas de
+        resultado.
 
         :param issn: string do issn a ser extraido (deve estar no formato 1234-5678)
-        :return: um pandas DataFrame com as colunas [issn, nome periodico, area, estrato]
+        :return: um DataFrame com as colunas [issn, nome periodico, area, estrato]
         """
         qualis_data_frame = pd.DataFrame(
             columns=["issn", "periodico", "area", "estrato"]
@@ -300,9 +298,12 @@ class QualisExtractor(object):
 
         req = urllib.request.Request(
             url,
-            "consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Aissn="
-            + str(issn)
-            + "&consultaPublicaClassificacaoForm%3AbtnPesquisarISSN=Pesquisar&javax.faces.ViewState=j_id2",
+            (
+                "consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm"
+                f"&consultaPublicaClassificacaoForm%3Aissn={str(issn)}&consultaPublica"
+                "ClassificacaoForm%3AbtnPesquisarISSN=Pesquisar&javax.faces.ViewState="
+                "j_id2"
+            ),
         )
         html_document = self.read_url(req)
         partial_data_frame = self.parse_content(html_document)
@@ -314,11 +315,14 @@ class QualisExtractor(object):
         for scroller in pages:
             req = urllib.request.Request(
                 url,
-                "AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Aissn="
-                + str(issn)
-                + "&javax.faces.ViewState=j_id3&ajaxSingle=consultaPublicaClassificacaoForm%3Adatascroller1&consultaPublicaClassificacaoForm%3Adatascroller1="
-                + str(scroller)
-                + "&AJAX%3AEVENTS_COUNT=1&",
+                (
+                    "AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consulta"
+                    "PublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Aissn="
+                    f"{str(issn)}&javax.faces.ViewState=j_id3&ajaxSingle=consulta"
+                    "PublicaClassificacaoForm%3Adatascroller1&consultaPublica"
+                    f"ClassificacaoForm%3Adatascroller1={str(scroller)}"
+                    "&AJAX%3AEVENTS_COUNT=1&"
+                ),
             )
             html_document = self.read_url(req)
             partial_data_frame = self.parse_content(html_document)
@@ -330,7 +334,8 @@ class QualisExtractor(object):
 
     def get_qualis_by_issn(self, issn):
         """
-        Retorna Qualis do respectivo ISSN. Restringe as areas se elas tiverem sido especificadas (ver parse_areas_file).
+        Retorna Qualis do respectivo ISSN. Restringe as areas se elas tiverem sido
+        especificadas (ver parse_areas_file).
 
         NOTA: ISSN tem que estar no formato XXXX-YYYY
         """
@@ -370,17 +375,19 @@ class QualisExtractor(object):
 
     def extract_online_qualis_by_title(self, journal_title):
         """
-        Extrai a classificação Qualis do dado periódico a partir do seu nome. O sistema webqualis da CAPES é acessado e
-        os HTMLs retornados são parseados.
+        Extrai a classificação Qualis do dado periódico a partir do seu nome. O sistema
+        webqualis da CAPES é acessado e os HTMLs retornados são parseados.
 
-        Para poupar tempo no acesso, uma mesma sessão é aproveitada nas chamadas seguintes a este método (ver
-        self.init_session()). Entretanto, há um comportamento bizarro do sistema webqualis, que acontece mesmo
-        navegando-se por um browser: quando um novo ISSN é pesquisado, a tabela de resultados é iniciada na página
-        em que a tabela dos resultados anteriores estava. Por isso há um tratamento especial abaixo para lidar com
-        o caso de ISSNs com várias páginas de resultado.
+        Para poupar tempo no acesso, uma mesma sessão é aproveitada nas chamadas
+        seguintes a este método (ver self.init_session()). Entretanto, há um
+        comportamento bizarro do sistema webqualis, que acontece mesmo navegando-se por
+        um browser: quando um novo ISSN é pesquisado, a tabela de resultados é iniciada
+        na página em que a tabela dos resultados anteriores estava. Por isso há um
+        tratamento especial abaixo para lidar com o caso de ISSNs com várias páginas de
+        resultado.
 
         :param issn: string do issn a ser extraido (deve estar no formato 1234-5678)
-        :return: um pandas DataFrame com as colunas [issn, nome periodico, area, estrato]
+        :return: um DataFrame com as colunas [issn, nome periodico, area, estrato]
         """
         qualis_data_frame = pd.DataFrame(
             columns=["issn", "periodico", "area", "estrato"]
@@ -393,9 +400,12 @@ class QualisExtractor(object):
 
         req = urllib.request.Request(
             url,
-            "consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Atitulo="
-            + str(journal_title)
-            + "&consultaPublicaClassificacaoForm%3AbtnPesquisarTitulo=Pesquisar&javax.faces.ViewState=j_id2",
+            (
+                "consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&"
+                f"consultaPublicaClassificacaoForm%3Atitulo={str(journal_title)}"
+                "&consultaPublicaClassificacaoForm%3AbtnPesquisarTitulo=Pesquisar&javax"
+                ".faces.ViewState=j_id2"
+            ),
         )
         html_document = self.read_url(req)
         partial_data_frame = self.parse_content(html_document)
@@ -407,11 +417,14 @@ class QualisExtractor(object):
         for scroller in pages:
             req = urllib.request.Request(
                 url,
-                "AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consultaPublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Atitulo="
-                + str(journal_title)
-                + "&javax.faces.ViewState=j_id3&ajaxSingle=consultaPublicaClassificacaoForm%3Adatascroller2&consultaPublicaClassificacaoForm%3Adatascroller2="
-                + str(scroller)
-                + "&AJAX%3AEVENTS_COUNT=1&",
+                (
+                    "AJAXREQUEST=_viewRoot&consultaPublicaClassificacaoForm=consulta"
+                    "PublicaClassificacaoForm&consultaPublicaClassificacaoForm%3Atitulo"
+                    f"={str(journal_title)}&javax.faces.ViewState=j_id3&ajaxSingle="
+                    "consultaPublicaClassificacaoForm%3Adatascroller2&consultaPublica"
+                    f"ClassificacaoForm%3Adatascroller2={str(scroller)}"
+                    "&AJAX%3AEVENTS_COUNT=1&"
+                ),
             )
             html_document = self.read_url(req)
             partial_data_frame = self.parse_content(html_document)
@@ -423,7 +436,8 @@ class QualisExtractor(object):
 
     def get_qualis_by_title(self, journal_title):
         """
-        Retorna o Qualis a partir do nome do periódico. Restringe as areas se elas tiverem sido especificadas (ver parse_areas_file).
+        Retorna o Qualis a partir do nome do periódico. Restringe as areas se elas
+        tiverem sido especificadas (ver parse_areas_file).
         """
         logger.info(f'Extraindo qualis do periódico "{journal_title}"...')
 
@@ -486,9 +500,9 @@ class QualisExtractor(object):
     def has_more_content(html_document):
         tree = etree.HTML(html_document)
 
-        # /html/body/div[3]/div[4]/form/table/tbody/tr[2]/td/table/tbody/tr/td/div[2]/div/div/table/tbody/tr/td[11]
         last_bts = tree.xpath(
-            "//table[@id='consultaPublicaClassificacaoForm:datascroller1_table']/tbody/tr/td"
+            "//table[@id='consultaPublicaClassificacaoForm:datascroller1_table']"
+            "/tbody/tr/td"
         )
         # se encontrar um botao com onclick='page:last', entao ainda tem
         # paginas
@@ -502,7 +516,8 @@ class QualisExtractor(object):
     def other_pages(html_document):
         tree = etree.HTML(html_document)
         inactive_page_buttons = tree.xpath(
-            "//table[@id='consultaPublicaClassificacaoForm:datascroller1_table']/tbody/tr/td[@class='rich-datascr-inact ']"
+            "//table[@id='consultaPublicaClassificacaoForm:datascroller1_table']/tbody/"
+            "tr/td[@class='rich-datascr-inact ']"
         )  # espaço em branco na classe
         return [button.text for button in inactive_page_buttons]
 

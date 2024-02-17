@@ -182,8 +182,11 @@ class ArtigoEmPeriodico:
 
     # caso difícil: falta melhorar a separacao entre TITULO e NOME-DE-REVISTA
     #
-    # +AUTORES     : Jelinek, Herbert F. ; Cree, Michael J. ; Leandro, Jorge J. G. ; Soares, João V. B. ; Cesar, Roberto M. ; Luckie, A.
-    # +TITULO      : Automated segmentation of retinal blood vessels and identification of proliferative diabetic retinopathy. Journal of the Optical Society of America
+    # +AUTORES     : Jelinek, Herbert F. ; Cree, Michael J. ; Leandro, Jorge J. G. ;
+    #                Soares, João V. B. ; Cesar, Roberto M. ; Luckie, A.
+    # +TITULO      : Automated segmentation of retinal blood vessels and identification
+    #                of proliferative diabetic retinopathy. Journal of the Optical
+    #                Society of America
     # +REVISTA     : A, Optics Image Science and Vision
     # +ANO         : 2007
     # +PAGINAS     : 1448
@@ -212,9 +215,8 @@ class ArtigoEmPeriodico:
 
         if not self.doi == "":
             s += (
-                ' <a href="'
-                + self.doi
-                + '" target="_blank" style="PADDING-RIGHT:4px;"><img border=0 src="doi.png"></a>'
+                f' <a href="{self.doi}" target="_blank" style="PADDING-RIGHT:4px;">'
+                '<img border=0 src="doi.png"></a>'
             )
 
         s += menuHTMLdeBuscaPB(self.titulo)

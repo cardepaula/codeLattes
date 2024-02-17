@@ -162,16 +162,13 @@ class ArtigoAceito:
 
         if not self.doi == "":
             s += (
-                '<a href="'
-                + self.doi
-                + '" target="_blank" style="PADDING-RIGHT:4px;"><img border=0 src="doi.png"></a>'
+                f'<a href="{self.doi}" target="_blank" style="PADDING-RIGHT:4px;">'
+                '<img border=0 src="doi.png"></a>'
             )
 
         s += menuHTMLdeBuscaPB(self.titulo)
         s += formata_qualis(self.qualis, self.qualissimilar)
         return s
-
-    # ------------------------------------------------------------------------ #
 
     def __str__(self):
         s = "\n[ARTIGO ACEITO PARA PUBLICACAO] \n"

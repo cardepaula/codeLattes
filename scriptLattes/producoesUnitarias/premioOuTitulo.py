@@ -40,20 +40,9 @@ class PremioOuTitulo:
         self.descricao = partesDoItem[1].strip()
         self.chave = self.descricao  # chave de comparação entre os objetos
 
+    # TODO Verificar se esse método é usado
     def compararCom(self, objeto):
         return None
-        # Prêmios considerados de forma individual
-        # if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(self.descricao, objeto.descricao):
-        # # Os IDs dos membros são agrupados.
-        # # Essa parte é importante para a criação do GRAFO de colaborações
-        # self.idMembro.update(objeto.idMembro)
-        #
-        # if len(self.descricao)<len(objeto.descricao):
-        # self.descricao = objeto.descricao
-        #
-        # return self
-        # else: # nao similares
-        # return None
 
     def html(self, listaDeMembros):
         s = self.descricao + ". "

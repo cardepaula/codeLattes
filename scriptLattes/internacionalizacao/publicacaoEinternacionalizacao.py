@@ -40,9 +40,8 @@ class PublicacaoEinternacionalizacao:
 
     def html(self):
         s = (
-            ' <a href="'
-            + self.publicacao.doi
-            + '" target="_blank" style="PADDING-RIGHT:4px;"><img border=0 src="doi.png"></a>'
+            f' <a href="{self.publicacao.doi}" target="_blank" '
+            'style="PADDING-RIGHT:4px;"><img border=0 src="doi.png"></a>'
         )
         s += self.publicacao.titulo + ". <br>"
 
@@ -56,6 +55,9 @@ class PublicacaoEinternacionalizacao:
             else:
                 s += "<i>[Pa&iacute;s n&atilde;o identificado]</i>"
         else:
-            s += "<i><font color=red>[N&atilde;o foi poss&iacute;vel obter dados do DOI]</font></i>"
+            s += (
+                "<i><font color=red>[N&atilde;o foi poss&iacute;vel "
+                "obter dados do DOI]</font></i>"
+            )
 
         return s

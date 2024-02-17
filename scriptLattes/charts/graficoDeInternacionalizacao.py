@@ -96,7 +96,10 @@ class GraficoDeInternacionalizacao:
             print((self.vetorDePaises))
             print((self.vetorDeQuantidades))
 
-            script = "<script type='text/javascript' src='https://www.google.com/jsapi'></script>"
+            script = (
+                "<script type='text/javascript' "
+                "src='https://www.google.com/jsapi'></script>"
+            )
 
             # ---------------------------------------------------------------- #
             # Geomap
@@ -115,13 +118,15 @@ class GraficoDeInternacionalizacao:
                     "\n['" + vetor + "', " + str(self.vetorDeQuantidades[index]) + "], "
                 )
 
-            script += "\
-              ]);\
-              var options = {width: 500, height: 300};\
-              var chart = new google.visualization.GeoChart(document.getElementById('geochart_div'));\
-              chart.draw(data, options);\
-            };\
-            </script>"
+            script += (
+                "]);"
+                "var options = {width: 500, height: 300};"
+                "var chart = new google.visualization.GeoChart"
+                "(document.getElementById('geochart_div'));"
+                "chart.draw(data, options);"
+                "};"
+                "</script>"
+            )
 
             # ---------------------------------------------------------------- #
             # Barchart

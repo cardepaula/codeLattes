@@ -279,13 +279,17 @@ def procurarPais(doihtml, nomeDePais, prefixo):
     return False
 
 
-texto = "A, Brasil wavelet subspace method for real-time face tracking Rogerio S. Ferisa, , \
-Volker Kruegerb, , Roberto M. Cesar Jr.c, , a Department of Computer Science, University of California, \
-Santa Barbara, CA 93106, USA b Department of Computer Science, Aalborg University Esbjerg, Niels Bohrs \
-Vej 8, 6700 Esbjerg,Denmark. Department of Computer Science,  Republica Dominicana Univ \
-ersity of São Paulo, Rua do Matão 1010, 05508-900 São Paulo-SP, rasil Available online 17 September 2004. a 							\
-			Signal & Image Process. Dept., CNRS UMR, Paris, France&nbsp; barusa  \
-usability archilemetinium antipiperulatum  in Canada, aNGOLA,PERú,bRASilians, Panamá, chile"
+texto = (
+    "A, Brasil wavelet subspace method for real-time face tracking "
+    "Rogerio S. Ferisa, , Volker Kruegerb, , Roberto M. Cesar Jr.c, , a Department of "
+    "Computer Science, University of California, Santa Barbara, CA 93106, USA b "
+    "Department of Computer Science, Aalborg University Esbjerg, Niels Bohrs Vej 8, "
+    "6700 Esbjerg,Denmark. Department of Computer Science,  Republica Dominicana "
+    "University of São Paulo, Rua do Matão 1010, 05508-900 São Paulo-SP, rasil "
+    "Available online 17 September 2004. a Signal & Image Process. Dept., CNRS UMR, "
+    "Paris, France&nbsp; barusa usability archilemetinium antipiperulatum  in "
+    "Canada, aNGOLA,PERú, bRASilians, Panamá, chile"
+)
 
 texto = texto.lower()
 # procurar por apenas palavras completas e nao substring

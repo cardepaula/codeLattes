@@ -36,7 +36,10 @@ class MapaDeGeolocalizacao:
         self.gerarMapa()
 
     def gerarMapa(self):
-        self.mapa = '<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script> \n'
+        self.mapa = (
+            '<script type="text/javascript" '
+            'src="https://maps.google.com/maps/api/js?sensor=false"></script> \n'
+        )
         self.mapa += '<script type="text/javascript"> \n\
   function setMarker0(map, latx, lngx, name, address, cvlattes, photo) { \n\
     var image = new google.maps.MarkerImage("lattesPoint0.png"); \n\

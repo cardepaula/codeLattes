@@ -671,8 +671,6 @@ class CompiladorDeListas:
         #  - (2) frequencia
 
     def criarMatrizes(self, listaCompleta):
-        # matriz1 = numpy.zeros((self.grupo.numeroDeMembros(), self.grupo.numeroDeMembros()), dtype=numpy.int32)
-        # matriz2 = numpy.zeros((self.grupo.numeroDeMembros(), self.grupo.numeroDeMembros()), dtype=numpy.float32)
         matriz1 = sparse.lil_matrix(
             (self.grupo.numeroDeMembros(), self.grupo.numeroDeMembros())
         )
@@ -730,8 +728,6 @@ class CompiladorDeListas:
         return lista1
 
     def uniaoDeMatrizesDeColaboracao(self):
-        # matriz1 = numpy.zeros((self.grupo.numeroDeMembros(), self.grupo.numeroDeMembros()), dtype=numpy.int32)
-        # matriz2 = numpy.zeros((self.grupo.numeroDeMembros(), self.grupo.numeroDeMembros()), dtype=numpy.float32)
         matriz1 = sparse.lil_matrix(
             (self.grupo.numeroDeMembros(), self.grupo.numeroDeMembros())
         )
@@ -1021,7 +1017,7 @@ class CompiladorDeListas:
 
     def imprimirListaProducoes(self, listaCompleta):
         print(
-            "---------------------------------------------------------------------------"
+            "--------------------------------------------------------------------------"
         )
         keys = list(listaCompleta.keys())
         keys.sort(reverse=True)
@@ -1036,7 +1032,7 @@ class CompiladorDeListas:
 
     def imprimirListaOrientacoes(self, listaCompleta):
         print(
-            "---------------------------------------------------------------------------"
+            "--------------------------------------------------------------------------"
         )
         keys = list(listaCompleta.keys())
         keys.sort(reverse=True)
@@ -1051,7 +1047,7 @@ class CompiladorDeListas:
 
     def imprimirListaProjetos(self, listaCompleta):
         print(
-            "---------------------------------------------------------------------------"
+            "--------------------------------------------------------------------------"
         )
         keys = list(listaCompleta.keys())
         keys.sort(reverse=True)
@@ -1066,7 +1062,7 @@ class CompiladorDeListas:
 
     def imprimirListaPremios(self, listaCompleta):
         print(
-            "---------------------------------------------------------------------------"
+            "--------------------------------------------------------------------------"
         )
         keys = list(listaCompleta.keys())
         keys.sort(reverse=True)
