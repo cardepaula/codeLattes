@@ -518,7 +518,7 @@ class Membro:
             return 0
 
         else:
-            if not objeto.ano.isdigit():
+            if not objeto.ano or not objeto.ano.isdigit():
                 objeto.ano = 0
                 return 1
             else:
