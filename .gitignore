@@ -112,6 +112,7 @@ cvs-downloaded
 venv
 pylint.*
 exemplo/cache
-teste-01
+teste-01/
+teste-02/
 PPcomp*
 Qualis_*
