@@ -1303,7 +1303,7 @@ class ParserLattes(HTMLParser):
                 or "Projeto certificado pela empresa" in dado
             ):
                 self.item = ""
-                self.salvarParte3 = 0  # TODO Descobrir isso
+                self.salvarParte3 = 0
 
         if self.achouProjetoDeDesenvolvimento:
             if (
@@ -1311,7 +1311,7 @@ class ParserLattes(HTMLParser):
                 or "Projeto certificado pela empresa" in dado
             ):
                 self.item = ""
-                self.salvarParte3 = 0  # TODO Descobrir isso
+                self.salvarParte3 = 0
 
         if self.achouOutrosProjetos:
             if (
@@ -1319,7 +1319,7 @@ class ParserLattes(HTMLParser):
                 or "Projeto certificado pela empresa" in dado
             ):
                 self.item = ""
-                self.salvarParte3 = 0  # TODO Descobrir isso
+                self.salvarParte3 = 0
 
     def _process_project(self, tipo_projeto, lista_projeto):
         if not self.salvarParte3:
