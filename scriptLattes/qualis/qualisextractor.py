@@ -58,9 +58,6 @@ class QualisExtractor(object):
         self, read_from_cache=True, arquivo_areas_qualis=None, data_file_path=None
     ):
         self.read_from_cache = read_from_cache  # extrair online ou offline ?
-
-        # self.publicacao = {}  #{'titulo': {'area': 'estrato'}}
-        # self.issn = {}  #{'issn': {'area': 'estrato'}}
         self.qualis_data_frame = pd.DataFrame(
             columns=["issn", "periodico", "area", "estrato"]
         )
@@ -76,7 +73,6 @@ class QualisExtractor(object):
         if data_file_path:
             self.load_data(data_file_path)
 
-        # self.init_session()
         self.initialized = True  # False
         self.url2 = None
 
@@ -215,10 +211,6 @@ class QualisExtractor(object):
             logger.debug(f"Carregando dados Qualis do arquivo '{filename}'")
             f = open(filename, "r", encoding="utf-8")
             data = pickle.load(f)
-            # self.issn = data[0]
-            # self.publicacao = data[1]
-            # self.areas = data[2]
-            # self.areas_last_update = data[3]
             self.qualis_data_frame = data[0]
             self.areas = data[1]
             self.areas_last_update = data[2]
@@ -230,7 +222,6 @@ class QualisExtractor(object):
     def save_data(self, filename="data"):
         logger.debug(f"Salvando dados Qualis no arquivo '{filename}'")
         f = open(filename, "w", encoding="utf-8")
-        # data = (self.issn, self.publicacao, self.areas, self.areas_last_update)
         data = (self.qualis_data_frame, self.areas, self.areas_last_update)
         pickle.dump(data, f)
         f.close()
@@ -291,10 +282,7 @@ class QualisExtractor(object):
             columns=["issn", "periodico", "area", "estrato"]
         )
 
-        # self.initialized = False
         url = self.init_session()
-        # url0 = url + "?conversationPropagation=begin"
-        # urllib2.urlopen(urllib2.Request(url0))
 
         req = urllib.request.Request(
             url,
@@ -362,9 +350,8 @@ class QualisExtractor(object):
         if self.areas_to_extract:
             issn_data = issn_data[issn_data["area"].isin(self.areas_to_extract)]
 
-        # XXX: note que se houver chaves repetidas, só o último valor é salvo.
-        # Neste caso aqui não há problema, já que cada área só tem uma
-        # avaliação.
+        # Note que se houver chaves repetidas, só o último valor é salvo.
+        # Neste caso aqui não há problema, já que cada área só tem uma avaliação.
         qualis = dict(list(zip(issn_data["area"], issn_data["estrato"])))
 
         print("----------------")
@@ -393,10 +380,7 @@ class QualisExtractor(object):
             columns=["issn", "periodico", "area", "estrato"]
         )
 
-        # self.initialized = False
         url = self.init_session()
-        # url0 = url + "?conversationPropagation=begin"
-        # urllib2.urlopen(urllib2.Request(url0))
 
         req = urllib.request.Request(
             url,
@@ -466,8 +450,6 @@ class QualisExtractor(object):
                 data, ignore_index=True
             )
 
-        # data = data.dropna()  # descarta ISSN's sem Qualis
-
         if self.areas_to_extract:
             data = data[data["area"].isin(self.areas_to_extract)]
 
@@ -479,22 +461,6 @@ class QualisExtractor(object):
         print(("###################", qualis))
 
         return qualis
-
-        # qualis = self.publicacoes.get(name)
-        """if qualis != None: return qualis,1
-        else:
-            iqualis = -1
-            r = 0
-            pkeys = self.publicacoes.keys()
-            for i in xrange(0,pkeys):
-                nr = similaridade_entre_cadeias( name, pkeys[i], qualis=True)
-                if nr > r:
-                    r = nr
-                    iqualis = i
-            if r > 0:
-                return self.publicacoes.get(pkeys[iqualis]),0
-        """
-        return None
 
     @staticmethod
     def has_more_content(html_document):

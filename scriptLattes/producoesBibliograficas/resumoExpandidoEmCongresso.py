@@ -89,10 +89,6 @@ class ResumoExpandidoEmCongresso:
             else:
                 self.ano = ""
 
-            # partes = partes.rpartition(". ")
-            # self.tituloDosAnais = partes[2].strip().rstrip('.').rstrip(",")
-            # partes = partes[0]
-
             partes = partes.rpartition(" In: ")
             if partes[1] == "":  # se nao existe nome do evento
                 self.nomeDoEvento = ""
@@ -220,7 +216,6 @@ class ResumoExpandidoEmCongresso:
             )
         return s
 
-    # ------------------------------------------------------------------------ #
     def __str__(self):
         s = "\n[RESUMO EXPANDIDO EM CONGRESSO] \n"
         s += "+ID-MEMBRO   : " + str(self.idMembro) + "\n"

@@ -78,7 +78,7 @@ class OrientacaoConcluida:
             partes = partes1[0]
             aux = re.findall("((?:19|20)\\d\\d)\\b", partes)
             if len(aux) > 0:
-                self.ano = aux[0]  # .strip().rstrip(".").rstrip(",")
+                self.ano = aux[0]
 
                 aux = re.findall("(.*). (?:19|20)\\d\\d\\b", partes)
                 partes = aux[0]
@@ -174,6 +174,5 @@ class OrientacaoConcluida:
         s += "+INSTITUICAO  : " + self.instituicao + "\n"
         s += "+AGENCIA      : " + self.agenciaDeFomento + "\n"
         s += "+TIPO ORIENTA.: " + self.tipoDeOrientacao + "\n"
-        # s += "+item         : @@" + self.item.encode('utf8','replace') + "@@\n"
 
         return s

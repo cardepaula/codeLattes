@@ -43,8 +43,6 @@ class OrganizacaoDeEvento:
         self.idMembro.add(idMembro)
 
         if not partesDoItem == "":
-            # partesDoItem[0]: Numero (NAO USADO)
-            # partesDoItem[1]: Descricao
             self.item = partesDoItem[1]
 
             # Dividir o item na suas partes constituintes
@@ -112,5 +110,4 @@ class OrganizacaoDeEvento:
         s += "+EVENTO      : " + self.nomeDoEvento + "\n"
         s += "+ANO         : " + str(self.ano) + "\n"
         s += "+NATUREZA    : " + self.natureza + "\n"
-        # s += "+item         : @@" + self.item.encode('utf8','replace') + "@@\n"
         return s

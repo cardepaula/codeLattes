@@ -65,9 +65,7 @@ class ResumoEmCongresso:
             # -------------------------
             aux = re.findall(", ((?:19|20)\\d\\d)\\b", partes)
             if len(aux) > 0:
-                # partes = partes.rpartition(",")
                 self.ano = aux[-1].strip().rstrip(".").rstrip(",")
-                # partes = partes[0]
             else:
                 self.ano = ""
             # ------------------------
@@ -101,12 +99,6 @@ class ResumoEmCongresso:
                 partes = partes.rpartition(",")
                 self.ano = aux[-1].strip().rstrip(".").rstrip(",")
                 partes = partes[0]
-            # else:
-            # self.ano = ''
-
-            # partes = partes.rpartition(". ")
-            # self.tituloDosAnais = partes[2].strip().rstrip('.').rstrip(",")
-            # partes = partes[0]
 
             partes = partes.rpartition(" In: ")
             if partes[1] == "":  # se nao existe nome do evento
@@ -211,7 +203,6 @@ class ResumoEmCongresso:
         s += "+AUTORES     : " + self.autores + "\n"
         s += "+TITULO      : " + self.titulo + "\n"
         s += "+NOME EVENTO : " + self.nomeDoEvento + "\n"
-        # s += "+ANAIS       : " + self.tituloDosAnais.encode('utf8','replace') + "\n"
         s += "+ANO         : " + str(self.ano) + "\n"
         s += "+VOLUME      : " + self.volume + "\n"
         s += "+NUMERO      : " + self.numero + "\n"

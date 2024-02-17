@@ -327,7 +327,6 @@ class GrafoDeColaboracoes:
                 if self.grupo.matrizDeFrequenciaNormalizada[i, j] > 0:
                     grafo.add_edge(i, j)
 
-        # grafo.layout('twopi')
         grafo.layout("circo")
         return grafo
 

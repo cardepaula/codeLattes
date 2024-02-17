@@ -67,7 +67,7 @@ class OutroTipoDeProducaoBibliografica:
 
             aux = re.findall(" ((?:19|20)\\d\\d)\\b", partes)
             if len(aux) > 0:
-                self.ano = aux[-1]  # .strip().rstrip(".").rstrip(",")
+                self.ano = aux[-1]
                 partes = partes.rpartition(" ")
                 partes = partes[0]
             else:

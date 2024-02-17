@@ -82,10 +82,6 @@ class GeradorDeXML:
                 xmlTemp += self.getLlistaProcessoOuTecnica(registro)
                 xmlTemp += self.getListaTrabalhoTecnico(registro)
                 xmlTemp += self.getListaOutroTipoDeProducaoTecnica(registro)
-
-                # xmlTemp += self.getListaPatente(registro)
-                # xmlTemp += self.getListaRegistroSoftware(registro)
-
                 xmlTemp += self.getListaProducaoArtistica(registro)
                 xmlTemp += self.getListaOASupervisaoDePosDoutorado(registro)
                 xmlTemp += self.getListaOATeseDeDoutorado(registro)
@@ -115,7 +111,6 @@ class GeradorDeXML:
         xml += "</curriculo_lattes>\n"
         self.salvarXML("database.xml", xml)
 
-        # print "[Liberando memoria usada na geracao do XML]"
         xml = ""
         xmlTemp = ""
 

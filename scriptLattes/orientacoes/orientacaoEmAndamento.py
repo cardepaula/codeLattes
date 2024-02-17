@@ -78,7 +78,7 @@ class OrientacaoEmAndamento:
 
         aux = re.findall("((?:19|20)\\d\\d)\\b", self.ano)
         if len(aux) > 0:
-            self.ano = aux[0]  # .strip().rstrip(".").rstrip(",")
+            self.ano = aux[0]
         else:
             self.ano = ""
 
@@ -161,6 +161,5 @@ class OrientacaoEmAndamento:
         s += "+INSTITUICAO  : " + self.instituicao + "\n"
         s += "+AGENCIA      : " + self.agenciaDeFomento + "\n"
         s += "+TIPO ORIENTA.: " + self.tipoDeOrientacao + "\n"
-        # s += "+item         : @@" + self.item.encode('utf8','replace') + "@@\n"
 
         return s

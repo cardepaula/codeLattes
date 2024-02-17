@@ -481,13 +481,6 @@ class ParserLattes(HTMLParser):
                         self.relevante = 1
                         break
 
-                """for name,value in attrs:
-                    if name=='data-issn':
-                        if len(value) == 8:
-                            self.issn = value[0:4]+'-'+value[4:8]
-                        break
-                """
-
         if tag == "br":
             self.item = self.item + " "
 
@@ -498,7 +491,7 @@ class ParserLattes(HTMLParser):
                         self.spanInformacaoArtigo = 1
 
         if tag == "a":
-            if self.salvarItem:  # and self.achouArtigoEmPeriodico:
+            if self.salvarItem:
                 for name, value in attrs:
                     if name == "href" and "doi" in value:
                         self.doi = value
@@ -766,8 +759,6 @@ class ParserLattes(HTMLParser):
                                     self.idMembro, self.partesDoItem, self.relevante
                                 )
                                 self.listaProducaoArtistica.append(iessimoItem)
-
-                    # if self.achouBancas:
 
                     if self.achouEventos:
                         if self.achouParticipacaoEmEvento:
@@ -1128,7 +1119,6 @@ class ParserLattes(HTMLParser):
                     self.achouApresentacaoDeTrabalho = 1
                     self.achouOutroTipoDeProducaoBibliografica = 0
                 if "Outras produções bibliográficas" == dado:
-                    # if u'Demais tipos de produção bibliográfica'==dado:
                     self.salvarItem = 1
                     self.achouArtigoEmPeriodico = 0
                     self.achouLivroPublicado = 0
@@ -1142,7 +1132,6 @@ class ParserLattes(HTMLParser):
                     self.achouOutroTipoDeProducaoBibliografica = 1
 
             if self.achouProducaoTecnica:
-                # if u'Softwares com registro de patente'==dado:
                 if "Programas de computador com registro de patente" == dado:
                     self.salvarItem = 1
                     self.achouSoftwareComPatente = 1
@@ -1191,17 +1180,8 @@ class ParserLattes(HTMLParser):
                     self.achouProcessoOuTecnica = 0
                     self.achouTrabalhoTecnico = 0
                     self.achouOutroTipoDeProducaoTecnica = 1
-                # if u'Demais trabalhos'==dado:
-                # self.salvarItem = 0
-                # self.achouSoftwareComPatente = 0
-                # self.achouSoftwareSemPatente = 0
-                # self.achouProdutoTecnologico = 0
-                # self.achouProcessoOuTecnica = 0
-                # self.achouTrabalhoTecnico = 0
-                # self.achouOutroTipoDeProducaoTecnica = 0
 
             if self.achouProducaoArtisticaCultural:
-                # if u'Produção artística/cultural'==dado:
                 if (
                     "Outras produções artísticas/culturais" == dado
                     or "Artes Cênicas" == dado

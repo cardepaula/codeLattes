@@ -120,7 +120,6 @@ def similaridade_entre_cadeias(str1, str2, qualis=False):
     if qualis:
         dist = Levenshtein.ratio(str1, str2)
         if len(str1) >= 10 and len(str2) >= 10 and dist >= 0.90:
-            # return 1
             return dist
 
     else:

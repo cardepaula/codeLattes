@@ -37,7 +37,6 @@ class TrabalhoCompletoEmCongresso:
     autores = None
     titulo = None
     nomeDoEvento = None
-    # tituloDosAnais = None
     ano = None
     volume = None
     paginas = None
@@ -105,10 +104,6 @@ class TrabalhoCompletoEmCongresso:
             else:
                 self.ano = ""
 
-                # partes = partes.rpartition(". ")
-                # self.tituloDosAnais = partes[2].strip().rstrip('.').rstrip(",")
-                # partes = partes[0]
-
             partes = partes.rpartition(" In: ")
             if partes[1] == "":  # se nao existe nome do evento
                 self.nomeDoEvento = ""
@@ -116,7 +111,6 @@ class TrabalhoCompletoEmCongresso:
             else:
                 # Qualis - Eh preciso separa o titulo da conferencia em partes[2] do
                 # restante
-                # self.nomeDoEvento = partes[2].strip().rstrip(".")
                 partesV = partes[2].split(", ")
                 self.nomeDoEvento = ""
                 self.sigla = ""
@@ -261,7 +255,6 @@ class TrabalhoCompletoEmCongresso:
                 logger.warning(err)
         return s
 
-    # ------------------------------------------------------------------------ #
     def __str__(self):
         s = "\n[TRABALHO COMPLETO PUBLICADO EM CONGRESSO] \n"
         s += "+ID-MEMBRO   : " + str(self.idMembro) + "\n"
@@ -270,7 +263,6 @@ class TrabalhoCompletoEmCongresso:
         s += "+AUTORES     : " + self.autores + "\n"
         s += "+TITULO      : " + self.titulo + "\n"
         s += "+NOME EVENTO : " + self.nomeDoEvento + "\n"
-        # s += "+ANAIS       : " + self.tituloDosAnais.encode('utf8','replace') + "\n"
         s += "+ANO         : " + str(self.ano) + "\n"
         s += "+VOLUME      : " + self.volume + "\n"
         s += "+PAGINAS     : " + self.paginas + "\n"

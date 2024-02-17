@@ -59,8 +59,6 @@ class PremioOuTitulo:
 
         return s
 
-    # ------------------------------------------------------------------------ #
-
     def __str__(self):
         s = "\n[PREMIO OU TITULO] \n"
         s += "+ID-MEMBROL  : " + str(self.idMembro) + "\n"

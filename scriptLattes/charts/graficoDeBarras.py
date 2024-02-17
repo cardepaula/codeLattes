@@ -22,9 +22,6 @@
 #  Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-# matplotlib.use("Agg")
-
-
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -50,7 +47,7 @@ class GraficoDeBarras:
         vetorDeQuantidades = []
 
         keys = list(self.listaCompleta.keys())
-        keys.sort(reverse=False)  # keys.sort(reverse=True)
+        keys.sort(reverse=False)
         for k in keys:
             if k == 0:
                 vetorDeAnos.append("*itens sem ano")
@@ -81,8 +78,8 @@ class GraficoDeBarras:
                 rotation=90,
                 fontsize=8,
                 color="#000099",
-            )  # , family='sans-serif')
-            # plt.axis('tight')
+            )
+
             old_axis = plt.axis()
             plt.axis([old_axis[0], old_axis[1], 0, max(vetorDeQuantidades) * 1.15])
 

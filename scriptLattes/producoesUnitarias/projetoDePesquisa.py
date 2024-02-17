@@ -48,10 +48,6 @@ class ProjetoDePesquisa:
         anos = partesDoItem[0].partition("-")
         self.anoInicio = anos[0].strip()
         self.anoConclusao = anos[2].strip()
-
-        # detalhe = partesDoItem[1].rpartition(":")
-        # self.cargo = detalhe[0].strip()
-        # self.nome = detalhe[2].strip()
         self.nome = partesDoItem[1]
 
         self.descricao = list([])

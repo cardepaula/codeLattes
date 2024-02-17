@@ -253,8 +253,6 @@ class ArtigoEmPeriodico:
             self.qualissimilar = ""
         s = "artigoEmPeriodico\t"
 
-        # FIXME: self.qualis estava dando erro de conversão; remediado
-        # temporariamente usando str(); verificar se comportamento está correto
         if nomeCompleto == "":  # tratamento grupal
             s += (
                 str(self.ano)
@@ -290,8 +288,6 @@ class ArtigoEmPeriodico:
                 + (self.qualissimilar)
             )
         return s
-
-    # ------------------------------------------------------------------------ #
 
     def __str__(self):
         s = "\n[ARTIGO EM PERIODICO] \n"

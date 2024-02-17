@@ -262,7 +262,6 @@ class Grupo:
             self.matrizDeFrequenciaNormalizada,
             prefix + "matrizDeFrequenciaNormalizada.txt",
         )
-        # self.salvarMatrizXML(self.matrizDeAdjacencia, prefix+"matrizDeAdjacencia.xml")
 
         # (2) listas de nomes, rótulos, ids
         self.salvarListaTXT(self.nomes, prefix + "listaDeNomes.txt")
@@ -415,7 +414,6 @@ class Grupo:
             colorstring = colorstring[1:]
         r, g, b = colorstring[:2], colorstring[2:4], colorstring[4:]
         r, g, b = [int(n, 16) for n in (r, g, b)]
-        # return (r, g, b)
         return str(r) + "," + str(g) + "," + str(b)
 
     def imprimeCSVListaIndividual(self, nomeCompleto, lista):
@@ -906,7 +904,7 @@ class Grupo:
         self.listaDeMembros.sort(key=operator.attrgetter(chave))  # ordenamos por nome
 
     def imprimirListaDeParametros(self):
-        for par in self.listaDeParametros:  # .keys():
+        for par in self.listaDeParametros:
             print(("[PARAMETRO] ", par[0], " = ", par[1]))
         print()
 
@@ -963,8 +961,6 @@ class Grupo:
         self.listaDeParametros.append(
             ["global-identificar_publicacoes_com_qualis", "nao"]
         )
-        # self.listaDeParametros.append(['global-usar_cache_qualis', 'sim'])
-        # self.listaDeParametros.append(['global-arquivo_areas_qualis', ''])
         self.listaDeParametros.append(["global-arquivo_qualis_de_congressos", ""])
         self.listaDeParametros.append(["global-arquivo_qualis_de_periodicos", ""])
 

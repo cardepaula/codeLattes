@@ -195,7 +195,6 @@ def format_json(d):
             else:
                 s += str(d[k])
         s += "}"  # if isinstance(d, dict) else ']'
-    # s += '\n'
     return s
 
 
@@ -234,13 +233,6 @@ jsondata = {
         "stackLabels": {
             "enabled": true,
             "format": "{stack}",
-            # 'formatter': jscmd('''function() {
-            #         return  this.stack;
-            #     }''')
-            # 'style': {
-            #     'fontWeight': 'bold',
-            #     'color': "(Highcharts.theme && Highcharts.theme.textColor) || 'gray'"
-            # }
         },
     },
     "tooltip": {
@@ -275,15 +267,9 @@ jsondata = {
         "layout": "vertical",
         "align": "right",
         "verticalAlign": "middle",
-        # 'x': 40,
-        # 'y': 40,
-        # 'floating': true,
         "borderWidth": 1,
         "backgroundColor": bgcolor(),
         "shadow": true,
-        # 'labelFormatter': jscmd('''function () {
-        #         return this.options.stack + ' (click to hide)';
-        #     }'''),
     },
     "credits": {"enabled": false},
     "series": [],
@@ -339,16 +325,6 @@ class highchart(dict):
         self["chart"]["type"] = chartt
 
     def set_series(self, series):
-        # keys = lista.keys()
-        # keys.sort()
-        # data = []
-        # for k in keys:
-        #     qtd = len(lista[k])
-        #     if qtd > 0:
-        #         s = {'name': k, 'data': [qtd], 'y': [qtd]}
-        #         data.append(s)
-        # series = [{'name': 'Produções', 'data': data,
-        #            'colorByPoint': 'true'}]
         self["series"] = series
 
     def html(self):

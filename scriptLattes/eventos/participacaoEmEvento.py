@@ -40,8 +40,6 @@ class ParticipacaoEmEvento:
         self.idMembro.add(idMembro)
 
         if not partesDoItem == "":
-            # partesDoItem[0]: Numero (NAO USADO)
-            # partesDoItem[1]: Descricao
             self.item = partesDoItem[1]
 
             partes = self.item

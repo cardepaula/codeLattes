@@ -50,8 +50,6 @@ class Geolocalizador:
         self.obterCoordenadas()
 
     def obterCoordenadas(self):
-        # print "\n[ENDEREÇO] " + self.endereco.encode('utf8')
-
         cidade = ""
         uf = ""
         cep = ""
@@ -71,7 +69,6 @@ class Geolocalizador:
             if cep == "":
                 cep = self.obterNomeCapital(uf)
             if not uf == "":
-                # uf = 'brazil ' +self.obterNomeUF(uf)
                 uf = self.obterNomeUF(uf)
 
             pais = "brasil"
@@ -105,8 +102,6 @@ class Geolocalizador:
                 lon = re.findall(r"<lng>(.*)</lng>", res[0])
                 self.lat = lat[0]
                 self.lon = lon[0]
-                # print "  .Verif. =
-                # http://www.gorissen.info/Pierre/maps/googleMapLocation.php?lat="+self.lat+"&lon="+self.lon+"&setLatLon=Set"
 
                 self.dicionarioDeGeolocalizacao[chave] = (self.lat, self.lon)
 

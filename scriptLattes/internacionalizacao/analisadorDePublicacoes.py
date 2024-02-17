@@ -300,7 +300,6 @@ class AnalisadorDePublicacoes:
         }
 
     def analisarInternacionalizacaoNaCoautoria(self):
-        # listaCompletaPB = self.grupo.compilador.listaCompletaPB
         listaCompletaPB = self.grupo.compilador.listaCompletaArtigoEmPeriodico
         keys = list(listaCompletaPB.keys())
         for ano in keys:
@@ -340,7 +339,6 @@ class AnalisadorDePublicacoes:
             for key in list(self.paises.keys()):
                 nomeDePais = key
                 # Procuramos o nome em ingles (nome original)
-                # totalInternacionais = 0
                 if self.procurarPais(dataDoi, nomeDePais, urlDOI):
                     listaDePaisesIdentificados.append(nomeDePais)
                 else:
@@ -522,24 +520,6 @@ class AnalisadorDePublicacoes:
                 dataDoi.append(doihtml)
                 dataDoi.append(parserData)
 
-                # elif urlDOI.find("10.1007")>-1:
-                # print "**caso - 10.1007"
-                # casoUrl = parser101007()
-                # casoUrl.feed(rawDOIhtml)
-                # doihtml = str(casoUrl.data)
-                # parserData = ["10.1007",'','','','authoraddress=.*\+','.*&contentid']
-                # dataDoi.append(doihtml)
-                # dataDoi.append(parserData)
-
-                # elif urlDOI.find("10.1021")>-1:
-                # # print "**caso -- 10.1021"
-                # caso=parser101021()
-                # caso.feed(rawDOIhtml)
-                # doihtml= str(caso.data)
-                # parserData=["10.1021",'','','',',.*,\s*','[\s*|,|;|-|\.|\'|\"]']
-                # dataDoi.append(doihtml)
-                # dataDoi.append(parserData)
-
             elif urlDOI.find("10.1590") > -1:
                 print("**caso -- 10.1590")
                 caso = parser101590()
@@ -581,14 +561,8 @@ class AnalisadorDePublicacoes:
         cleaned = re.sub(r"\r", "\n", cleaned)
         cleaned = re.sub(r"\t+", " ", cleaned)
 
-        # cleaned = re.sub(r"\"", "", cleaned) # novo
-
         # Next we can remove the remaining tags:
         cleaned = re.sub(r"(?s)<.*?>", " ", cleaned)
-        # Finally, we deal with whitespace
-        # cleaned = re.sub(r"&nbsp;", " ", cleaned)
-        # cleaned = re.sub(r"  ", " ", cleaned)
-        # cleaned = re.sub(r"  ", " ", cleaned)
 
         cleaned = re.sub(r"\s+\n", "\n", cleaned)
         return cleaned.strip()

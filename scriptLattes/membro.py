@@ -52,7 +52,6 @@ class Membro:
     atualizacaoCV = ""
     foto = ""
     textoResumo = ""
-    # xml = None
 
     itemsDesdeOAno = ""  # periodo global
     itemsAteOAno = ""  # periodo global
@@ -117,11 +116,6 @@ class Membro:
     listaOCIniciacaoCientifica = []
     listaOCOutroTipoDeOrientacao = []
 
-    # Qualis
-    # tabelaQualisDosAnos = [{}]
-    # tabelaQualisDosTipos = {}
-    # tabelaQualisDasCategorias = [{}]
-
     # Eventos
     listaParticipacaoEmEvento = []
     listaOrganizacaoDeEvento = []
@@ -136,9 +130,6 @@ class Membro:
     instituicao = ""
 
     dicionarioDeGeolocalizacao = None
-
-    # def __init__(self, idMembro, identificador, nome, periodo, rotulo,
-    # itemsDesdeOAno, itemsAteOAno, xml=''):
 
     def __init__(
         self,
@@ -260,9 +251,6 @@ class Membro:
                 chr(c) for c in range(127, 65536, 1)
             )  # srange(r"[\0x80-\0x7FF]")
             special_chars = " -" ""
-            # cvLattesHTML  =
-            # cvLattesHTML.decode('ascii','replace')+extended_chars+special_chars
-            # # Wed Jul 25 16:47:39 BRT 2012
             extended_chars = extended_chars.encode("utf-8", "surrogatepass").decode(
                 "utf-8", "replace"
             )
@@ -541,7 +529,6 @@ class Membro:
         s = ""
         s += "\nTY  - MEMBRO"
         s += "\nNOME  - " + self.nomeCompleto
-        # s+= '\nSEXO  - '+self.sexo
         s += "\nCITA  - " + self.nomeEmCitacoesBibliograficas
         s += "\nBOLS  - " + self.bolsaProdutividade
         s += "\nENDE  - " + self.enderecoProfissional

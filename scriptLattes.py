@@ -20,12 +20,9 @@
 #  Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 #
+
 import logging
 import warnings
-
-# import requests, BeautifulSoup  # required by QualisExtractor
-# warnings.filterwarnings('ignore')
-
 from scriptLattes.grupo import *
 from scriptLattes.util import *
 
@@ -34,7 +31,6 @@ if "win" in sys.platform.lower():
 
 
 def executar_scriptLattes(arquivoConfiguracao):
-    # os.chdir( os.path.abspath(os.path.join(arquivoConfiguracao, os.pardir)))
     novoGrupo = Grupo(arquivoConfiguracao)
     novoGrupo.imprimirListaDeRotulos()
     novoGrupo.carregar_dados_temporarios_de_geolocalizacao()
@@ -77,8 +73,6 @@ def executar_scriptLattes(arquivoConfiguracao):
 if __name__ == "__main__":
     logger = logging.getLogger(__name__)
     logging.basicConfig(format="%(asctime)s - %(levelname)s (%(name)s) - %(message)s")
-    # logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s')
-    # logging.root.setLevel(level=logging.INFO)
     logging.root.setLevel(level=logging.DEBUG)
     logger.info("Executando '{}'".format(" ".join(sys.argv)))
 

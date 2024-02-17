@@ -22,13 +22,6 @@
 #
 #
 
-# import re
-# import os
-# import http.cookiejar
-# import mechanize
-# import requests
-# import webbrowser
-# from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
@@ -74,8 +67,6 @@ def baixaCVLattes(id_lattes, debug=True):
     while tries > 0:
         try:
             data = __get_data(id_lattes)
-            # time.sleep(random.random()+0.5) #0.5 a 1.5 segs de espera, nao
-            # altere esse tempo para não ser barrado do servidor do lattes
             if "infpessoa" not in data:
                 tries -= 1
             else:
@@ -84,12 +75,10 @@ def baixaCVLattes(id_lattes, debug=True):
             if debug:
                 print(e)
             tries -= 1
-    # depois de 5 tentativas, verifiquemos se existe uma nova versao do baixaLattes
-    # __self_update()
+
     if debug:
         print(("[AVISO] Nao é possível obter o CV Lattes: ", id_lattes))
         print("[AVISO] Certifique-se que o CV existe.")
 
     print("Nao foi possivel baixar o CV Lattes em varias tentativas")
     return "   "
-    # raise Exception("Nao foi possivel baixar o CV Lattes em 5 tentativas")

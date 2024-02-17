@@ -74,7 +74,6 @@ class GeradorDePaginasWeb:
             )
 
         self.gerar_pagina_de_membros()
-        # self.gerar_pagina_de_producao_qualificado_por_membro()
         self.gerarPaginasDeProducoesBibliograficas()
         self.gerarPaginasDeProducoesTecnicas()
         self.gerarPaginasDeProducoesArtisticas()
@@ -1090,9 +1089,6 @@ class GeradorDePaginasWeb:
     def gerar_grafico_de_producoes(listaCompleta, titulo):
         chart = highchart(type=chart_type.column)
         chart.set_y_title("Quantidade")
-        # chart.set_x_title(u'Ano')
-        # chart.set_x_categories(sorted(listaCompleta.keys()))
-        # chart['xAxis']['type'] = 'categories'
 
         categories = []
         areas_map = {None: 0}
@@ -1113,29 +1109,18 @@ class GeradorDePaginasWeb:
         series = []
         if not list(estrato_area_ano_freq.keys()):  # produções vazias
             logger.debug("produções vazias")
-        # elif len(estrato_area_ano_freq.keys()) == 1 and None in
-        # estrato_area_ano_freq.keys():  # gráfico normal sem qualis
         else:  # gráfico normal sem qualis
             chart.settitle(titulo)
             chart["plotOptions"]["column"]["stacking"] = None
             chart["chart"]["height"] = 300
-            # chart['legend']['title'] = {'text': 'Ano'}
             chart["legend"]["enabled"] = jscmd("false")
             chart["xAxis"]["type"] = "category"
-
-            # freq = [estrato_area_ano_freq[None][None][ano] for ano in categories]
-            # series.append({'name': u'Total', 'data': freq})
-            # chart.set_x_categories(categories)
 
             data = []
             for ano in categories:
                 freq = estrato_area_ano_freq[None][None][ano]
                 data.append([ano, freq])
             series.append({"name": "Total", "data": data})
-
-            # for ano, pub in sorted(listaCompleta.items()):
-            # series.append({'name': ano, 'data': [len(pub)]}) #, 'y':
-            # [len(pub)]})
 
         chart.set_series(series)
 

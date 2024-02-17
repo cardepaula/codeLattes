@@ -170,9 +170,6 @@ class Qualis:
                 # Nome do periodico ou evento
                 nome = campos[1].rstrip()
                 qualis = campos[2].rstrip()  # Estrato Qualis
-
-                # nome   = self.padronizarNome(nome)
-                # sigla  = self.padronizarNome(sigla)
                 sigla = sigla.replace("-", "")
 
                 lista[nome] = qualis
@@ -182,16 +179,9 @@ class Qualis:
         return lista
 
     def padronizarNome(self, nome):
-        # nome = nome.replace(u"\u00A0", " ")
-        # nome = nome.replace(u"\u2010", " ")
-        # nome = nome.replace(u"-"," ")
         nome = nome.replace("\\u00A0", "")
         nome = nome.replace("\\u2010", "")
         nome = nome.replace("-", "")
-
-        # nome = re.sub(r"\(.*\)", " ", nome)
-        # nome = re.sub(r"\(", " ", nome)
-        # nome = re.sub(r"\)", " ", nome)
         nome = re.sub("\\s+", " ", nome)
         nome = nome.strip()
         return nome
