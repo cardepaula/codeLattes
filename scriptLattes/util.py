@@ -58,7 +58,7 @@ def copiarArquivos(dir):
             shutil.rmtree(dst)
         shutil.copytree(os.path.join(base, "css"), dst)
     except OSError as e:
-        pass  # provavelmente diretório já existe
+        # provavelmente diretório já existe
         logging.warning(e)
 
     shutil.copy2(os.path.join(base, "imagens", "lattesPoint0.png"), dir)
@@ -74,7 +74,7 @@ def copiarArquivos(dir):
             shutil.rmtree(dst)
         shutil.copytree(os.path.join(base, "images"), dst)
     except OSError as e:
-        pass  # provavelmente diretório já existe
+        # provavelmente diretório já existe
         logging.warning(e)
 
     try:
@@ -83,7 +83,7 @@ def copiarArquivos(dir):
             shutil.rmtree(dst)
         shutil.copytree(os.path.join(base, "js"), dst)
     except OSError as e:
-        pass  # provavelmente diretório já existe
+        # provavelmente diretório já existe
         logging.warning(e)
 
     print(f"\n\nArquivos salvos em: >>{os.path.abspath(dir)}<<")
