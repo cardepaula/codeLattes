@@ -403,9 +403,9 @@ class AnalisadorDePublicacoes:
                 doihtml,
             ):
                 return True
-            else:
-                return False
-        elif len(dataDoi) == 1:
+
+            return False
+        if len(dataDoi) == 1:
             doihtml = dataDoi[0]
             doihtml = doihtml
             doihtml = doihtml.lower()
@@ -415,8 +415,8 @@ class AnalisadorDePublicacoes:
             if re.search(prefixo + re.escape(nomeDePais) + r"\W*\n", doihtml):
                 return True
             return False
-        else:
-            return False
+
+        return False
 
     def obterDadosAtravesDeDOI(self, urlDOI):
         print(("\nProcessando DOI: " + urlDOI))

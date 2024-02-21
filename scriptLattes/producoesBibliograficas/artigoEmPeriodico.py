@@ -180,8 +180,7 @@ class ArtigoEmPeriodico:
                 self.issn = objeto.issn
 
             return self
-        else:  # nao similares
-            return None
+        return None  # nao similares
 
     # caso difícil: falta melhorar a separacao entre TITULO e NOME-DE-REVISTA
     #

@@ -66,8 +66,7 @@ class ParticipacaoEmEvento:
                 self.item = objeto.item
 
             return self
-        else:  # nao similares
-            return None
+        return None  # nao similares
 
     def html(self, listaDeMembros):
         s = self.item

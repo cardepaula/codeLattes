@@ -151,8 +151,7 @@ class CapituloDeLivroPublicado:
                 self.paginas = objeto.paginas
 
             return self
-        else:  # nao similares
-            return None
+        return None  # nao similares
 
     def html(self, listaDeMembros):
         s = self.autores + ". <b>" + self.titulo + "</b>. Em: " + self.livro + ". "

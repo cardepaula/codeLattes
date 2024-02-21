@@ -123,8 +123,7 @@ class OrientacaoConcluida:
                 self.agenciaDeFomento = objeto.agenciaDeFomento
 
             return self
-        else:  # nao similares
-            return None
+        return None  # nao similares
 
     def html(self, listaDeMembros):
         s = (

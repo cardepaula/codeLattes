@@ -80,8 +80,7 @@ class SoftwareComPatente:
                 self.titulo = objeto.titulo
 
             return self
-        else:  # nao similares
-            return None
+        return None  # nao similares
 
     def html(self, listaDeMembros):
         s = self.autores + ". <b>" + self.titulo + "</b>. "

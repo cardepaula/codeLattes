@@ -1207,23 +1207,22 @@ class GeradorDePaginasWeb:
     def gerarIndiceDePaginas(self, numeroDePaginas, numeroDePaginaAtual, prefixo):
         if numeroDePaginas == 1:
             return ""
-        else:
-            s = "Página: "
-            for i in range(0, numeroDePaginas):
-                if i == numeroDePaginaAtual:
-                    s += "<b>" + str(i + 1) + "</b> &nbsp;"
-                else:
-                    s += (
-                        '<a href="'
-                        + prefixo
-                        + "-"
-                        + str(i)
-                        + self.extensaoPagina
-                        + '">'
-                        + str(i + 1)
-                        + "</a> &nbsp;"
-                    )
-            return "<center>" + s + "</center>"
+        s = "Página: "
+        for i in range(0, numeroDePaginas):
+            if i == numeroDePaginaAtual:
+                s += "<b>" + str(i + 1) + "</b> &nbsp;"
+            else:
+                s += (
+                    '<a href="'
+                    + prefixo
+                    + "-"
+                    + str(i)
+                    + self.extensaoPagina
+                    + '">'
+                    + str(i + 1)
+                    + "</a> &nbsp;"
+                )
+        return "<center>" + s + "</center>"
 
     def gerarPaginaDeInternacionalizacao(self, listaCompleta, tituloPagina, prefixo):
         numeroTotalDeProducoes = 0

@@ -357,8 +357,8 @@ class GrafoDeColaboracoes:
 
         if indice < len(self.cores):
             return self.cores[indice]
-        else:
-            return self.cores[-1]
+
+        return self.cores[-1]
 
     def abreviarNome(self, nome):
         # No grafo de colaboracoes nomes cumpridos não ajudam na visualização da

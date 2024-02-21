@@ -91,8 +91,7 @@ class ProgramaComputador:
                 self.titulo = objeto.titulo
 
             return self
-        else:  # nao similares
-            return None
+        return None  # nao similares
 
     def html(self, listaDeMembros):
         try:

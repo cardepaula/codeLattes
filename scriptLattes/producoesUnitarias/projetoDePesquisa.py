@@ -97,8 +97,7 @@ class ProjetoDePesquisa:
             self.descricao.extend(objeto.descricao)
 
             return self
-        else:  # nao similares
-            return None
+        return None  # nao similares
 
     # ------------------------------------------------------------------------ #
 

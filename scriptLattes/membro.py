@@ -469,7 +469,7 @@ class Membro:
             objeto.ano = int(objeto.ano) if objeto.ano else 0
             return 1 if objeto.ano <= self.itemsAteOAno else 0
 
-        elif objeto.__module__ in [
+        if objeto.__module__ in [
             "projetoDePesquisa",
             "projetoDeExtensao",
             "projetoDeDesenvolvimento",
@@ -507,19 +507,17 @@ class Membro:
                     return 1
             return 0
 
-        else:
-            if not objeto.ano or not objeto.ano.isdigit():
-                objeto.ano = 0
-                return 1
-            else:
-                objeto.ano = int(objeto.ano)
-                if self.itemsDesdeOAno > objeto.ano or objeto.ano > self.itemsAteOAno:
-                    return 0
-                else:
-                    return any(
-                        periodo[0] <= objeto.ano <= periodo[1]
-                        for periodo in self.listaPeriodo
-                    )
+        if not objeto.ano or not objeto.ano.isdigit():
+            objeto.ano = 0
+            return 1
+
+        objeto.ano = int(objeto.ano)
+        if self.itemsDesdeOAno > objeto.ano or objeto.ano > self.itemsAteOAno:
+            return 0
+
+        return any(
+            periodo[0] <= objeto.ano <= periodo[1] for periodo in self.listaPeriodo
+        )
 
     def obterCoordenadasDeGeolocalizacao(self):
         geo = Geolocalizador(self.enderecoProfissional, self.dicionarioDeGeolocalizacao)

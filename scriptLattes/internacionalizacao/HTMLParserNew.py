@@ -248,17 +248,16 @@ class HTMLParser(_markupbase.ParserBase):
         if rawdata[i : i + 4] == "<!--":
             # this case is actually already handled in goahead()
             return self.parse_comment(i)
-        elif rawdata[i : i + 3] == "<![":
+        if rawdata[i : i + 3] == "<![":
             return self.parse_marked_section(i)
-        elif rawdata[i : i + 9].lower() == "<!doctype":
+        if rawdata[i : i + 9].lower() == "<!doctype":
             # find the closing >
             gtpos = rawdata.find(">", i + 9)
             if gtpos == -1:
                 return -1
             self.handle_decl(rawdata[i + 2 : gtpos])
             return gtpos + 1
-        else:
-            return self.parse_bogus_comment(i)
+        return self.parse_bogus_comment(i)
 
     # Internal -- parse bogus comment, return length or -1 if not terminated
     # see http://www.w3.org/TR/html5/tokenization.html#bogus-comment-state
@@ -365,8 +364,8 @@ class HTMLParser(_markupbase.ParserBase):
                 return -1
             if j > i:
                 return j
-            else:
-                return i + 1
+
+            return i + 1
         raise AssertionError("we should not get here!")
 
     # Internal -- parse endtag, return end or -1 if incomplete
@@ -388,8 +387,7 @@ class HTMLParser(_markupbase.ParserBase):
                 # w3.org/TR/html5/tokenization.html#end-tag-open-state
                 if rawdata[i : i + 3] == "</>":
                     return i + 3
-                else:
-                    return self.parse_bogus_comment(i)
+                return self.parse_bogus_comment(i)
             tagname = namematch.group().lower()
             # consume and ignore other stuff between the name and the >
             # Note: this is not 100% correct, since we might have things like
@@ -468,18 +466,19 @@ class HTMLParser(_markupbase.ParserBase):
                     return chr(c)
             except ValueError:
                 return "&#" + s + ";"
-            else:
-                # Cannot use name2codepoint directly, because HTMLParser supports apos,
-                # which is not part of HTML 4
-                import html.entities
 
-                if HTMLParser.entitydefs is None:
-                    entitydefs = HTMLParser.entitydefs = {"apos": "'"}
-                    for k, v in list(html.entities.name2codepoint.items()):
-                        entitydefs[k] = chr(v)
-                try:
-                    return self.entitydefs[s]
-                except KeyError:
-                    return "&" + s + ";"
+            # TODO verificar se esse importe parte é necessária
+            # Cannot use name2codepoint directly, because HTMLParser supports apos,
+            # which is not part of HTML 4
+            import html.entities
+
+            if HTMLParser.entitydefs is None:
+                entitydefs = HTMLParser.entitydefs = {"apos": "'"}
+                for k, v in list(html.entities.name2codepoint.items()):
+                    entitydefs[k] = chr(v)
+            try:
+                return self.entitydefs[s]
+            except KeyError:
+                return "&" + s + ";"
 
         return re.sub(r"&(#?[xX]?(?:[0-9a-fA-F]+|\w{1,8}));", replaceEntities, s)

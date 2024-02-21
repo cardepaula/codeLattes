@@ -103,8 +103,7 @@ class ApresentacaoDeTrabalho:
                 self.natureza = objeto.natureza
 
             return self
-        else:  # nao similares
-            return None
+        return None  # nao similares
 
     def html(self, listaDeMembros):
         s = self.autores + ". <b>" + self.titulo + "</b>. "

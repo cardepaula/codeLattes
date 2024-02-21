@@ -83,33 +83,34 @@ class Qualis:
                 # Retorna Qualis do issn/sigla exato encontrado - Casamento
                 # perfeito
                 return self.periodicos.get(sigla), ""
-            elif self.periodicos.get(nome) is not None:
+
+            if self.periodicos.get(nome) is not None:
                 # Retorna Qualis do nome exato encontrado - Casamento perfeito
                 return self.periodicos.get(nome), ""
-            else:
-                chaves = list(self.periodicos.keys())
-                for i, chave in enumerate(chaves):
-                    distI = similaridade_entre_cadeias(nome, chave, qualis=True)
-                    if distI > dist:  # comparamos: nome com cada nome de periodico
-                        indice = i
-                        dist = distI
-                if indice > 0:
-                    # Retorna Qualis de nome similar
-                    return self.periodicos.get(chaves[indice]), chaves[indice]
+
+            chaves = list(self.periodicos.keys())
+            for i, chave in enumerate(chaves):
+                distI = similaridade_entre_cadeias(nome, chave, qualis=True)
+                if distI > dist:  # comparamos: nome com cada nome de periodico
+                    indice = i
+                    dist = distI
+            if indice > 0:
+                # Retorna Qualis de nome similar
+                return self.periodicos.get(chaves[indice]), chaves[indice]
         else:
             if self.congressos.get(nome) is not None:
                 # Retorna Qualis do nome exato encontrado - Casamento perfeito
                 return self.congressos.get(nome), ""
-            else:
-                chaves = list(self.congressos.keys())
-                for i, chave in enumerate(chaves):
-                    distI = similaridade_entre_cadeias(nome, chave, qualis=True)
-                    if distI > dist:  # comparamos: nome com cada nome de evento
-                        indice = i
-                        dist = distI
-                if indice > 0:
-                    # Retorna Qualis de nome similar
-                    return self.congressos.get(chaves[indice]), chaves[indice]
+
+            chaves = list(self.congressos.keys())
+            for i, chave in enumerate(chaves):
+                distI = similaridade_entre_cadeias(nome, chave, qualis=True)
+                if distI > dist:  # comparamos: nome com cada nome de evento
+                    indice = i
+                    dist = distI
+            if indice > 0:
+                # Retorna Qualis de nome similar
+                return self.congressos.get(chaves[indice]), chaves[indice]
         # return 'Qualis nao identificado', ''
         return "Qualis nao identificado", nome
 
