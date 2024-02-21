@@ -934,6 +934,7 @@ class Grupo:
                     return 0
 
                 return p[1]
+        return None
 
     def atribuirCoNoRotulo(self, indice, cor):
         self.listaDeRotulosCores[indice] = cor

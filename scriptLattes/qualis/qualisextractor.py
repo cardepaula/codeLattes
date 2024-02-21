@@ -235,6 +235,7 @@ class QualisExtractor:
         for i in self.areas:
             if i[0] == cod:
                 return i
+        return None
 
     @staticmethod
     def read_url(req, tries=10, issn=None):

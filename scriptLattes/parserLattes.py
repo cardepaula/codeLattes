@@ -349,7 +349,7 @@ class ParserLattes(HTMLParser):
         issnvalue = url[s:e].split("=")
         issn = issnvalue[1]
         if len(issn) < 8:
-            return
+            return None
         issn = issn[:8]
         self.issn = issn[0:4] + "-" + issn[4:8]
 

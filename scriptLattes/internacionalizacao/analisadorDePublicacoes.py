@@ -583,6 +583,7 @@ class AnalisadorDePublicacoes:
                     for filho in filhos2:
                         fields.append(self.node2Text(filho))
                     return fields
+        return None
 
     def node2Text(self, node):
         text = ""
