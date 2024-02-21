@@ -33,7 +33,7 @@ import os.path
 import re
 import unicodedata
 
-from .publicacaoEinternacionalizacao import *
+from html import unescape
 from .genericParser import genericParser
 from .parser101007 import parser101007
 from .parser101590 import parser101590
@@ -378,7 +378,7 @@ class AnalisadorDePublicacoes:
 
     def procurarPais(self, dataDoi, nomeDePais, urlDOI):
         nomeDePais = nomeDePais.lower()
-        nomeDePais = HTMLParser().unescape(nomeDePais.decode("utf8", "ignore"))
+        nomeDePais = unescape(nomeDePais.decode("utf8", "ignore"))
         nomeDePais = (
             unicodedata.normalize("NFKD", str(nomeDePais))
             .encode("ASCII", "ignore")
@@ -458,9 +458,7 @@ class AnalisadorDePublicacoes:
                     rawDOIhtml = response.read()
                     print(("- Baixando publicacao com DOI: " + urlDOI))
 
-                    rawDOIhtml = HTMLParser().unescape(
-                        rawDOIhtml.decode("utf8", "ignore")
-                    )
+                    rawDOIhtml = unescape(rawDOIhtml.decode("utf8", "ignore"))
                     rawDOIhtml = (
                         unicodedata.normalize("NFKD", str(rawDOIhtml))
                         .encode("ASCII", "ignore")
