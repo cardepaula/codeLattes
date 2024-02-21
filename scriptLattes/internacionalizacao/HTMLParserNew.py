@@ -224,7 +224,8 @@ class HTMLParser(_markupbase.ParserBase):
                         self.error("EOF in middle of entity or char ref")
                     # incomplete
                     break
-                elif (i + 1) < n:
+
+                if (i + 1) < n:
                     # not the end of the buffer, and can't be confused
                     # with some other construct
                     self.handle_data("&")
