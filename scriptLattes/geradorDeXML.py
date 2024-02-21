@@ -31,7 +31,7 @@ class GeradorDeXML:
     extensaoPagina = None
     arquivoRis = None
     membros = None
-    listaErroXml = list()
+    listaErroXml = []
 
     def __init__(self, gr):
         self.grupo = gr
