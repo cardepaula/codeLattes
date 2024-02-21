@@ -31,12 +31,13 @@ import urllib.parse
 import xml.dom.minidom
 import os.path
 import re
+import unicodedata
 
 from .publicacaoEinternacionalizacao import *
-from .genericParser import *
-from .parser101007 import *
-from .parser101590 import *
-from .parser101021 import *
+from .genericParser import genericParser
+from .parser101007 import parser101007
+from .parser101590 import parser101590
+from .publicacaoEinternacionalizacao import PublicacaoEinternacionalizacao
 
 
 class AnalisadorDePublicacoes:

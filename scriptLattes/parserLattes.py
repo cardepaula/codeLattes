@@ -23,51 +23,48 @@
 #
 
 import sys
-from html.entities import name2codepoint
-
-# from tidylib import tidy_document
-from bs4 import BeautifulSoup
 import html
-
-import difflib
-
-
-# ---------------------------------------------------------------------------- #
+import re
+from html.entities import name2codepoint
 from html.parser import HTMLParser
-from .producoesUnitarias.formacaoAcademica import *
-from .producoesUnitarias.areaDeAtuacao import *
-from .producoesUnitarias.idioma import *
-from .producoesUnitarias.premioOuTitulo import *
-from .producoesUnitarias.projetoDePesquisa import *
-from .producoesUnitarias.projetoDeExtensao import *
-from .producoesUnitarias.projetoDeDesenvolvimento import *
-from .producoesUnitarias.outrosProjetos import *
+from bs4 import BeautifulSoup
 
+
+from .eventos.organizacaoDeEvento import OrganizacaoDeEvento
+from .eventos.participacaoEmEvento import ParticipacaoEmEvento
+from .orientacoes.orientacaoConcluida import OrientacaoConcluida
+from .orientacoes.orientacaoEmAndamento import OrientacaoEmAndamento
+from .producoesArtisticas.producaoArtistica import ProducaoArtistica
+from .producoesBibliograficas.apresentacaoDeTrabalho import ApresentacaoDeTrabalho
+from .producoesBibliograficas.artigoAceito import ArtigoAceito
 from .producoesBibliograficas.artigoEmPeriodico import ArtigoEmPeriodico
-from .producoesBibliograficas.livroPublicado import *
-from .producoesBibliograficas.capituloDeLivroPublicado import *
-from .producoesBibliograficas.textoEmJornalDeNoticia import *
-from .producoesBibliograficas.trabalhoCompletoEmCongresso import *
-from .producoesBibliograficas.resumoExpandidoEmCongresso import *
-from .producoesBibliograficas.resumoEmCongresso import *
-from .producoesBibliograficas.artigoAceito import *
-from .producoesBibliograficas.apresentacaoDeTrabalho import *
-from .producoesBibliograficas.outroTipoDeProducaoBibliografica import *
-
-from .producoesTecnicas.softwareComPatente import *
-from .producoesTecnicas.softwareSemPatente import *
-from .producoesTecnicas.produtoTecnologico import *
-from .producoesTecnicas.processoOuTecnica import *
-from .producoesTecnicas.trabalhoTecnico import *
-from .producoesTecnicas.outroTipoDeProducaoTecnica import *
-
-from .producoesArtisticas.producaoArtistica import *
-
-from .orientacoes.orientacaoEmAndamento import *
-from .orientacoes.orientacaoConcluida import *
-
-from .eventos.organizacaoDeEvento import *
-from .eventos.participacaoEmEvento import *
+from .producoesBibliograficas.capituloDeLivroPublicado import CapituloDeLivroPublicado
+from .producoesBibliograficas.livroPublicado import LivroPublicado
+from .producoesBibliograficas.outroTipoDeProducaoBibliografica import (
+    OutroTipoDeProducaoBibliografica,
+)
+from .producoesBibliograficas.resumoEmCongresso import ResumoEmCongresso
+from .producoesBibliograficas.resumoExpandidoEmCongresso import (
+    ResumoExpandidoEmCongresso,
+)
+from .producoesBibliograficas.textoEmJornalDeNoticia import TextoEmJornalDeNoticia
+from .producoesBibliograficas.trabalhoCompletoEmCongresso import (
+    TrabalhoCompletoEmCongresso,
+)
+from .producoesTecnicas.outroTipoDeProducaoTecnica import OutroTipoDeProducaoTecnica
+from .producoesTecnicas.processoOuTecnica import ProcessoOuTecnica
+from .producoesTecnicas.produtoTecnologico import ProdutoTecnologico
+from .producoesTecnicas.softwareComPatente import SoftwareComPatente
+from .producoesTecnicas.softwareSemPatente import SoftwareSemPatente
+from .producoesTecnicas.trabalhoTecnico import TrabalhoTecnico
+from .producoesUnitarias.areaDeAtuacao import AreaDeAtuacao
+from .producoesUnitarias.formacaoAcademica import FormacaoAcademica
+from .producoesUnitarias.idioma import Idioma
+from .producoesUnitarias.outrosProjetos import OutrosProjetos
+from .producoesUnitarias.premioOuTitulo import PremioOuTitulo
+from .producoesUnitarias.projetoDeDesenvolvimento import ProjetoDeDesenvolvimento
+from .producoesUnitarias.projetoDeExtensao import ProjetoDeExtensao
+from .producoesUnitarias.projetoDePesquisa import ProjetoDePesquisa
 
 sys.tracebacklimit = 0
 

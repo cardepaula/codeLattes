@@ -1,5 +1,5 @@
 # TODO Verificar se esse arquivo está sendo usado
-from .geolocalizador import *
+from .geolocalizador import Geolocalizador
 
 endereco = (
     "Universidade de Sao Paulo, Instituto de Matematica e Estatastica, Departamento de "

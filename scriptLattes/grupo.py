@@ -22,25 +22,23 @@
 #
 #
 
+import datetime
 import fileinput
+import operator
 import unicodedata
 
-from .geradorDeXML import *
-from .qualis import *
-from scriptLattes.util import *
-from scriptLattes.qualis import *
 
-from . import util
-from .membro import Membro
-from .compiladorDeListas import CompiladorDeListas
 from .authorRank import AuthorRank
+from .charts.graficoDeBarras import GraficoDeBarras
+from .charts.grafoDeColaboracoes import GrafoDeColaboracoes
+from .charts.mapaDeGeolocalizacao import MapaDeGeolocalizacao
+from .compiladorDeListas import CompiladorDeListas
 from .geradorDePaginasWeb import GeradorDePaginasWeb
-from .charts.grafoDeColaboracoes import *
-from .charts.mapaDeGeolocalizacao import *
-from .qualis.qualis import *
-from .charts.geolocalizador import *
-from .charts.graficoDeBarras import *
-from .internacionalizacao.analisadorDePublicacoes import *
+from .geradorDeXML import GeradorDeXML
+from .internacionalizacao.analisadorDePublicacoes import AnalisadorDePublicacoes
+from .membro import Membro
+from .qualis.qualis import Qualis
+from .util import criarDiretorio, buscarArquivo
 
 
 class Grupo:
@@ -134,13 +132,13 @@ class Grupo:
             "global-diretorio_de_armazenamento_de_cvs"
         )
         if not self.diretorioCache == "":
-            util.criarDiretorio(self.diretorioCache)
+            criarDiretorio(self.diretorioCache)
 
         self.diretorioDoi = self.obterParametro(
             "global-diretorio_de_armazenamento_de_doi"
         )
         if not self.diretorioDoi == "":
-            util.criarDiretorio(self.diretorioDoi)
+            criarDiretorio(self.diretorioDoi)
 
         # carregamos a lista de membros
         entrada = buscarArquivo(self.obterParametro("global-arquivo_de_entrada"))

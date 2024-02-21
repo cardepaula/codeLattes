@@ -25,11 +25,12 @@ import datetime
 import os
 import unicodedata
 import logging
+import math
 
 import pandas
 from pandas.core.indexing import IndexingError
-from .charts.graficoDeInternacionalizacao import *
-from .highcharts import *  # highcharts
+from .charts.graficoDeInternacionalizacao import GraficoDeInternacionalizacao
+from .highcharts import highchart, chart_type, jscmd
 from .membro import Membro
 
 logger = logging.getLogger("scriptLattes")

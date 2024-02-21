@@ -29,20 +29,28 @@
 # Por enquanto esta característica fica sem documentação.
 # ---------------------------------------------------------------------------- #
 
+import re
+
 from html.entities import name2codepoint
 from html.parser import HTMLParser
 
-from .producoesBibliograficas.artigoEmPeriodico import *
-from .producoesBibliograficas.livroPublicado import *
-from .producoesBibliograficas.capituloDeLivroPublicado import *
-from .producoesBibliograficas.textoEmJornalDeNoticia import *
-from .producoesBibliograficas.trabalhoCompletoEmCongresso import *
-from .producoesBibliograficas.resumoExpandidoEmCongresso import *
-from .producoesBibliograficas.resumoEmCongresso import *
-from .producoesBibliograficas.artigoAceito import *
-from .producoesBibliograficas.apresentacaoDeTrabalho import *
-from .producoesBibliograficas.outroTipoDeProducaoBibliografica import *
-from .orientacoes.orientacaoConcluida import *
+from .orientacoes.orientacaoConcluida import OrientacaoConcluida
+from .producoesBibliograficas.apresentacaoDeTrabalho import ApresentacaoDeTrabalho
+from .producoesBibliograficas.artigoAceito import ArtigoAceito
+from .producoesBibliograficas.artigoEmPeriodico import ArtigoEmPeriodico
+from .producoesBibliograficas.capituloDeLivroPublicado import CapituloDeLivroPublicado
+from .producoesBibliograficas.livroPublicado import LivroPublicado
+from .producoesBibliograficas.outroTipoDeProducaoBibliografica import (
+    OutroTipoDeProducaoBibliografica,
+)
+from .producoesBibliograficas.resumoEmCongresso import ResumoEmCongresso
+from .producoesBibliograficas.resumoExpandidoEmCongresso import (
+    ResumoExpandidoEmCongresso,
+)
+from .producoesBibliograficas.textoEmJornalDeNoticia import TextoEmJornalDeNoticia
+from .producoesBibliograficas.trabalhoCompletoEmCongresso import (
+    TrabalhoCompletoEmCongresso,
+)
 
 
 class ParserLattesXML(HTMLParser):

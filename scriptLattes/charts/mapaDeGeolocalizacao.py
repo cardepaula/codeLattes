@@ -22,8 +22,9 @@
 #
 #
 
-from scriptLattes.membro import *
-import fileinput
+import re
+import unicodedata
+from scriptLattes.membro import Membro
 
 
 class MapaDeGeolocalizacao:

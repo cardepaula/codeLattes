@@ -23,8 +23,7 @@
 #
 
 
-from scriptLattes.geradorDePaginasWeb import *
-from scriptLattes.util import similaridade_entre_cadeias
+from scriptLattes.util import similaridade_entre_cadeias, menuHTMLdeBuscaPT
 
 
 class ProgramaComputador:

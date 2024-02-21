@@ -23,12 +23,13 @@
 
 import datetime
 import os
+import re
 import pandas
 from lxml import etree
 from .baixaLattes import baixaCVLattes
 from .parserLattes import ParserLattes
 from .parserLattesXML import ParserLattesXML
-from .charts.geolocalizador import *
+from .charts.geolocalizador import Geolocalizador
 
 
 class Membro:
