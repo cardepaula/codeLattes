@@ -123,7 +123,7 @@ theme = """{
 """
 
 
-class jscmd(object):
+class jscmd:
     cmd = ""
 
     def __init__(self, cmd):
@@ -133,7 +133,7 @@ class jscmd(object):
         return self.cmd
 
 
-class jsbool(object):
+class jsbool:
     value = False
 
     def __init__(self, v):
@@ -146,7 +146,7 @@ class jsbool(object):
         return "true" if self.value else "false"
 
 
-class bgcolor(object):
+class bgcolor:
     colorstr = (
         "(Highcharts.theme && Highcharts.theme.legendBackgroundColor || '#FFFFFF')"
     )
@@ -198,7 +198,7 @@ def format_json(d):
     return s
 
 
-class chart_type(object):
+class chart_type:
     line = "line"
     spline = "spline"
     area = "area"

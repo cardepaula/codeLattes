@@ -51,7 +51,7 @@ def getvalue(attrs):
     return None
 
 
-class QualisExtractor(object):
+class QualisExtractor:
     # Constructor
     def __init__(
         self, read_from_cache=True, arquivo_areas_qualis=None, data_file_path=None
