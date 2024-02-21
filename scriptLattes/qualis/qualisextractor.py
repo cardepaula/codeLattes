@@ -21,7 +21,6 @@ import urllib.request
 import urllib.error
 import urllib.parse
 import pickle
-from html.parser import HTMLParser
 import datetime
 
 import requests

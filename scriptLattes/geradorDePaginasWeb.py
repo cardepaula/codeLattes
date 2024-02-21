@@ -23,7 +23,6 @@
 from collections import defaultdict
 import datetime
 import os
-import re
 import unicodedata
 import logging
 
