@@ -55,6 +55,7 @@ endendtag = re.compile(">")
 endtagfind = re.compile("</\\s*([a-zA-Z][-.a-zA-Z0-9:_]*)\\s*>")
 
 
+# TODO verificar se essa classe é necessária
 class HTMLParseError(Exception):
     """Exception raised for all parse errors."""
 
@@ -454,6 +455,7 @@ class HTMLParser(_markupbase.ParserBase):
         if "&" not in s:
             return s
 
+        # TODO verificar se essa metodo pode ser tirado daqui
         def replaceEntities(s):
             s = s.groups()[0]
             try:
