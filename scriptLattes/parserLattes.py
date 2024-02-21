@@ -371,7 +371,7 @@ class ParserLattes(HTMLParser):
                     self.item = ""
                     break
 
-        if (tag == "br" or tag == "img") and self.salvarNome:
+        if tag in ("br", "img") and self.salvarNome:
             self.nomeCompleto = stripBlanks(self.item)
             self.item = ""
             self.salvarNome = 0
@@ -431,7 +431,7 @@ class ParserLattes(HTMLParser):
                         if not self.salvarParte3:
                             self.partesDoItem = []
 
-                if name == "class" and (value == "citacoes" or value == "citado"):
+                if name == "class" and value in ("citacoes", "citado"):
                     self.citado = 1
 
                 if name == "cvuri" and self.citado:
@@ -1179,10 +1179,10 @@ class ParserLattes(HTMLParser):
                     self.achouOutroTipoDeProducaoTecnica = 1
 
             if self.achouProducaoArtisticaCultural:
-                if (
-                    "Outras produções artísticas/culturais" == dado
-                    or "Artes Cênicas" == dado
-                    or "Música" == dado
+                if dado in (
+                    "Outras produções artísticas/culturais",
+                    "Artes Cênicas",
+                    "Música",
                 ):
                     # separar as listas de producoes artisticas por tipos
                     self.salvarItem = 1
