@@ -503,8 +503,7 @@ class Membro:
                     and objeto.anoConclusao < periodo[0]
                 ):
                     continue
-                else:
-                    return 1
+                return 1
             return 0
 
         if not objeto.ano or not objeto.ano.isdigit():
