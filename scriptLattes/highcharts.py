@@ -169,7 +169,7 @@ def format_json(d):
                 s += format_json(k)
             elif isinstance(k, list):
                 s += format_json(k)
-            elif isinstance(k, str) or isinstance(k, str):
+            elif isinstance(k, str):
                 s += "'" + k + "'"
             elif k is None:  # we explicitly want None
                 s += "null"
@@ -188,7 +188,7 @@ def format_json(d):
                 s += format_json(d[k])
             elif isinstance(d[k], list):
                 s += format_json(d[k])
-            elif isinstance(d[k], str) or isinstance(d[k], str):
+            elif isinstance(d[k], str):
                 s += "'" + d[k] + "'"
             elif d[k] is None:  # we explicitly want None
                 s += "null"
