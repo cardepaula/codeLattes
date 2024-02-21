@@ -31,7 +31,7 @@ import pandas
 from pandas.core.indexing import IndexingError
 from .charts.graficoDeInternacionalizacao import *
 from .highcharts import *  # highcharts
-from .membro import *
+from .membro import Membro
 
 logger = logging.getLogger("scriptLattes")
 

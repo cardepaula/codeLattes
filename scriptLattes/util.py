@@ -24,6 +24,7 @@ import logging
 import os
 import shutil
 import sys
+import re
 import Levenshtein
 
 SEP = os.path.sep
@@ -157,3 +158,86 @@ def merge_dols(dol1, dol2):
     elif len(dol2) > 0:
         result = dol2
     return result
+
+
+def menuHTMLdeBuscaPB(titulo):
+    titulo = re.sub("\\s+", "+", titulo)
+
+    s = (
+        '<br>\
+         <font size=-1> \
+         [ <a href="http://scholar.google.com/scholar?hl=en&lr=&q='
+        + titulo
+        + '&btnG=Search">cita&ccedil;&otilde;es Google Scholar</a> | \
+           <a href="http://academic.research.microsoft.com/Search?query='
+        + titulo
+        + '">cita&ccedil;&otilde;es Microsoft Acad&ecirc;mico</a> | \
+           <a href="http://www.google.com/search?btnG=Google+Search&q='
+        + titulo
+        + '">busca Google</a> ] \
+         </font><br>'
+    )
+    return s
+
+
+def menuHTMLdeBuscaPT(titulo):
+    titulo = re.sub("\\s+", "+", titulo)
+
+    s = (
+        '<br>\
+         <font size=-1> \
+         [ <a href="http://www.google.com/search?btnG=Google+Search&q='
+        + titulo
+        + '">busca Google</a> | \
+           <a href="http://www.bing.com/search?q='
+        + titulo
+        + '">busca Bing</a> ] \
+         </font><br>'
+    )
+    return s
+
+
+def menuHTMLdeBuscaPA(titulo):
+    titulo = re.sub("\\s+", "+", titulo)
+
+    s = (
+        '<br>\
+         <font size=-1> \
+         [ <a href="http://www.google.com/search?btnG=Google+Search&q='
+        + titulo
+        + '">busca Google</a> | \
+           <a href="http://www.bing.com/search?q='
+        + titulo
+        + '">busca Bing</a> ] \
+         </font><br>'
+    )
+    return s
+
+
+def formata_qualis(qualis, qualissimilar):
+    s = ""
+    if qualis is not None:
+        if qualis == "":
+            qualis = "Qualis nao identificado"
+
+        if qualis == "Qualis nao identificado":
+            # Qualis nao identificado - imprime em vermelho
+            s += (
+                '<font color="#FDD7E4"><b>Qualis: N&atilde;o identificado</b></font> ('
+                + qualissimilar
+                + ")"
+            )
+        else:
+            if qualissimilar == "":
+                # Casamento perfeito - imprime em verde
+                s += '<font color="#254117"><b>Qualis: ' + qualis + "</b></font>"
+            else:
+                # Similar - imprime em laranja
+                s += (
+                    '<font color="#F88017"><b>Qualis: '
+                    + qualis
+                    + "</b></font> ("
+                    + qualissimilar
+                    + ")"
+                )
+    return s

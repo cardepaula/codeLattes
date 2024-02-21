@@ -22,8 +22,11 @@
 #
 #
 
-from scriptLattes.geradorDePaginasWeb import *
-from scriptLattes.util import similaridade_entre_cadeias
+from scriptLattes.util import (
+    similaridade_entre_cadeias,
+    menuHTMLdeBuscaPB,
+    formata_qualis,
+)
 
 
 class ArtigoAceito:

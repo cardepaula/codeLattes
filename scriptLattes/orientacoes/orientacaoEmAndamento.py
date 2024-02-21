@@ -22,8 +22,7 @@
 #  Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-
-from scriptLattes.geradorDePaginasWeb import *
+import re
 from scriptLattes.util import similaridade_entre_cadeias
 
 

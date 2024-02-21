@@ -23,8 +23,8 @@
 #
 
 
-from scriptLattes.geradorDePaginasWeb import *
-from scriptLattes.util import similaridade_entre_cadeias
+import re
+from scriptLattes.util import similaridade_entre_cadeias, menuHTMLdeBuscaPB
 
 
 class ResumoEmCongresso:

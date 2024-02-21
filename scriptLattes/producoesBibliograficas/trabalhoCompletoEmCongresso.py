@@ -22,8 +22,15 @@
 #
 #
 
-from scriptLattes.geradorDePaginasWeb import *
-from scriptLattes.util import similaridade_entre_cadeias
+import re
+import logging
+from scriptLattes.util import (
+    similaridade_entre_cadeias,
+    menuHTMLdeBuscaPB,
+    formata_qualis,
+)
+
+logger = logging.getLogger("scriptLattes")
 
 
 class TrabalhoCompletoEmCongresso:

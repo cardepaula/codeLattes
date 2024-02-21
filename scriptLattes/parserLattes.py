@@ -43,7 +43,7 @@ from .producoesUnitarias.projetoDeExtensao import *
 from .producoesUnitarias.projetoDeDesenvolvimento import *
 from .producoesUnitarias.outrosProjetos import *
 
-from .producoesBibliograficas.artigoEmPeriodico import *
+from .producoesBibliograficas.artigoEmPeriodico import ArtigoEmPeriodico
 from .producoesBibliograficas.livroPublicado import *
 from .producoesBibliograficas.capituloDeLivroPublicado import *
 from .producoesBibliograficas.textoEmJornalDeNoticia import *

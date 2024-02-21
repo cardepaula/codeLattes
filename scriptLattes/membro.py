@@ -26,8 +26,8 @@ import os
 import pandas
 from lxml import etree
 from .baixaLattes import baixaCVLattes
-from .parserLattes import *
-from .parserLattesXML import *
+from .parserLattes import ParserLattes
+from .parserLattesXML import ParserLattesXML
 from .charts.geolocalizador import *
 
 
