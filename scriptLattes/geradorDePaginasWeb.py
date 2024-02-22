@@ -1091,7 +1091,6 @@ class GeradorDePaginasWeb:
         chart.set_y_title("Quantidade")
 
         categories = []
-        areas_map = {None: 0}
         estrato_area_ano_freq = defaultdict(
             lambda: defaultdict(lambda: defaultdict(int))
         )
@@ -1386,12 +1385,6 @@ class GeradorDePaginasWeb:
             "encontradas com base nas produ&ccedil;&otilde;es: <i>"
             + lista
             + "</i>. <br><p>"
-        )
-
-        prefix = (
-            self.grupo.obterParametro("global-prefixo") + "-"
-            if not self.grupo.obterParametro("global-prefixo") == ""
-            else ""
         )
 
         s += (

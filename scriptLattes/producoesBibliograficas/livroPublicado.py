@@ -30,15 +30,15 @@ class LivroPublicado:
     item = None  # dado bruto
     idMembro = None
 
-    relevante = None
-    autores = None
-    titulo = None
-    edicao = None
-    ano = None
-    volume = None
-    paginas = None
-    editora = None
-    chave = None
+    relevante = ""
+    autores = ""
+    titulo = ""
+    edicao = ""
+    ano = ""
+    volume = ""
+    paginas = ""
+    editora = ""
+    chave = ""
 
     def __init__(self, idMembro, partesDoItem="", relevante=""):
         self.idMembro = set([])
@@ -94,16 +94,6 @@ class LivroPublicado:
             self.titulo = partes.strip().rstrip(".")
 
             self.chave = self.autores  # chave de comparação entre os objetos
-
-        else:
-            relevante = ""
-            autores = ""
-            titulo = ""
-            edicao = ""
-            ano = ""
-            volume = ""
-            paginas = ""
-            editora = ""
 
     def compararCom(self, objeto):
         if self.idMembro.isdisjoint(objeto.idMembro) and similaridade_entre_cadeias(

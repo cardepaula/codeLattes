@@ -680,7 +680,7 @@ class CompiladorDeListas:
 
         # armazenamos a lista de itens associadas a cada colaboracao endogena
         listaDeColaboracoes = list([])
-        for i in range(0, self.grupo.numeroDeMembros()):
+        for _ in range(0, self.grupo.numeroDeMembros()):
             listaDeColaboracoes.append(dict([]))
 
         keys = list(listaCompleta.keys())
@@ -735,7 +735,7 @@ class CompiladorDeListas:
             (self.grupo.numeroDeMembros(), self.grupo.numeroDeMembros())
         )
         colaboracoes = []
-        for i in range(0, self.grupo.numeroDeMembros()):
+        for _ in range(0, self.grupo.numeroDeMembros()):
             colaboracoes.append([])
 
         if self.grupo.obterParametro("grafo-incluir_artigo_em_periodico"):

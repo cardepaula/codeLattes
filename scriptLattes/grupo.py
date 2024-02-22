@@ -464,7 +464,7 @@ class Grupo:
             self.mapaDeGeolocalizacao = MapaDeGeolocalizacao(self)
 
     def gerarPaginasWeb(self):
-        paginasWeb = GeradorDePaginasWeb(self)
+        GeradorDePaginasWeb(self)
 
     def compilarListasDeItems(self):
         # compilamos todo e criamos 'listasCompletas'

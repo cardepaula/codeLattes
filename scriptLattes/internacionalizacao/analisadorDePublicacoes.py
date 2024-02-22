@@ -395,7 +395,6 @@ class AnalisadorDePublicacoes:
             doihtml = doihtml.replace("\\n", "")
             prefixo = dataDoi[1][4]
             posfixo = dataDoi[1][5]
-            idDoi = dataDoi[1][0]
             if re.search(
                 (prefixo, "")[prefixo is None]
                 + re.escape(nomeDePais)
