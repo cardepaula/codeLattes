@@ -93,7 +93,7 @@ class QualisExtractor:
             url_base = "http://qualis.capes.gov.br/webqualis/"
             acesso_inicial = requests.get(url_base + "principal.seam")
             jid = acesso_inicial.cookies["JSESSIONID"]
-            logger.info(f"Iniciando sessão qualis. ID da Sessão: {jid}")
+            logger.info("Iniciando sessão qualis. ID da Sessão: %s", jid)
             url1 = (
                 url_base
                 + "publico/pesquisaPublicaClassificacao.seam;jsessionid="
@@ -145,7 +145,7 @@ class QualisExtractor:
         # deveria ficar acessando a internet. Rever.
         for area in self.areas_to_extract:
             if not self.should_update_area(area):
-                logger.info(f"Qualis da area {self.areas[area][1]} atualizado!")
+                logger.info("Qualis da area %s atualizado!", self.areas[area][1])
                 continue
 
             self.areas_last_update[area] = self.dtnow
@@ -167,8 +167,8 @@ class QualisExtractor:
 
             arqn = urllib.request.urlopen(reqn)
             data = []
-            logger.info(f"Qualis da area {area} desatualizado!")
-            logger.info(f"Extraindo qualis da area: {area}")
+            logger.info("Qualis da area %s desatualizado!", area)
+            logger.info("Extraindo qualis da area: %s", area)
             while more == 1:
                 reqn = urllib.request.Request(
                     self.url2,
@@ -195,9 +195,10 @@ class QualisExtractor:
                     if i == tries:
                         logger.warning(
                             (
-                                f"Não foi possível extrair qualis mesmo após {tries} "
+                                "Não foi possível extrair qualis mesmo após %s "
                                 "tentativas. Desistindo."
-                            )
+                            ),
+                            tries,
                         )
                         break
 
@@ -207,7 +208,7 @@ class QualisExtractor:
 
     def load_data(self, filename="data"):
         try:
-            logger.debug(f"Carregando dados Qualis do arquivo '{filename}'")
+            logger.debug("Carregando dados Qualis do arquivo '%s'", filename)
             f = open(filename, "r", encoding="utf-8")
             data = pickle.load(f)
             self.qualis_data_frame = data[0]
@@ -219,7 +220,7 @@ class QualisExtractor:
             return False
 
     def save_data(self, filename="data"):
-        logger.debug(f"Salvando dados Qualis no arquivo '{filename}'")
+        logger.debug("Salvando dados Qualis no arquivo '%s'", filename)
         f = open(filename, "w", encoding="utf-8")
         data = (self.qualis_data_frame, self.areas, self.areas_last_update)
         pickle.dump(data, f)
@@ -247,16 +248,20 @@ class QualisExtractor:
             except urllib.error.URLError as err:
                 logger.warning(
                     (
-                        f"Erro extraindo Qualis do ISSN {issn}. Tentando novamente. "
-                        "Erro: {err}"
-                    )
+                        "Erro extraindo Qualis do ISSN %s. Tentando novamente. "
+                        "Erro: %s"
+                    ),
+                    issn,
+                    err,
                 )
             if i == tries - 1:
                 logger.warning(
                     (
-                        f"Não foi possível extrair Qualis do ISSN {issn} mesmo após "
-                        f"{tries} tentativas. Desistindo."
-                    )
+                        "Não foi possível extrair Qualis do ISSN %s mesmo após "
+                        "%s tentativas. Desistindo."
+                    ),
+                    issn,
+                    tries,
                 )
                 break
         html_document = arqn.read()
@@ -327,7 +332,7 @@ class QualisExtractor:
 
         NOTA: ISSN tem que estar no formato XXXX-YYYY
         """
-        logger.info(f"Extraindo qualis do ISSN {issn}...")
+        logger.info("Extraindo qualis do ISSN %s ...", issn)
 
         issn_data = self.qualis_data_frame[self.qualis_data_frame["issn"] == issn]
         if issn_data.empty or not self.read_from_cache:
@@ -423,7 +428,7 @@ class QualisExtractor:
         Retorna o Qualis a partir do nome do periódico. Restringe as areas se elas
         tiverem sido especificadas (ver parse_areas_file).
         """
-        logger.info(f'Extraindo qualis do periódico "{journal_title}"...')
+        logger.info('Extraindo qualis do periódico "%s"...', journal_title)
 
         data = self.qualis_data_frame[
             self.qualis_data_frame["periodico"] == journal_title
