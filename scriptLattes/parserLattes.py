@@ -338,20 +338,11 @@ class ParserLattes(HTMLParser):
 
     # ------------------------------------------------------------------------ #
 
-    def parse_issn(self, url):
-        s = url.find("issn=")
-        if s == -1:
-            return None
-        e = url.find("&", s)
-        if e == -1:
-            return None
-
-        issnvalue = url[s:e].split("=")
-        issn = issnvalue[1]
-        if len(issn) < 8:
-            return None
-        issn = issn[:8]
-        self.issn = issn[0:4] + "-" + issn[4:8]
+    def __parse_issn(self, url):
+        match = re.search(r"issn=([0-9]{8})", url)
+        if match:
+            issn = match.group(1)
+            self.issn = issn[0:4] + "-" + issn[4:8]
 
     def handle_starttag(self, tag, attrs):
         if tag == "h2":
@@ -385,7 +376,7 @@ class ParserLattes(HTMLParser):
 
             for name, value in attrs:
                 if name == "cvuri":
-                    self.parse_issn(value)
+                    self.__parse_issn(value)
 
             for name, value in attrs:
                 if name == "class" and value == "title-wrapper":
