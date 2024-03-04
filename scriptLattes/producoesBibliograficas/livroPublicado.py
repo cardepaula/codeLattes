@@ -44,7 +44,7 @@ class LivroPublicado:
         self.idMembro = set([])
         self.idMembro.add(idMembro)
 
-        if not partesDoItem == "":
+        if partesDoItem != "":
             # partesDoItem[0]: Numero (NAO USADO)
             # partesDoItem[1]: Descricao do livro (DADO BRUTO)
             self.item = partesDoItem[1]
@@ -123,7 +123,7 @@ class LivroPublicado:
 
     def html(self, listaDeMembros):
         s = self.autores + ". <b>" + self.titulo + "</b>. "
-        s += self.edicao + " ed. " if not self.edicao == "" else ""
+        s += self.edicao + " ed. " if self.edicao != "" else ""
         s += self.editora + ", " if not self.editora == "" else ""
         s += str(self.ano) + ". " if str(self.ano).isdigit() else ""
 

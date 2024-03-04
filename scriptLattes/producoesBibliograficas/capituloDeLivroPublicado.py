@@ -45,7 +45,7 @@ class CapituloDeLivroPublicado:
         self.idMembro = set([])
         self.idMembro.add(idMembro)
 
-        if not partesDoItem == "":
+        if partesDoItem != "":
             # partesDoItem[0]: Numero (NAO USADO)
             # partesDoItem[1]: Descricao do livro (DADO BRUTO)
 

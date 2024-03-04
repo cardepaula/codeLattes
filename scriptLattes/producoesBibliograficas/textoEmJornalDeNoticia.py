@@ -44,7 +44,7 @@ class TextoEmJornalDeNoticia:
         self.idMembro = set([])
         self.idMembro.add(idMembro)
 
-        if not partesDoItem == "":
+        if partesDoItem != "":
             # partesDoItem[0]: Numero (NAO USADO)
             # partesDoItem[1]: Descricao do livro (DADO BRUTO)
             self.item = partesDoItem[1]
@@ -137,7 +137,7 @@ class TextoEmJornalDeNoticia:
 
     def html(self, listaDeMembros):
         s = self.autores + ". <b>" + self.titulo + "</b>. "
-        s += self.nomeJornal + ", " if not self.nomeJornal == "" else ""
+        s += self.nomeJornal + ", " if self.nomeJornal != "" else ""
 
         s += "v. " + self.volume + ", " if not self.volume == "" else ""
         s += "p. " + self.paginas + ", " if not self.paginas == "" else ""

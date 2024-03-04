@@ -97,7 +97,7 @@ class OutroTipoDeProducaoTecnica:
     def html(self, listaDeMembros):
         s = self.autores + ". <b>" + self.titulo + "</b>. "
         s += str(self.ano) + ". " if str(self.ano).isdigit() else ". "
-        s += self.natureza if not self.natureza == "" else ""
+        s += self.natureza if self.natureza != "" else ""
 
         s += menuHTMLdeBuscaPT(self.titulo)
         return s

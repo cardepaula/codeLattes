@@ -42,7 +42,7 @@ class OrganizacaoDeEvento:
         self.idMembro = set([])
         self.idMembro.add(idMembro)
 
-        if not partesDoItem == "":
+        if partesDoItem != "":
             self.item = partesDoItem[1]
 
             # Dividir o item na suas partes constituintes

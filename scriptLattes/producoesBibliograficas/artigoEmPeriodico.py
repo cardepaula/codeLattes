@@ -55,7 +55,7 @@ class ArtigoEmPeriodico:
         self.qualis = None
         self.qualissimilar = None
 
-        if not partesDoItem == "":
+        if partesDoItem != "":
             # partesDoItem[0]: Numero (NAO USADO)
             # partesDoItem[1]: Descricao do artigo (DADO BRUTO)
             self.item = partesDoItem[1]
