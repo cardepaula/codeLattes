@@ -474,7 +474,7 @@ class GeradorDePaginasWeb:
                 s += (
                     f'<li> <a href="OC3-0{self.extensaoPagina}">'
                     "Monografia de conclusão de curso de aperfeiçoamento/especialização"
-                    f"</a> ({str(self.nOC3)}"
+                    f"</a> ({str(self.nOC3)})"
                 )
             if self.nOC4 > 0:
                 s += (
