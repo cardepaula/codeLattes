@@ -123,7 +123,7 @@ class OrientacaoEmAndamento:
         )
         s += ". <b>" + self.tituloDoTrabalho + "</b>. "
         s += self.instituicao + ", " if not self.instituicao == "" else ""
-        s += self.agenciaDeFomento + ". " if not self.agenciaDeFomento == "" else ". "
+        s += self.agenciaDeFomento + ". " if self.agenciaDeFomento != "" else ". "
         s += "In&iacute;cio: " + str(self.ano) + "." if str(self.ano).isdigit() else "."
 
         lista = list(self.idMembro)

@@ -39,7 +39,7 @@ class ParticipacaoEmEvento:
         self.idMembro = set([])
         self.idMembro.add(idMembro)
 
-        if not partesDoItem == "":
+        if partesDoItem != "":
             self.item = partesDoItem[1]
 
             partes = self.item
