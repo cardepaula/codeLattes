@@ -45,6 +45,7 @@ class GeradorDePaginasWeb:
 
     def __init__(self, grupo):
         self.grupo = grupo
+        # TODO pegar a versão do codeLattes a partir da tag do git
         self.version = "V8.13"
         self.dir = self.grupo.obterParametro("global-diretorio_de_saida")
 
