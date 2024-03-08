@@ -210,6 +210,8 @@ class Membro:
                 chr(c) for c in range(127, 65536, 1)
             )  # srange(r"[\0x80-\0x7FF]")
             special_chars = " -" ""
+            # TODO Verificar se ocorrerá o ero "surrogates not allowed"
+            # soluçao na linha 238
             cvLattesXML = (
                 cvLattesXML.decode("iso-8859-1", "replace")
                 + extended_chars
