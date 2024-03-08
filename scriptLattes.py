@@ -77,6 +77,6 @@ if __name__ == "__main__":
     logger = logging.getLogger(__name__)
     logging.basicConfig(format="%(asctime)s - %(levelname)s (%(name)s) - %(message)s")
     logging.root.setLevel(level=logging.DEBUG)
-    logger.info("Executando '{}'".format(" ".join(sys.argv)))
+    logger.info("Executando '%s'", " ".join(sys.argv))
 
     executar_scriptLattes(sys.argv[1])
