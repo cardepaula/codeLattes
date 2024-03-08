@@ -22,9 +22,10 @@
 #
 
 import logging
-import warnings
-from scriptLattes.grupo import *
-from scriptLattes.util import *
+import os
+import sys
+from scriptLattes.grupo import Grupo
+from scriptLattes.util import criarDiretorio, copiarArquivos
 
 if "win" in sys.platform.lower():
     os.environ["PATH"] += ";" + os.path.abspath(os.curdir + "\\Graphviz2.36\\bin")
