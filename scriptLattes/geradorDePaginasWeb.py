@@ -124,6 +124,7 @@ class GeradorDePaginasWeb:
             + " \
         <head> \
            <title>"
+            + "codeLattes - "
             + nomeGrupo
             + '</title> \
            <meta name="Generator" content="scriptLattes"> \
@@ -2154,7 +2155,7 @@ class GeradorDePaginasWeb:
             "<head>"
             '<meta http-equiv="Content-Type" content="text/html; charset=utf8">'
             '<meta name="Generator" content="scriptLattes">'
-            "<title>{nome_grupo}</title>"
+            "<title>codeLattes - {nome_grupo}</title>"
             '<link rel="stylesheet" href="css/scriptLattes.css" type="text/css">'
             '<link rel="stylesheet" type="text/css" href="css/jquery.dataTables.css">'
             '<link rel="stylesheet" type="text/css" '
