@@ -54,10 +54,12 @@ def executar_scriptLattes(arquivoConfiguracao):
         print("\n\n[PARA REFERENCIAR/CITAR ESTE SOFTWARE USE]")
         print("    Jesus P. Mena-Chalco & Roberto M. Cesar-Jr.")
         print(
-            "    scriptLattes: An open-source knowledge extraction system from the Lattes Platform."
+            "    scriptLattes: An open-source knowledge extraction system from the"
+            " Lattes Platform."
         )
         print(
-            "    Journal of the Brazilian Computer Society, vol.15, n.4, páginas 31-39, 2009."
+            "    Journal of the Brazilian Computer Society, vol.15, n.4, páginas"
+            " 31-39, 2009."
         )
         print("    http://dx.doi.org/10.1007/BF03194511")
         print("\n\nscriptLattes executado!")
