@@ -244,12 +244,6 @@ class ParserLattes(HTMLParser):
 
     # ------------------------------------------------------------------------ #
 
-    def convert_numeric_entities(self, soup):
-        for element in soup.find_all(text=True):
-            if element.parent.name not in ["script", "style"]:
-                converted_text = html.unescape(element)
-                element.replace_with(converted_text)
-
     def __init__(self, idMembro, cvLattesHTML):
         HTMLParser.__init__(self)
 
@@ -336,13 +330,13 @@ class ParserLattes(HTMLParser):
 
         self.feed(str(cvLattesHTML))
 
-    # ------------------------------------------------------------------------ #
+    def convert_numeric_entities(self, soup):
+        for element in soup.find_all(text=True):
+            if element.parent.name not in ["script", "style"]:
+                converted_text = html.unescape(element)
+                element.replace_with(converted_text)
 
-    def __parse_issn(self, url):
-        match = re.search(r"issn=([0-9]{8})", url)
-        if match:
-            issn = match.group(1)
-            self.issn = issn[0:4] + "-" + issn[4:8]
+    # ------------------------------------------------------------------------ #
 
     def handle_starttag(self, tag, attrs):
         if tag == "h2":
@@ -1317,6 +1311,12 @@ class ParserLattes(HTMLParser):
             if len(self.partesDoItem) >= 3:
                 projeto = tipo_projeto(self.idMembro, self.partesDoItem)
                 lista_projeto.append(projeto)
+
+    def __parse_issn(self, url):
+        match = re.search(r"issn=([0-9]{8})", url)
+        if match:
+            issn = match.group(1)
+            self.issn = issn[0:4] + "-" + issn[4:8]
 
 
 def stripBlanks(s):
