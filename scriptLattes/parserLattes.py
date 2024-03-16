@@ -384,7 +384,7 @@ class ParserLattes(HTMLParser):
                     break
 
             for name, value in attrs:
-                if name == "class" and value == "layout-cell-pad-5":
+                if name == "class" and value in ("layout-cell-pad-5", "transform"):
                     if self.achouNomeEmCitacoes:
                         self.salvarNomeEmCitacoes = 1
                         self.item = ""
