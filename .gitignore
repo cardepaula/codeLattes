@@ -108,7 +108,7 @@ crashlytics-build.properties
 
 ## Extras
 dados/
-cvs-downloaded
+cvs-*
 venv
 pylint.*
 exemplo/cache
