@@ -498,6 +498,14 @@ class ParserLattes(HTMLParser):
         # Informações do pesquisador (pre-cabecalho)
         if tag == "h2":
             if self.salvarNome:
+                # TODO Bug quando tem um subtitulo como 'Bolsista de Produtividade em
+                # Pesquisa do CNPq - Nível 1A'
+                # Motivo: usa a mesma tag com mesma 'class' usado para o nome completo
+                # <h2 class="nome" tabindex="0">
+                #   <span align="center" style="font-weight: bold" class="texto">
+                #       Bolsista de Produtividade em Pesquisa do CNPq - N�vel 1A
+                #   </span>
+                # </h2>
                 self.nomeCompleto = stripBlanks(self.item)
                 self.salvarNome = 0
             if self.salvarBolsaProdutividade:
