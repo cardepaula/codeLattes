@@ -1799,7 +1799,7 @@ class GeradorDePaginasWeb:
         )
 
         (nCE, lista_CE, titulo_CE, lista_CE_detalhe) = self.gerar_lista_de_colaboracoes(
-            membro, "Colaborações endôgenas"
+            membro, "Colaborações endógenas"
         )
 
         s += "<h3>Produção bibliográfica</h3> <ul>"
