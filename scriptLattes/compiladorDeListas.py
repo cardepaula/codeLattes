@@ -556,7 +556,7 @@ class CompiladorDeListas:
                 listaCompleta[pub.ano] = []  # criamos uma nova entrada vazia
                 listaCompleta[pub.ano].append(pub)
             else:
-                inserir = 1
+                inserir = True
                 for i in range(0, len(listaCompleta[pub.ano])):
                     # comparamos: pub com listaCompleta[pub.ano][i]
                     item = pub.compararCom(listaCompleta[pub.ano][i])
@@ -566,11 +566,9 @@ class CompiladorDeListas:
                         print(listaCompleta[pub.ano][i])
 
                         listaCompleta[pub.ano][i] = item
-                        inserir = 0
+                        inserir = False
                         break
-                if (
-                    inserir
-                ):  # se pub for difererente a todos os elementos do listaCompleta
+                if inserir:
                     listaCompleta[pub.ano].append(pub)
         return listaCompleta
 
