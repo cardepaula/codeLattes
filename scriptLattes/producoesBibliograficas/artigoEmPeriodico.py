@@ -84,11 +84,8 @@ class ArtigoEmPeriodico:
 
             # Processando o resto (tudo menos autores)
             partes = partes[2].rpartition(", ")
-            self.ano = (
-                re.search(r"(\d{4})\.", partes[2]).group(1)
-                if re.search(r"(\d{4})\.", partes[2])
-                else None
-            )
+            match = re.search(r"(\d{4})\.", partes[2])
+            self.ano = match.group(1) if match else None
 
             partes = partes[0].rpartition("p. ")
             if partes[1] == "":  # se nao existe paginas
