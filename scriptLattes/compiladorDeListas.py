@@ -521,6 +521,7 @@ class CompiladorDeListas:
                 )
 
     def adicionarCoautorNaLista(self, listaCompleta, membro):
+        """Usado par adicionar coautor sem CV Lattes"""
         keys = list(listaCompleta.keys())
         for ano in keys:
             for pub in listaCompleta[ano]:
