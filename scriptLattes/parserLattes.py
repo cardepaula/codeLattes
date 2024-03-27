@@ -395,7 +395,10 @@ class ParserLattes(HTMLParser):
                         self.salvarParte1 = 0
                         self.salvarParte2 = 1
 
-                if name == "class" and value == "layout-cell-pad-5 text-align-right":
+                if name == "class" and value in (
+                    "layout-cell-pad-5 text-align-right",
+                    "layout-cell-pad-6 text-align-right",
+                ):
                     self.item = ""
                     if (
                         self.achouFormacaoAcademica
