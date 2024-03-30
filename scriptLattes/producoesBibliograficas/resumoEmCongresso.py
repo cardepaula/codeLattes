@@ -56,8 +56,10 @@ class ResumoEmCongresso:
             # Dividir o item na suas partes constituintes
             if " . " in self.item:
                 partes = self.item.partition(" . ")
-            else:
+            elif ".. " in self.item:
                 partes = self.item.partition(".. ")
+            else:
+                partes = self.item.partition(". ")
 
             self.autores = partes[0].strip()
             partes = partes[2]

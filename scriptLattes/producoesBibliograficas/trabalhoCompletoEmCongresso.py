@@ -66,8 +66,10 @@ class TrabalhoCompletoEmCongresso:
             # Dividir o item na suas partes constituintes (autores e o resto)
             if " . " in self.item:
                 partes = self.item.partition(" . ")
-            else:
+            elif ".. " in self.item:
                 partes = self.item.partition(".. ")
+            else:
+                partes = self.item.partition(". ")
 
             # Verificar quando há um numero de autores > que 25
             # muitos autores (mais de 25) e o lattes insere etal. termina lista

@@ -65,7 +65,7 @@ class OrganizacaoDeEvento:
             else:
                 self.natureza = ""
 
-            aux = re.findall("\\. ((?:19|20)\\d\\d)\\b", partes)
+            aux = re.findall("\\. ((?:19|20)\\d\\d)\\b", self.item)
             if len(aux) > 0:
                 self.ano = aux[-1]
                 partes = partes.rpartition(" ")
