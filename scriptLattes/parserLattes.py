@@ -339,12 +339,12 @@ class ParserLattes(HTMLParser):
     # ------------------------------------------------------------------------ #
 
     def handle_starttag(self, tag, attrs):
-        if tag == "h2":
-            for name, value in attrs:
-                if name == "class" and value == "nome":
-                    self.salvarNome = 1
-                    self.item = ""
-                    break
+        if tag == "h2" and ("class", "nome") in attrs:
+            self.item = ""
+            if self.nomeCompleto == "[Nome-nao-identificado]":
+                self.salvarNome = True
+            else:
+                self.salvarBolsaProdutividade = True
 
         if tag == "li":
             self.recuperarIdentificador16 = 1
@@ -498,14 +498,6 @@ class ParserLattes(HTMLParser):
         # Informações do pesquisador (pre-cabecalho)
         if tag == "h2":
             if self.salvarNome:
-                # TODO Bug quando tem um subtitulo como 'Bolsista de Produtividade em
-                # Pesquisa do CNPq - Nível 1A'
-                # Motivo: usa a mesma tag com mesma 'class' usado para o nome completo
-                # <h2 class="nome" tabindex="0">
-                #   <span align="center" style="font-weight: bold" class="texto">
-                #       Bolsista de Produtividade em Pesquisa do CNPq - N�vel 1A
-                #   </span>
-                # </h2>
                 self.nomeCompleto = stripBlanks(self.item)
                 self.salvarNome = 0
             if self.salvarBolsaProdutividade:
