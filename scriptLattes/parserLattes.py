@@ -378,7 +378,7 @@ class ParserLattes(HTMLParser):
                     break
 
             for name, value in attrs:
-                if name == "class" and value in ("layout-cell-pad-5", "transform"):
+                if name == "class" and value in ("layout-cell-pad-5"):
                     if self.achouNomeEmCitacoes:
                         self.salvarNomeEmCitacoes = 1
                         self.item = ""
@@ -470,10 +470,12 @@ class ParserLattes(HTMLParser):
             self.item = self.item + " "
 
         if tag == "span":
+            if ("class", "transform") in attrs and self.salvarParte1:
+                self.salvarParte1 = 0
+                self.salvarParte2 = 1
             if self.achouProducaoEmCTA:
-                for name, value in attrs:
-                    if name == "class" and value == "informacao-artigo":
-                        self.spanInformacaoArtigo = 1
+                if ("class", "informacao-artigo") in attrs:
+                    self.spanInformacaoArtigo = 1
 
         if tag == "a":
             if self.salvarItem:
