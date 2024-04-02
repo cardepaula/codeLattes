@@ -111,8 +111,9 @@ dados/
 cvs-*
 venv
 pylint.*
-exemplo/cache
-teste-01/
-teste-02/
+exemplo/cache/
+exemplo/doi/
+exemplo/teste-01/
+exemplo/teste-02/
 PPcomp*
 Qualis_*
