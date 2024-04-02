@@ -378,7 +378,7 @@ class AnalisadorDePublicacoes:
 
     def procurarPais(self, dataDoi, nomeDePais, urlDOI):
         nomeDePais = nomeDePais.lower()
-        nomeDePais = unescape(nomeDePais.decode("utf8", "ignore"))
+        nomeDePais = unescape(nomeDePais)
         nomeDePais = (
             unicodedata.normalize("NFKD", str(nomeDePais))
             .encode("ASCII", "ignore")
