@@ -611,17 +611,11 @@ class Grupo:
         arquivo.write(string)
         arquivo.close()
 
-    def salvarListaInternalizacaoTXT(self, listaDoiValido, nomeArquivo):
-        dir = self.obterParametro("global-diretorio_de_saida")
-        # TODO Verificar se o arquivo está codificado é UTF-8
-        arquivo = open(dir + "/" + nomeArquivo, "w", encoding="utf-8")
-        for elemento in listaDoiValido:
-            if isinstance(elemento, type(str())):
-                elemento = elemento.encode("utf8")
-            else:
-                elemento = str(elemento)
-            arquivo.write(elemento + "\n")
-        arquivo.close()
+    def salvarListaInternalizacaoTXT(self, listaDoiValido, file_name):
+        out_path = self.obterParametro("global-diretorio_de_saida")
+        with open(out_path + "/" + file_name, "w", encoding="utf-8") as file:
+            for elemento in listaDoiValido:
+                file.write(elemento + "\n")
 
     def gerarGraficosDeBarras(self):
         print("\n[CRIANDO GRAFICOS DE BARRAS]")
