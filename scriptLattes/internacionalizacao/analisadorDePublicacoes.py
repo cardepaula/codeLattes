@@ -41,15 +41,11 @@ from .publicacaoEinternacionalizacao import PublicacaoEinternacionalizacao
 
 
 class AnalisadorDePublicacoes:
-    grupo = None
-    paises = None
-    listaDePublicacoesEinternacionalizacao = None
-    listaDoiValido = []
-    parserFile = None
 
     def __init__(self, grupo):
         self.grupo = grupo
         self.listaDePublicacoesEinternacionalizacao = {}
+        self.listaDoiValido = []
         self.parserFile = xml.dom.minidom.parse(
             "./scriptLattes/internacionalizacao/parserFileConfig.xml"
         )  # read the file just the fist time
@@ -377,6 +373,7 @@ class AnalisadorDePublicacoes:
         return listaDePaisesIdentificados
 
     def procurarPais(self, dataDoi, nomeDePais, urlDOI):
+        # TODO rever a forma de procurar país. Muitos não estão sendo identificados
         nomeDePais = nomeDePais.lower()
         nomeDePais = unescape(nomeDePais)
         nomeDePais = (
